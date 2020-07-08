@@ -34,7 +34,37 @@ public class App extends Application {
     public static void main(String[] args) {
        //  launch();
     	
-    	System.out.println("Hallo von der App MassnahmenBewertung!");
+    	String auswertung = berechneAuswertung();
+    	
+    	System.out.println(auswertung);
+    	
+    }
+    
+    static String berechneAuswertung() {
+    	
+    	
+    	String ergebnis = "";
+    	
+    	// Benedikt
+    	// Input von verschlüsselten Strings  -> Branch von Benedikt
+    	// entschlüsseln der String
+    	
+    	
+    	// Michael
+    	// Input ein Array von *unverschlüsselten* Strings
+    	// -> AzubiAntwort-Objekte
+    	
+    	
+    	//-> Auswerten der AzubiAntwort-Objekte
+    	//  Louisa
+    	//  Denis
+    	
+    	
+    	// -> Ausgeben der Ergebnisse
+
+    	// Ouput
+    	
+    	return ergebnis;
     	
     }
 
