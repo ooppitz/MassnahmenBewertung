@@ -13,21 +13,21 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 
 public class AuswertungReferent {
 
-	String name;
+	public String name;
 
-	int[] stimmenProRadioBtnVorbereitung = new int[5];
-	int[] stimmenProRadioBtnFachwissen = new int[5];
-	int[] stimmenProRadioBtnEingehenAufProbleme = new int[5];
-	int[] stimmenProRadioBtnInhaltsvermittlung = new int[5];
-	int[] stimmenProRadioBtnVerhalten = new int[5];
+	public int[] stimmenProRadioBtnVorbereitung = new int[5];
+	public int[] stimmenProRadioBtnFachwissen = new int[5];
+	public int[] stimmenProRadioBtnEingehenAufProbleme = new int[5];
+	public int[] stimmenProRadioBtnInhaltsvermittlung = new int[5];
+	public int[] stimmenProRadioBtnVerhalten = new int[5];
 
-	double durchschnittVorbereitung;
-	double durchschnittFachwissen;
-	double durchschnittEingehenAufProbleme;
-	double durchschnittInhaltsvermittlung;
-	double durchschnittVerhalten;
+	public double durchschnittVorbereitung;
+	public double durchschnittFachwissen;
+	public double durchschnittEingehenAufProbleme;
+	public double durchschnittInhaltsvermittlung;
+	public double durchschnittVerhalten;
 
-	List<String> bemerkungen = new ArrayList<String>();
+	public List<String> bemerkungen = new ArrayList<String>();
 
 	public AuswertungReferent(ArrayList<BewertungReferent> bewertungen) {
 
@@ -231,7 +231,7 @@ public class AuswertungReferent {
 			stimmenProRadioBtnVerhalten[aktBewertung.getVerhalten()] += 1;
 		}
 	}
-	
+
 	public static List<AuswertungReferent> getAuswertungenAllerReferenten(ArrayList<AzubiAntwort> azubiAntworten) {
 		List<AuswertungReferent> auswertungenAllerReferenten = new ArrayList<>();
 
