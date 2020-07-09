@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 	 * 			- Antwort hinzuf�gen in Zustand2 muss implementiert werden
 	 *      	- Erscheinende TextFields in Zustand1+2 m�ssen implementiert werden
 	 *      	- Anwendung muss an den Rest angebunden werden (Dekodoerung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
-	 *      	- Zustand 3 erscheint und wird sofort geschlossen (Nutzung von index in showStep3  anpassen)
 	 */
 
 public class MainApp extends Application {
@@ -159,8 +158,9 @@ public class MainApp extends Application {
 			tab_z3.setClosable(true);
 			//			tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z3.setText(name);
+			System.out.println(index);
 			rootLayout.getTabs().add(index,tab_z3);
-			rootLayout.getTabs().remove(index);		//??
+			rootLayout.getTabs().remove(index-1);
 			Zustand3Controller controller = loader.getController();
 			//			            System.out.println(controller);
 			controller.setMainApp(this);
