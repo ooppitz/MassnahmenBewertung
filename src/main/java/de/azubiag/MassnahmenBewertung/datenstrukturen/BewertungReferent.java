@@ -64,4 +64,14 @@ public class BewertungReferent {
 		bemerkungen = array[6];
 	}
 	
+	public String toString() {
+		return String.format("BewertungReferent [name = \"%s\", "
+				+ "vorbereitet = %d, "
+				+ "fachwissen = %d, "
+				+ "eingehenAufThematischeProbleme = %d, "
+				+ "inhalteVermitteln = %d, "
+				+ "verhalten = %d, "
+				+ "bemerkungen = \"%s\"]", name, vorbereitet, fachwissen, thematischeProbleme, inhalteVermitteln, verhalten, bemerkungen);
+	}
+	
 }

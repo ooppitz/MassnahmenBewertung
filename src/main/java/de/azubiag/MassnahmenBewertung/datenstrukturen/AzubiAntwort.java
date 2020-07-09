@@ -36,4 +36,9 @@ public class AzubiAntwort {
 		return azubis;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("AzubiAntwort [%s, %s]", massnahme, referenten);
+	}
+	
 }
