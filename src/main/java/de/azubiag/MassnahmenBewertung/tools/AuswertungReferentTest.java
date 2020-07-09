@@ -165,7 +165,7 @@ class AuswertungReferentTest {
 		for (int i = 0; i < fragen.length; i++) {
 			for (int j = 0; j < 5; j++) {
 				assertEquals(expectedArray[i][j], auswertungRef
-						.getStimmenProRadioButtonFuerFrage(fragen[i], j));
+						.getStimmenProRadioButton(fragen[i], j));
 
 			}
 		}
