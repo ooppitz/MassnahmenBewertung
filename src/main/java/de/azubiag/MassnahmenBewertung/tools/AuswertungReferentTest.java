@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.auswertung.Frage;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 
 // TODO: Die Junit-Tests zum Laufen zu bringen
@@ -22,8 +23,10 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
  */
 class AuswertungReferentTest {
 
-	static ArrayList<BewertungReferent> bewertungen;
 	static AuswertungReferent auswertungRef;
+	static List<String> expectedBemerkungen = new ArrayList<>();
+
+	static String expectedName;
 
 	static int[] expectedStimmenVorbereitung = { 5, 0, 0, 0, 0 };
 	static int[] expectedStimmenFachwissen = { 0, 5, 0, 0, 0 };
@@ -37,18 +40,27 @@ class AuswertungReferentTest {
 	static Double expectedDurchschnittInhaltsvermittlung = new Double(1);
 	static Double expectedDurchschnittVerhalten = new Double(2);
 
-	static List<String> expectedBemerkungen = new ArrayList<>();
 
+	private static ArrayList<BewertungReferent> bewertungen;
+
+	
 	@BeforeAll
 	public static void setUpTestdata() {
-		bewertungen = new ArrayList<BewertungReferent>();
-		String [] inputForAzubiAntwort = {"Pfaffelhuber", "0", "1", "2", "3", "4",
-				"mag ihn nicht"}; 
-		
+
+		expectedName = "Pfaffelhuber";
+
+		List<String> inputForAzubiAntwortMethod = new ArrayList<>();
+
 	
-	//TODO: adjust to changes: static method getAuswertungenAllerReferenten(ArrayList <AzubiAntwort>);
-	//TODO: change visibility AuswertungReferent attributes or write getters
-			
+		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","nicht gerade gut ausgebildet" })); 
+		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","mag ihn nicht" })); 
+		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","so lala" })); 
+		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","prima Lehrer" })); 
+		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","klasse !" })); 
+
+		List<AzubiAntwort> azubiAntworten = AzubiAntwort.konvertiereStringsInAzubiAntworten(inputForAzubiAntwortMethod);
+
+		// TODO: test getAuswertungenAllerReferenten(ArrayList <AzubiAntwort>);
 
 		auswertungRef = new AuswertungReferent(bewertungen);
 
@@ -78,37 +90,27 @@ class AuswertungReferentTest {
 	@Test
 
 	void test_05_setName() {
-		assertEquals(bewertungen.get(0).getName(), auswertungRef.name);
+		assertEquals(expectedName, auswertungRef.name);
 	}
 
 	@Test
 	void test_10_zaehleStimmenProRadioBTn() {
 
-		assertArrayEquals(expectedStimmenVorbereitung,
-				auswertungRef.stimmenProRadioBtnVorbereitung);
-		assertArrayEquals(expectedStimmenFachwissen,
-				auswertungRef.stimmenProRadioBtnFachwissen);
-		assertArrayEquals(expectedStimmenEingehenAufProbleme,
-				auswertungRef.stimmenProRadioBtnEingehenAufProbleme);
-		assertArrayEquals(expectedStimmenInhaltsvermittlung,
-				auswertungRef.stimmenProRadioBtnInhaltsvermittlung);
-		assertArrayEquals(expectedStimmenVerhalten,
-				auswertungRef.stimmenProRadioBtnVerhalten);
+		assertArrayEquals(expectedStimmenVorbereitung, auswertungRef.stimmenProRadioBtnVorbereitung);
+		assertArrayEquals(expectedStimmenFachwissen, auswertungRef.stimmenProRadioBtnFachwissen);
+		assertArrayEquals(expectedStimmenEingehenAufProbleme, auswertungRef.stimmenProRadioBtnEingehenAufProbleme);
+		assertArrayEquals(expectedStimmenInhaltsvermittlung, auswertungRef.stimmenProRadioBtnInhaltsvermittlung);
+		assertArrayEquals(expectedStimmenVerhalten, auswertungRef.stimmenProRadioBtnVerhalten);
 	}
 
 	@Test
 	void test_15_berechneDurchschnittJeFrage() {
 
-		assertEquals(expectedDurchschnittVorbereitung,
-				auswertungRef.durchschnittVorbereitung);
-		assertEquals(expectedDurchschnittFachwissen,
-				auswertungRef.durchschnittFachwissen);
-		assertEquals(expectedDurchschnittEingehenAufProbleme,
-				auswertungRef.durchschnittEingehenAufProbleme);
-		assertEquals(expectedDurchschnittInhaltsvermittlung,
-				auswertungRef.durchschnittInhaltsvermittlung);
-		assertEquals(expectedDurchschnittVerhalten,
-				auswertungRef.durchschnittVerhalten);
+		assertEquals(expectedDurchschnittVorbereitung, auswertungRef.durchschnittVorbereitung);
+		assertEquals(expectedDurchschnittFachwissen, auswertungRef.durchschnittFachwissen);
+		assertEquals(expectedDurchschnittEingehenAufProbleme, auswertungRef.durchschnittEingehenAufProbleme);
+		assertEquals(expectedDurchschnittInhaltsvermittlung, auswertungRef.durchschnittInhaltsvermittlung);
+		assertEquals(expectedDurchschnittVerhalten, auswertungRef.durchschnittVerhalten);
 	}
 
 	@Test
@@ -126,40 +128,43 @@ class AuswertungReferentTest {
 
 	@Test
 	void test_30_getDurchschnitt() {
-		assertEquals(expectedDurchschnittVorbereitung,
-				auswertungRef.getDurchschnitt(Frage.VORBEREITUNG));
-		assertEquals(expectedDurchschnittFachwissen,
-				auswertungRef.getDurchschnitt(Frage.FACHWISSEN));
-		assertEquals(expectedDurchschnittEingehenAufProbleme,
-				auswertungRef.getDurchschnitt(Frage.EINGEHENAUFPROBLEME));
-		assertEquals(expectedDurchschnittInhaltsvermittlung,
-				auswertungRef.getDurchschnitt(Frage.INHALTSVERMITTLUNG));
-		assertEquals(expectedDurchschnittVerhalten,
-				auswertungRef.getDurchschnitt(Frage.VERHALTEN));
+		assertEquals(expectedDurchschnittVorbereitung, auswertungRef.getDurchschnitt(Frage.VORBEREITUNG));
+		assertEquals(expectedDurchschnittFachwissen, auswertungRef.getDurchschnitt(Frage.FACHWISSEN));
+		assertEquals(expectedDurchschnittEingehenAufProbleme, auswertungRef.getDurchschnitt(Frage.EINGEHENAUFPROBLEME));
+		assertEquals(expectedDurchschnittInhaltsvermittlung, auswertungRef.getDurchschnitt(Frage.INHALTSVERMITTLUNG));
+		assertEquals(expectedDurchschnittVerhalten, auswertungRef.getDurchschnitt(Frage.VERHALTEN));
 	}
 
 	@Test
 	void test_35_getName() {
-		assertEquals(bewertungen.get(0).getName(), auswertungRef.getName());
+		assertEquals(expectedName, auswertungRef.getName());
 	}
 
 	@Test
 	void test_40_getStimmenProRadioButtonFuerFrage() {
 
-		int[][] expectedArray = { expectedStimmenVorbereitung,
-				expectedStimmenFachwissen, expectedStimmenEingehenAufProbleme,
-				expectedStimmenInhaltsvermittlung, expectedStimmenVerhalten };
-		Frage[] fragen = { Frage.VORBEREITUNG, Frage.FACHWISSEN,
-				Frage.EINGEHENAUFPROBLEME, Frage.INHALTSVERMITTLUNG,
+		int[][] expectedArray = { expectedStimmenVorbereitung, expectedStimmenFachwissen,
+				expectedStimmenEingehenAufProbleme, expectedStimmenInhaltsvermittlung, expectedStimmenVerhalten };
+		Frage[] fragen = { Frage.VORBEREITUNG, Frage.FACHWISSEN, Frage.EINGEHENAUFPROBLEME, Frage.INHALTSVERMITTLUNG,
 				Frage.VERHALTEN };
 
 		for (int i = 0; i < fragen.length; i++) {
 			for (int j = 0; j < 5; j++) {
-				assertEquals(expectedArray[i][j], auswertungRef
-						.getStimmenProRadioButton(fragen[i], j));
+				assertEquals(expectedArray[i][j], auswertungRef.getStimmenProRadioButton(fragen[i], j));
 
 			}
 		}
+	}
+	
+	@Test
+	void test_45_getAuswertungenAllerReferenten() {
+//expected: ArrayList aller Auswertungen
+//->mehrere Beewertungenslisten für mehrere Referenten
+//->mehrere Auswertungen erzeugen
+		
+//actual: Aufruf getAuswertungenAllerReferenten
+//Input: Liste der AzubiAntworten auf Basis der Daten, mit denen auch die expected -Bewertungslisten angelegt wurden. 		
+		getAuswertungenAllerReferenten(ArrayList <AzubiAntwort>)
 	}
 
 }
