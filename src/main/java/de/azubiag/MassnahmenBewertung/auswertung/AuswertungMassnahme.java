@@ -1,9 +1,16 @@
 package de.azubiag.MassnahmenBewertung.auswertung;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
-
+/**
+ * 
+ * @author Denis Bode
+ *
+ */
 public class AuswertungMassnahme {
 
 	//Kategorisierung
@@ -37,9 +44,9 @@ public class AuswertungMassnahme {
 	/*
 	 * @params AzubiAntwort-Objekte 
 	 */
-	AuswertungMassnahme(ArrayList<BewertungMassnahme> bewertungen) {
+	public AuswertungMassnahme(List<BewertungMassnahme> list) {
 		initialisieren();
-		bearbeitungkursbewertung(bewertungen);
+		bearbeitungkursbewertung(list);
 	}
 
 	//Variablen werden initialisiert
@@ -58,7 +65,7 @@ public class AuswertungMassnahme {
 	}
 	
 	//Die Bearbeitung beginnt
-	void bearbeitungkursbewertung(ArrayList<BewertungMassnahme> eingehendesergebnis) {
+	void bearbeitungkursbewertung(List<BewertungMassnahme> eingehendesergebnis) {
 		anzahl=eingehendesergebnis.toArray().length;
 		for(int i=0;i<anzahl;i++) {
 		kursbewertungPunkteUndBemerkung(eingehendesergebnis.get(i));
@@ -69,7 +76,6 @@ public class AuswertungMassnahme {
 
 	//Es beginnt die Berechnung des Durchschnitts
 	private void durchschnittAufzaehlen() {
-		anzahl++;
 		durchschnOrg=0;
 		durchschnVerl=0;
 		durchschnBetrng=0;
@@ -82,7 +88,7 @@ public class AuswertungMassnahme {
 
 	//Die Kursbewertungen werden aufgez�hlt
 	private void kursbewertungPunkteUndBemerkung(BewertungMassnahme eingehendesergebnis) {
-		pktvertOrg[eingehendesergebnis.verlauf]++;
+		pktvertOrg[eingehendesergebnis.organisation]++;
 		pktvertVerl[eingehendesergebnis.verlauf]++;
 		pktvertBetrng[eingehendesergebnis.betreuung]++;
 		alleBemerkVerl.add(eingehendesergebnis.bemerkungVerlauf);
@@ -149,5 +155,24 @@ public class AuswertungMassnahme {
 		}
 		return rueckgabe;
 	}
-
+	
+	public static List<BewertungMassnahme> konvertiereBewertungMassnahmeInAuswertungMassnahme(List<String> alleMassnahmenInString) {
+		List<BewertungMassnahme> bm= new ArrayList<>(20);
+		for(String s: alleMassnahmenInString) {
+			bm.add(new AzubiAntwort(s).massnahme);
+		}
+		return bm;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("AuswertungMassnahme Organisation[Punkteverteilung: %s, Durchschnitt: %2.2f]\n"
+				+ "AuswertungMassnahme Verlauf[Punkteverteilung: %s, Durchschnitt: %2.2f, Bemerkungen: %s]\n"
+				+ "AuswertungMassnahme Betreuung[Punkteverteilung: %s, Durchschnitt: %2.2f, Bemerkungen: %s]\n"
+				+ "AuswertungMassnahme Referenten[Bemerkungen: %s]", 
+				Arrays.toString(getPunkteverteilung(BEW_ORGANISATION)),getDurchschnitt(BEW_ORGANISATION), 
+				Arrays.toString(getPunkteverteilung(BEW_VERLAUF)),getDurchschnitt(BEW_VERLAUF),getBemerkungen(BEW_VERLAUF),
+				Arrays.toString(getPunkteverteilung(BEW_BETREUUNG)),getDurchschnitt(BEW_BETREUUNG),getBemerkungen(BEW_BETREUUNG),
+				getBemerkungen(BEW_REFERENT));
+	}
 }
