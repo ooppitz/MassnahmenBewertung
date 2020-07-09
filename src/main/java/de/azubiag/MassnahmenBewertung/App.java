@@ -7,6 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
+
+
 
 /**
  * JavaFX App
@@ -55,6 +63,14 @@ public class App extends Application {
     	// -> AzubiAntwort-Objekte
     	
     	
+    	
+    	//Input: ArrayList AzubiAntworten
+    	getAuswertungenAllerReferenten(); 
+    	
+    	List<AuswertungReferent> auswertungenReferenten = new ArrayList<>(); 
+    	
+    	
+    	
     	//-> Auswerten der AzubiAntwort-Objekte
     	//  Louisa
     	//  Denis
@@ -67,5 +83,27 @@ public class App extends Application {
     	return ergebnis;
     	
     }
+
+	public static List<AuswertungReferent> getAuswertungenAllerReferenten(ArrayList<AzubiAntwort> azubiAntworten) {
+	List<AuswertungReferent> auswertungenAllerReferenten = new ArrayList<>(); 	
+	
+	List <ArrayList<BewertungReferent>> sortierteBewertungen = new ArrayList<>(); 
+	
+	
+	int anzahlReferenten = azubiAntworten.get(0).referenten.size(); 
+	
+	for (int positionRefImFragebogen = 0; positionRefImFragebogen < anzahlReferenten; positionRefImFragebogen++) {
+		
+		ArrayList<BewertungReferent> bewertungenEinesReferenten  = new ArrayList<BewertungReferent>();
+		
+		for (int j = 0; j <azubiAntworten.size(); j++) {
+			bewertungenEinesReferenten.add(azubiAntworten.get(j).referenten.get(positionRefImFragebogen));
+		}
+		
+		auswertungenAllerReferenten.add(new AuswertungReferent(bewertungenEinesReferenten)); 
+	}
+	return auswertungenAllerReferenten; 
+		
+	}
 
 }
