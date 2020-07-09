@@ -38,6 +38,12 @@ public class AuswertungMassnahme {
 	 * @params AzubiAntwort-Objekte 
 	 */
 	AuswertungMassnahme(ArrayList<BewertungMassnahme> bewertungen) {
+		initialisieren();
+		bearbeitungkursbewertung(bewertungen);
+	}
+
+	//Variablen werden initialisiert
+	void initialisieren() {
 		durchschnOrg=0;
 		durchschnVerl=0;
 		durchschnBetrng=0;
@@ -50,12 +56,12 @@ public class AuswertungMassnahme {
 			pktvertBetrng[i]=0;
 		}
 	}
-
+	
 	//Die Bearbeitung beginnt
-	void bearbeitungkursbewertung(BewertungMassnahme[] eingehendesergebnis) {
-		anzahl=eingehendesergebnis.length;
+	void bearbeitungkursbewertung(ArrayList<BewertungMassnahme> eingehendesergebnis) {
+		anzahl=eingehendesergebnis.toArray().length;
 		for(int i=0;i<anzahl;i++) {
-		kursbewertungPunkteUndBemerkung(eingehendesergebnis[i]);
+		kursbewertungPunkteUndBemerkung(eingehendesergebnis.get(i));
 		durchschnittAufzaehlen();
 		}
 		durchschnittFertigBerechnen();
