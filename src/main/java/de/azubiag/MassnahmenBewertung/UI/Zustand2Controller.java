@@ -1,6 +1,5 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
-import de.muc.gfi.referentenbewertung.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,6 +40,6 @@ public class Zustand2Controller {
 	}
 
 	public void setMaintext(String maintext) {
-		this.maintext.setText("Eingeben der Ergebnisse f�r Fragebogen "+maintext);
+		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen "+maintext);
 	}
 }

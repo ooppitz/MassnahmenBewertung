@@ -7,11 +7,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
-import de.muc.gfi.referentenbewertung.view.UploadController;
-import de.muc.gfi.referentenbewertung.view.Zustand0Controller;
-import de.muc.gfi.referentenbewertung.view.Zustand1Controller;
-import de.muc.gfi.referentenbewertung.view.Zustand2Controller;
-import de.muc.gfi.referentenbewertung.view.Zustand3Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -38,6 +33,7 @@ import javafx.stage.Stage;
 	 * 			- Antwort hinzuf�gen in Zustand2 muss implementiert werden
 	 *      	- Erscheinende TextFields in Zustand1+2 m�ssen implementiert werden
 	 *      	- Anwendung muss an den Rest angebunden werden (Dekodoerung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
+	 *      	- Zustand 3 erscheint und wird sofort geschlossen (Nutzung von index in showStep3  anpassen)
 	 */
 
 public class MainApp extends Application {
@@ -59,7 +55,7 @@ public class MainApp extends Application {
 	public void showLogin() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/Zustand0.fxml"));
+			loader.setLocation(MainApp.class.getResource("Zustand0.fxml"));
 			GridPane login_grid = (GridPane) loader.load();
 			login_grid.setPrefSize(600, 200);
 
@@ -81,7 +77,7 @@ public class MainApp extends Application {
 	public void showTabPane() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/tabpane.fxml"));
+			loader.setLocation(MainApp.class.getResource("tabpane.fxml"));
 			rootLayout = (TabPane) loader.load();
 			rootLayout.setPrefSize(800, 600);
 			rootLayout.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
@@ -109,7 +105,7 @@ public class MainApp extends Application {
 	public void showStep1() {	// Tab Text muss sich �ndern + Anzahl der Referentenfelder m�ssen sich �ndern + Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/Zustand1.fxml"));
+			loader.setLocation(MainApp.class.getResource("Zustand1.fxml"));
 			BorderPane z1 = (BorderPane) loader.load();				// !!
 			Tab tab_z1 = new Tab();
 			tab_z1.setContent(z1);
@@ -131,7 +127,7 @@ public class MainApp extends Application {
 	public void showStep2(String name, int index) {	
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/Zustand2.fxml"));
+			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
 			BorderPane z2 = (BorderPane) loader.load();				// !!
 			Tab tab_z2 = new Tab();
 			tab_z2.setContent(z2);
@@ -156,7 +152,7 @@ public class MainApp extends Application {
 	public void showStep3(String name, int index) {	// incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/Zustand3.fxml"));
+			loader.setLocation(MainApp.class.getResource("Zustand3.fxml"));
 			BorderPane z3 = (BorderPane) loader.load();				// !!
 			Tab tab_z3 = new Tab();
 			tab_z3.setContent(z3);
@@ -202,8 +198,8 @@ public class MainApp extends Application {
 				try {
 					Desktop.getDesktop().browse(new URL("https://ooppitz.github.io/prototyp.html").toURI());
 					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.setTitle("Fragebogen ver�ffentlichen?");
-					alert.setHeaderText("Fragebogen ver�ffentlichen?");
+					alert.setTitle("Fragebogen veröffentlichen?");
+					alert.setHeaderText("Fragebogen veröffentlichen?");
 
 					ButtonType buttonTypeYes = new ButtonType("Ja");
 					ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
@@ -219,7 +215,7 @@ public class MainApp extends Application {
 						
 						Stage dialog = new Stage();
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(MainApp.class.getResource("view/upload.fxml"));
+						loader.setLocation(MainApp.class.getResource("upload.fxml"));
 						GridPane grid = (GridPane) loader.load();
 						Scene scene = new Scene(grid);
 						
