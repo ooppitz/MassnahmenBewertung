@@ -356,7 +356,31 @@ public class MainApp extends Application {
 
 				if (oldValue == false && newValue == true)
 				{
-					System.out.println("TEST >> focus gained");
+					if (controller.anzahl_referenten > 9)
+					{
+						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight()+49);
+						controller.gridpane.addRow(controller.anzahl_referenten+2);
+						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
+					}
+					
+					Label temp = new Label();
+					temp.setText("   Name von Referent ");
+					temp.setText(temp.getText()+(controller.anzahl_referenten+3)+":");
+					temp.setFont(controller.referent_label.getFont());
+					
+					TextField temp2 = new TextField();
+					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
+					temp2.setFont(controller.referent_name.getFont());
+					
+					controller.gridpane.getChildren().remove(controller.referent_name);
+					controller.gridpane.add(controller.referent_name, 2, controller.anzahl_referenten+3, 3, 1);
+					
+					controller.gridpane.add(temp, 0, controller.anzahl_referenten+3, 2, 1);
+					controller.gridpane.add(temp2, 2, controller.anzahl_referenten+2, 3, 1);
+					controller.anzahl_referenten++;
+					
+					temp2.requestFocus();
+					System.out.println("DEBUG >> focus requested  --> focus "+temp2.isFocused()); 	// debug zeug
 				}
 			}
 		});
@@ -366,7 +390,7 @@ public class MainApp extends Application {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				// Next
-				// verschl�sselte Antwort an den Crypto-Teil des Programms schicken
+				// verschlüsselte Antwort an den Crypto-Teil des Programms schicken
 
 				// Auswertung zur�ckbekommen
 				showStep3(name, index);
