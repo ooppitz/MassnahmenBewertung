@@ -8,6 +8,9 @@ import java.net.URL;
 import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -106,7 +109,7 @@ public class MainApp extends Application {
 
 			// am Ende Plus Tab anzeigen
 			showPlus();
-
+			
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -130,6 +133,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			addDeleteToButton(controller.delete , rootLayout, tab_z1);
 			addPreviewToButton(controller.preview, controller,rootLayout.getTabs().indexOf(tab_z1));
+			addneuerReferent(controller.referent_name, controller);
 			controller.name.textProperty().addListener((observable, oldValue, newValue) -> {	// für eine "normale" Methode müssten all diese Buttons gleich heißen
 				controller.preview.setDisable((newValue == "") ? true : false);
 				System.out.println("old: "+oldValue+" ---> new: "+newValue);
@@ -339,6 +343,20 @@ public class MainApp extends Application {
 					controller.gridpane.add(temp, 0, controller.anzahl_antworten+1, 2, 1);
 					controller.gridpane.add(temp2, 2, controller.anzahl_antworten+1, 3, 1);
 					controller.anzahl_antworten++;
+				}
+			}
+		});
+	}
+	
+	public void addneuerReferent(TextField referent_name, Zustand1Controller controller) {
+		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+				if (oldValue == false && newValue == true)
+				{
+					System.out.println("TEST >> focus gained");
 				}
 			}
 		});

@@ -2,14 +2,21 @@ package de.azubiag.MassnahmenBewertung.UI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class Zustand1Controller {
 	
-	@FXML TextField name;
+	int anzahl_referenten;
+	
+	@FXML 
+	TextField name;
 	
 	@FXML
-	public TextField lastone;
+	Label referent_label;
+	
+	@FXML
+	TextField referent_name;
 
 	@FXML
 	public Button preview;
