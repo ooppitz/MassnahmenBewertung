@@ -4,9 +4,10 @@ module de.azubiag.MassnahmenBewertung {
 /*	requires org.junit.jupiter.api; */
 	requires java.desktop;
 	requires org.junit.jupiter.api;
-	
-	
 
+	
+	opens de.azubiag.MassnahmenBewertung.tools to org.junit.jupiter.api; 
     opens de.azubiag.MassnahmenBewertung to javafx.fxml;
     exports de.azubiag.MassnahmenBewertung;
+    exports de.azubiag.MassnahmenBewertung.tools; 
 }

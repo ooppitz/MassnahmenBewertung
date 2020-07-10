@@ -21,6 +21,7 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
  * @author Louisa
  *
  */
+
 class AuswertungReferentTest {
 
 	static AuswertungReferent auswertungRef;
@@ -40,27 +41,24 @@ class AuswertungReferentTest {
 	static Double expectedDurchschnittInhaltsvermittlung = new Double(1);
 	static Double expectedDurchschnittVerhalten = new Double(2);
 
-
 	private static ArrayList<BewertungReferent> bewertungen;
+	static List<AzubiAntwort> azubiAntworten;
 
-	
 	@BeforeAll
 	public static void setUpTestdata() {
 
 		expectedName = "Pfaffelhuber";
 
-		List<String> inputForAzubiAntwortMethod = new ArrayList<>();
+		bewertungen.add(new BewertungReferent(
+				new String[] { expectedName, "0", "1", "2", "3", "4", "nicht gerade gut ausgebildet" }));
+		bewertungen.add(new BewertungReferent(new String[] { expectedName, "0", "1", "2", "3", "4", "mag ihn nicht" }));
+		bewertungen.add(new BewertungReferent(new String[] { expectedName, "0", "1", "2", "3", "4", "so lala" }));
+		bewertungen.add(new BewertungReferent(new String[] { expectedName, "0", "1", "2", "3", "4", "prima Lehrer" }));
+		bewertungen.add(new BewertungReferent(new String[] { expectedName, "0", "1", "2", "3", "4", "klasse !" }));
 
-	
-		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","nicht gerade gut ausgebildet" })); 
-		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","mag ihn nicht" })); 
-		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","so lala" })); 
-		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","prima Lehrer" })); 
-		bewertungen.add(new BewertungReferent(new String[] {expectedName, "0","1","2","3","4","klasse !" })); 
-
-		List<AzubiAntwort> azubiAntworten = AzubiAntwort.konvertiereStringsInAzubiAntworten(inputForAzubiAntwortMethod);
-
-		// TODO: test getAuswertungenAllerReferenten(ArrayList <AzubiAntwort>);
+		// TODO: nur noch zwei Bewerter -> exepcteds und Test anpassen
+		// TODO:
+		// ->input: String-List TODO: bewertungen1 in String-List schieben
 
 		auswertungRef = new AuswertungReferent(bewertungen);
 
@@ -69,6 +67,14 @@ class AuswertungReferentTest {
 		expectedBemerkungen.add("so lala");
 		expectedBemerkungen.add("prima Lehrer");
 		expectedBemerkungen.add("klasse !");
+
+		List<String> azubiAntwortenStrings = new ArrayList<>();
+		azubiAntwortenStrings
+				.add("1|1|/|1|/|Pfaffelhuber|0|1|2|3|4|nicht gerade gut ausgebildet|Hiermeyer|4|3|2|1|0|mag ihn nicht");
+		azubiAntwortenStrings
+				.add("1|1|/|1|/|Pfaffelhuber|0|1|2|3|4|nicht gerade gut ausgebildet|Hiermeyer|4|3|2|1|0|mag ihn nicht");
+		azubiAntworten = AzubiAntwort.konvertiereStringsInAzubiAntworten(azubiAntwortenStrings);
+
 	}
 
 //	@Test
@@ -155,16 +161,31 @@ class AuswertungReferentTest {
 			}
 		}
 	}
-	
+
 	@Test
 	void test_45_getAuswertungenAllerReferenten() {
-//expected: ArrayList aller Auswertungen
-//->mehrere Beewertungenslisten für mehrere Referenten
-//->mehrere Auswertungen erzeugen
+		ArrayList<BewertungReferent> bewertungenRef1 = new ArrayList<>();
+		ArrayList<BewertungReferent> bewertungenRef2 = new ArrayList<>();
+
+		bewertungenRef1.add(new BewertungReferent(
+				new String[] { expectedName, "0", "1", "2", "3", "4", "nicht gerade gut ausgebildet" }));
+		bewertungenRef1.add(new BewertungReferent(
+				new String[] { expectedName, "0", "1", "2", "3", "4", "nicht gerade gut ausgebildet" }));
+
+		bewertungenRef2.add(new BewertungReferent(
+				new String[] { "Hiermeyer", "4", "3", "2", "0", "1", "mag ihn nicht" }));
+		bewertungenRef2.add(new BewertungReferent(
+				new String[] { "Hiermeyer", "4", "3", "2", "0", "1", "mag ihn nicht" }));
 		
-//actual: Aufruf getAuswertungenAllerReferenten
-//Input: Liste der AzubiAntworten auf Basis der Daten, mit denen auch die expected -Bewertungslisten angelegt wurden. 		
-		getAuswertungenAllerReferenten(ArrayList <AzubiAntwort>)
+		List<AuswertungReferent> expectedAuswertungenList = new ArrayList<>();
+		
+		expectedAuswertungenList.add(new AuswertungReferent(bewertungenRef1));  
+		expectedAuswertungenList.add(new AuswertungReferent(bewertungenRef2));  
+
+		List<AuswertungReferent> actualAuswertungenList = AuswertungReferent
+				.getAuswertungenAllerReferenten(azubiAntworten);
+
+		assertEquals(expectedAuswertungenList, actualAuswertungenList);
 	}
 
 }

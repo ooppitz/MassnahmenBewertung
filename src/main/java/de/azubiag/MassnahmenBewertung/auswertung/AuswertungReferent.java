@@ -232,7 +232,7 @@ public class AuswertungReferent {
 		}
 	}
 
-	public static List<AuswertungReferent> getAuswertungenAllerReferenten(ArrayList<AzubiAntwort> azubiAntworten) {
+	public static List<AuswertungReferent> getAuswertungenAllerReferenten(List<AzubiAntwort> azubiAntworten) {
 		List<AuswertungReferent> auswertungenAllerReferenten = new ArrayList<>();
 
 		List<ArrayList<BewertungReferent>> sortierteBewertungen = new ArrayList<>();
