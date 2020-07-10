@@ -3,6 +3,7 @@ module de.azubiag.MassnahmenBewertung {
     requires javafx.fxml;
 /*	requires org.junit.jupiter.api; */
 	requires java.desktop;
+	requires javafx.graphics;
 
     opens de.azubiag.MassnahmenBewertung to javafx.fxml;
     exports de.azubiag.MassnahmenBewertung;

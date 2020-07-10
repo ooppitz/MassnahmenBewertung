@@ -20,10 +20,12 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -33,10 +35,11 @@ import javafx.stage.Stage;
 /* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete für Nutzernamen
  * 			- Button in Zustand0 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
  *			- Button in Zustand1 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
+ *      	- Erscheinende TextFields in Zustand1 müssen implementiert werden
  *			- Upload wird noch nicht überprüft
  * 			- Buttons in upload.fxml machen noch beide dasselbe -> darf man den Upload überhaupt abbrechen ???
- * 			- Antwort hinzufügen in Zustand2 muss implementiert werden
- *      	- Erscheinende TextFields in Zustand1+2 müssen implementiert werden
+ * 			- Antwort hinzufügen in Zustand2 muss implementiert werden --> Dekodierung 
+ * 			- Eigenschaften der neuen Row in Zustand2 ändern, sodass sie genau so wie die vorherigen aussieht
  *      	- Anwendung muss an den Rest angebunden werden (Dekodierung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
  */
 
@@ -97,7 +100,7 @@ public class MainApp extends Application {
 			primaryStage.setMaxHeight(600);
 			primaryStage.setMaxWidth(800);
 
-			// Berechnen, welche Tabs offen sein m�ssen
+			// Berechnen, welche Tabs offen sein müssen
 
 			showStep1();
 
@@ -111,7 +114,7 @@ public class MainApp extends Application {
 	}
 
 
-	public void showStep1() {	// Tab Text muss sich �ndern + Anzahl der Referentenfelder m�ssen sich �ndern + Button sperren, wenn Name leer ist
+	public void showStep1() {	// Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern + Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand1.fxml"));
@@ -154,7 +157,7 @@ public class MainApp extends Application {
 			controller.setName(name);
 			controller.setMaintext(name);
 			addDeleteToButton(controller.delete , rootLayout, tab_z2);
-			addAnswerToButton(controller.add);
+			addAnswerToButton(controller.add,controller);
 			addNext2ToButton(controller.next,controller.getName(),rootLayout.getTabs().indexOf(tab_z2));
 
 		} catch (IOException e) {
@@ -303,10 +306,40 @@ public class MainApp extends Application {
 		});
 	}
 
-	public void addAnswerToButton(Button button) {
+	public void addAnswerToButton(Button button, Zustand2Controller controller) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				// Ergebnis von der Zwischenablage kopieren
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				System.out.println(clipboard.getString());
+				// String muss dekodiert und überprüft werden
+				// wenn richtiger String, dann hier weiter
+				if (controller.anzahl_antworten == 0)
+				{
+					controller.antwort_text.setText(clipboard.getString());
+					controller.anzahl_antworten++;
+				}
+				else if (controller.anzahl_antworten > 0)
+				{
+					if (controller.anzahl_antworten > 9)
+					{
+						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight()+49);
+						controller.gridpane.addRow(controller.anzahl_antworten+1);
+						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
+					}
+					
+					Label temp = new Label();
+					temp.setText("  Verschlüsselte Antwort ");
+					temp.setText(temp.getText()+(controller.anzahl_antworten+1)+":");
+					temp.setFont(controller.antwort_name.getFont());
+					
+					
+					Label temp2 = new Label(clipboard.getString());
+					temp2.setFont(controller.antwort_text.getFont());
+					controller.gridpane.add(temp, 0, controller.anzahl_antworten+1, 2, 1);
+					controller.gridpane.add(temp2, 2, controller.anzahl_antworten+1, 3, 1);
+					controller.anzahl_antworten++;
+				}
 			}
 		});
 	}

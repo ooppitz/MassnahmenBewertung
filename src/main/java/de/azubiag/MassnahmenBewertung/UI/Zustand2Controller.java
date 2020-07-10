@@ -3,8 +3,20 @@ package de.azubiag.MassnahmenBewertung.UI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 
 public class Zustand2Controller {
+	
+	int anzahl_antworten;
+	
+	@FXML
+	Label antwort_name;
+	
+	@FXML
+	Label antwort_text;
+	
+	@FXML
+	GridPane gridpane;
 	
 	@FXML
 	private Label name;
