@@ -38,7 +38,6 @@ import javafx.stage.Stage;
 /* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete für Nutzernamen
  * 			- Button in Zustand0 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
  *			- Button in Zustand1 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
- *      	- Erscheinende TextFields in Zustand1 müssen implementiert werden
  *			- Upload wird noch nicht überprüft
  * 			- Buttons in upload.fxml machen noch beide dasselbe -> darf man den Upload überhaupt abbrechen ???
  * 			- Antwort hinzufügen in Zustand2 muss implementiert werden --> Dekodierung 
@@ -61,7 +60,9 @@ public class MainApp extends Application {
 		//        showcreate();
 	}
 
-
+	/**
+	 * The login-window appears.<br> Related: {@link de.azubiag.MassnahmenBewertung.UI.MainApp#addUsernameNextToButton(Button, TextField) addUsernameNextToButton(Button, TextField)} <br> Related: {@link de.azubiag.MassnahmenBewertung.UI.Zustand0Controller Zustand0Controller}
+	 */
 	public void showLogin() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -218,6 +219,7 @@ public class MainApp extends Application {
 
 				try {
 					Desktop.getDesktop().browse(new URL("https://ooppitz.github.io/prototyp.html").toURI());
+																	// echter Fragebogen muss noch generiert werden !!!
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");
 					alert.setHeaderText("Fragebogen veröffentlichen?");
@@ -229,8 +231,8 @@ public class MainApp extends Application {
 
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == buttonTypeYes){
-						// Nutzer dr�ckt ja
-						// JGit l�dt Datei hoch
+						// Nutzer drückt ja
+						// JGit lädt Datei hoch
 
 						// Fortschritt anzeigen? Link anzeigen?
 
@@ -356,10 +358,10 @@ public class MainApp extends Application {
 
 				if (oldValue == false && newValue == true)
 				{
-					if (controller.anzahl_referenten > 9)
+					if (controller.anzahl_referenten > 6)
 					{
 						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight()+49);
-						controller.gridpane.addRow(controller.anzahl_referenten+2);
+						controller.gridpane.addRow(controller.anzahl_referenten+3);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
 					}
 					
@@ -380,7 +382,6 @@ public class MainApp extends Application {
 					controller.anzahl_referenten++;
 					
 					temp2.requestFocus();
-					System.out.println("DEBUG >> focus requested  --> focus "+temp2.isFocused()); 	// debug zeug
 				}
 			}
 		});
