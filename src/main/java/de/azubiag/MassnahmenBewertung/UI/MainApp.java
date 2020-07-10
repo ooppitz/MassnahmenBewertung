@@ -18,6 +18,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -29,7 +31,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 	/* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete f�r Nutzernamen
-	 * 			- Buttons in upload.fxml werden noch nicht gehandelt
+	 * 			- Buttons in upload.fxml machen noch beide dasselbe -> darf man den Upload überhaupt abbrechen ???
 	 * 			- Antwort hinzuf�gen in Zustand2 muss implementiert werden
 	 *      	- Erscheinende TextFields in Zustand1+2 m�ssen implementiert werden
 	 *      	- Anwendung muss an den Rest angebunden werden (Dekodoerung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
@@ -213,17 +215,16 @@ public class MainApp extends Application {
 						
 						// Fortschritt anzeigen? Link anzeigen?
 						
-						Stage dialog = new Stage();
+						Dialog<ButtonType> dialog = new Dialog<>();
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(MainApp.class.getResource("upload.fxml"));
-						GridPane grid = (GridPane) loader.load();
-						Scene scene = new Scene(grid);
-						
+						DialogPane grid = (DialogPane) loader.load();
+						dialog.setDialogPane(grid);
+						dialog.getDialogPane().getButtonTypes().addAll(ButtonType.NEXT,ButtonType.CANCEL);
 						
 						
 						dialog.initOwner(primaryStage);
 						dialog.initModality(Modality.APPLICATION_MODAL);
-						dialog.setScene(scene);
 						UploadController upload_controller = loader.getController();
 						
 						// 8.8.8.8 pingen
@@ -234,9 +235,8 @@ public class MainApp extends Application {
 						
 						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 						upload_controller.progress.setProgress(1);
-						upload_controller.next.setDisable(false);
-						upload_controller.cancel.setDisable(true);
-						dialog.showAndWait(); // Buttons abfragen!!!!
+						Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
+						System.out.println(result2);
 						// w�re praktisch, den Link noch woanders anzuzeigen
 						
 						// Fenster f�r Klonen anzeigen

@@ -1,17 +1,12 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 
 public class UploadController {
 	
-	@FXML
-	public Button next;
 	
-	@FXML
-	public Button cancel;
 	
 	@FXML
 	public Label upload_pending;
