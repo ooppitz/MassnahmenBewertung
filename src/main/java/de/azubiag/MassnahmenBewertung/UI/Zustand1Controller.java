@@ -6,8 +6,10 @@ import javafx.scene.control.TextField;
 
 public class Zustand1Controller {
 	
+	@FXML TextField name;
+	
 	@FXML
-	private TextField name;
+	public TextField lastone;
 
 	@FXML
 	public Button preview;

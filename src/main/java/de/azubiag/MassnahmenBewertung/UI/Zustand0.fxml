@@ -44,7 +44,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </TextField>
-      <Button fx:id="next" mnemonicParsing="false" text="Weiter" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+      <Button fx:id="next" defaultButton="true" disable="true" mnemonicParsing="false" text="Weiter" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>

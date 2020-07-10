@@ -30,12 +30,15 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-	/* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete f�r Nutzernamen
-	 * 			- Buttons in upload.fxml machen noch beide dasselbe -> darf man den Upload überhaupt abbrechen ???
-	 * 			- Antwort hinzuf�gen in Zustand2 muss implementiert werden
-	 *      	- Erscheinende TextFields in Zustand1+2 m�ssen implementiert werden
-	 *      	- Anwendung muss an den Rest angebunden werden (Dekodoerung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
-	 */
+/* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete für Nutzernamen
+ * 			- Button in Zustand0 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
+ *			- Button in Zustand1 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
+ *			- Upload wird noch nicht überprüft
+ * 			- Buttons in upload.fxml machen noch beide dasselbe -> darf man den Upload überhaupt abbrechen ???
+ * 			- Antwort hinzufügen in Zustand2 muss implementiert werden
+ *      	- Erscheinende TextFields in Zustand1+2 müssen implementiert werden
+ *      	- Anwendung muss an den Rest angebunden werden (Dekodierung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
+ */
 
 public class MainApp extends Application {
 
@@ -67,6 +70,11 @@ public class MainApp extends Application {
 			//			System.out.println(controller);
 			controller.setMainapp(this);
 			addUsernameNextToButton(controller.next, controller.username);
+
+			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {	// für eine "normale" Methode müssten all diese Buttons gleich heißen
+				controller.next.setDisable((newValue == "") ? true : false);
+				System.out.println("old: "+oldValue+" ---> new: "+newValue);
+			});
 
 			primaryStage.show();
 		} catch (IOException e) {
@@ -119,6 +127,10 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			addDeleteToButton(controller.delete , rootLayout, tab_z1);
 			addPreviewToButton(controller.preview, controller,rootLayout.getTabs().indexOf(tab_z1));
+			controller.name.textProperty().addListener((observable, oldValue, newValue) -> {	// für eine "normale" Methode müssten all diese Buttons gleich heißen
+				controller.preview.setDisable((newValue == "") ? true : false);
+				System.out.println("old: "+oldValue+" ---> new: "+newValue);
+			});
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -212,33 +224,33 @@ public class MainApp extends Application {
 					if (result.get() == buttonTypeYes){
 						// Nutzer dr�ckt ja
 						// JGit l�dt Datei hoch
-						
+
 						// Fortschritt anzeigen? Link anzeigen?
-						
+
 						Dialog<ButtonType> dialog = new Dialog<>();
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(MainApp.class.getResource("upload.fxml"));
 						DialogPane grid = (DialogPane) loader.load();
 						dialog.setDialogPane(grid);
 						dialog.getDialogPane().getButtonTypes().addAll(ButtonType.NEXT,ButtonType.CANCEL);
-						
-						
+
+
 						dialog.initOwner(primaryStage);
 						dialog.initModality(Modality.APPLICATION_MODAL);
 						UploadController upload_controller = loader.getController();
-						
+
 						// 8.8.8.8 pingen
 						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich, da Github Pages trotzdem etwas anzeigt)
 						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
-						
+
 						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 						upload_controller.progress.setProgress(1);
 						Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
 						System.out.println(result2);
 						// w�re praktisch, den Link noch woanders anzuzeigen
-						
+
 						// Fenster f�r Klonen anzeigen
 						Alert alert3 = new Alert(AlertType.CONFIRMATION);
 						alert3.setTitle("Neuen Fragebogen mit denselben Referenten anlegen?");
@@ -247,10 +259,10 @@ public class MainApp extends Application {
 						ButtonType buttonTypeCancel3 = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
 						alert3.getButtonTypes().setAll(buttonTypeYes3, buttonTypeCancel3);
 						Optional<ButtonType> result3 = alert3.showAndWait();
-						
+
 						// Zustand2-Tab erstellen
 						showStep2(controller.getName(), index);
-						
+
 						if (result3.get() == buttonTypeYes3){
 							// Fragebogen klonen
 							controller.setName("Kopie von "+controller.getName());
@@ -258,7 +270,7 @@ public class MainApp extends Application {
 						else {
 							rootLayout.getTabs().remove(index);
 						}
-						
+
 					} else {
 						// nichts tun
 					}
@@ -269,24 +281,24 @@ public class MainApp extends Application {
 					alert.setTitle("Fehler");
 					alert.setHeaderText("Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n MalformedURLException beim Preview-Alert");
 					alert.showAndWait();
-					
+
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
 					alert.setHeaderText("Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n IOException beim Preview-Alert");
 					alert.showAndWait();
-					
+
 				} catch (URISyntaxException e1) {
 					e1.printStackTrace();
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
 					alert.setHeaderText("Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n URISyntaxException beim Preview-Alert");
 					alert.showAndWait();
-					
+
 				}
-				
-				
+
+
 			}
 		});
 	}
@@ -298,19 +310,19 @@ public class MainApp extends Application {
 			}
 		});
 	}
-	
+
 	public void addNext2ToButton(Button button, String name, int index) {	// Auswertung
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				// Next
 				// verschl�sselte Antwort an den Crypto-Teil des Programms schicken
-				
+
 				// Auswertung zur�ckbekommen
 				showStep3(name, index);
 			}
 		});
 	}
-	
+
 	public void showPlus() {
 		Tab tab_plus = new Tab();
 		tab_plus.setText("+");

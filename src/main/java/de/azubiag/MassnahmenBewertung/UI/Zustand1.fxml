@@ -84,7 +84,7 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <TextField promptText="Klicken, um einen weiteren Referenten hinzuzufügen" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <TextField fx:id="lastone" promptText="Klicken, um einen weiteren Referenten hinzuzufügen" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -107,7 +107,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="preview" maxWidth="50000.0" mnemonicParsing="false" text="Fragebogen anzeigen" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
+            <Button fx:id="preview" disable="true" maxWidth="50000.0" mnemonicParsing="false" text="Fragebogen anzeigen" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
