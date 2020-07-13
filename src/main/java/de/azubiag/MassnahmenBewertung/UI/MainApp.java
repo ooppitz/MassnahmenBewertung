@@ -110,7 +110,7 @@ public class MainApp extends Application {
 
 			// am Ende Plus Tab anzeigen
 			showPlus();
-			
+
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -219,7 +219,7 @@ public class MainApp extends Application {
 
 				try {
 					Desktop.getDesktop().browse(new URL("https://ooppitz.github.io/prototyp.html").toURI());
-																	// echter Fragebogen muss noch generiert werden !!!
+					// echter Fragebogen muss noch generiert werden !!!
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");
 					alert.setHeaderText("Fragebogen veröffentlichen?");
@@ -241,11 +241,14 @@ public class MainApp extends Application {
 						loader.setLocation(MainApp.class.getResource("upload.fxml"));
 						DialogPane grid = (DialogPane) loader.load();
 						dialog.setDialogPane(grid);
-						dialog.getDialogPane().getButtonTypes().addAll(ButtonType.NEXT,ButtonType.CANCEL);
+						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+						dialog.getDialogPane().getButtonTypes().add(cancel);
+
 
 
 						dialog.initOwner(primaryStage);
 						dialog.initModality(Modality.APPLICATION_MODAL);
+						dialog.setTitle("Hochladen");
 						UploadController upload_controller = loader.getController();
 
 						// 8.8.8.8 pingen
@@ -253,6 +256,10 @@ public class MainApp extends Application {
 						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
+
+						dialog.getDialogPane().getButtonTypes().remove(cancel);
+						ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
+						dialog.getDialogPane().getButtonTypes().add(next);
 
 						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 						upload_controller.progress.setProgress(1);
@@ -333,13 +340,13 @@ public class MainApp extends Application {
 						controller.gridpane.addRow(controller.anzahl_antworten+1);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
 					}
-					
+
 					Label temp = new Label();
 					temp.setText("  Verschlüsselte Antwort ");
 					temp.setText(temp.getText()+(controller.anzahl_antworten+1)+":");
 					temp.setFont(controller.antwort_name.getFont());
-					
-					
+
+
 					Label temp2 = new Label(clipboard.getString());
 					temp2.setFont(controller.antwort_text.getFont());
 					controller.gridpane.add(temp, 0, controller.anzahl_antworten+1, 2, 1);
@@ -349,7 +356,7 @@ public class MainApp extends Application {
 			}
 		});
 	}
-	
+
 	public void addneuerReferent(TextField referent_name, Zustand1Controller controller) {
 		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
@@ -364,23 +371,23 @@ public class MainApp extends Application {
 						controller.gridpane.addRow(controller.anzahl_referenten+3);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
 					}
-					
+
 					Label temp = new Label();
 					temp.setText("   Name von Referent ");
 					temp.setText(temp.getText()+(controller.anzahl_referenten+3)+":");
 					temp.setFont(controller.referent_label.getFont());
-					
+
 					TextField temp2 = new TextField();
 					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
 					temp2.setFont(controller.referent_name.getFont());
-					
+
 					controller.gridpane.getChildren().remove(controller.referent_name);
 					controller.gridpane.add(controller.referent_name, 2, controller.anzahl_referenten+3, 3, 1);
-					
+
 					controller.gridpane.add(temp, 0, controller.anzahl_referenten+3, 2, 1);
 					controller.gridpane.add(temp2, 2, controller.anzahl_referenten+2, 3, 1);
 					controller.anzahl_referenten++;
-					
+
 					temp2.requestFocus();
 				}
 			}
