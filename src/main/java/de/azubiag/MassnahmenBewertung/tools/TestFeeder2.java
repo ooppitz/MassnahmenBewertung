@@ -21,7 +21,7 @@ public class TestFeeder2 {
 		
 	}
 	
-	public static List<AzubiAntwort> loadAzubiAntwortenFromFilePath(String filepath) {
+	public static ArrayList<AzubiAntwort> loadAzubiAntwortenFromFilePath(String filepath) {
 
 		ArrayList<String> buffer = new ArrayList<>();
 		
