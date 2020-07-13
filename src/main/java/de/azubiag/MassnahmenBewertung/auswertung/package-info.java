@@ -1,1 +1,4 @@
-package de.azubiag.MassnahmenBewertung.auswertung;
+module de.azubiag.MassnahmenBewertung.auswertung {
+ 
+exports de.azubiag.MassnahmenBewertung.auswertung;
+}

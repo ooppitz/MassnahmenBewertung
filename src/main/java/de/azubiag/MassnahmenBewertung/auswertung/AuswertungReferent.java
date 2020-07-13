@@ -3,6 +3,7 @@ package de.azubiag.MassnahmenBewertung.auswertung;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 
 /**
@@ -12,21 +13,21 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 
 public class AuswertungReferent {
 
-	String name;
+	public String name;
 
-	int[] stimmenProRadioBtnVorbereitung = new int[5];
-	int[] stimmenProRadioBtnFachwissen = new int[5];
-	int[] stimmenProRadioBtnEingehenAufProbleme = new int[5];
-	int[] stimmenProRadioBtnInhaltsvermittlung = new int[5];
-	int[] stimmenProRadioBtnVerhalten = new int[5];
+	public int[] stimmenProRadioBtnVorbereitung = new int[5];
+	public int[] stimmenProRadioBtnFachwissen = new int[5];
+	public int[] stimmenProRadioBtnEingehenAufProbleme = new int[5];
+	public int[] stimmenProRadioBtnInhaltsvermittlung = new int[5];
+	public int[] stimmenProRadioBtnVerhalten = new int[5];
 
-	double durchschnittVorbereitung;
-	double durchschnittFachwissen;
-	double durchschnittEingehenAufProbleme;
-	double durchschnittInhaltsvermittlung;
-	double durchschnittVerhalten;
+	public double durchschnittVorbereitung;
+	public double durchschnittFachwissen;
+	public double durchschnittEingehenAufProbleme;
+	public double durchschnittInhaltsvermittlung;
+	public double durchschnittVerhalten;
 
-	List<String> bemerkungen = new ArrayList<String>();
+	public List<String> bemerkungen = new ArrayList<String>();
 
 	public AuswertungReferent(ArrayList<BewertungReferent> bewertungen) {
 
@@ -40,23 +41,21 @@ public class AuswertungReferent {
 
 	}
 
-	public static void main(String[] args) {
-		ArrayList<BewertungReferent> bewertungen = new ArrayList<BewertungReferent>();
-
-		// TODO: Louisa : Anpassen der Konstruktoren an die Klasse von Michael
-
-		String[] dummy = { "Pfaffelhuber", "0", "1", "2", "3", "4", "nicht gerade gut ausgebildet" };
-
-		bewertungen.add(new BewertungReferent(dummy));
-		bewertungen.add(new BewertungReferent(dummy));
-		bewertungen.add(new BewertungReferent(dummy));
-		bewertungen.add(new BewertungReferent(dummy));
-		bewertungen.add(new BewertungReferent(dummy));
-
-		AuswertungReferent auswertungPfaffelhuber = new AuswertungReferent(bewertungen);
-
-		System.out.println(auswertungPfaffelhuber);
-	}
+//TEST
+//	public static void main(String[] args) {
+//		ArrayList<BewertungReferent> bewertungen = new ArrayList<BewertungReferent>();
+//		String[] dummy = { "Pfaffelhuber", "0", "1", "2", "3", "4", "nicht gerade gut ausgebildet" };
+//
+//		bewertungen.add(new BewertungReferent(dummy));
+//		bewertungen.add(new BewertungReferent(dummy));
+//		bewertungen.add(new BewertungReferent(dummy));
+//		bewertungen.add(new BewertungReferent(dummy));
+//		bewertungen.add(new BewertungReferent(dummy));
+//
+//		AuswertungReferent auswertungPfaffelhuber = new AuswertungReferent(bewertungen);
+//
+//		System.out.println(auswertungPfaffelhuber);
+//	}
 
 	private void berechneDurchschnittJeFrage(ArrayList<BewertungReferent> bewertungen) {
 		int gesamtVorbereitung = 0;
@@ -118,7 +117,7 @@ public class AuswertungReferent {
 		return name;
 	}
 
-	public int getStimmenProRadioButtonFuerFrage(Frage frage, int nrRadioButton) {
+	public int getStimmenProRadioButton(Frage frage, int nrRadioButton) {
 
 		int returnValue = -1;
 		switch (frage) {
@@ -209,7 +208,7 @@ public class AuswertungReferent {
 		for (Frage frage : fragen) {
 
 			for (int nrRadioBtn = 0; nrRadioBtn < 5; nrRadioBtn++) {
-				verteilung += getStimmenProRadioButtonFuerFrage(frage, nrRadioBtn);
+				verteilung += getStimmenProRadioButton(frage, nrRadioBtn);
 			}
 			verteilung += "\n";
 		}
@@ -231,6 +230,27 @@ public class AuswertungReferent {
 			stimmenProRadioBtnInhaltsvermittlung[aktBewertung.getInhalteVermitteln()] += 1;
 			stimmenProRadioBtnVerhalten[aktBewertung.getVerhalten()] += 1;
 		}
+	}
+
+	public static List<AuswertungReferent> getAuswertungenAllerReferenten(ArrayList<AzubiAntwort> azubiAntworten) {
+		List<AuswertungReferent> auswertungenAllerReferenten = new ArrayList<>();
+
+		List<ArrayList<BewertungReferent>> sortierteBewertungen = new ArrayList<>();
+
+		int anzahlReferenten = azubiAntworten.get(0).referenten.size();
+
+		for (int positionRefImFragebogen = 0; positionRefImFragebogen < anzahlReferenten; positionRefImFragebogen++) {
+
+			ArrayList<BewertungReferent> bewertungenEinesReferenten = new ArrayList<BewertungReferent>();
+
+			for (int j = 0; j < azubiAntworten.size(); j++) {
+				bewertungenEinesReferenten.add(azubiAntworten.get(j).referenten.get(positionRefImFragebogen));
+			}
+
+			auswertungenAllerReferenten.add(new AuswertungReferent(bewertungenEinesReferenten));
+		}
+		return auswertungenAllerReferenten;
+
 	}
 
 }

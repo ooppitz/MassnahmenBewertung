@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
+import de.azubiag.MassnahmenBewertung.auswertung.Frage;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 
 // TODO: Die Junit-Tests zum Laufen zu bringen
@@ -41,23 +42,13 @@ class AuswertungReferentTest {
 	@BeforeAll
 	public static void setUpTestdata() {
 		bewertungen = new ArrayList<BewertungReferent>();
-
-		bewertungen.add(new BewertungReferent(new String[5]));
-		bewertungen.add(new BewertungReferent(new String[5]));
-		bewertungen.add(new BewertungReferent(new String[5]));
-		bewertungen.add(new BewertungReferent(new String[5]));
-		bewertungen.add(new BewertungReferent(new String[5]));
+		String [] inputForAzubiAntwort = {"Pfaffelhuber", "0", "1", "2", "3", "4",
+				"mag ihn nicht"}; 
 		
-		/*
-		bewertungen.add(new BewertungReferent("Pfaffelhuber", 0, 1, 2, 3, 4,
-				"mag ihn nicht"));
-		bewertungen.add(new BewertungReferent("Pfaffelhuber", 0, 1, 2, 3, 4,
-				"so lala"));
-		bewertungen.add(new BewertungReferent("Pfaffelhuber", 0, 1, 2, 3, 4,
-				"prima Lehrer"));
-		bewertungen.add(new BewertungReferent("Pfaffelhuber", 0, 1, 2, 3, 4,
-				"klasse !"));
-				*/
+	
+	//TODO: adjust to changes: static method getAuswertungenAllerReferenten(ArrayList <AzubiAntwort>);
+	//TODO: change visibility AuswertungReferent attributes or write getters
+			
 
 		auswertungRef = new AuswertungReferent(bewertungen);
 
@@ -165,7 +156,7 @@ class AuswertungReferentTest {
 		for (int i = 0; i < fragen.length; i++) {
 			for (int j = 0; j < 5; j++) {
 				assertEquals(expectedArray[i][j], auswertungRef
-						.getStimmenProRadioButtonFuerFrage(fragen[i], j));
+						.getStimmenProRadioButton(fragen[i], j));
 
 			}
 		}
