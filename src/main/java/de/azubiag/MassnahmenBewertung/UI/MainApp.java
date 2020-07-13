@@ -86,8 +86,7 @@ public class MainApp extends Application {
 			ControllerLogin controller = loader.getController();
 			// System.out.println(controller);
 			controller.setMainapp(this);
-			addUsernameNextToButton(controller.next, controller.username);
-
+			controller.addUsernameNextToButton();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
 																									// Methode müssten
 																									// all diese Buttons
@@ -207,18 +206,6 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void addUsernameNextToButton(Button button, TextField field) {
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-
-				// schauen, ob das Feld nicht leer ist
-				// Auswahlliste von Namen davor anzeigen
-				showTabPane();
-			}
-		});
 	}
 
 	public void addDeleteToButton(Button button, TabPane pane, Tab thistab) {

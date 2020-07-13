@@ -1,5 +1,7 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -25,5 +27,15 @@ public class ControllerLogin {
 		this.mainapp = mainapp;
 	}
 	
-	
+	public void addUsernameNextToButton() {
+		next.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+
+				// schauen, ob das Feld nicht leer ist
+				// Auswahlliste von Namen davor anzeigen
+				mainapp.showTabPane();
+			}
+		});
+	}
 }
