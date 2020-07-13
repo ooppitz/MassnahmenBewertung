@@ -133,7 +133,9 @@ public class ControllerAntwortenErfassen {
 			public void handle(ActionEvent e) {
 				// Next
 				// controller.antwortListe an die Auswertung schicken
-
+				for (AzubiAntwort azubiAntwort : antwortListe) {
+					System.out.println(azubiAntwort.toString());
+				}
 				
 				// Auswertung zurückbekommen
 				mainapp.showAuswertungAnzeigen(name.getText(), indexOfTab);
