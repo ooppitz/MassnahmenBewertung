@@ -54,12 +54,19 @@ public class App extends Application {
 		// Input von verschlüsselten Strings -> Branch von Benedikt
 		// entschlüsseln der String
 
-		// Michael
-		// Input ein Array von *unverschlüsselten* Strings
-		// -> AzubiAntwort-Objekte
+		
+		List<String> klarTextStrings;
+		
+		// AzubiAntwort.konvertiereStringsInAzubiAntworten(klarTextStrings);
+	
+	    List<AzubiAntwort> antworten = null; // TODO: Wait for Input from Michael TestFeeder2. ; 
 
+	    
+	    
 		// Input: ArrayList AzubiAntworten
 
+		
+		
 		List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(new ArrayList<AzubiAntwort>());
 
 		// -> Auswerten der AzubiAntwort-Objekte
