@@ -64,19 +64,18 @@ public class App extends Application {
 
 		for (String s : cipherStrings) {
 
-			try {
-
-				klarTextStrings.add(Decrypt.decrypt_any_type(s));
-
-			} catch (Exception e) {
-				e.printStackTrace(); // TODO : Entfernen, wenn Benedikt das Exception-Handling für den Crypto-Code
-										// fertig hat
-				System.exit(0);
+			String entschluesselt = Decrypt.decrypt_any_type(s);
+			if (entschluesselt == null) {
+				System.out.println(
+						"Antwort-String fehlerhaft. Bitte überprüfen Sie Kopieren/Einfügen oder die Antwort des Azubis");
+				continue;
 			}
+			klarTextStrings.add(entschluesselt);
+
 		}
 
 		ArrayList<AzubiAntwort> antworten = (ArrayList<AzubiAntwort>) AzubiAntwort
-				.konvertiereStringsInAzubiAntworten(klarTextStrings); 
+				.konvertiereStringsInAzubiAntworten(klarTextStrings);
 
 		// -Auswerten der Masznahmenbezogenen Antworten
 		AuswertungMassnahme auswertungMassnahme = AuswertungMassnahme.getAuswertungMassnahme(antworten);
