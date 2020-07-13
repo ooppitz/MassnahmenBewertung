@@ -117,7 +117,7 @@ public class MainApp extends Application {
 
 			// Berechnen, welche Tabs offen sein müssen
 
-			showStep1();
+			showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
 			showPlus();
@@ -128,7 +128,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showStep1() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
+	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
 								// Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -159,7 +159,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showStep2(String name, int index) {
+	public void showAntwortenErfassen(String name, int index) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
@@ -184,7 +184,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showStep3(String name, int index) { // incomplete
+	public void showAuswertungAnzeigen(String name, int index) { // incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand3.fxml"));
@@ -281,7 +281,7 @@ public class MainApp extends Application {
 						Optional<ButtonType> result3 = alert3.showAndWait();
 
 						// Zustand2-Tab erstellen
-						showStep2(controller.getName(), index);
+						showAntwortenErfassen(controller.getName(), index);
 
 						if (result3.get() == buttonTypeYes3) {
 							// Fragebogen klonen
@@ -427,7 +427,7 @@ public class MainApp extends Application {
 
 				
 				// Auswertung zurückbekommen
-				showStep3(nameFragebogen, indexOfTab);
+				showAuswertungAnzeigen(nameFragebogen, indexOfTab);
 			}
 		});
 	}
@@ -445,10 +445,10 @@ public class MainApp extends Application {
 					int size = rootLayout.getTabs().size(); // amount of tabs
 					if (size != 1) {
 						rootLayout.getTabs().remove(size - 1);
-						showStep1();
+						showFragebogenErstellen();
 						rootLayout.getTabs().add(tab_plus);
 					} else {
-						showStep1();
+						showFragebogenErstellen();
 						rootLayout.getTabs().remove(0);
 						rootLayout.getTabs().add(tab_plus);
 					}
