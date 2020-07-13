@@ -214,14 +214,14 @@ public class AuswertungReferent {
 		}
 
 		String bemerkungenString = "";
-		for (String string : bemerkungen) {
+		for (String bemerkung : bemerkungen) {
 			
-			if (bemerkungen != null) {
-				bemerkungenString += string + ", ";
+			if (!bemerkung.equals("")) {
+				bemerkungenString += bemerkung + ", ";
 			}
 		}
 
-		return "." + getName() + " \n" + verteilung + durchschnitte + bemerkungenString + ".";
+		return  getName() + " \n" + verteilung + durchschnitte + bemerkungenString ;
 	}
 
 	private void zaehleStimmenProRadioBtn(ArrayList<BewertungReferent> bewertungen) {
