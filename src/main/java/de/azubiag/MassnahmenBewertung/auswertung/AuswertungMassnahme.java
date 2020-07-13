@@ -41,6 +41,8 @@ public class AuswertungMassnahme {
 	// Anzahl der eingegangenen Bewertungen werden aufgez�hlt
 	int anzahl;
 
+
+	
 	/**
 	 * Die öffentlich verfügbare Methode, welche die Liste an Bewertungen des
 	 * Maßnahmenteils auswertet. Dabei ruft es die Initialiserung der eigenen
@@ -242,6 +244,25 @@ public class AuswertungMassnahme {
 		return bm;
 	}
 
+	
+
+	public static AuswertungMassnahme getAuswertungMassnahme(List<AzubiAntwort> antworten) {
+		
+		// Erzeugen einer Liste von OBjekten vom Typ BewertungMassnahme
+		
+		List<BewertungMassnahme> massnahmenBewertungen = new ArrayList<BewertungMassnahme>(); //  = AuswertungMassnahme.konvertiereBewertungMassnahmeInAuswertungMassnahme(buffer)
+		
+		for(AzubiAntwort a : antworten) {
+			massnahmenBewertungen.add(a.massnahme);
+		}
+		
+		AuswertungMassnahme auswertung = new AuswertungMassnahme(massnahmenBewertungen);
+		
+		return auswertung;
+		
+	}
+	
+	
 	/**
 	 * Die für die Auswertung wichtigen Variablen werden in der Konsole ausgegeben
 	 * 
