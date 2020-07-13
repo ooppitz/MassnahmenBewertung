@@ -51,7 +51,7 @@ public class Decrypt {
 	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// BKtqhuds
 		// Key
-		String secret = "Jupiter";
+		String secret = decrypt_type_B("Ktqhuds");
 
 		byte[] cipherData = Base64.getDecoder().decode(encrypted_text);
 		byte[] saltData = Arrays.copyOfRange(cipherData, 8, 16);
