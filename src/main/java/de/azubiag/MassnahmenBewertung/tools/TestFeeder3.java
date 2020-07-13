@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 
 /**
  * 
- * @author Luna
+ * @author Denis Bode
  *
  */
-public class TestFeeder2 {
+public class TestFeeder3 {
 
 	public static void main(String[] args) {
 
@@ -23,32 +25,29 @@ public class TestFeeder2 {
 		System.out.print("Pfad > ");
 
 		String path = usc.nextLine();
-		for (AzubiAntwort aa : loadAzubiAntwortenFromFilePath(path)) System.out.println(aa);
-		
-	}
-	
-	public static ArrayList<AzubiAntwort> loadAzubiAntwortenFromFilePath(String filepath) {
 
 		ArrayList<String> buffer = new ArrayList<>();
 
 		Scanner fsc = null;
 
 		try {
-			fsc = new Scanner(new FileInputStream(new File(filepath)), "UTF-8");
+			fsc = new Scanner(new FileInputStream(new File(path)), "UTF-8");
 
 			while (fsc.hasNextLine()) {
-
+				buffer.add(fsc.nextLine());
 			}
 
 			fsc.close();
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (fsc != null) fsc.close();
-		}
-		
-		return AzubiAntwort.konvertiereStringsInAzubiAntworten(buffer);
 
+		} catch (Exception e) {
+			if (fsc != null)
+				fsc.close();
+			throw new RuntimeException(e);
+		}
+
+		AuswertungMassnahme am = new AuswertungMassnahme(
+				AuswertungMassnahme.konvertiereBewertungMassnahmeInAuswertungMassnahme(buffer));
+		System.out.println(am);
 	}
+
 }
