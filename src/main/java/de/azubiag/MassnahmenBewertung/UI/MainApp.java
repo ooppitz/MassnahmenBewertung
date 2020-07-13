@@ -145,7 +145,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			addDeleteToButton(controller.delete, rootLayout, tab_z1);
 			controller.addPreviewToButton(rootLayout.getTabs().indexOf(tab_z1));
-			addneuerReferent(controller.referent_name, controller);
+			controller.addneuerReferent();
 			controller.name.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
 																								// Methode müssten all
 																								// diese Buttons gleich
@@ -213,42 +213,6 @@ public class MainApp extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				pane.getTabs().remove(thistab);
-			}
-		});
-	}
-
-	public void addneuerReferent(TextField referent_name, ControllerFragebogenErstellen controller) {
-		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-
-				if (oldValue == false && newValue == true) {
-					if (controller.anzahl_referenten > 6) {
-						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight() + 49);
-						controller.gridpane.addRow(controller.anzahl_referenten + 3);
-						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
-						// aussieht
-					}
-
-					Label temp = new Label();
-					temp.setText("   Name von Referent ");
-					temp.setText(temp.getText() + (controller.anzahl_referenten + 3) + ":");
-					temp.setFont(controller.referent_label.getFont());
-
-					TextField temp2 = new TextField();
-					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
-					temp2.setFont(controller.referent_name.getFont());
-
-					controller.gridpane.getChildren().remove(controller.referent_name);
-					controller.gridpane.add(controller.referent_name, 2, controller.anzahl_referenten + 3, 3, 1);
-
-					controller.gridpane.add(temp, 0, controller.anzahl_referenten + 3, 2, 1);
-					controller.gridpane.add(temp2, 2, controller.anzahl_referenten + 2, 3, 1);
-					controller.anzahl_referenten++;
-
-					temp2.requestFocus();
-				}
 			}
 		});
 	}

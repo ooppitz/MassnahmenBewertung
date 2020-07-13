@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -60,6 +62,42 @@ public class ControllerFragebogenErstellen {
 
 	public void setName(String name) {
 		this.name.setText(name);
+	}
+	
+	public void addneuerReferent() {
+		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+				if (oldValue == false && newValue == true) {
+					if (anzahl_referenten > 6) {
+						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
+						gridpane.addRow(anzahl_referenten + 3);
+						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+						// aussieht
+					}
+
+					Label temp = new Label();
+					temp.setText("   Name von Referent ");
+					temp.setText(temp.getText() + (anzahl_referenten + 3) + ":");
+					temp.setFont(referent_label.getFont());
+
+					TextField temp2 = new TextField();
+					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
+					temp2.setFont(referent_name.getFont());
+
+					gridpane.getChildren().remove(referent_name);
+					gridpane.add(referent_name, 2, anzahl_referenten + 3, 3, 1);
+
+					gridpane.add(temp, 0, anzahl_referenten + 3, 2, 1);
+					gridpane.add(temp2, 2, anzahl_referenten + 2, 3, 1);
+					anzahl_referenten++;
+
+					temp2.requestFocus();
+				}
+			}
+		});
 	}
 	
 	public void addPreviewToButton(int index) {
