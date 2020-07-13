@@ -176,7 +176,7 @@ public class MainApp extends Application {
 			controller.setName(name);
 			controller.setMaintext(name);
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
-			addAnswerToButton(controller.add, controller);
+			controller.addAnswerToButton();
 			addNext2ToButton(controller.next, controller.getName(), rootLayout.getTabs().indexOf(tab_z2));
 
 		} catch (IOException e) {
@@ -320,64 +320,6 @@ public class MainApp extends Application {
 
 				}
 
-			}
-		});
-	}
-
-	public void addAnswerToButton(Button button, ControllerAntwortenErfassen controller) {
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-
-				// Ergebnis von der Zwischenablage kopieren
-				Clipboard clipboard = Clipboard.getSystemClipboard();
-
-				// String muss dekodiert und überprüft werden
-
-				String verschluesselteAntwort = clipboard.getString();
-
-				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
-
-				if (entschluesselteAntwort == null) {
-					
-					// TODO: Error-Box anzeigen
-					System.err.println("Fehlerhafter String eingegeben!");
-					
-				} else {
-
-					System.out.println(
-							"Verschlüsselt: " + verschluesselteAntwort + " Entschlüsselt: " + entschluesselteAntwort);
-
-					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);
-
-					controller.antwortListe.add(antwort);
-				}
-
-				// TODO: In den else-Branch verschieben...
-				
-				// wenn richtiger String, dann hier weiter
-				if (controller.anzahl_antworten == 0) {
-					controller.antwort_text.setText(clipboard.getString());
-					controller.anzahl_antworten++;
-				} else if (controller.anzahl_antworten > 0) {
-					if (controller.anzahl_antworten > 9) {
-						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight() + 49);
-						controller.gridpane.addRow(controller.anzahl_antworten + 1);
-						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
-						// aussieht
-					}
-
-					Label temp = new Label();
-					temp.setText("  Verschlüsselte Antwort ");
-					temp.setText(temp.getText() + (controller.anzahl_antworten + 1) + ":");
-					temp.setFont(controller.antwort_name.getFont());
-
-					Label temp2 = new Label(clipboard.getString());
-					temp2.setFont(controller.antwort_text.getFont());
-					controller.gridpane.add(temp, 0, controller.anzahl_antworten + 1, 2, 1);
-					controller.gridpane.add(temp2, 2, controller.anzahl_antworten + 1, 3, 1);
-					controller.anzahl_antworten++;
-				}
 			}
 		});
 	}
