@@ -22,8 +22,9 @@ public class Decrypt {
 
 		// String to decrypt
 		String cipherText = "AU2FsdGVkX1+hPdZWMMc5x50lY5aJADrMZcqOhFykmOo=";
-
 		String decrypted_text = "";
+		// For testing
+		String original_text = "Jupiter";
 
 		// First Char in cipherText indicates type of enryption
 		switch (cipherText.charAt(0)) {
@@ -38,8 +39,7 @@ public class Decrypt {
 			break;
 		}
 
-		// Optional String to check decrypted_text against original text 
-		String original_text = "Jupiter";
+		// test decrypted_text against original text 
 		System.out.println("\"original_text\" equals \"decrypted_text\":   " + original_text.equals(decrypted_text));
 
 		// Output
