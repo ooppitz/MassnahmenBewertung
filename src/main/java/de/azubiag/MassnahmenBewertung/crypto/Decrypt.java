@@ -21,10 +21,10 @@ public class Decrypt {
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
 		// String to decrypt
-		String cipherText = "AU2FsdGVkX1+hPdZWMMc5x50lY5aJADrMZcqOhFykmOo=";
+		String cipherText = "AU2FsdGVkX1/c6KC9I/HrDudlW4maqW6KBbJz67ukMtk=";
 		String decrypted_text = "";
 		// For testing
-		String original_text = "Jupiter";
+		String original_text = "Hello World!";
 
 		// First Char in cipherText indicates type of enryption
 		switch (cipherText.charAt(0)) {
