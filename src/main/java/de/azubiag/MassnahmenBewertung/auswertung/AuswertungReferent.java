@@ -58,11 +58,11 @@ public class AuswertungReferent {
 //	}
 
 	private void berechneDurchschnittJeFrage(ArrayList<BewertungReferent> bewertungen) {
-		int gesamtVorbereitung = 0;
-		int gesamtFachwissen = 0;
-		int gesamtEingehenAufProbleme = 0;
-		int gesamtInhaltsvermittlung = 0;
-		int gesamtVerhalten = 0;
+		double gesamtVorbereitung = 0;
+		double gesamtFachwissen = 0;
+		double gesamtEingehenAufProbleme = 0;
+		double gesamtInhaltsvermittlung = 0;
+		double gesamtVerhalten = 0;
 
 		for (int i = 0; i <= 4; i++) {
 			gesamtVorbereitung += stimmenProRadioBtnVorbereitung[i] * getWertungFuerIndex(i);
@@ -215,7 +215,10 @@ public class AuswertungReferent {
 
 		String bemerkungenString = "";
 		for (String string : bemerkungen) {
-			bemerkungenString += string + ", ";
+			
+			if (bemerkungen != null) {
+				bemerkungenString += string + ", ";
+			}
 		}
 
 		return "." + getName() + " \n" + verteilung + durchschnitte + bemerkungenString + ".";
@@ -232,7 +235,7 @@ public class AuswertungReferent {
 		}
 	}
 
-	public static List<AuswertungReferent> getAuswertungenAllerReferenten(ArrayList<AzubiAntwort> azubiAntworten) {
+	public static List<AuswertungReferent> getAuswertungenAllerReferenten(List<AzubiAntwort> azubiAntworten) {
 		List<AuswertungReferent> auswertungenAllerReferenten = new ArrayList<>();
 
 		List<ArrayList<BewertungReferent>> sortierteBewertungen = new ArrayList<>();
