@@ -17,14 +17,24 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Decrypt {
+	
+	// For testing
+	static String original_text = "Hello World!";
 
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
 		// String to decrypt
 		String cipherText = "AU2FsdGVkX1/c6KC9I/HrDudlW4maqW6KBbJz67ukMtk=";
+		// Output
+		String result = decrypt_any_type(cipherText);
+		test_against_original_text(result);
+		System.out.println("\n" + result);
+
+	}
+
+	// Type refers to Type A or B
+	public static String decrypt_any_type(String cipherText) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		String decrypted_text = "";
-		// For testing
-		String original_text = "Hello World!";
 
 		// First Char in cipherText indicates type of enryption
 		switch (cipherText.charAt(0)) {
@@ -38,14 +48,13 @@ public class Decrypt {
 			System.out.println("Invalid Key");
 			break;
 		}
-
+		
+		return decrypted_text;
+	}
+	
+	public static void test_against_original_text(String result) {
 		// test decrypted_text against original text 
-		System.out.println("\"original_text\" equals \"decrypted_text\":   " + original_text.equals(decrypted_text));
-
-		// Output
-		System.out.println("\n" + decrypted_text);
-
-
+		System.out.println("\"original_text\" equals \"decrypted_text\":   " + original_text.equals(result));
 	}
 
 	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
