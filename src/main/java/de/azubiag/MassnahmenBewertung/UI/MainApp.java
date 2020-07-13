@@ -177,7 +177,7 @@ public class MainApp extends Application {
 			controller.setMaintext(name);
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
-			addNext2ToButton(controller.next, controller.getName(), rootLayout.getTabs().indexOf(tab_z2));
+			controller.addNext2ToButton(rootLayout.getTabs().indexOf(tab_z2));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -213,20 +213,6 @@ public class MainApp extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				pane.getTabs().remove(thistab);
-			}
-		});
-	}
-
-	public void addNext2ToButton(Button button, String nameFragebogen, int indexOfTab) { // Auswertung
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				// Next
-				// controller.antwortListe an die Auswertung schicken
-
-				
-				// Auswertung zurückbekommen
-				showAuswertungAnzeigen(nameFragebogen, indexOfTab);
 			}
 		});
 	}
