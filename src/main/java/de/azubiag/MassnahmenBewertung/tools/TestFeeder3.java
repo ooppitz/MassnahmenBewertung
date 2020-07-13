@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 
 /**
  * 
- * @author Luna
+ * @author Denis Bode
  *
  */
-public class TestFeeder2 {
+public class TestFeeder3 {
 
 	public static void main(String[] args) {
 
@@ -43,11 +45,9 @@ public class TestFeeder2 {
 			throw new RuntimeException(e);
 		}
 
-		List<AzubiAntwort> liste = AzubiAntwort.konvertiereStringsInAzubiAntworten(buffer);
-
-		for (AzubiAntwort aa : liste)
-			System.out.println(aa);
-
+		AuswertungMassnahme am = new AuswertungMassnahme(
+				AuswertungMassnahme.konvertiereBewertungMassnahmeInAuswertungMassnahme(buffer));
+		System.out.println(am);
 	}
 
 }
