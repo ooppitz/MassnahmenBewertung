@@ -20,11 +20,14 @@ public class Decrypt {
 	
 	// For testing
 	static String original_text = "Hello World!";
+	
+	public static String cipherText = "AU2FsdGVkX1/c6KC9I/HrDudlW4maqW6KBbJz67ukMtk="; // Hello world
 
+	// TODO: Den Test-Code in ein Package crypto.test verschieben
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
 		// String to decrypt
-		String cipherText = "AU2FsdGVkX1/c6KC9I/HrDudlW4maqW6KBbJz67ukMtk=";
+		
 		// Output
 		String result = decrypt_any_type(cipherText);
 		test_against_original_text(result);
@@ -32,7 +35,12 @@ public class Decrypt {
 
 	}
 
-	// Type refers to Type A or B
+	/* Die Methode analysiert den cipherText, um festzustellen, welcher Crypto-Algorithmus verwendet wurde.
+	 * Die Entschlüsselung geschieht mit dem passenden Algorithmus.
+	 * 
+	 * @return Klartext-String oder null, wenn ein Fehler aufgetreten ist
+	 */
+	// TODO: Fangen aller Crypto-Excpetions und Rückagbe von NULL im Fehlefall
 	public static String decrypt_any_type(String cipherText) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		String decrypted_text = "";
 
@@ -52,11 +60,15 @@ public class Decrypt {
 		return decrypted_text;
 	}
 	
+	// TODO: Den Test-Code in ein Package crypto.test verschieben
 	public static void test_against_original_text(String result) {
 		// test decrypted_text against original text 
 		System.out.println("\"original_text\" equals \"decrypted_text\":   " + original_text.equals(result));
 	}
 
+	/*
+	 * Dekodiert einen String mit dem AES Algorithmus.
+	 */
 	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		// BKtqhuds
 		// Key
@@ -79,6 +91,9 @@ public class Decrypt {
 		return decrypted_text;
 	}
 
+	/*
+	 * Dekodiert einen String mit einem primitiven Algorithmus, der das unterste Bit toggelt.
+	 */
 	public static String decrypt_type_B(String encrypted_text) {
 		String decrypted_text = "";
 		for (int i = 0; i < encrypted_text.length(); i++) {
@@ -89,6 +104,10 @@ public class Decrypt {
 		return decrypted_text;
 	}
 
+	/*
+	 * Code von Stackoverflow. Löst ein Problem mit einer Begrenzung auf 256 Zeichen.
+	 * TODO: Link zu Stackoverflow hinzufügen
+	 */
 	public static byte[][] generateKeyAndIV(int keyLength, int ivLength, int iterations, byte[] salt, byte[] password, MessageDigest md) {
 
 		int digestLength = md.getDigestLength();
