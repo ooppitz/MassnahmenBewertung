@@ -16,15 +16,19 @@ public class TestFeeder2 {
 		Scanner usc = new Scanner(System.in);
 		
 		System.out.print("Pfad > ");
-		
 		String path = usc.nextLine();
+		for (AzubiAntwort aa : loadAzubiAntwortenFromFilePath(path)) System.out.println(aa);
 		
+	}
+	
+	public static List<AzubiAntwort> loadAzubiAntwortenFromFilePath(String filepath) {
+
 		ArrayList<String> buffer = new ArrayList<>();
 		
 		Scanner fsc = null;
 		
 		try {
-			fsc = new Scanner(new FileInputStream(new File(path)), "UTF-8");
+			fsc = new Scanner(new FileInputStream(new File(filepath)), "UTF-8");
 			
 			while (fsc.hasNextLine()) {
 				buffer.add(fsc.nextLine());
@@ -37,10 +41,6 @@ public class TestFeeder2 {
 			throw new RuntimeException(e);
 		}
 		
-		List<AzubiAntwort> liste = AzubiAntwort.konvertiereStringsInAzubiAntworten(buffer);
-		
-		for (AzubiAntwort aa : liste) System.out.println(aa);
-		
+		return AzubiAntwort.konvertiereStringsInAzubiAntworten(buffer);
 	}
-
 }
