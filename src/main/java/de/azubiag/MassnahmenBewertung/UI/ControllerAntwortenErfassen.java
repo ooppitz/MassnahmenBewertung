@@ -5,7 +5,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class Zustand2Controller {
+import java.util.ArrayList;
+import java.util.List;
+
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+
+/* Eingeben der Antworten */
+
+public class ControllerAntwortenErfassen {
+	
+	
+	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
 	
 	int anzahl_antworten;
 	

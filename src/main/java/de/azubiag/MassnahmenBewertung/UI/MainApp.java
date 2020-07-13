@@ -5,8 +5,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
+import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -57,11 +62,16 @@ public class MainApp extends Application {
 
 		showLogin();
 
-		//        showcreate();
+		// showcreate();
 	}
 
 	/**
-	 * The login-window appears.<br> Related: {@link de.azubiag.MassnahmenBewertung.UI.MainApp#addUsernameNextToButton(Button, TextField) addUsernameNextToButton(Button, TextField)} <br> Related: {@link de.azubiag.MassnahmenBewertung.UI.Zustand0Controller Zustand0Controller}
+	 * The login-window appears.<br>
+	 * Related:
+	 * {@link de.azubiag.MassnahmenBewertung.UI.MainApp#addUsernameNextToButton(Button, TextField)
+	 * addUsernameNextToButton(Button, TextField)} <br>
+	 * Related: {@link de.azubiag.MassnahmenBewertung.UI.ControllerLogin
+	 * Zustand0Controller}
 	 */
 	public void showLogin() {
 		try {
@@ -73,14 +83,17 @@ public class MainApp extends Application {
 			Scene scene = new Scene(login_grid);
 			primaryStage.setScene(scene);
 
-			Zustand0Controller controller = loader.getController();
-			//			System.out.println(controller);
+			ControllerLogin controller = loader.getController();
+			// System.out.println(controller);
 			controller.setMainapp(this);
 			addUsernameNextToButton(controller.next, controller.username);
 
-			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {	// für eine "normale" Methode müssten all diese Buttons gleich heißen
+			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
+																									// Methode müssten
+																									// all diese Buttons
+																									// gleich heißen
 				controller.next.setDisable((newValue == "") ? true : false);
-				System.out.println("old: "+oldValue+" ---> new: "+newValue);
+				System.out.println("old: " + oldValue + " ---> new: " + newValue);
 			});
 
 			primaryStage.show();
@@ -88,7 +101,6 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-
 
 	public void showTabPane() {
 		try {
@@ -117,27 +129,30 @@ public class MainApp extends Application {
 		}
 	}
 
-
-	public void showStep1() {	// Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern + Button sperren, wenn Name leer ist
+	public void showStep1() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
+								// Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand1.fxml"));
-			BorderPane z1 = (BorderPane) loader.load();				// !!
+			BorderPane z1 = (BorderPane) loader.load(); // !!
 			Tab tab_z1 = new Tab();
 			tab_z1.setContent(z1);
 			tab_z1.setClosable(true);
-			//			tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
+			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z1.setText("Unbenannter Fragebogen");
 			rootLayout.getTabs().add(tab_z1);
-			Zustand1Controller controller = loader.getController();
-			//			            System.out.println(controller);
+			ControllerFragebogenErstellen controller = loader.getController();
+			// System.out.println(controller);
 			controller.setMainApp(this);
-			addDeleteToButton(controller.delete , rootLayout, tab_z1);
-			addPreviewToButton(controller.preview, controller,rootLayout.getTabs().indexOf(tab_z1));
+			addDeleteToButton(controller.delete, rootLayout, tab_z1);
+			addPreviewToButton(controller.preview, controller, rootLayout.getTabs().indexOf(tab_z1));
 			addneuerReferent(controller.referent_name, controller);
-			controller.name.textProperty().addListener((observable, oldValue, newValue) -> {	// für eine "normale" Methode müssten all diese Buttons gleich heißen
+			controller.name.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
+																								// Methode müssten all
+																								// diese Buttons gleich
+																								// heißen
 				controller.preview.setDisable((newValue == "") ? true : false);
-				System.out.println("old: "+oldValue+" ---> new: "+newValue);
+				System.out.println("old: " + oldValue + " ---> new: " + newValue);
 			});
 
 		} catch (IOException e) {
@@ -145,49 +160,49 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showStep2(String name, int index) {	
+	public void showStep2(String name, int index) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
-			BorderPane z2 = (BorderPane) loader.load();				// !!
+			BorderPane z2 = (BorderPane) loader.load(); // !!
 			Tab tab_z2 = new Tab();
 			tab_z2.setContent(z2);
 			tab_z2.setClosable(true);
-			//			tab_z2.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
+			// tab_z2.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z2.setText(name);
-			rootLayout.getTabs().add(index+1, tab_z2);
-			Zustand2Controller controller = loader.getController();
-			//			            System.out.println(controller);
+			rootLayout.getTabs().add(index + 1, tab_z2);
+			ControllerAntwortenErfassen controller = loader.getController();
+			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setName(name);
 			controller.setMaintext(name);
-			addDeleteToButton(controller.delete , rootLayout, tab_z2);
-			addAnswerToButton(controller.add,controller);
-			addNext2ToButton(controller.next,controller.getName(),rootLayout.getTabs().indexOf(tab_z2));
+			addDeleteToButton(controller.delete, rootLayout, tab_z2);
+			addAnswerToButton(controller.add, controller);
+			addNext2ToButton(controller.next, controller.getName(), rootLayout.getTabs().indexOf(tab_z2));
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void showStep3(String name, int index) {	// incomplete
+	public void showStep3(String name, int index) { // incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand3.fxml"));
-			BorderPane z3 = (BorderPane) loader.load();				// !!
+			BorderPane z3 = (BorderPane) loader.load(); // !!
 			Tab tab_z3 = new Tab();
 			tab_z3.setContent(z3);
 			tab_z3.setClosable(true);
-			//			tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
+			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z3.setText(name);
 			System.out.println(index);
-			rootLayout.getTabs().add(index,tab_z3);
-			rootLayout.getTabs().remove(index-1);
-			Zustand3Controller controller = loader.getController();
-			//			            System.out.println(controller);
+			rootLayout.getTabs().add(index, tab_z3);
+			rootLayout.getTabs().remove(index - 1);
+			ControllerAuswertungAnzeigen controller = loader.getController();
+			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setName(name);
-			addDeleteToButton(controller.delete , rootLayout, tab_z3);
+			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -196,7 +211,8 @@ public class MainApp extends Application {
 
 	public void addUsernameNextToButton(Button button, TextField field) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent e) {
 
 				// schauen, ob das Feld nicht leer ist
 				// Auswahlliste von Namen davor anzeigen
@@ -207,15 +223,17 @@ public class MainApp extends Application {
 
 	public void addDeleteToButton(Button button, TabPane pane, Tab thistab) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent e) {
 				pane.getTabs().remove(thistab);
 			}
 		});
 	}
 
-	public void addPreviewToButton(Button button, Zustand1Controller controller, int index) {
+	public void addPreviewToButton(Button button, ControllerFragebogenErstellen controller, int index) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent e) {
 
 				try {
 					Desktop.getDesktop().browse(new URL("https://ooppitz.github.io/prototyp.html").toURI());
@@ -230,7 +248,7 @@ public class MainApp extends Application {
 					alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 
 					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == buttonTypeYes){
+					if (result.get() == buttonTypeYes) {
 						// Nutzer drückt ja
 						// JGit lädt Datei hoch
 
@@ -244,15 +262,14 @@ public class MainApp extends Application {
 						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
 						dialog.getDialogPane().getButtonTypes().add(cancel);
 
-
-
 						dialog.initOwner(primaryStage);
 						dialog.initModality(Modality.APPLICATION_MODAL);
 						dialog.setTitle("Hochladen");
 						UploadController upload_controller = loader.getController();
 
 						// 8.8.8.8 pingen
-						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich, da Github Pages trotzdem etwas anzeigt)
+						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
+						// da Github Pages trotzdem etwas anzeigt)
 						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
@@ -279,11 +296,10 @@ public class MainApp extends Application {
 						// Zustand2-Tab erstellen
 						showStep2(controller.getName(), index);
 
-						if (result3.get() == buttonTypeYes3){
+						if (result3.get() == buttonTypeYes3) {
 							// Fragebogen klonen
-							controller.setName("Kopie von "+controller.getName());
-						}
-						else {
+							controller.setName("Kopie von " + controller.getName());
+						} else {
 							rootLayout.getTabs().remove(index);
 						}
 
@@ -295,86 +311,107 @@ public class MainApp extends Application {
 					e1.printStackTrace();
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
-					alert.setHeaderText("Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n MalformedURLException beim Preview-Alert");
+					alert.setHeaderText(
+							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n MalformedURLException beim Preview-Alert");
 					alert.showAndWait();
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
-					alert.setHeaderText("Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n IOException beim Preview-Alert");
+					alert.setHeaderText(
+							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n IOException beim Preview-Alert");
 					alert.showAndWait();
 
 				} catch (URISyntaxException e1) {
 					e1.printStackTrace();
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
-					alert.setHeaderText("Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n URISyntaxException beim Preview-Alert");
+					alert.setHeaderText(
+							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n URISyntaxException beim Preview-Alert");
 					alert.showAndWait();
 
 				}
 
-
 			}
 		});
 	}
 
-	public void addAnswerToButton(Button button, Zustand2Controller controller) {
+	public void addAnswerToButton(Button button, ControllerAntwortenErfassen controller) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent e) {
+
 				// Ergebnis von der Zwischenablage kopieren
 				Clipboard clipboard = Clipboard.getSystemClipboard();
-				System.out.println(clipboard.getString());
+
 				// String muss dekodiert und überprüft werden
+
+				String verschluesselteAntwort = clipboard.getString();
+
+				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
+
+				if (entschluesselteAntwort == null) {
+					
+					// TODO: Error-Box anzeigen
+					System.err.println("Fehlerhafter String eingegeben!");
+					
+				} else {
+
+					System.out.println(
+							"Verschlüsselt: " + verschluesselteAntwort + " Entschlüsselt: " + entschluesselteAntwort);
+
+					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);
+
+					controller.antwortListe.add(antwort);
+				}
+
+				// TODO: In den else-Branch verschieben...
+				
 				// wenn richtiger String, dann hier weiter
-				if (controller.anzahl_antworten == 0)
-				{
+				if (controller.anzahl_antworten == 0) {
 					controller.antwort_text.setText(clipboard.getString());
 					controller.anzahl_antworten++;
-				}
-				else if (controller.anzahl_antworten > 0)
-				{
-					if (controller.anzahl_antworten > 9)
-					{
-						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight()+49);
-						controller.gridpane.addRow(controller.anzahl_antworten+1);
-						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
+				} else if (controller.anzahl_antworten > 0) {
+					if (controller.anzahl_antworten > 9) {
+						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight() + 49);
+						controller.gridpane.addRow(controller.anzahl_antworten + 1);
+						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+						// aussieht
 					}
 
 					Label temp = new Label();
 					temp.setText("  Verschlüsselte Antwort ");
-					temp.setText(temp.getText()+(controller.anzahl_antworten+1)+":");
+					temp.setText(temp.getText() + (controller.anzahl_antworten + 1) + ":");
 					temp.setFont(controller.antwort_name.getFont());
-
 
 					Label temp2 = new Label(clipboard.getString());
 					temp2.setFont(controller.antwort_text.getFont());
-					controller.gridpane.add(temp, 0, controller.anzahl_antworten+1, 2, 1);
-					controller.gridpane.add(temp2, 2, controller.anzahl_antworten+1, 3, 1);
+					controller.gridpane.add(temp, 0, controller.anzahl_antworten + 1, 2, 1);
+					controller.gridpane.add(temp2, 2, controller.anzahl_antworten + 1, 3, 1);
 					controller.anzahl_antworten++;
 				}
 			}
 		});
 	}
 
-	public void addneuerReferent(TextField referent_name, Zustand1Controller controller) {
+	public void addneuerReferent(TextField referent_name, ControllerFragebogenErstellen controller) {
 		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
-				if (oldValue == false && newValue == true)
-				{
-					if (controller.anzahl_referenten > 6)
-					{
-						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight()+49);
-						controller.gridpane.addRow(controller.anzahl_referenten+3);
-						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen aussieht
+				if (oldValue == false && newValue == true) {
+					if (controller.anzahl_referenten > 6) {
+						controller.gridpane.setPrefHeight(controller.gridpane.getPrefHeight() + 49);
+						controller.gridpane.addRow(controller.anzahl_referenten + 3);
+						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+						// aussieht
 					}
 
 					Label temp = new Label();
 					temp.setText("   Name von Referent ");
-					temp.setText(temp.getText()+(controller.anzahl_referenten+3)+":");
+					temp.setText(temp.getText() + (controller.anzahl_referenten + 3) + ":");
 					temp.setFont(controller.referent_label.getFont());
 
 					TextField temp2 = new TextField();
@@ -382,10 +419,10 @@ public class MainApp extends Application {
 					temp2.setFont(controller.referent_name.getFont());
 
 					controller.gridpane.getChildren().remove(controller.referent_name);
-					controller.gridpane.add(controller.referent_name, 2, controller.anzahl_referenten+3, 3, 1);
+					controller.gridpane.add(controller.referent_name, 2, controller.anzahl_referenten + 3, 3, 1);
 
-					controller.gridpane.add(temp, 0, controller.anzahl_referenten+3, 2, 1);
-					controller.gridpane.add(temp2, 2, controller.anzahl_referenten+2, 3, 1);
+					controller.gridpane.add(temp, 0, controller.anzahl_referenten + 3, 2, 1);
+					controller.gridpane.add(temp2, 2, controller.anzahl_referenten + 2, 3, 1);
 					controller.anzahl_referenten++;
 
 					temp2.requestFocus();
@@ -394,14 +431,16 @@ public class MainApp extends Application {
 		});
 	}
 
-	public void addNext2ToButton(Button button, String name, int index) {	// Auswertung
+	public void addNext2ToButton(Button button, String nameFragebogen, int indexOfTab) { // Auswertung
 		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent e) {
 				// Next
-				// verschlüsselte Antwort an den Crypto-Teil des Programms schicken
+				// controller.antwortListe an die Auswertung schicken
 
-				// Auswertung zur�ckbekommen
-				showStep3(name, index);
+				
+				// Auswertung zurückbekommen
+				showStep3(nameFragebogen, indexOfTab);
 			}
 		});
 	}
@@ -415,23 +454,19 @@ public class MainApp extends Application {
 		tab_plus.setOnSelectionChanged(new EventHandler<Event>() {
 			@Override
 			public void handle(Event t) {
-				if(tab_plus.isSelected())
-				{
+				if (tab_plus.isSelected()) {
 					int size = rootLayout.getTabs().size(); // amount of tabs
-					if(size!=1)
-					{
-						rootLayout.getTabs().remove(size-1);
+					if (size != 1) {
+						rootLayout.getTabs().remove(size - 1);
 						showStep1();
 						rootLayout.getTabs().add(tab_plus);
-					}
-					else
-					{
+					} else {
 						showStep1();
 						rootLayout.getTabs().remove(0);
 						rootLayout.getTabs().add(tab_plus);
 					}
 					SingleSelectionModel<Tab> selectionModel = rootLayout.getSelectionModel();
-					selectionModel.select(size-1);
+					selectionModel.select(size - 1);
 				}
 
 			}

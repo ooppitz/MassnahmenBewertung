@@ -3,27 +3,16 @@ package de.azubiag.MassnahmenBewertung.UI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 
-public class Zustand1Controller {
-	
-	int anzahl_referenten;
-	
-	@FXML
-	GridPane gridpane;
-	
-	@FXML 
-	TextField name;
-	
-	@FXML
-	Label referent_label;
-	
-	@FXML
-	TextField referent_name;
+/* Ausgabe der Auswertung */
 
+public class ControllerAuswertungAnzeigen {
+	
 	@FXML
-	public Button preview;
+	public Label name;
+	
+	@FXML
+	public Button save;
 	
 	@FXML
 	public Button delete;
@@ -33,12 +22,12 @@ public class Zustand1Controller {
 	public void setMainApp (MainApp app){
 		mainapp = app;
 	}
-	
+
 	public String getName() {
 		return name.getText();
 	}
 
 	public void setName(String name) {
-		this.name.setText(name);
+		this.name.setText("Ergebnisse für den Fragebogen "+name);
 	}
 }

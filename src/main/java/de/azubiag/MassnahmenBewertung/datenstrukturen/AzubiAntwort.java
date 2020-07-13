@@ -13,6 +13,10 @@ public class AzubiAntwort {
 	
 	public List<BewertungReferent> referenten;   // Seite 3 d. Referenzdokuments
 	
+	/* Erzeugt ein AzubiAntwort-Objekt.
+	 * 
+	 * @param kodiert : Entschlüsselter String
+	 */
 	public AzubiAntwort(String kodiert) {
 		String[] array = kodiert.split("\\|", -1); // -1 verhindert, dass split() leere Strings am Ende verwirft und dann das Array zu kurz ist
 		massnahme = new BewertungMassnahme(subarray(array, 0, 6));

@@ -4,7 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class Zustand0Controller {
+
+/* Fenster zum Einloggen 
+ */
+public class ControllerLogin {
 	
 	@FXML
 	public Button next;
