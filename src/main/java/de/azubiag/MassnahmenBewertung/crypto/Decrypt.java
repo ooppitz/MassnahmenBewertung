@@ -17,60 +17,38 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Decrypt {
-	
-	// For testing
-	static String original_text = "Hello World!";
-	
-	public static String cipherText = "AU2FsdGVkX1/c6KC9I/HrDudlW4maqW6KBbJz67ukMtk="; // Hello world
-
-	// TODO: Den Test-Code in ein Package crypto.test verschieben
-	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-
-		// String to decrypt
-		
-		// Output
-		String result = decrypt_any_type(cipherText);
-		test_against_original_text(result);
-		System.out.println("\n" + result);
-
-	}
 
 	/* Die Methode analysiert den cipherText, um festzustellen, welcher Crypto-Algorithmus verwendet wurde.
 	 * Die Entschlüsselung geschieht mit dem passenden Algorithmus.
 	 * 
 	 * @return Klartext-String oder null, wenn ein Fehler aufgetreten ist
 	 */
-	// TODO: Fangen aller Crypto-Excpetions und Rückagbe von NULL im Fehlefall
-	public static String decrypt_any_type(String cipherText) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		String decrypted_text = "";
+	public static String decrypt_any_type(String cipherText) {
+		String decrypted_text = null;
 
 		// First Char in cipherText indicates type of enryption
-		switch (cipherText.charAt(0)) {
-		case 'A':
-			decrypted_text = decrypt_type_A(cipherText.substring(1));
-			break;
-		case 'B':
-			decrypted_text = decrypt_type_B(cipherText.substring(1));
-			break;
-		default:
-			System.out.println("Invalid Key");
-			break;
+		try {
+			switch (cipherText.charAt(0)) {
+			case 'A':
+				decrypted_text = decrypt_type_A(cipherText.substring(1));
+
+				break;
+			case 'B':
+				decrypted_text = decrypt_type_B(cipherText.substring(1));
+				break;
+			}
+		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+			e.printStackTrace();
 		}
-		
+
 		return decrypted_text;
-	}
-	
-	// TODO: Den Test-Code in ein Package crypto.test verschieben
-	public static void test_against_original_text(String result) {
-		// test decrypted_text against original text 
-		System.out.println("\"original_text\" equals \"decrypted_text\":   " + original_text.equals(result));
 	}
 
 	/*
 	 * Dekodiert einen String mit dem AES Algorithmus.
 	 */
 	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		// BKtqhuds
 		// Key
 		String secret = decrypt_type_B("Ktqhuds");
 
@@ -106,7 +84,6 @@ public class Decrypt {
 
 	/*
 	 * Code von Stackoverflow. Löst ein Problem mit einer Begrenzung auf 256 Zeichen.
-	 * TODO: Link zu Stackoverflow hinzufügen
 	 */
 	public static byte[][] generateKeyAndIV(int keyLength, int ivLength, int iterations, byte[] salt, byte[] password, MessageDigest md) {
 
