@@ -32,13 +32,11 @@ public class TestFeeder2 {
 			
 			while (fsc.hasNextLine()) {
 				buffer.add(fsc.nextLine());
-			}
-			
-			fsc.close();
-			
+			}			
 		} catch (Exception e) {
-			if (fsc != null) fsc.close();
 			throw new RuntimeException(e);
+		} finally {
+			if (fsc != null) fsc.close();
 		}
 		
 		return AzubiAntwort.konvertiereStringsInAzubiAntworten(buffer);
