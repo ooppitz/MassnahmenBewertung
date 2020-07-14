@@ -194,11 +194,10 @@ public class AuswertungReferent {
 	@Override
 	public String toString() {
 
-		String durchschnitte = "Durchschnitt Vorbereitung: " + getDurchschnitt(Frage.VORBEREITUNG)
-				+ ",\nDurchschnitt Fachwissen: " + getDurchschnitt(Frage.FACHWISSEN)
-				+ ",\nDurchschnitt EingehenAufProbleme: " + getDurchschnitt(Frage.EINGEHENAUFPROBLEME)
-				+ ", \nDurchschnitt Inhaltsvermittlung: " + getDurchschnitt(Frage.INHALTSVERMITTLUNG)
-				+ ", \nDurchschnitt Verhalten: " + getDurchschnitt(Frage.VERHALTEN) + ", \n";
+		String durchschnitte = String.format("Durchschnitt Vorbereitung: %.2f,\nDurchschnitt Fachwissen: %.2f,\nDurchschnitt EingehenAufProbleme: %.2f, \nDurchschnitt Inhaltsvermittlung: %.2f, \nDurchschnitt Verhalten: %.2f, \n",  getDurchschnitt(Frage.VORBEREITUNG),  getDurchschnitt(Frage.FACHWISSEN),  getDurchschnitt(Frage.EINGEHENAUFPROBLEME),  getDurchschnitt(Frage.INHALTSVERMITTLUNG),  getDurchschnitt(Frage.VERHALTEN) 
+
+				
+				);
 
 		String verteilung = "";
 
@@ -214,14 +213,14 @@ public class AuswertungReferent {
 		}
 
 		String bemerkungenString = "";
-		for (String string : bemerkungen) {
+		for (String bemerkung : bemerkungen) {
 			
-			if (bemerkungen != null) {
-				bemerkungenString += string + ", ";
+			if (!bemerkung.equals("")) {
+				bemerkungenString += bemerkung + ", ";
 			}
 		}
 
-		return "." + getName() + " \n" + verteilung + durchschnitte + bemerkungenString + ".";
+		return  getName() + " \n" + verteilung + durchschnitte + bemerkungenString ;
 	}
 
 	private void zaehleStimmenProRadioBtn(ArrayList<BewertungReferent> bewertungen) {
