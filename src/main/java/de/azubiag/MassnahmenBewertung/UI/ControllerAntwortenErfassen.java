@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
 
@@ -20,6 +21,7 @@ public class ControllerAntwortenErfassen {
 	
 	
 	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
+	Tab tab;
 	
 	int anzahl_antworten;
 	
@@ -51,6 +53,10 @@ public class ControllerAntwortenErfassen {
 	
 	public void setMainApp (MainApp app){
 		mainapp = app;
+	}
+
+	public void setTab(Tab tab) {
+		this.tab = tab;
 	}
 
 	public String getName() {
@@ -127,7 +133,7 @@ public class ControllerAntwortenErfassen {
 		});
 	}
 	
-	public void addNext2ToButton(int indexOfTab) { // Auswertung
+	public void addNext2ToButton() { // Auswertung
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -138,7 +144,7 @@ public class ControllerAntwortenErfassen {
 				}
 				
 				// Auswertung zurückbekommen
-				mainapp.showAuswertungAnzeigen(name.getText(), indexOfTab);
+				mainapp.showAuswertungAnzeigen(name.getText(), tab.getTabPane().getTabs().indexOf(tab));
 			}
 		});
 	}

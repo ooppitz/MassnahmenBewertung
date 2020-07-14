@@ -4,12 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 
 
 /* Fenster zum Einloggen 
  */
 public class ControllerLogin {
+	
+	Tab tab;
 	
 	@FXML
 	public Button next;

@@ -23,6 +23,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -34,6 +35,7 @@ import javafx.stage.Modality;
 
 public class ControllerFragebogenErstellen {
 	
+	Tab tab;
 	int anzahl_referenten;
 	
 	@FXML
@@ -60,6 +62,10 @@ public class ControllerFragebogenErstellen {
 		mainapp = app;
 	}
 	
+	public void setTab(Tab tab) {
+		this.tab = tab;
+	}
+
 	public String getName() {
 		return name.getText();
 	}
@@ -122,16 +128,14 @@ public class ControllerFragebogenErstellen {
 					skip = false;
 				}
 			} catch (Exception e) {
-				// occurs on labels
+				// occurs on labels and buttons
 			}
 		}
-		
 		return referentenNamen;
-		
 	}
 	
 	
-	public void addVorschauButtonHandler(int index) {
+	public void addVorschauButtonHandler() {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -203,13 +207,13 @@ public class ControllerFragebogenErstellen {
 						Optional<ButtonType> result3 = alert3.showAndWait();
 
 						// Zustand2-Tab erstellen
-						mainapp.showAntwortenErfassen(getName(), index);
+						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab));
 
 						if (result3.get() == buttonTypeYes3) {
 							// Fragebogen klonen
 							setName("Kopie von " + getName());
 						} else {
-							mainapp.rootLayout.getTabs().remove(index);
+							mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
 						}
 
 					} else {
