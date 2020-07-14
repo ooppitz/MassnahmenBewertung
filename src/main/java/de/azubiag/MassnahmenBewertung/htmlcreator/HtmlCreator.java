@@ -36,9 +36,10 @@ public class HtmlCreator {
 	public void createHtml() throws IOException {
 		File file = new File(inputFile);
 		doc = Jsoup.parse(file, "UTF-8");
-		int iterator = 0;
+		int prefix = 0;
 		for (String ref : refListe) {
-			elementListe.add(makeRefBox(ref, iterator));
+			elementListe.add(makeRefBox(ref, prefix));
+			prefix++;
 		}
 		addElementsToHtml();
 		saveHtml(saveFile);
