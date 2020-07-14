@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -100,13 +103,23 @@ public class ControllerFragebogenErstellen {
 		});
 	}
 	
-	public void addPreviewToButton(int index) {
+	public void addVorschauButtonHandler(int index) {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 
 				try {
-					Desktop.getDesktop().browse(new URL("https://ooppitz.github.io/prototyp.html").toURI());
+					
+					ArrayList<String> referentenNamen = new ArrayList<String>(List.of("Pfaffelhuber","Werner","Meier"));
+		
+					String property = "java.io.tmpdir";
+			        String pathFragebogenFile = System.getProperty(property) + "fragebogen.html";
+					HtmlCreator creator = new HtmlCreator(referentenNamen, 
+							"C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
+							pathFragebogenFile);
+					creator.createHtml();
+					
+					Desktop.getDesktop().browse(new URL("file://" + pathFragebogenFile).toURI());
 					// echter Fragebogen muss noch generiert werden !!!
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");

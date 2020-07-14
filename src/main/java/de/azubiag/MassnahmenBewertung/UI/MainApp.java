@@ -122,7 +122,7 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			addDeleteToButton(controller.delete, rootLayout, tab_z1);
-			controller.addPreviewToButton(rootLayout.getTabs().indexOf(tab_z1));
+			controller.addVorschauButtonHandler(rootLayout.getTabs().indexOf(tab_z1));
 			controller.addneuerReferent();
 			controller.name.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
 																								// Methode müssten all
