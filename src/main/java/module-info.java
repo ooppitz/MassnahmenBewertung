@@ -6,6 +6,7 @@ module de.azubiag.MassnahmenBewertung {
 
 	requires javafx.graphics;
 	requires javafx.base;
+	requires org.jsoup;
 
     opens de.azubiag.MassnahmenBewertung to javafx.fxml;
     exports de.azubiag.MassnahmenBewertung;

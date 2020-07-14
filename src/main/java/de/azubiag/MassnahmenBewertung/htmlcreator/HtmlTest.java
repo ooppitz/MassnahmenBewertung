@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.azubiag.Massnahmenbewertung.htmlcreator;
+package de.azubiag.MassnahmenBewertung.htmlcreator;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,24 +21,15 @@ import org.jsoup.select.Elements;
  */
 public class HtmlTest {
     
-    
-    
     public static void main(String[] args) throws IOException {
+    	
               String currentDirectory = System.getProperty("user.dir");
-              ArrayList<String> liste = new ArrayList<>();
-              liste.add("mich");
-              liste.add("du");
-              HtmlCreator htmlcreator = new HtmlCreator(liste, "mockup.html", "test.html");
+              ArrayList<String> referentenListe = new ArrayList<>();
+              referentenListe.add("Pfaffelhuber");
+              referentenListe.add("Werner");
+              HtmlCreator htmlcreator = new HtmlCreator(referentenListe, "C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html", "createdtestfile.html");
               htmlcreator.createHtml();
-       
-       
-        
-        
-       
-       
       
-      
-
     }
     
 }
