@@ -103,18 +103,24 @@ public class ControllerFragebogenErstellen {
 		});
 	}
 	
+	ArrayList<String> getReferentenNamen() {
+		
+		ArrayList<String> referentenNamen = new ArrayList<String>(List.of("Pfaffelhuber","Werner", "Meier", "Dosterschill"));
+		return referentenNamen;
+		
+	}
+	
+	
 	public void addVorschauButtonHandler(int index) {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 
 				try {
-					
-					ArrayList<String> referentenNamen = new ArrayList<String>(List.of("Pfaffelhuber","Werner","Meier"));
-		
+							
 					String property = "java.io.tmpdir";
 			        String pathFragebogenFile = System.getProperty(property) + "fragebogen.html";
-					HtmlCreator creator = new HtmlCreator(referentenNamen, 
+					HtmlCreator creator = new HtmlCreator(getReferentenNamen(),
 							"C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
 							pathFragebogenFile);
 					creator.createHtml();
