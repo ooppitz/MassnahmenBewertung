@@ -3,14 +3,19 @@ package de.azubiag.MassnahmenBewertung.UI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
@@ -93,6 +98,13 @@ public class ControllerAntwortenErfassen {
 					
 					// TODO: Error-Box anzeigen
 					System.err.println("Fehlerhafter String eingegeben!");
+					Alert error = new Alert(AlertType.ERROR);
+					error.setTitle("Die eingefügten Daten waren fehlerhaft!");
+					error.setHeaderText("Die eingefügten Daten waren fehlerhaft!");
+					ButtonType end = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+					error.getButtonTypes().setAll(end);
+					error.show();
+					return;
 					
 				} else {
 
