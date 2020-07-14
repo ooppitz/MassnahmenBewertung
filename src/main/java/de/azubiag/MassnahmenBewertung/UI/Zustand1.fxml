@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="230.0" prefHeight="580.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.azubiag.MassnahmenBewertung.UI.Zustand1Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="230.0" prefHeight="580.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.azubiag.MassnahmenBewertung.UI.ControllerFragebogenErstellen">
    <top>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>

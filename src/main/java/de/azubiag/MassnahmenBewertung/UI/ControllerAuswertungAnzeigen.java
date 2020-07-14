@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class Zustand3Controller {
+/* Ausgabe der Auswertung */
+
+public class ControllerAuswertungAnzeigen {
 	
 	@FXML
 	public Label name;

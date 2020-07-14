@@ -22,4 +22,15 @@ public class BewertungMassnahme {
 		bemerkungBetreuung = array[4];
 		bemerkungReferentenAllgemein = array[5];
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("BewertungMassnahme [organisation = %d, "
+				+ "verlauf = %d, "
+				+ "bemerkungVerlauf = \"%s\", "
+				+ "betreuung = %d, "
+				+ "bemerkungBetreuung = \"%s\", "
+				+ "bemerkungReferentenAllgemein = \"%s\"]",
+				organisation, verlauf, bemerkungVerlauf, betreuung, bemerkungBetreuung, bemerkungReferentenAllgemein);
+	}
 }
