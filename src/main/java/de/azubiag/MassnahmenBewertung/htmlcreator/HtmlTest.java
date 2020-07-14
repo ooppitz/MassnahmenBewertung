@@ -23,11 +23,18 @@ public class HtmlTest {
     
     public static void main(String[] args) throws IOException {
     	
+    	
+    		// TODO: Pfad finden, an dem unser Repository abgelegt werden kann
+    		// TODO: Datei in das Repository legen
+    	
               String currentDirectory = System.getProperty("user.dir");
               ArrayList<String> referentenListe = new ArrayList<>();
               referentenListe.add("Pfaffelhuber");
               referentenListe.add("Werner");
-              HtmlCreator htmlcreator = new HtmlCreator(referentenListe, "C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html", "createdtestfile.html");
+              referentenListe.add("Maier");
+              HtmlCreator htmlcreator = new HtmlCreator(referentenListe, 
+            		  "C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html", 
+            		  "createdtestfile.html");
               htmlcreator.createHtml();
       
     }
