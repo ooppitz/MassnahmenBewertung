@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -105,7 +106,26 @@ public class ControllerFragebogenErstellen {
 	
 	ArrayList<String> getReferentenNamen() {
 		
-		ArrayList<String> referentenNamen = new ArrayList<String>(List.of("Pfaffelhuber","Werner", "Meier", "Dosterschill"));
+		boolean skip = true;
+		ArrayList<String> referentenNamen = new ArrayList<String>();
+		
+		for (Node node : gridpane.getChildrenUnmodifiable()) {
+			
+			try {
+				TextField temp = (TextField) node;
+				if (!skip && !(temp.getText().equals("")) )
+				{
+				referentenNamen.add(temp.getText());
+				}
+				else
+				{
+					skip = false;
+				}
+			} catch (Exception e) {
+				// occurs on labels
+			}
+		}
+		
 		return referentenNamen;
 		
 	}
@@ -121,7 +141,7 @@ public class ControllerFragebogenErstellen {
 					String property = "java.io.tmpdir";
 			        String pathFragebogenFile = System.getProperty(property) + "fragebogen.html";
 					HtmlCreator creator = new HtmlCreator(getReferentenNamen(),
-							"C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
+							System.getProperty("user.dir")+"\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
 							pathFragebogenFile);
 					creator.createHtml();
 					
