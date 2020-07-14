@@ -10,7 +10,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 
-public class Execute_Decrypt {
+public class App {
 
 	public static void main(String[] args) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		
