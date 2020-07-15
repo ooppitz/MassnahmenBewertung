@@ -36,12 +36,10 @@ public class App {
               referentenListe.add("Werner");
               referentenListe.add("Maier");
               HtmlCreator htmlcreatorReferent = new HtmlCreator(referentenListe, 
-            		  "C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html", 
-            		  "createdtestfile.html");
+            		  "C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\webseite\\template_fragebogen.html", 
+            		  de.azubiag.MassnahmenBewertung.upload.Upload.getRepositoryPfad() + "testfragebogen.html");
+
               htmlcreatorReferent.createHtml();
-              
-              
-              HtmlCreator htmlcreatorMassnahme; // .... 
       
     }
     
