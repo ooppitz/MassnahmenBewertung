@@ -121,6 +121,7 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
+			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z1);
 			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();

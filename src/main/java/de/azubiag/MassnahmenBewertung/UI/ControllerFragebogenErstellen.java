@@ -34,34 +34,45 @@ import javafx.stage.Modality;
 /* Erstellen des Fragebogens */
 
 public class ControllerFragebogenErstellen {
-	
+
 	Tab tab;
 	int anzahl_referenten;
-	
+
 	@FXML
 	GridPane gridpane;
-	
+
 	@FXML 
 	TextField name;
-	
+
 	@FXML
 	Label referent_label;
-	
+
 	@FXML
 	TextField referent_name;
 
 	@FXML
+	Button ref1_x;
+
+	@FXML
+	Button ref2_x;
+
+	@FXML
 	public Button preview;
-	
+
 	@FXML
 	public Button delete;
-	
+
 	private MainApp mainapp;
 	
+	public void init() {
+		entferneReferent(ref1_x);
+		entferneReferent(ref2_x);
+	}
+
 	public void setMainApp (MainApp app){
 		mainapp = app;
 	}
-	
+
 	public void setTab(Tab tab) {
 		this.tab = tab;
 	}
@@ -73,7 +84,7 @@ public class ControllerFragebogenErstellen {
 	public void setName(String name) {
 		this.name.setText(name);
 	}
-	
+
 	public void addneuerReferent() {
 		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
@@ -96,12 +107,17 @@ public class ControllerFragebogenErstellen {
 					TextField temp2 = new TextField();
 					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
 					temp2.setFont(referent_name.getFont());
+					
+					Button x_button = new Button();
+					x_button.setText("x");
+					entferneReferent(x_button);
 
 					gridpane.getChildren().remove(referent_name);
-					gridpane.add(referent_name, 2, anzahl_referenten + 3, 3, 1);
+					gridpane.add(referent_name, 3, anzahl_referenten + 3, 3, 1);
 
-					gridpane.add(temp, 0, anzahl_referenten + 3, 2, 1);
-					gridpane.add(temp2, 2, anzahl_referenten + 2, 3, 1);
+					gridpane.add(x_button, 0, anzahl_referenten + 3, 1, 1);
+					gridpane.add(temp, 1, anzahl_referenten + 3, 2, 1);
+					gridpane.add(temp2, 3, anzahl_referenten + 2, 3, 1);
 					anzahl_referenten++;
 
 					temp2.requestFocus();
@@ -109,19 +125,39 @@ public class ControllerFragebogenErstellen {
 			}
 		});
 	}
-	
+
+	public void entferneReferent(Button button) {
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				
+				System.out.println("Referent soll gelöscht werden");
+				/* Ablauf:
+				 * - letzter Button wird entfernt
+				 * - letzter Label wird entfernt
+				 * - TextField neben diesem Button wird entfernt
+				 * - alle Textfields darunter werden nach oben verschoben
+				 * - anzahlReferenten wird dekrementiert
+				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner
+				 */
+				
+				
+			}
+		});
+	}
+
 	ArrayList<String> getReferentenNamen() {
-		
+
 		boolean skip = true;
 		ArrayList<String> referentenNamen = new ArrayList<String>();
-		
+
 		for (Node node : gridpane.getChildrenUnmodifiable()) {
-			
+
 			try {
 				TextField temp = (TextField) node;
 				if (!skip && !(temp.getText().equals("")) )
 				{
-				referentenNamen.add(temp.getText());
+					referentenNamen.add(temp.getText());
 				}
 				else
 				{
@@ -133,22 +169,22 @@ public class ControllerFragebogenErstellen {
 		}
 		return referentenNamen;
 	}
-	
-	
+
+
 	public void addVorschauButtonHandler() {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 
 				try {
-							
+
 					String property = "java.io.tmpdir";
-			        String pathFragebogenFile = System.getProperty(property) + "fragebogen.html";
+					String pathFragebogenFile = System.getProperty(property) + "fragebogen.html";
 					HtmlCreator creator = new HtmlCreator(getReferentenNamen(),
 							System.getProperty("user.dir")+"\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
 							pathFragebogenFile);
 					creator.createHtml();
-					
+
 					Desktop.getDesktop().browse(new URL("file://" + pathFragebogenFile).toURI());
 					// echter Fragebogen muss noch generiert werden !!!
 					Alert alert = new Alert(AlertType.CONFIRMATION);
