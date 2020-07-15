@@ -1,14 +1,44 @@
 package de.azubiag.MassnahmenBewertung.upload;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+
 public class Upload {
 
+	CredentialsProvider cp;
+	String remotePfad;
+	Git gitController;
+	Repository localRepo;
 	// Credentials werden an den Constructor übergeben oder in Upload fest
 	// implementiert
 
 	static String repositoryPfad = null;
 
-	public Upload() {
-
+	public Upload(String gitHubBenutzername, String gitHubPasswort, String remotePfad) {
+		this.remotePfad=remotePfad;
+		try {
+			repoUeberpruefen();
+		} catch (GitAPIException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
+		try {
+			localRepo=new FileRepository(getRepositoryPfad()+"/.git");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		gitController=new Git(localRepo);
 	}
 
 	/*
@@ -18,9 +48,9 @@ public class Upload {
 	public static String getRepositoryPfad() {
 		
 		if (repositoryPfad == null) {
-			repositoryPfad = System.getProperty("java.io.tmpdir");
+			repositoryPfad = System.getProperty("java.io.tmpdir")+"\\test\\";
 		}
-		
+	System.out.println(repositoryPfad);
 		return repositoryPfad;
 	}
 
@@ -28,11 +58,23 @@ public class Upload {
 	/* Falls das Repo lokal schon existiert, kehrt die Methode zurück.
 	 * Falls kein ein lokales Repo existiert, wird es angelegt durch clonen des remote Repo.
 	 */
-	public void repoUeberpruefen() {
+	public void repoUeberpruefen() throws InvalidRemoteException, TransportException, GitAPIException {
 		
 		// Überprüfen, ob ein lokales Repo existiert
+		try {
+			Git.open(new File(getRepositoryPfad()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// Clonen des remote Repo
+			Git.cloneRepository()
+			.setURI(remotePfad)
+			.setDirectory(new File(getRepositoryPfad()))
+			.setCredentialsProvider(cp)
+			.call();
+		}
 		
-		// Clonen des remote Repo
+	
 		
 	}
 	
@@ -46,15 +88,21 @@ public class Upload {
 
 	public boolean hochladen() {
 
-		// git pull
-		
-		// git add .    --> Fügt Fragebogen im Staging Area hinzu
-		
-		// git commit   
-		
-		// git push     --> Schreibt die Änderungen in das remote Repo
-		
-		return true;
+			try {
+				// git pull
+				gitController.pull().setCredentialsProvider(cp).call();
+				// git add .    --> Fügt Fragebogen im Staging Area hinzu
+				gitController.add().addFilepattern(".");
+				// git commit   
+				gitController.commit().setMessage("Test").call();
+				// git push     --> Schreibt die Änderungen in das remote Repo
+				gitController.push().setPushAll();
+				return true;
+			} catch (GitAPIException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
 
 	}
 
