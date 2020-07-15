@@ -11,7 +11,12 @@ public class App {
 	public static void main(String[] args) throws IOException {
 		
 		// TODO Auto-generated method stub
-		new Upload("githubbenutzername", "githubpasswort", "remotePfad").hochladen();
+		Upload upl = new Upload("githubbenutzername", "githubpasswort", "remotePfad");
+		if(upl.hochladen()==true) {
+			System.out.println("Hochladen hat geklappt");
+		} else {
+			System.out.println("Hochladen gescheitert");
+		}
 		
 	}
 

@@ -63,8 +63,6 @@ public class Upload {
 		try {
 			Git.open(new File(getRepositoryPfad()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			// Clonen des remote Repo
 			Git.cloneRepository()
 			.setURI(remotePfad)
@@ -98,8 +96,6 @@ public class Upload {
 				gitController.push().setPushAll();
 				return true;
 			} catch (GitAPIException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				return false;
 			}
 
