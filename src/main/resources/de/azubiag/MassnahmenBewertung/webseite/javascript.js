@@ -6,6 +6,10 @@ let alleRadioButtonsAusgewaehlt;
 function okButtonGedrueckt() {
 
     try {
+    
+         
+        console.log("Knopf wurde gedrückt");
+    
         eingabenAuswerten();
     }
     catch (error) {
@@ -54,17 +58,17 @@ Wird aufgerufen, wenn der Anwender den OK Button anklickt.
 function leseBewertungen() {
 
     let kodierteBewertungen = ""; // Kodiert in unserem Format mit Separatoren | | | |
-    let referentenAnzahl = 4;  // TODO: Anpassen an echte Situation
+    let referentenAnzahl = 3;  // TODO: Anpassen an echte Situation
 
     kodierteBewertungen += leseMassnahmenVerlauf();
     kodierteBewertungen += leseMassnamenBetreuung();
     kodierteBewertungen += leseAllgemeineBewertungReferenten();
 
-    /*   TODO: Bewertungen für die Referenten erfassen
+
     for (let i = 0; i < referentenAnzahl; i++) {
         kodierteBewertungen += leseReferentenBewertung(i);
     }
-    */
+  
 
     if (alleRadioButtonsAusgewaehlt === false) {
         return null;
@@ -133,7 +137,7 @@ function leseReferentenBewertung(referentenNummer) {
         let radioButtonGroupName = referentenNummer + "_" + "r" + i;
         ergebnis += leseRadioButton(radioButtonGroupName);
     }
-    ergebnis += leseTextFeld(referentenNummer + "_t0");
+    ergebnis += leseTextFeld(referentenNummer + "_text");  // Labels für Dozentenkommentare: 0_text, 1_text, ... 
 
     return ergebnis;
 }

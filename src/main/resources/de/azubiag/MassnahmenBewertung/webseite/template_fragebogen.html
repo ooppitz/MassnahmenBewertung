@@ -46,13 +46,13 @@
     </fieldset>
     <br>
 
-    <fieldset>
+    <fieldset id="massnahme_fs0">
 
         <br>
         <table>
             <thead>
                 <tr>
-                    <th style="text-align: left;" name="1_name">1. Maßnahmeverlauf:</th>
+                    <th style="text-align: left;" name="1_name">1. Maßnahmenverlauf:</th>
                     <th>-2</th>
                     <th>-1</th>
                     <th>0</th>
@@ -60,16 +60,12 @@
                     <th>2</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="massnahme_tbody0">
                 <tr>
                     <td>
                         1.1 Wie empfinden Sie die Organisation der Maßnahme
                     </td>
-                    <td>
-                        <p id="a_r0_warnung" class=warnung>
-                            Bitte beantworte diese Frage!
-                        </p>
-                    </td>
+                  
                     <td>
                         <input type="radio" class="form-radio validate[required]" name="a_r0" value="0" />
                     </td>
@@ -90,11 +86,7 @@
                     <td>
                         1.2 Wie zufrieden sind Sie mit dem Maßnahmenverlauf ?
                     </td>
-                    <td>
-                        <p id="a_r1_warnung" class=warnung>
-                            Bitte beantworte diese Frage!
-                        </p>
-                    </td>
+                    
                     <td>
                         <input type="radio" class="form-radio validate[required]" name="a_r1" value="0" />
                     </td>
@@ -121,7 +113,7 @@
     <br>
     <br>
 
-    <fieldset>
+    <fieldset id="massnahme_fs1">
 
         <br>
         <table>
@@ -140,11 +132,7 @@
                     <td>
                         2.1 Wie zufrieden sind Sie mit der Betreuung durch uns?
                     </td>
-                    <td>
-                        <p id="b_r0_warnung" class=warnung>
-                            Bitte beantworte diese Frage!
-                        </p>
-                    </td>
+                    
                     <td>
                         <input type="radio" class="form-radio validate[required]" name="b_r0" value="0" />
                     </td>
@@ -185,7 +173,7 @@
 
     <button onclick="okButtonGedrueckt()">Click me</button>
     
-    <fieldset id="referent">>
+    <fieldset id="referent">
     <h2>Bewertung der Referentin / des Referenten  </h2>
     <br>
     <table>
@@ -202,12 +190,6 @@
                 <td>
                     Wie war ihr / sein Unterricht vorbereitet?
                 </td>
-                
-                <p id="r0_warnung" class=warnung>
-           			 Bitte beantworte diese Frage!
-                 </p>
-                    
-                
                 <td>
                     <input type="radio"  class="form-radio validate[required]"  name="r0" value="0" />
                 </td>
@@ -312,6 +294,9 @@
 </fieldset>
 
     <script src="javascript.js"></script>
+    
+     
+     
 </body>
 
 </html>

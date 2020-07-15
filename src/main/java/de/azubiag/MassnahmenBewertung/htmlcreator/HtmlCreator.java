@@ -37,6 +37,14 @@ public class HtmlCreator {
 		File file = new File(inputFile);
 		doc = Jsoup.parse(file, "UTF-8");
 		int prefix = 0;
+
+		Element bodyElement = doc.getElementsByTag("body").first();
+
+		konfiguriereMassnahmenBox();
+		
+		int anzahlReferenten = refListe.size();
+		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
+
 		for (String ref : refListe) {
 			elementListe.add(makeRefBox(ref, prefix));
 			prefix++;
@@ -44,33 +52,67 @@ public class HtmlCreator {
 		addElementsToHtml();
 		saveHtml(saveFile);
 
+		System.out.println("doc = " + doc.outerHtml());
 	}
 
-	public Element makeRefBox(String referent, int iterator) throws IOException {
+	/* Erzeugen der Paragraphen für die Warnmeldungen 
+	 */
+	public void konfiguriereMassnahmenBox() throws IOException {
+		
+	    Element elementFieldset0 = doc.getElementById("massnahme_fs0");
+		appendWarningIntoTableRow(elementFieldset0, "[name=a_r0]", "a_r0");
+		appendWarningIntoTableRow(elementFieldset0, "[name=a_r1]", "a_r1");
+   
+		Element elementFieldset1 = doc.getElementById("massnahme_fs1");
+		appendWarningIntoTableRow(elementFieldset1, "[name=b_r0]", "b_r0");
+
+	}
+
+	public Element makeRefBox(String referent, int prefix) throws IOException {
 
 		// hole das Fieldset von den Refereten
-		Element element = doc.getElementsByAttributeValue("id", "referent").first().clone();
+		Element elementFieldset = doc.getElementsByAttributeValue("id", "referent").first().clone();
 		// Ändere Name
-		Element refName = element.getElementById("name");
+		Element refName = elementFieldset.getElementById("name");
 		refName.text("Name: " + referent);
 
 		// Passe die RadioButtons an
 		String buttonSelector;
-		for (int i = 1; i <= 5; i++) {
-			buttonSelector = "[name=r";
-			buttonSelector += Integer.toString(i) + "]";
-			for (int j = 1; j <= 5; j++) {
+		for (int dozentenFragenIndex = 0; dozentenFragenIndex <= 4; dozentenFragenIndex++) {
+			buttonSelector = "[name=r"+ Integer.toString(dozentenFragenIndex) + "]";
 
-				Element buttonId = element.select(buttonSelector).first();
+			String radioButtonName = Integer.toString(prefix) + "_r" + Integer.toString(dozentenFragenIndex);
+			appendWarningIntoTableRow(elementFieldset, buttonSelector, radioButtonName);
 
-				buttonId.attr("name", Integer.toString(iterator) + "_r" + Integer.toString(i));
+			for (int radioButtonIndex = 0; radioButtonIndex <= 4; radioButtonIndex++) {
+				Element buttonId = elementFieldset.select(buttonSelector).first();
+				buttonId.attr("name", radioButtonName);
 			}
 
-			Element textarea = element.select("textarea").first();
-			textarea.attr("name", Integer.toString(iterator) + "_text");
+			Element textarea = elementFieldset.select("textarea").first();
+			textarea.attr("id", Integer.toString(prefix) + "_text");
 
 		}
-		return element;
+		return elementFieldset;
+
+	}
+
+	public void appendWarningIntoTableRow(Element e, String buttonSelector, String radioButtonName) {
+		Element tabeleRowElement = e.select(buttonSelector).first().parent().parent();
+		Element paragraph = createHiddenWarningParagraph(radioButtonName);
+		String tempText = "<tr><td>" + paragraph.outerHtml() + "</td></tr>";
+		tabeleRowElement.before(tempText);
+
+	}
+
+	public Element createHiddenWarningParagraph(String radioButtonName) {
+		Element warningTag = new Element("p");
+		warningTag.attr("hidden", "true");
+		warningTag.attr("class", "warnung");
+		warningTag.attr("id", radioButtonName + "_warnung");
+		warningTag.text("*********** Bitte Ausfüllen! *****************");
+
+		return warningTag;
 
 	}
 
