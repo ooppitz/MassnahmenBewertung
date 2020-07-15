@@ -32,7 +32,7 @@ function eingabenAuswerten() {
         return;
     }
 
-    let verschluesselteAntwort = verschluessle(kodierteAntwort);
+    let verschluesselteAntwort =  kodierteAntwort; //  verschluessle(kodierteAntwort); TODO: Verschlüeeslung einau
 
     anzeigenVerschluesseltesErgebnis(verschluesselteAntwort);
 
@@ -60,9 +60,11 @@ function leseBewertungen() {
     kodierteBewertungen += leseMassnamenBetreuung();
     kodierteBewertungen += leseAllgemeineBewertungReferenten();
 
+    /*   TODO: Bewertungen für die Referenten erfassen
     for (let i = 0; i < referentenAnzahl; i++) {
         kodierteBewertungen += leseReferentenBewertung(i);
     }
+    */
 
     if (alleRadioButtonsAusgewaehlt === false) {
         return null;
@@ -79,13 +81,13 @@ function leseMassnahmenVerlauf() {
     let ergebnis = ""; // kodiertes Ergebnis der Bewertung des MassnahmenVerlaufs
 
     // 1.1 Wie empfinden Sie die Organisation der Maßnahme?
-    ergebnis += leseRadioButton(a_r0);
+    ergebnis += leseRadioButton("a_r0");
 
     // 1.2 Wie zufrieden sind Sie mit dem Maßnahmenverlauf?
-    ergebnis += leseRadioButton(a_r1);
+    ergebnis += leseRadioButton("a_r1");
 
     // Was Sie uns noch mitteilen möchten:
-    ergebnis += leseTextFeld(a_t0);
+    ergebnis += leseTextFeld("a_t0");
 
     return ergebnis;
 }
@@ -97,10 +99,10 @@ function leseMassnamenBetreuung() {
     let ergebnis = ""; // kodiertes Ergebnis
 
     // 2. Wie zufrieden sind Sie mit der Betreuung durch uns?
-    ergebnis += leseRadioButton(b_r0);
+    ergebnis += leseRadioButton("b_r0");
 
     // Was Sie uns noch mitteilen möchten:
-    ergebnis += leseTextFeld(b_t0);
+    ergebnis += leseTextFeld("b_t0");
 
     return ergebnis;
 
@@ -110,7 +112,7 @@ function leseAllgemeineBewertungReferenten() {
 
     let ergebnis = ""; // kodiertes Ergebnis
 
-    ergebnis += leseTextFeld(c_t0);
+    ergebnis += leseTextFeld("c_t0");
 
     return ergebnis;
 }
@@ -149,7 +151,21 @@ function leseRadioButton(radioButtonGroupName) {
     return ergebnis;
 }
 
+function leseTextFeld(textFeldName){
 
+    let ergebnis = "";
+
+    ergebnis += sanitize(getTextFieldValue(textFeldName));
+
+    ergebnis += "|";
+    return ergebnis;
+}
+
+function sanitize(text) {
+
+    return text.replace(/\|/g, " ");
+
+}
 
 /* Zeigt die verschlüsselte Antwort an.
 * Das geschieht durch verstecken des Frage-Areas und sichtbar machen des Antwort-Areas.
@@ -157,10 +173,15 @@ function leseRadioButton(radioButtonGroupName) {
 */
 function anzeigenVerschluesseltesErgebnis(text) {
 
+
+    alert(text);
+
+    /*
     document.getElementById("questionArea").style.display = "none";  // verstecke das Frage-Area
 
     document.getElementById("output").innerHTML = text;              // Zeige den Antworttext im Antwort-Area an
     document.getElementById("resultArea").style.display = "block";   // Zeige das Antwort-Area an
+    */
 }
 
 /** Kopiert den param textToCopy in die Zwischenablage.
