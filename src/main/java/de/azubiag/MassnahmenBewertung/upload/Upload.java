@@ -17,7 +17,7 @@ public class Upload {
 	CredentialsProvider cp;
 	String remotePfad;
 	Git gitController;
-	Repository localRepo;
+	Repository lokalRepo;
 	// Credentials werden an den Constructor übergeben oder in Upload fest
 	// implementiert
 
@@ -33,12 +33,12 @@ public class Upload {
 		}
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		try {
-			localRepo=new FileRepository(getRepositoryPfad()+"/.git");
+			lokalRepo=new FileRepository(getRepositoryPfad()+"/.git");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		gitController=new Git(localRepo);
+		gitController=new Git(lokalRepo);
 	}
 
 	/*
