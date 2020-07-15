@@ -57,15 +57,25 @@ Wird aufgerufen, wenn der Anwender den OK Button anklickt.
 */
 function leseBewertungen() {
 
-    let kodierteBewertungen = ""; // Kodiert in unserem Format mit Separatoren | | | |
-    let referentenAnzahl = 3;  // TODO: Anpassen an echte Situation
+    let kodierteBewertungen = ""; // Kodiert in unserem Format mit Separatoren | | | |      
+
+
+    console.log("Body: = " + document.body);
+
+
+    let referentenAnzahl = document.body.getAttribute("anzahlreferenten");
+
+    console.log("Body: Referentenanzahl = " + referentenAnzahl);
 
     kodierteBewertungen += leseMassnahmenVerlauf();
     kodierteBewertungen += leseMassnamenBetreuung();
     kodierteBewertungen += leseAllgemeineBewertungReferenten();
 
 
+
     for (let i = 0; i < referentenAnzahl; i++) {
+        
+        kodierteBewertungen += leseReferentenName(i);
         kodierteBewertungen += leseReferentenBewertung(i);
     }
   
@@ -77,6 +87,14 @@ function leseBewertungen() {
     return kodierteBewertungen;
 
 }
+
+
+function leseReferentenName(referentenNummer) {
+
+    var referentenName = document.body.getAttribute("referent" + referentenNummer);
+    return referentenName + "|";
+}
+
 
 /* Abschnitt:  "1. Maßnahmenverlauf"
 */
@@ -126,6 +144,7 @@ function leseAllgemeineBewertungReferenten() {
 function leseReferentenBewertung(referentenNummer) {
 
     let ergebnis = ""; // kodiertes Ergebnis der Bewertung eines Referenten
+
     // Wie war ihr / sein Unterricht vorbereitet?
     // Wie umfangreich war ihr / sein Fachwissen?
     // Wie ging sie / er auf spezielle theniatische Probleme ein?

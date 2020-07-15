@@ -44,8 +44,9 @@ public class HtmlCreator {
 		
 		int anzahlReferenten = refListe.size();
 		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
-
+	
 		for (String ref : refListe) {
+			bodyElement.attr("referent" + prefix, ref);
 			elementListe.add(makeRefBox(ref, prefix));
 			prefix++;
 		}
@@ -119,8 +120,11 @@ public class HtmlCreator {
 	public void addElementsToHtml() {
 		Element element = doc.getElementsByAttributeValue("id", "referent").first();
 		element.remove();
+		
+		Element elementOKButton = doc.getElementById("OKButton");
+		
 		for (Element e : elementListe) {
-			doc.select("body").append(e.outerHtml());
+			elementOKButton.before(e);
 		}
 	}
 
