@@ -48,9 +48,8 @@ public class Upload {
 	public static String getRepositoryPfad() {
 		
 		if (repositoryPfad == null) {
-			repositoryPfad = System.getProperty("java.io.tmpdir")+"\\test\\";
+			repositoryPfad = System.getProperty("java.io.tmpdir")+"test\\";
 		}
-	System.out.println(repositoryPfad);
 		return repositoryPfad;
 	}
 
