@@ -5,7 +5,7 @@ public class Upload {
 	// Credentials werden an den Constructor übergeben oder in Upload fest
 	// implementiert
 
-	static String repositoryPfad;
+	static String repositoryPfad = null;
 
 	public Upload() {
 
@@ -16,6 +16,11 @@ public class Upload {
 	 * abzulegen.
 	 */
 	public static String getRepositoryPfad() {
+		
+		if (repositoryPfad == null) {
+			repositoryPfad = System.getProperty("java.io.tmpdir");
+		}
+		
 		return repositoryPfad;
 	}
 
