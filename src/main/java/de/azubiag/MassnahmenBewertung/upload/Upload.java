@@ -84,7 +84,7 @@ public class Upload {
 				// git commit   
 				gitController.commit().setMessage("Test").call();
 				// git push     --> Schreibt die Änderungen in das remote Repo
-				gitController.push().setPushAll();
+				gitController.push().setCredentialsProvider(cp).setPushAll();
 				return true;
 			} catch (GitAPIException e) {
 				return false;
