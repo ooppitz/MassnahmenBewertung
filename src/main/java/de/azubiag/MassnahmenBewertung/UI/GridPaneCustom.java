@@ -17,4 +17,16 @@ public class GridPaneCustom {
 		
 		return new Label();
 	}
+	
+	public static void moveElemByRowAndColumn(Node node, GridPane grid, int row, int column)
+	{
+		int oldrow = GridPane.getRowIndex(node);
+		int oldcol = GridPane.getColumnIndex(node);
+		int newrow = oldrow + row;
+		int newcol = oldcol + column;
+		int rowspan = GridPane.getRowSpan(node);
+		int colspan = GridPane.getColumnSpan(node);
+		grid.getChildren().remove(node);
+		grid.add(node, newcol, newrow, colspan, rowspan);
+	}
 }
