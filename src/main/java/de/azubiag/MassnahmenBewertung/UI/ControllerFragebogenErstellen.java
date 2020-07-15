@@ -41,6 +41,9 @@ public class ControllerFragebogenErstellen {
 	@FXML
 	GridPane gridpane;
 
+	@FXML
+	Label description;
+	
 	@FXML 
 	TextField name;
 
@@ -49,6 +52,12 @@ public class ControllerFragebogenErstellen {
 
 	@FXML
 	TextField referent_name;
+	
+	@FXML
+	Label referent_label_first;
+
+	@FXML
+	TextField referent_name_first;
 
 	@FXML
 	Button ref1_x;
@@ -67,6 +76,20 @@ public class ControllerFragebogenErstellen {
 	public void init() {
 		entferneReferent(ref1_x);
 		entferneReferent(ref2_x);
+		readdNode(description, 1, 0);
+		readdNode(name, 3, 0);
+		readdNode(ref1_x, 0, 1);
+		readdNode(referent_label_first, 1, 1);
+		readdNode(referent_name_first, 3, 1);
+		readdNode(ref2_x, 0, 2);
+		readdNode(referent_label, 1, 2);
+		readdNode(referent_name, 3, 2);
+	}
+	
+	public void readdNode(Node node, int col, int row)
+	{
+		gridpane.getChildren().remove(node);
+		gridpane.add(node, col, row);
 	}
 
 	public void setMainApp (MainApp app){
@@ -137,9 +160,17 @@ public class ControllerFragebogenErstellen {
 				 * - letzter Label wird entfernt
 				 * - TextField neben diesem Button wird entfernt
 				 * - alle Textfields darunter werden nach oben verschoben
-				 * - anzahlReferenten wird dekrementiert
 				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner
+				 * - anzahlReferenten wird dekrementiert
 				 */
+				
+				int letzteRow = anzahl_referenten+2;
+				System.out.println(letzteRow);
+				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
+				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
+				
+				gridpane.getChildren().removeAll(letzterButton, letzterLabel, textfieldnebendiesembutton);
 				
 				
 			}

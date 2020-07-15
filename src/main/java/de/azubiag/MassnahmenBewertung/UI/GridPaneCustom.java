@@ -1,21 +1,23 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class GridPaneCustom {
 
 	public static Node getElemByRowAndColumn(GridPane grid, int row, int column)
 	{
+//		System.out.println(row+"\t"+column+"\t"+grid.getChildren().toString());
 		for (Node node : grid.getChildren()) {
+//			System.out.println(node);
+//			System.out.println(GridPane.getRowIndex(node));	// java.lang.NullPointerException !!!
 			if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
 				
 				return node;
 			}
 		}
 		
-		return new Label();
+		return null;
 	}
 	
 	public static void moveElemByRowAndColumn(Node node, GridPane grid, int row, int column)
