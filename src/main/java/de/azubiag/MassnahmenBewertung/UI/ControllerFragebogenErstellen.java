@@ -43,7 +43,7 @@ public class ControllerFragebogenErstellen {
 
 	@FXML
 	Label description;
-	
+
 	@FXML 
 	TextField name;
 
@@ -52,7 +52,7 @@ public class ControllerFragebogenErstellen {
 
 	@FXML
 	TextField referent_name;
-	
+
 	@FXML
 	Label referent_label_first;
 
@@ -72,7 +72,7 @@ public class ControllerFragebogenErstellen {
 	public Button delete;
 
 	private MainApp mainapp;
-	
+
 	public void init() {
 		entferneReferent(ref1_x);
 		entferneReferent(ref2_x);
@@ -85,7 +85,7 @@ public class ControllerFragebogenErstellen {
 		readdNode(referent_label, 1, 2);
 		readdNode(referent_name, 3, 2);
 	}
-	
+
 	public void readdNode(Node node, int col, int row)
 	{
 		gridpane.getChildren().remove(node);
@@ -130,7 +130,7 @@ public class ControllerFragebogenErstellen {
 					TextField temp2 = new TextField();
 					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
 					temp2.setFont(referent_name.getFont());
-					
+
 					Button x_button = new Button();
 					x_button.setText("x");
 					entferneReferent(x_button);
@@ -153,8 +153,8 @@ public class ControllerFragebogenErstellen {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				
-				System.out.println("Referent soll gelöscht werden");
+
+				System.out.println("Aktion:   Referent soll gelöscht werden");
 				/* Ablauf:
 				 * - letzter Button wird entfernt
 				 * - letzter Label wird entfernt
@@ -163,16 +163,26 @@ public class ControllerFragebogenErstellen {
 				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner
 				 * - anzahlReferenten wird dekrementiert
 				 */
-				
+
 				int letzteRow = anzahl_referenten+2;
-				System.out.println(letzteRow);
+				System.out.println("letzte Reihe:\t"+letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
 				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
-				
+
 				gridpane.getChildren().removeAll(letzterButton, letzterLabel, textfieldnebendiesembutton);
-				
-				
+
+				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
+
+					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
+//					System.out.println("temp node:\t"+temp);
+					if (temp!=null)
+					{
+						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
+					}
+				}
+
+				anzahl_referenten--;
 			}
 		});
 	}

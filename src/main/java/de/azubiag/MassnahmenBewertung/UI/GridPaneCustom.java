@@ -16,13 +16,13 @@ public class GridPaneCustom {
 				return node;
 			}
 		}
-		
+		System.err.println("FEHLER:\tNode nicht gefunden!\tEs wurde nach row="+row+" ,column="+column+" gesucht.");
 		return null;
 	}
 	
 	public static void moveElemByRowAndColumn(Node node, GridPane grid, int row, int column)
 	{
-		int oldrow = GridPane.getRowIndex(node);
+		int oldrow = GridPane.getRowIndex(node);	// java.lang.NullPointerException !!!
 		int oldcol = GridPane.getColumnIndex(node);
 		int newrow = oldrow + row;
 		int newcol = oldcol + column;
