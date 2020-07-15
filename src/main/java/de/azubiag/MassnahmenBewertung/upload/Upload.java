@@ -23,21 +23,12 @@ public class Upload {
 
 	static String repositoryPfad = null;
 
-	public Upload(String gitHubBenutzername, String gitHubPasswort, String remotePfad) {
+	public Upload(String gitHubBenutzername, String gitHubPasswort, String remotePfad) throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 		this.remotePfad=remotePfad;
-		try {
-			repoUeberpruefen();
-		} catch (GitAPIException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
+		repoUeberpruefen();
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
-		try {
-			lokalRepo=new FileRepository(getRepositoryPfad()+"/.git");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		lokalRepo=new FileRepository(getRepositoryPfad()+"/.git");	
 		gitController=new Git(lokalRepo);
 	}
 
