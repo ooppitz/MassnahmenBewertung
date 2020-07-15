@@ -3,6 +3,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -15,7 +16,6 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
@@ -30,6 +30,9 @@ public class ControllerAntwortenErfassen {
 
 	int anzahl_antworten;
 
+	@FXML
+	Label desc;
+	
 	@FXML
 	Label antwort_name;
 
@@ -61,6 +64,17 @@ public class ControllerAntwortenErfassen {
 	
 	public void init() {
 		removeAnswer(answ_del);
+		readdNode(desc, 1, 0);
+		readdNode(name, 3, 0);
+		readdNode(answ_del, 0, 1);
+		readdNode(antwort_text, 1, 1);
+		readdNode(antwort_name, 3, 1);
+	}
+	
+	public void readdNode(Node node, int col, int row)
+	{
+		gridpane.getChildren().remove(node);
+		gridpane.add(node, col, row);
 	}
 
 	public void setMainApp (MainApp app){
@@ -167,10 +181,29 @@ public class ControllerAntwortenErfassen {
 				 * - TextField neben diesem Button wird entfernt
 				 * - alle Textfields darunter werden nach oben verschoben
 				 * - Antwort wird aus der Antwortliste gestrichen
-				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner
-				 * - anzahlReferenten wird dekrementiert
+				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner		
+				 * - anzahlAntworten wird dekrementiert
 				 */
-				 
+				
+				int letzteRow = anzahl_antworten+1;
+				System.out.println("letzte Reihe:\t"+letzteRow);
+				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
+				Label labelnebendiesembutton = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
+
+				gridpane.getChildren().removeAll(letzterButton, letzterLabel, labelnebendiesembutton);
+
+				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
+
+					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
+					System.out.println("temp node:\t"+temp);
+					if (temp!=null)
+					{
+						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
+					}
+				}
+
+				anzahl_antworten--;
 			}
 		});
 	}
