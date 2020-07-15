@@ -11,7 +11,8 @@ public class App {
 	public static void main(String[] args) throws IOException {
 		
 		// TODO Auto-generated method stub
-		new Upload("githubbenutzername", "githubpasswort", "remotePfad");
+		new Upload("githubbenutzername", "githubpasswort", "remotePfad").hochladen();
+		
 	}
 
 }
