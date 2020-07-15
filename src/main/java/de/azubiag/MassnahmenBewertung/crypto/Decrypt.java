@@ -1,5 +1,6 @@
 package de.azubiag.MassnahmenBewertung.crypto;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.security.DigestException;
 import java.security.InvalidAlgorithmParameterException;
@@ -26,19 +27,22 @@ public class Decrypt {
 	public static String decrypt_any_type(String cipherText) {
 		String decrypted_text = null;
 
+		// remove cipherText padding
+		cipherText = cipherText.replace("-", "").replace("<", "").replace(">", "").replace(" ", "").replace("\n", "");
+		
 		// First Char in cipherText indicates type of enryption
 		try {
 			switch (cipherText.charAt(0)) {
 			case 'A':
 				decrypted_text = decrypt_type_A(cipherText.substring(1));
-
 				break;
 			case 'B':
 				decrypted_text = decrypt_type_B(cipherText.substring(1));
 				break;
 			}
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
-				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException 
+				| NullPointerException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 
@@ -48,7 +52,8 @@ public class Decrypt {
 	/*
 	 * Dekodiert einen String mit dem AES Algorithmus.
 	 */
-	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException,
+	InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvocationTargetException, IllegalArgumentException {
 		// Key
 		String secret = decrypt_type_B("Ktqhuds");
 
