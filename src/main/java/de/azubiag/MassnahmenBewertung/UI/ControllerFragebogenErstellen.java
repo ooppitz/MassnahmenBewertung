@@ -160,7 +160,7 @@ public class ControllerFragebogenErstellen {
 				 * - letzter Label wird entfernt
 				 * - TextField neben diesem Button wird entfernt
 				 * - alle Textfields darunter werden nach oben verschoben
-				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner
+				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner			<--  fehlt noch
 				 * - anzahlReferenten wird dekrementiert
 				 */
 

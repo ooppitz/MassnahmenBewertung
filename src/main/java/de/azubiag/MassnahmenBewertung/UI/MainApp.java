@@ -155,6 +155,7 @@ public class MainApp extends Application {
 			controller.setTab(tab_z2);
 			controller.setName(name);
 			controller.setMaintext(name);
+			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
 			controller.addNext2ToButton();
