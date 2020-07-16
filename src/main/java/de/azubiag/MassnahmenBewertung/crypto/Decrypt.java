@@ -28,9 +28,11 @@ public class Decrypt {
 		
 		String decrypted_text = null;
 
-		// NOTE: Dieser Alg. kann dazu führen, dass bei Verschlüsselung mit Option B die Payload verändert wird.
-		// remove cipherText padding
-		cipherText = cipherText.replace("-", "").replace("<", "").replace(">", "").replace(" ", "").replace("\n", "");
+		if (cipherText != null) {
+			// NOTE: Dieser Alg. kann dazu führen, dass bei Verschlüsselung mit Option B die Payload verändert wird.
+			// remove cipherText padding
+			cipherText = cipherText.replace("-", "").replace("<", "").replace(">", "").replace(" ", "").replace("\n", "");
+		}
 		
 		// First Char in cipherText indicates type of encryption
 		try {
@@ -42,7 +44,7 @@ public class Decrypt {
 				decrypted_text = decrypt_type_B(cipherText.substring(1));
 				break;
 			}
-		} catch (IllegalArgumentException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+		} catch (StringIndexOutOfBoundsException | IllegalArgumentException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException 
 				| NullPointerException | InvocationTargetException e) {
 		}
