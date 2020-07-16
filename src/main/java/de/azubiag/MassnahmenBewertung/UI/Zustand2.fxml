@@ -39,7 +39,8 @@
          <content>
             <GridPane fx:id="gridpane" alignment="CENTER" hgap="5.0" minWidth="200.0" prefHeight="490.0" prefWidth="755.0" vgap="5.0">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="123.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="34.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="132.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="122.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="150.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="191.0" />
@@ -58,26 +59,27 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Name des Fragebogens :" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label fx:id="desc" text="Name des Fragebogens :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="antwort_name" text="Verschlüsselte Antwort 1 :" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Label fx:id="antwort_name" text="Verschlüsselte Antwort 1 :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="name" text="     " GridPane.columnIndex="2" GridPane.columnSpan="3">
+                  <Label fx:id="name" text="     " GridPane.columnIndex="3" GridPane.columnSpan="3">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="antwort_text" text="     " GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                  <Label fx:id="antwort_text" text="     " GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="1">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <Button fx:id="answ_del" mnemonicParsing="false" text="x" GridPane.rowIndex="1" />
                </children>
                <opaqueInsets>
                   <Insets />

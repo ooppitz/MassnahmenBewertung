@@ -21,12 +21,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -37,12 +39,16 @@ import javafx.stage.Modality;
 
 public class ControllerFragebogenErstellen {
 
+	Tab tab;
 	int anzahl_referenten;
 
 	@FXML
 	GridPane gridpane;
 
 	@FXML
+	Label description;
+
+	@FXML 
 	TextField name;
 
 	@FXML
@@ -52,6 +58,18 @@ public class ControllerFragebogenErstellen {
 	TextField referent_name;
 
 	@FXML
+	Label referent_label_first;
+
+	@FXML
+	TextField referent_name_first;
+
+	@FXML
+	Button ref1_x;
+
+	@FXML
+	Button ref2_x;
+
+	@FXML
 	public Button preview;
 
 	@FXML
@@ -59,8 +77,31 @@ public class ControllerFragebogenErstellen {
 
 	private MainApp mainapp;
 
-	public void setMainApp(MainApp app) {
+	public void init() {
+		entferneReferent(ref1_x);
+		entferneReferent(ref2_x);
+		readdNode(description, 1, 0);
+		readdNode(name, 3, 0);
+		readdNode(ref1_x, 0, 1);
+		readdNode(referent_label_first, 1, 1);
+		readdNode(referent_name_first, 3, 1);
+		readdNode(ref2_x, 0, 2);
+		readdNode(referent_label, 1, 2);
+		readdNode(referent_name, 3, 2);
+	}
+
+	public void readdNode(Node node, int col, int row)
+	{
+		gridpane.getChildren().remove(node);
+		gridpane.add(node, col, row);
+	}
+
+	public void setMainApp (MainApp app){
 		mainapp = app;
+	}
+
+	public void setTab(Tab tab) {
+		this.tab = tab;
 	}
 
 	public String getName() {
@@ -94,11 +135,16 @@ public class ControllerFragebogenErstellen {
 					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
 					temp2.setFont(referent_name.getFont());
 
-					gridpane.getChildren().remove(referent_name);
-					gridpane.add(referent_name, 2, anzahl_referenten + 3, 3, 1);
+					Button x_button = new Button();
+					x_button.setText("x");
+					entferneReferent(x_button);
 
-					gridpane.add(temp, 0, anzahl_referenten + 3, 2, 1);
-					gridpane.add(temp2, 2, anzahl_referenten + 2, 3, 1);
+					gridpane.getChildren().remove(referent_name);
+					gridpane.add(referent_name, 3, anzahl_referenten + 3, 3, 1);
+
+					gridpane.add(x_button, 0, anzahl_referenten + 3, 1, 1);
+					gridpane.add(temp, 1, anzahl_referenten + 3, 2, 1);
+					gridpane.add(temp2, 3, anzahl_referenten + 2, 3, 1);
 					anzahl_referenten++;
 
 					temp2.requestFocus();
@@ -107,15 +153,70 @@ public class ControllerFragebogenErstellen {
 		});
 	}
 
-	ArrayList<String> getReferentenNamen() {
+	public void entferneReferent(Button button) {
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
 
-		ArrayList<String> referentenNamen = new ArrayList<String>(
-				List.of("Pfaffelhuber", "Werner", "Meier", "Dosterschill"));
-		return referentenNamen;
+				System.out.println("Aktion:   Referent soll gelöscht werden");
+				/* Ablauf:
+				 * - letzter Button wird entfernt
+				 * - letzter Label wird entfernt
+				 * - TextField neben diesem Button wird entfernt
+				 * - alle Textfields darunter werden nach oben verschoben
+				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner			<--  fehlt noch
+				 * - anzahlReferenten wird dekrementiert
+				 */
 
+				int letzteRow = anzahl_referenten+2;
+				System.out.println("letzte Reihe:\t"+letzteRow);
+				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
+				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
+
+				gridpane.getChildren().removeAll(letzterButton, letzterLabel, textfieldnebendiesembutton);
+
+				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
+
+					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
+//					System.out.println("temp node:\t"+temp);
+					if (temp!=null)
+					{
+						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
+					}
+				}
+
+				anzahl_referenten--;
+			}
+		});
 	}
 
-	public void addVorschauButtonHandler(int index) {
+	ArrayList<String> getReferentenNamen() {
+
+		boolean skip = true;
+		ArrayList<String> referentenNamen = new ArrayList<String>();
+
+		for (Node node : gridpane.getChildrenUnmodifiable()) {
+
+			try {
+				TextField temp = (TextField) node;
+				if (!skip && !(temp.getText().equals("")) )
+				{
+					referentenNamen.add(temp.getText());
+				}
+				else
+				{
+					skip = false;
+				}
+			} catch (Exception e) {
+				// occurs on labels and buttons
+			}
+		}
+		return referentenNamen;
+	}
+
+
+	public void addVorschauButtonHandler() {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -209,13 +310,13 @@ public class ControllerFragebogenErstellen {
 						Optional<ButtonType> result3 = alert3.showAndWait();
 
 						// Zustand2-Tab erstellen
-						mainapp.showAntwortenErfassen(getName(), index);
+						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab));
 
 						if (result3.get() == buttonTypeYes3) {
 							// Fragebogen klonen
 							setName("Kopie von " + getName());
 						} else {
-							mainapp.rootLayout.getTabs().remove(index);
+							mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
 						}
 
 					} else {

@@ -28,6 +28,10 @@ import javafx.stage.Stage;
  *      	- Anwendung muss an den Rest angebunden werden (Dekodierung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
  */
 
+/**
+ *The User Interface
+ * @author Filip Golanski
+ */
 public class MainApp extends Application {
 
     static String userName = "";
@@ -56,12 +60,10 @@ public class MainApp extends Application {
 
 	
 	/**
+	 *
 	 * The login-window appears.<br>
-	 * Related:
-	 * {@link de.azubiag.MassnahmenBewertung.UI.MainApp#addUsernameNextToButton(Button, TextField)
-	 * addUsernameNextToButton(Button, TextField)} <br>
-	 * Related: {@link de.azubiag.MassnahmenBewertung.UI.ControllerLogin
-	 * Zustand0Controller}
+	 * Related: {@link de.azubiag.MassnahmenBewertung.UI.ControllerLogin ControllerLogin}
+	 *  @author Filip Golanski <br>
 	 */
 	public void showLogin() {
 		try {
@@ -77,8 +79,7 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
-			// für eine "normale" Methode müssten all diese Buttons gleich heißen
-			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {
+			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
 				controller.next.setDisable((newValue == "") ? true : false);
 				System.out.println("old: " + oldValue + " ---> new: " + newValue);
 			});
@@ -116,8 +117,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich
-											// ändern +
+	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
 		// Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -132,13 +132,15 @@ public class MainApp extends Application {
 			ControllerFragebogenErstellen controller = loader.getController();
 			// System.out.println(controller);
 			controller.setMainApp(this);
+			controller.setTab(tab_z1);
+			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z1);
-			controller.addVorschauButtonHandler(rootLayout.getTabs().indexOf(tab_z1));
+			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();
 			controller.name.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
-																								// Methode müssten all
-																								// diese Buttons gleich
-																								// heißen
+				// Methode müssten all
+				// diese Buttons gleich
+				// heißen
 				controller.preview.setDisable((newValue == "") ? true : false);
 				System.out.println("old: " + oldValue + " ---> new: " + newValue);
 			});
@@ -162,11 +164,13 @@ public class MainApp extends Application {
 			ControllerAntwortenErfassen controller = loader.getController();
 			// System.out.println(controller);
 			controller.setMainApp(this);
+			controller.setTab(tab_z2);
 			controller.setName(name);
 			controller.setMaintext(name);
+			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
-			controller.addNext2ToButton(rootLayout.getTabs().indexOf(tab_z2));
+			controller.addNext2ToButton();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -189,6 +193,7 @@ public class MainApp extends Application {
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
 			controller.setMainApp(this);
+			controller.setTab(tab_z3);
 			controller.setName(name);
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
