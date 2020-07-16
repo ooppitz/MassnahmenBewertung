@@ -35,6 +35,8 @@ public class ControllerLogin {
 				// schauen, ob das Feld nicht leer ist
 				// Auswahlliste von Namen davor anzeigen
 				mainapp.showTabPane();
+				
+				MainApp.setUserName(username.getText());
 			}
 		});
 	}

@@ -30,6 +30,17 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
+    static String userName = "";
+	
+	public static String getUserName() {
+		return userName;
+	}
+	
+	public static void setUserName(String userName) {
+		MainApp.userName = userName;
+	}
+
+
 	Stage primaryStage;
 	TabPane rootLayout;
 
@@ -43,6 +54,7 @@ public class MainApp extends Application {
 		// showcreate();
 	}
 
+	
 	/**
 	 * The login-window appears.<br>
 	 * Related:
@@ -65,10 +77,8 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
-			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
-																									// Methode müssten
-																									// all diese Buttons
-																									// gleich heißen
+			// für eine "normale" Methode müssten all diese Buttons gleich heißen
+			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {
 				controller.next.setDisable((newValue == "") ? true : false);
 				System.out.println("old: " + oldValue + " ---> new: " + newValue);
 			});
@@ -106,8 +116,9 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
-								// Button sperren, wenn Name leer ist
+	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich
+											// ändern +
+		// Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand1.fxml"));

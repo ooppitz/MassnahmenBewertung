@@ -122,29 +122,19 @@ public class ControllerFragebogenErstellen {
 
 				try {
 
-					String pathFragebogenFile;
-					try {
-						pathFragebogenFile = Upload.getInstance().getRepositoryPfad() + "fragebogen.html";
-						
-					} catch (Exception exc) {
-						
-						// Hochladen hat nicht geklappt
-						Alert error = new Alert(AlertType.ERROR);
-						error.setTitle("Probleme beim Hochladen");
-						error.setHeaderText("Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
-						ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-						error.getButtonTypes().setAll(end);
-						error.showAndWait();
-						return;	
-					}
-					
-					HtmlCreator creator = new HtmlCreator(getReferentenNamen(),
-							"C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
-							pathFragebogenFile);
-					creator.createHtml();
+					// Erstellen des Fragebogen-Files
 
-					Desktop.getDesktop().browse(new URL("file://" + pathFragebogenFile).toURI());
-					// echter Fragebogen muss noch generiert werden !!!
+					String seminarleitername = MainApp.getUserName();
+					String fragebogenOutputPfad = Upload.getInstance().getRepositoryPfad() + "\\" + seminarleitername
+							+ "\\" + name;
+					String fragebogenTemplatePfad = Upload.getInstance().getRepositoryPfad() + "\\"
+							+ "template\\fragebogen_template.html";
+
+					// Schreibt den Fragebogen in das Repository
+					new HtmlCreator(getReferentenNamen(), fragebogenTemplatePfad, fragebogenOutputPfad).createHtml();
+					
+					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
+
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");
 					alert.setHeaderText("Fragebogen veröffentlichen?");
@@ -155,25 +145,26 @@ public class ControllerFragebogenErstellen {
 					alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 
 					Optional<ButtonType> result = alert.showAndWait();
-					
-					if (result.get() == buttonTypeYes) { 	// Nutzer drückt "ja"
-					
+
+					if (result.get() == buttonTypeYes) { // Nutzer drückt "ja"
+
 						try {
-							
-							Upload repoHandle = Upload.getInstance();  // JGit lädt Datei hoch
+
+							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
 							repoHandle.hochladen();
-							
+
 						} catch (Exception exc) {
-							
+
 							// Hochladen hat nicht geklappt
 							Alert error = new Alert(AlertType.ERROR);
 							error.setTitle("Probleme beim Hochladen");
-							error.setHeaderText("Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							error.setHeaderText(
+									"Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
 							ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
 							error.getButtonTypes().setAll(end);
 							error.showAndWait();
 							return;
-							
+
 						}
 
 						// Fortschritt anzeigen? Link anzeigen?
@@ -255,6 +246,15 @@ public class ControllerFragebogenErstellen {
 							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n URISyntaxException beim Preview-Alert");
 					alert.showAndWait();
 
+				} catch (InvalidRemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (TransportException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (GitAPIException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
 			}
