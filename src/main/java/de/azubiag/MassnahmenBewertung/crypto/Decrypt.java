@@ -42,10 +42,9 @@ public class Decrypt {
 				decrypted_text = decrypt_type_B(cipherText.substring(1));
 				break;
 			}
-		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+		} catch (IllegalArgumentException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException 
 				| NullPointerException | InvocationTargetException e) {
-			e.printStackTrace();
 		}
 
 		return decrypted_text;
