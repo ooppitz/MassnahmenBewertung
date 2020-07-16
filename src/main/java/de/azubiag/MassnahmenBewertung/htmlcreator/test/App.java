@@ -31,8 +31,10 @@ public class App {
 	public static void main(String[] args) throws IOException {
 
 		ArrayList<String> referentenListe = new ArrayList<>();
-		referentenListe.add("Dosterschill");
-		referentenListe.add("Steiner");
+		referentenListe.add("Smith");
+		referentenListe.add("Collins");
+		referentenListe.add("Webber");
+
 
 		String seminarleitername = "testseminarleiter";
 		String fragebogenname = "testfragebogenTest2.html";
