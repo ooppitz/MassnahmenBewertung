@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.TransportException;
+
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -28,37 +33,36 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 
-
 /* Erstellen des Fragebogens */
 
 public class ControllerFragebogenErstellen {
-	
+
 	int anzahl_referenten;
-	
+
 	@FXML
 	GridPane gridpane;
-	
-	@FXML 
+
+	@FXML
 	TextField name;
-	
+
 	@FXML
 	Label referent_label;
-	
+
 	@FXML
 	TextField referent_name;
 
 	@FXML
 	public Button preview;
-	
+
 	@FXML
 	public Button delete;
-	
+
 	private MainApp mainapp;
-	
-	public void setMainApp (MainApp app){
+
+	public void setMainApp(MainApp app) {
 		mainapp = app;
 	}
-	
+
 	public String getName() {
 		return name.getText();
 	}
@@ -66,7 +70,7 @@ public class ControllerFragebogenErstellen {
 	public void setName(String name) {
 		this.name.setText(name);
 	}
-	
+
 	public void addneuerReferent() {
 		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
@@ -102,29 +106,43 @@ public class ControllerFragebogenErstellen {
 			}
 		});
 	}
-	
+
 	ArrayList<String> getReferentenNamen() {
-		
-		ArrayList<String> referentenNamen = new ArrayList<String>(List.of("Pfaffelhuber","Werner", "Meier", "Dosterschill"));
+
+		ArrayList<String> referentenNamen = new ArrayList<String>(
+				List.of("Pfaffelhuber", "Werner", "Meier", "Dosterschill"));
 		return referentenNamen;
-		
+
 	}
-	
-	
+
 	public void addVorschauButtonHandler(int index) {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 
 				try {
-							
-					String property = "java.io.tmpdir";
-			        String pathFragebogenFile = System.getProperty(property) + "fragebogen.html";
+
+					String pathFragebogenFile;
+					try {
+						pathFragebogenFile = Upload.getInstance().getRepositoryPfad() + "fragebogen.html";
+						
+					} catch (Exception exc) {
+						
+						// Hochladen hat nicht geklappt
+						Alert error = new Alert(AlertType.ERROR);
+						error.setTitle("Probleme beim Hochladen");
+						error.setHeaderText("Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+						ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
+						error.getButtonTypes().setAll(end);
+						error.showAndWait();
+						return;	
+					}
+					
 					HtmlCreator creator = new HtmlCreator(getReferentenNamen(),
 							"C:\\Users\\oliveroppitz\\git\\MassnahmenBewertung\\src\\main\\resources\\de\\azubiag\\MassnahmenBewertung\\template.html",
 							pathFragebogenFile);
 					creator.createHtml();
-					
+
 					Desktop.getDesktop().browse(new URL("file://" + pathFragebogenFile).toURI());
 					// echter Fragebogen muss noch generiert werden !!!
 					Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -137,9 +155,26 @@ public class ControllerFragebogenErstellen {
 					alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 
 					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == buttonTypeYes) {
-						// Nutzer drückt ja
-						// JGit lädt Datei hoch
+					
+					if (result.get() == buttonTypeYes) { 	// Nutzer drückt "ja"
+					
+						try {
+							
+							Upload repoHandle = Upload.getInstance();  // JGit lädt Datei hoch
+							repoHandle.hochladen();
+							
+						} catch (Exception exc) {
+							
+							// Hochladen hat nicht geklappt
+							Alert error = new Alert(AlertType.ERROR);
+							error.setTitle("Probleme beim Hochladen");
+							error.setHeaderText("Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
+							error.getButtonTypes().setAll(end);
+							error.showAndWait();
+							return;
+							
+						}
 
 						// Fortschritt anzeigen? Link anzeigen?
 

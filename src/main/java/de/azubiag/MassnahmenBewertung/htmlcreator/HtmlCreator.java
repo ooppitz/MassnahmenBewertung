@@ -26,10 +26,10 @@ public class HtmlCreator {
 	String saveFile;
 	Document doc;
 
-	public HtmlCreator(ArrayList<String> refListe, String inputFile, String saveFile) {
-		this.refListe = refListe;
-		this.saveFile = saveFile;
-		this.inputFile = inputFile;
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile) {
+		this.refListe = referentenList;
+		this.saveFile = fragebogenOutputFile;
+		this.inputFile = templateFile;
 
 	}
 

@@ -11,17 +11,20 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 /* Testcode für das Hochladen eines Fragebogens */
 
 public class App {
-	
-	public static void main(String[] args) throws IOException, InvalidRemoteException, TransportException, GitAPIException {
+
+	public static void main(String[] args)
+			throws IOException, InvalidRemoteException, TransportException, GitAPIException {
+
+		Upload upl = Upload.getInstance();
 		
-		// TODO Auto-generated method stub
-		Upload upl = new Upload("githubbenutzername", "githubpasswort", "remotePfad");
-		if(upl.hochladen()==true) {
+		System.out.println(upl.getRepositoryPfad());
+		
+		if (upl.hochladen() == true) {
 			System.out.println("Hochladen hat geklappt");
 		} else {
 			System.out.println("Hochladen gescheitert");
 		}
-		
+
 	}
 
 }
