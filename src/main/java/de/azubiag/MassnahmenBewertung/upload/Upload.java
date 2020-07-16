@@ -57,6 +57,7 @@ public class Upload {
 		this.repositoryName = repositoryName;
 		
 		repoUeberpruefen();
+		
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
 		gitController = new Git(lokalRepo);

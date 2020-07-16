@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 /**
  * JavaFX App
@@ -43,8 +46,19 @@ public class App extends Application {
 		// launch();
 
 		String auswertung = berechneAuswertung();
-
 		System.out.println(auswertung);
+		
+		try {
+			// Sicherstellen, dass wir eine Instanz erzeugen können und damit garantiert ist, dass das Repo lokal vorliert
+			Upload.getInstance(); 
+			
+			// Durch den Pull wird sichergestellt, dass Änderungen im Fragebogen-Template beim nächsten Programmstart ausgeführt werden.
+			// TODO: Denis: Dafür sorgen, dass ein Pull ausgeführt. 
+			
+		} catch (GitAPIException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
