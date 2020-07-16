@@ -67,8 +67,8 @@ public class ControllerAntwortenErfassen {
 		readdNode(desc, 1, 0);
 		readdNode(name, 3, 0);
 		readdNode(answ_del, 0, 1);
-		readdNode(antwort_text, 1, 1);
-		readdNode(antwort_name, 3, 1);
+		readdNode(antwort_name, 1, 1);
+		readdNode(antwort_text, 3, 1);
 	}
 	
 	public void readdNode(Node node, int col, int row)
@@ -113,16 +113,26 @@ public class ControllerAntwortenErfassen {
 
 				String verschluesselteAntwort = clipboard.getString();
 
+				if (verschluesselteAntwort == null)
+				{
+					Alert error = new Alert(AlertType.ERROR);
+					error.setTitle("Ihre Zwischenablage ist leer!");
+					error.setHeaderText("Ihre Zwischenablage ist leer!");
+					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
+					error.getButtonTypes().setAll(end);
+					error.show();
+					return;
+				}
+				
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 
 				if (entschluesselteAntwort == null) {
 
-					// TODO: Error-Box anzeigen
 					System.err.println("Fehlerhafter String eingegeben!");
 					Alert error = new Alert(AlertType.ERROR);
 					error.setTitle("Die eingefügten Daten waren fehlerhaft!");
 					error.setHeaderText("Die eingefügten Daten waren fehlerhaft!");
-					ButtonType end = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
 					error.getButtonTypes().setAll(end);
 					error.show();
 					return;
