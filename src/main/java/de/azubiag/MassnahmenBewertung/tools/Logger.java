@@ -35,12 +35,15 @@ public class Logger {
 	
 	/* Wird von der GUI aufgerufen, um relevante Daten zu loggen */
 	
-	public static void log(String logMessage) {
+	public void log(String logMessage) {
+	
 		
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
+		Logger logger = Logger.getLogger();
+		logger.log("Das soll in das Logfile geschrieben werden!");
 
 	}
 
