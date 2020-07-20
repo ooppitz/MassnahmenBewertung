@@ -1,5 +1,6 @@
 package de.azubiag.MassnahmenBewertung.crypto;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.security.DigestException;
 import java.security.InvalidAlgorithmParameterException;
@@ -24,22 +25,28 @@ public class Decrypt {
 	 * @return Klartext-String oder null, wenn ein Fehler aufgetreten ist
 	 */
 	public static String decrypt_any_type(String cipherText) {
+		
 		String decrypted_text = null;
 
-		// First Char in cipherText indicates type of enryption
+		if (cipherText != null) {
+			// NOTE: Dieser Alg. kann dazu führen, dass bei Verschlüsselung mit Option B die Payload verändert wird.
+			// remove cipherText padding
+			cipherText = cipherText.replace("-", "").replace("<", "").replace(">", "").replace(" ", "").replace("\n", "");
+		}
+		
+		// First Char in cipherText indicates type of encryption
 		try {
 			switch (cipherText.charAt(0)) {
 			case 'A':
 				decrypted_text = decrypt_type_A(cipherText.substring(1));
-
 				break;
 			case 'B':
 				decrypted_text = decrypt_type_B(cipherText.substring(1));
 				break;
 			}
-		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
-				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-			e.printStackTrace();
+		} catch (StringIndexOutOfBoundsException | IllegalArgumentException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException 
+				| NullPointerException | InvocationTargetException e) {
 		}
 
 		return decrypted_text;
@@ -47,8 +54,11 @@ public class Decrypt {
 
 	/*
 	 * Dekodiert einen String mit dem AES Algorithmus.
+	 * 
+	 * Der mit AES kodierte String kann nur folgende Zeichen enthalten "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 	 */
-	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+	public static String decrypt_type_A(String encrypted_text) throws NoSuchAlgorithmException, NoSuchPaddingException,
+	InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvocationTargetException, IllegalArgumentException {
 		// Key
 		String secret = decrypt_type_B("Ktqhuds");
 
