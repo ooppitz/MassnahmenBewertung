@@ -115,9 +115,10 @@ public class ControllerFragebogenErstellen {
 		
 		readdNode(maßnahme_von, 1, 1);
 		readdNode(von_Datum, 3, 1);
-		// vonDatum Font
+//		((TextField) von_Datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont()); 	// Ansatz geht nicht
 		readdNode(maßnahme_bis, 4, 1);
 		readdNode(bis_Datum, 5, 1);
+//		((TextField) bis_Datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont());
 		readdNode(auftragsnummer_label, 1, 2);
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);
@@ -125,6 +126,7 @@ public class ControllerFragebogenErstellen {
 		leiter_label2.setText(mainapp.getUserName());
 		readdNode(heute_datum, 5, 3);
 		heute_datum.setValue(LocalDate.now());
+//		((TextField) heute_datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont());
 		
 		readdNode(ref1_x, 0, 4);
 		readdNode(referent_label_first, 1, 4);
@@ -163,7 +165,7 @@ public class ControllerFragebogenErstellen {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
 				if (oldValue == false && newValue == true) {
-					if (anzahl_referenten > 6) {
+					if (anzahl_referenten > 3) {
 						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
 						gridpane.addRow(anzahl_referenten + 6);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
@@ -190,7 +192,18 @@ public class ControllerFragebogenErstellen {
 					gridpane.add(temp, 1, anzahl_referenten + 6, 2, 1);
 					gridpane.add(temp2, 3, anzahl_referenten + 5, 3, 1);
 					anzahl_referenten++;
-
+					
+					int letzteRow = anzahl_referenten+5;
+					for (int i = 5; i < letzteRow; i++) {
+						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+						if (temp3!=null)
+						{
+							((Button)temp3).setDisable(false);
+						}
+					}
+					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+					((Button)temp4).setDisable(true);
+					
 					temp2.requestFocus();
 				}
 			}
@@ -212,7 +225,7 @@ public class ControllerFragebogenErstellen {
 				 * - anzahlReferenten wird dekrementiert
 				 */
 
-				int letzteRow = anzahl_referenten+2;
+				int letzteRow = anzahl_referenten+5;
 				System.out.println("letzte Reihe:\t"+letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
@@ -220,6 +233,16 @@ public class ControllerFragebogenErstellen {
 
 				gridpane.getChildren().removeAll(letzterButton, letzterLabel, textfieldnebendiesembutton);
 
+				for (int i = 5; i < letzteRow; i++) {
+					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+					if (temp!=null)
+					{
+						((Button)temp).setDisable(false);
+					}
+				}
+				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow-1, 0);
+				((Button)temp2).setDisable(true);
+				
 				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
 
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
@@ -244,7 +267,7 @@ public class ControllerFragebogenErstellen {
 
 			try {
 				TextField temp = (TextField) node;
-				if (skip==0 && !(temp.getText().equals("")) )
+				if (skip>=0 && !(temp.getText().equals("")) )
 				{
 					referentenNamen.add(temp.getText());
 				}
