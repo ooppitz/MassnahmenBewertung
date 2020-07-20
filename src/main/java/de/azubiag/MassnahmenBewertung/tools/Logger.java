@@ -43,16 +43,9 @@ public class Logger {
 	}
 	
 	/* Wird von der GUI aufgerufen, um relevante Daten zu loggen */
-	
-<<<<<<< HEAD
-	public void log(String logMessage) {
-	
-		
-=======
 	@Deprecated
 	public void log(String logMessage) {
 		logInfo(logMessage);
->>>>>>> luna-work
 	}
 	
 	public static void main(String[] args) {
