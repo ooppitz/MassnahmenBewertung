@@ -65,7 +65,7 @@ public class ControllerLogin {
 
 		String path;
 		try {
-			path = Upload.getInstance().getRepositoryPfad()+"fragebogen\\"+clean_username;
+			path = Upload.getInstance().getSeminarleiterDirectory(clean_username);
 		} catch (Exception e2) {
 			return false; // besser handlen?
 		}

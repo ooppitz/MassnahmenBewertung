@@ -13,6 +13,8 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import de.azubiag.MassnahmenBewertung.tools.Tools;
+
 /* Um Github zu verwenden, um die Fragebogen zu hosten, braucht man einen Account. 
  * 
  * https://pages.github.com/
@@ -84,6 +86,33 @@ public class Upload {
 		return repositoryPfad;
 	}
 
+	/* Liefert den Pfad auf das Template Directory */
+	public String getTemplateDirectory() {
+		return getRepositoryPfad() + "template\\";
+	}
+	
+	/* Pfad zum Ordner des Seminarleiters mit seinen Fragebögen. 
+	   @param seminarleiterName wird normalisiert.
+	 */
+	public String getSeminarleiterDirectory(String seminarleiterName) {
+	
+		seminarleiterName = Tools.normalisiereString(seminarleiterName);
+		return getRepositoryPfad() + "fragebogen\\" + seminarleiterName + "\\"; 
+	}
+
+	/* Liefert den Pfad auf die Fragebogendatei.
+	 * @param seminarleiterName wird normalisiert 
+	 * @param fragebogenName wird normalisiert */
+	public String getFragebogenPfad(String seminarleiterName, String fragebogenName) {
+		
+		fragebogenName = Tools.normalisiereString(fragebogenName);		
+		return getSeminarleiterDirectory(seminarleiterName) + fragebogenName + ".html"; 
+	}
+	
+	
+	
+	
+	
 	/*
 	 * Falls das Repo lokal schon existiert, kehrt die Methode zurück. Falls kein
 	 * ein lokales Repo existiert, wird es angelegt durch clonen des remote Repo.

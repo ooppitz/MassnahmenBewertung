@@ -10,10 +10,11 @@ public class Tools {
 	 * */
 	public static String normalisiereString(String s) {
 		s = s.toLowerCase();
+		s = s.replace("ß", "sz");
 		s = s.replace("ä", "ae");
 		s = s.replace("ö", "oe");
 		s = s.replace("ü", "ue");
-		s = s.replaceAll("[^a-zA-Z0-9]", "_");
+		s = s.replaceAll("[^a-zA-Z0-9]", "_");  
 		return s;
 	}
 	

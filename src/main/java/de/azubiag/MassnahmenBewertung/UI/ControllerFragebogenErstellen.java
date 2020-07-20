@@ -292,18 +292,12 @@ public class ControllerFragebogenErstellen {
 
 					// Erstellen des Fragebogen-Files
 
-					String seminarleitername = MainApp.getUserName();
-					String seminarleiterOrdnerName = seminarleitername; // TODO: Leerzeichen entfernen o.ä. (eigenen Methode erzeugen in tools!)
+					String seminarleiterName = MainApp.getUserName();
+					String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory() + "template_fragebogen.html";
+					String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName, fragebogenname.getText());
 					
-					String fragebogenName = fragebogenname.getText(); // TODO: Entfernen, nach Refactoring!
-					String fragebogenDateiName = fragebogenName + ".html"; // TODO: Leerzeichen entfernen o.ä.
-					
-					String fragebogenOutputPfad = Upload.getInstance().getRepositoryPfad() + "fragebogen\\" + seminarleiterOrdnerName + "\\" + fragebogenDateiName;
-					String fragebogenTemplatePfad = Upload.getInstance().getRepositoryPfad() + "\\"
-							+ "template\\template_fragebogen.html";
-
 					// Schreibt den Fragebogen in das Repository
-					new HtmlCreator(getReferentenNamen(), fragebogenTemplatePfad, fragebogenOutputPfad).createHtml();
+					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad).createHtml();
 					
 					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
 
