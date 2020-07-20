@@ -134,6 +134,14 @@ public class ControllerFragebogenErstellen {
 		readdNode(ref2_x, 0, 5);
 		readdNode(referent_label, 1, 5);
 		readdNode(referent_name, 3, 5);
+		
+		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> { 
+			
+//			if (oldValue != "" || newValue != "")
+				tab.setText(newValue);
+//			else
+//				tab.setText("Unbenannter Fragebogen");
+		});
 	}
 
 	public void readdNode(Node node, int col, int row)
