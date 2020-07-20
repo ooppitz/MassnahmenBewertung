@@ -39,7 +39,7 @@ public class ControllerLogin {
 			@Override
 			public void handle(ActionEvent e) {
 
-				String clean_username = username.getText();
+				String clean_username = username.getText().toLowerCase();
 				// schauen, ob das Feld nicht leer ist
 				// Auswahlliste von Namen davor anzeigen
 				System.out.println(System.getProperty("java.io.tmpdir")+"gfigithubaccess.github.io\\fragebogen\\"+clean_username);
