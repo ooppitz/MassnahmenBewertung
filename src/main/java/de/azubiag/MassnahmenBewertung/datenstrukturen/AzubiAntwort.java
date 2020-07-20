@@ -34,8 +34,8 @@ public class AzubiAntwort {
 		return newarray;
 	}
 	
-	public static List<AzubiAntwort> konvertiereStringsInAzubiAntworten(List<String> strings) {
-		List<AzubiAntwort> azubis = new ArrayList<>(20);
+	public static ArrayList<AzubiAntwort> konvertiereStringsInAzubiAntworten(List<String> strings) {
+		ArrayList<AzubiAntwort> azubis = new ArrayList<>(20);
 		for (String string : strings) azubis.add(new AzubiAntwort(string));
 		return azubis;
 	}
