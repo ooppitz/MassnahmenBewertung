@@ -275,7 +275,7 @@ public class ControllerFragebogenErstellen {
 
 			try {
 				TextField temp = (TextField) node;
-				if (skip>=0 && !(temp.getText().equals("")) )
+				if (skip<=0 && !(temp.getText().equals("")) )
 				{
 					referentenNamen.add(temp.getText());
 				}
