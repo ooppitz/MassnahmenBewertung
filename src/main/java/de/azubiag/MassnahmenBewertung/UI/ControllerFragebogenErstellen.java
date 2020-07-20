@@ -14,6 +14,7 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -329,6 +330,8 @@ public class ControllerFragebogenErstellen {
 
 				} catch (MalformedURLException e1) {
 					e1.printStackTrace();
+					Logger log = Logger.getLogger();
+					log.log(e1.getMessage());
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
 					alert.setHeaderText(
@@ -337,6 +340,8 @@ public class ControllerFragebogenErstellen {
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
+					Logger log = Logger.getLogger();
+					log.log(e1.getMessage());
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
 					alert.setHeaderText(
@@ -345,6 +350,8 @@ public class ControllerFragebogenErstellen {
 
 				} catch (URISyntaxException e1) {
 					e1.printStackTrace();
+					Logger log = Logger.getLogger();
+					log.log(e1.getMessage());
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
 					alert.setHeaderText(

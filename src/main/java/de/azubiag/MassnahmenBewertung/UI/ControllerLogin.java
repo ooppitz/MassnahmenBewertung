@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.tools.Tools;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.event.ActionEvent;
@@ -81,6 +82,8 @@ public class ControllerLogin {
 			if(test_file.exists())
 			{
 				Alert error = new Alert(AlertType.ERROR);
+				Logger log = Logger.getLogger();
+				log.log("Eine Datei mit diesem Namen existiert leider schon!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
 				error.setTitle("Eine Datei mit diesem Namen existiert leider schon!");
 				error.setHeaderText("Eine Datei mit diesem Namen existiert leider schon!");
 				ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
@@ -94,7 +97,8 @@ public class ControllerLogin {
 				if (!success)
 				{
 					System.out.println("Directory could not be created!!!");
-
+					Logger log = Logger.getLogger();
+					log.log("Dieser Benutzername kann nicht verwendet werden!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
 					// Alert
 					Alert error = new Alert(AlertType.ERROR);
 					error.setTitle("Dieser Benutzername kann nicht verwendet werden!");
@@ -107,6 +111,8 @@ public class ControllerLogin {
 				else
 				{
 					System.out.println("Directory created!");
+					Logger log = Logger.getLogger();
+					log.log("Ordner erstellt!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
 					return true;
 				}
 			}
