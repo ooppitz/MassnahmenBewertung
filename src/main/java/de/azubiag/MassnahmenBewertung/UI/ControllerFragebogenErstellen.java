@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
@@ -50,7 +52,34 @@ public class ControllerFragebogenErstellen {
 	Label description;
 
 	@FXML 
-	TextField name;  // TODO: Fragebogenname
+	TextField fragebogenname;
+	
+	@FXML
+	Label maßnahme_von;
+	
+	@FXML
+	DatePicker von_Datum;
+	
+	@FXML
+	Label maßnahme_bis;
+	
+	@FXML 
+	DatePicker bis_Datum;
+	
+	@FXML
+	Label auftragsnummer_label;
+	
+	@FXML 
+	TextField auftragsnummer_textfield;
+	
+	@FXML
+	Label leiter_label1;
+	
+	@FXML 
+	Label leiter_label2;
+	
+	@FXML
+	DatePicker heute_datum;
 
 	@FXML
 	Label referent_label;
@@ -82,13 +111,27 @@ public class ControllerFragebogenErstellen {
 		entferneReferent(ref1_x);
 		entferneReferent(ref2_x);
 		readdNode(description, 1, 0);
-		readdNode(name, 3, 0);
-		readdNode(ref1_x, 0, 1);
-		readdNode(referent_label_first, 1, 1);
-		readdNode(referent_name_first, 3, 1);
-		readdNode(ref2_x, 0, 2);
-		readdNode(referent_label, 1, 2);
-		readdNode(referent_name, 3, 2);
+		readdNode(fragebogenname, 3, 0);
+		
+		readdNode(maßnahme_von, 1, 1);
+		readdNode(von_Datum, 3, 1);
+		// vonDatum Font
+		readdNode(maßnahme_bis, 4, 1);
+		readdNode(bis_Datum, 5, 1);
+		readdNode(auftragsnummer_label, 1, 2);
+		readdNode(auftragsnummer_textfield, 3, 2);
+		readdNode(leiter_label1, 1, 3);
+		readdNode(leiter_label2, 3, 3);
+		leiter_label2.setText(mainapp.getUserName());
+		readdNode(heute_datum, 5, 3);
+		heute_datum.setValue(LocalDate.now());
+		
+		readdNode(ref1_x, 0, 4);
+		readdNode(referent_label_first, 1, 4);
+		readdNode(referent_name_first, 3, 4);
+		readdNode(ref2_x, 0, 5);
+		readdNode(referent_label, 1, 5);
+		readdNode(referent_name, 3, 5);
 	}
 
 	public void readdNode(Node node, int col, int row)
@@ -106,11 +149,11 @@ public class ControllerFragebogenErstellen {
 	}
 
 	public String getName() {
-		return name.getText();
+		return fragebogenname.getText();
 	}
 
 	public void setName(String name) {
-		this.name.setText(name);
+		this.fragebogenname.setText(name);
 	}
 
 	public void addneuerReferent() {
@@ -122,13 +165,13 @@ public class ControllerFragebogenErstellen {
 				if (oldValue == false && newValue == true) {
 					if (anzahl_referenten > 6) {
 						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
-						gridpane.addRow(anzahl_referenten + 3);
+						gridpane.addRow(anzahl_referenten + 6);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
 						// aussieht
 					}
 
 					Label temp = new Label();
-					temp.setText("   Name von Referent ");
+					temp.setText("     Name von Referent ");
 					temp.setText(temp.getText() + (anzahl_referenten + 3) + ":");
 					temp.setFont(referent_label.getFont());
 
@@ -141,11 +184,11 @@ public class ControllerFragebogenErstellen {
 					entferneReferent(x_button);
 
 					gridpane.getChildren().remove(referent_name);
-					gridpane.add(referent_name, 3, anzahl_referenten + 3, 3, 1);
+					gridpane.add(referent_name, 3, anzahl_referenten + 6, 3, 1);
 
-					gridpane.add(x_button, 0, anzahl_referenten + 3, 1, 1);
-					gridpane.add(temp, 1, anzahl_referenten + 3, 2, 1);
-					gridpane.add(temp2, 3, anzahl_referenten + 2, 3, 1);
+					gridpane.add(x_button, 0, anzahl_referenten + 6, 1, 1);
+					gridpane.add(temp, 1, anzahl_referenten + 6, 2, 1);
+					gridpane.add(temp2, 3, anzahl_referenten + 5, 3, 1);
 					anzahl_referenten++;
 
 					temp2.requestFocus();
@@ -194,20 +237,20 @@ public class ControllerFragebogenErstellen {
 
 	ArrayList<String> getReferentenNamen() {
 
-		boolean skip = true;
+		int skip = 2;
 		ArrayList<String> referentenNamen = new ArrayList<String>();
 
 		for (Node node : gridpane.getChildrenUnmodifiable()) {
 
 			try {
 				TextField temp = (TextField) node;
-				if (!skip && !(temp.getText().equals("")) )
+				if (skip==0 && !(temp.getText().equals("")) )
 				{
 					referentenNamen.add(temp.getText());
 				}
 				else
 				{
-					skip = false;
+					skip--;
 				}
 			} catch (Exception e) {
 				// occurs on labels and buttons
@@ -229,7 +272,7 @@ public class ControllerFragebogenErstellen {
 					String seminarleitername = MainApp.getUserName();
 					String seminarleiterOrdnerName = seminarleitername; // TODO: Leerzeichen entfernen o.ä. (eigenen Methode erzeugen in tools!)
 					
-					String fragebogenName = name.getText(); // TODO: Entfernen, nach Refactoring!
+					String fragebogenName = fragebogenname.getText(); // TODO: Entfernen, nach Refactoring!
 					String fragebogenDateiName = fragebogenName + ".html"; // TODO: Leerzeichen entfernen o.ä.
 					
 					String fragebogenOutputPfad = Upload.getInstance().getRepositoryPfad() + "fragebogen\\" + seminarleiterOrdnerName + "\\" + fragebogenDateiName;

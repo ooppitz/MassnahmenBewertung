@@ -53,11 +53,9 @@ public class ControllerLogin {
 
 				if(alles_ok)
 				{
+					MainApp.setUserName(username.getText());
 					mainapp.showTabPane();
 				}
-
-				MainApp.setUserName(username.getText());
-
 			}
 
 		});
