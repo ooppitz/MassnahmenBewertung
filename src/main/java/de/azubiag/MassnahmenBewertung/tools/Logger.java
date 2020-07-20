@@ -106,7 +106,7 @@ public class Logger {
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);
 		int day = c.get(Calendar.DAY_OF_MONTH);
-		int hour = c.get(Calendar.HOUR);
+		int hour = c.get(Calendar.HOUR_OF_DAY);
 		int minute = c.get(Calendar.MINUTE);
 		int second = c.get(Calendar.SECOND);
 		return String.format("%04d%02d%02d%02d%02d%02d", year, month, day, hour, minute, second);
