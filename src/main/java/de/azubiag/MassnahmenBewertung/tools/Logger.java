@@ -50,8 +50,10 @@ public class Logger {
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Logger logger = Logger.getLogger();
+		
+		logger.logInfo("Button gedrückt");
+		logger.logError(new IOException("LMFAO"));
 	}
 	
 	// Doesn't have a sinnvoll target yet, using stderr as placeholder
@@ -107,6 +109,6 @@ public class Logger {
 		int hour = c.get(Calendar.HOUR);
 		int minute = c.get(Calendar.MINUTE);
 		int second = c.get(Calendar.SECOND);
-		return String.format("%04d%02d%02d%02d%02%02d", year, month, day, hour, minute, second);
+		return String.format("%04d%02d%02d%02d%02d%02d", year, month, day, hour, minute, second);
 	}
 }
