@@ -9,7 +9,10 @@ public class Tools {
 	 *  - der Filename wird in Kleinbuchstaben umgewandelt
 	 * */
 	public static String normalisiereString(String s) {
-		
+		s = s.replace("ä", "ae");
+		s = s.replace("ö", "oe");
+		s = s.replace("ü", "ue");
+		s = s.replaceAll("[^a-zA-Z0-9]", "_");
 		return s.toLowerCase();
 	}
 	
