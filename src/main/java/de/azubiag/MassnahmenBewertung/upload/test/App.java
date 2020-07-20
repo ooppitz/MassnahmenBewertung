@@ -18,15 +18,7 @@ public class App {
 		Upload upl = Upload.getInstance();
 		
 		System.out.println(upl.getRepositoryPfad());
-		
-<<<<<<< HEAD
-		
-		// Erzeugen eines Fragebogens mit Hilfe des HMTLCreator-Codes
-	
-	
-		
-=======
->>>>>>> GUI-Filip
+
 		if (upl.hochladen() == true) {
 			System.out.println("Hochladen hat geklappt");
 		} else {
