@@ -49,7 +49,7 @@ public class ControllerFragebogenErstellen {
 	Label description;
 
 	@FXML 
-	TextField name;
+	TextField name;  // TODO: Fragebogenname
 
 	@FXML
 	Label referent_label;
@@ -226,10 +226,14 @@ public class ControllerFragebogenErstellen {
 					// Erstellen des Fragebogen-Files
 
 					String seminarleitername = MainApp.getUserName();
-					String fragebogenOutputPfad = Upload.getInstance().getRepositoryPfad() + "\\" + seminarleitername
-							+ "\\" + name;
+					String seminarleiterOrdnerName = seminarleitername; // TODO: Leerzeichen entfernen o.ä. (eigenen Methode erzeugen in tools!)
+					
+					String fragebogenName = name.getText(); // TODO: Entfernen, nach Refactoring!
+					String fragebogenDateiName = fragebogenName + ".html"; // TODO: Leerzeichen entfernen o.ä.
+					
+					String fragebogenOutputPfad = Upload.getInstance().getRepositoryPfad() + "fragebogen\\" + seminarleiterOrdnerName + "\\" + fragebogenDateiName;
 					String fragebogenTemplatePfad = Upload.getInstance().getRepositoryPfad() + "\\"
-							+ "template\\fragebogen_template.html";
+							+ "template\\template_fragebogen.html";
 
 					// Schreibt den Fragebogen in das Repository
 					new HtmlCreator(getReferentenNamen(), fragebogenTemplatePfad, fragebogenOutputPfad).createHtml();

@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import de.azubiag.MassnahmenBewertung.tools.Tools;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,7 +45,7 @@ public class ControllerLogin {
 			@Override
 			public void handle(ActionEvent e) {
 
-				String clean_username = username.getText().toLowerCase();
+				String clean_username = Tools.normalisiereString(username.getText());
 				// schauen, ob das Feld nicht leer ist
 				// Auswahlliste von Namen davor anzeigen
 				boolean alles_ok = erstelleNeuenOrdnerFallsNotwendig(clean_username);
