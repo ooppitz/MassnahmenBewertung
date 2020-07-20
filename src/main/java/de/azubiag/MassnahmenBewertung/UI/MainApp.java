@@ -137,7 +137,7 @@ public class MainApp extends Application {
 			addDeleteToButton(controller.delete, rootLayout, tab_z1);
 			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();
-			controller.name.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
+			controller.fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
 				// Methode müssten all
 				// diese Buttons gleich
 				// heißen

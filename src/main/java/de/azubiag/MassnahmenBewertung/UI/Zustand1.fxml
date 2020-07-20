@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -43,9 +44,9 @@
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="39.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="159.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="111.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="161.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="191.0" />
-                  <ColumnConstraints hgrow="ALWAYS" maxWidth="10000.0" minWidth="10.0" prefWidth="164.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="10000.0" minWidth="10.0" prefWidth="200.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -60,38 +61,89 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="description" text="Name des Fragebogens :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label fx:id="description" text="Name des Fragebogens :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
                   </Label>
-                  <Label fx:id="referent_label_first" text="Name von Referent 1 :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Label fx:id="referent_label_first" text="Name von Referent 1 :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
+                     <GridPane.margin>
+                        <Insets left="30.0" />
+                     </GridPane.margin>
                   </Label>
-                  <Label fx:id="referent_label" text="Name von Referent 2 :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <Label fx:id="referent_label" text="Name von Referent 2 :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
+                     <GridPane.margin>
+                        <Insets left="30.0" />
+                     </GridPane.margin>
                   </Label>
-                  <TextField fx:id="name" promptText="Unbenannter Fragebogen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <TextField fx:id="fragebogenname" promptText="Unbenannter Fragebogen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="referent_name_first" promptText="Referent angeben" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <TextField fx:id="referent_name_first" promptText="Referent angeben" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="referent_name" promptText="Klicken, um einen weiteren Referenten hinzuzufügen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <TextField fx:id="referent_name" promptText="Klicken, um einen weiteren Referenten hinzuzufügen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="ref1_x" mnemonicParsing="false" text="x" GridPane.rowIndex="1" />
-                  <Button fx:id="ref2_x" mnemonicParsing="false" text="x" GridPane.rowIndex="2" />
+                  <Button fx:id="ref1_x" mnemonicParsing="false" text="x" GridPane.rowIndex="4" />
+                  <Button fx:id="ref2_x" disable="true" mnemonicParsing="false" text="x" GridPane.rowIndex="5" />
+                  <Label fx:id="maßnahme_von" text="Maßnahme von" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="30.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <DatePicker fx:id="von_Datum" promptText="10.10.2020" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <DatePicker fx:id="bis_Datum" promptText="11.11.2020" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <Label fx:id="maßnahme_bis" text="bis" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="auftragsnummer_label" text="Auftragsnummer:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="30.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <TextField fx:id="auftragsnummer_textfield" promptText="F-024-27" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <Label fx:id="leiter_label1" text="Seminarleiter/-in:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="30.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="leiter_label2" ellipsisString="(...)" text="           " textOverrun="CENTER_ELLIPSIS" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="heute_datum" promptText="20.07.2020" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                </children>
                <opaqueInsets>
                   <Insets />

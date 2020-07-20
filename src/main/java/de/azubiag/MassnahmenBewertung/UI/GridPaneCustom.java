@@ -1,5 +1,6 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
@@ -17,6 +18,8 @@ public class GridPaneCustom {
 			}
 		}
 		System.err.println("FEHLER:\tNode nicht gefunden!\tEs wurde nach row="+row+" ,column="+column+" gesucht.");
+		Logger log = Logger.getLogger();
+		log.log("GridPaneCustom:\tNode nicht gefunden!\tEs wurde nach row="+row+" ,column="+column+" gesucht.");
 		return null;
 	}
 	
