@@ -117,7 +117,7 @@ public class ControllerAuswertungAnzeigen {
 	
 	public void betreuung() {
 		
-		Label ueberschrift_betreuung = new Label("1. Maßnahmebetreuung:");
+		Label ueberschrift_betreuung = new Label("2. Maßnahmebetreuung:");
 		Label u__2 = new Label("-2");
 		Label u__1 = new Label("-1");
 		Label u_0 = new Label(" 0");

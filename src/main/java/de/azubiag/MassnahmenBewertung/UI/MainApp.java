@@ -204,6 +204,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			controller.setTab(tab_z3);
 			controller.setName(name);
+			controller.init();
 			controller.antwortListe = antwortListe;
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
