@@ -88,7 +88,7 @@ public class Logger {
 		logIt("INFO", info);
 	}
 	
-	private void logIt(String category, Object logMe) {
+	private synchronized void logIt(String category, Object logMe) {
 		logstream.println(category + "@" + timeString());
 		if (logMe instanceof Throwable) {
 			Throwable ball = (Throwable) logMe;
