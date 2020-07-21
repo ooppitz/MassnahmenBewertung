@@ -173,7 +173,7 @@ public class MainApp extends Application {
 			tab_z2.setText(name);
 			rootLayout.getTabs().add(index + 1, tab_z2);
 			ControllerAntwortenErfassen controller = loader.getController();
-			OnCloseMethod(controller);
+			onCloseMethod(controller);
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z2);
@@ -279,7 +279,7 @@ public class MainApp extends Application {
 		launch(args);
 	}
 	
-	public void OnCloseMethod(ControllerAntwortenErfassen controller) {
+	public void onCloseMethod(ControllerAntwortenErfassen controller) {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
