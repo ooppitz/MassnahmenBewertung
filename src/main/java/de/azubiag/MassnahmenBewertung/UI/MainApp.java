@@ -1,9 +1,14 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -83,7 +88,8 @@ public class MainApp extends Application {
 			controller.addUsernameNextToButton();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
 				controller.next.setDisable((newValue == "") ? true : false);
-				System.out.println("old: " + oldValue + " ---> new: " + newValue);
+				Logger logger = Logger.getLogger();
+				logger.logInfo("Login-Textfeld-Eingabe, old: " + oldValue + " ---> new: " + newValue);
 			});
 
 			primaryStage.show();
@@ -144,7 +150,8 @@ public class MainApp extends Application {
 				// diese Buttons gleich
 				// heißen
 				controller.preview.setDisable((newValue == "") ? true : false);
-				System.out.println("old: " + oldValue + " ---> new: " + newValue);
+				Logger logger = Logger.getLogger();
+				logger.logInfo("Textfeld-Eingabe, old: " + oldValue + " ---> new: " + newValue);
 			});
 
 		} catch (IOException e) {
@@ -210,6 +217,22 @@ public class MainApp extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				pane.getTabs().remove(thistab);
+				String seminarleiter = MainApp.getUserName();
+
+				try {
+					File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
+					if (f.delete()) // returns Boolean value
+					
+					{
+						Upload.getInstance().hochladen();
+						System.out.println(f.getName() + " deleted"); // getting and printing the file name
+					} else {
+						System.out.println("failed");
+					}
+				} catch (GitAPIException | IOException exc) {
+					// TODO Auto-generated catch block
+					exc.printStackTrace();
+				}
 			}
 		});
 	}
@@ -224,6 +247,8 @@ public class MainApp extends Application {
 			@Override
 			public void handle(Event t) {
 				if (tab_plus.isSelected()) {
+					Logger logger = Logger.getLogger();
+					logger.logInfo("Neuer-Tab-Reiter geklickt");
 					int size = rootLayout.getTabs().size(); // amount of tabs
 					if (size != 1) {
 						rootLayout.getTabs().remove(size - 1);

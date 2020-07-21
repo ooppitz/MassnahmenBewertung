@@ -14,21 +14,23 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 
 /* Eingeben der Antworten */
 
-public class ControllerAntwortenErfassen {
+public class ControllerAntwortenErfassen implements Serializable {
 
 
-	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
+	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
 	Tab tab;
 
-	int anzahl_antworten;
+	int anzahl_antworten;    // Serialisieren 
 
 	@FXML
 	Label desc;
@@ -43,7 +45,7 @@ public class ControllerAntwortenErfassen {
 	GridPane gridpane;
 
 	@FXML
-	private Label name;
+	private Label fragebogenName;  // Serialisieren
 
 	@FXML
 	private Label maintext;
@@ -65,7 +67,7 @@ public class ControllerAntwortenErfassen {
 	public void init() {
 		removeAnswer(answ_del);
 		readdNode(desc, 1, 0);
-		readdNode(name, 3, 0);
+		readdNode(fragebogenName, 3, 0);
 		readdNode(answ_del, 0, 1);
 		readdNode(antwort_name, 1, 1);
 		readdNode(antwort_text, 3, 1);
@@ -86,11 +88,11 @@ public class ControllerAntwortenErfassen {
 	}
 
 	public String getName() {
-		return name.getText();
+		return fragebogenName.getText();
 	}
 
 	public void setName(String name) {
-		this.name.setText(name);
+		this.fragebogenName.setText(name);
 	}
 
 	public String getMaintext() {
@@ -115,6 +117,8 @@ public class ControllerAntwortenErfassen {
 
 				if (verschluesselteAntwort == null)
 				{
+					Logger logger = Logger.getLogger();
+					logger.logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
 					Alert error = new Alert(AlertType.ERROR);
 					error.setTitle("Ihre Zwischenablage ist leer!");
 					error.setHeaderText("Ihre Zwischenablage ist leer!");
@@ -127,8 +131,8 @@ public class ControllerAntwortenErfassen {
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 
 				if (entschluesselteAntwort == null) {
-
-					System.err.println("Fehlerhafter String eingegeben!");
+					Logger logger = Logger.getLogger();
+					logger.logError("Beim Eingaben eines Antwortstrings: Fehlerhafter String eingegeben!");
 					Alert error = new Alert(AlertType.ERROR);
 					error.setTitle("Die eingefügten Daten waren fehlerhaft!");
 					error.setHeaderText("Die eingefügten Daten waren fehlerhaft!");
@@ -196,8 +200,8 @@ public class ControllerAntwortenErfassen {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
-				System.out.println("Es soll eine Antwort entfernt werden.");
+				Logger logger = Logger.getLogger();
+				logger.logInfo("Es soll eine Antwort entfernt werden.");
 				/*	Ablauf:
 				 * - letzter Button wird entfernt
 				 * - letzter Label wird entfernt
@@ -209,7 +213,7 @@ public class ControllerAntwortenErfassen {
 				 */
 				
 				int letzteRow = anzahl_antworten+1;
-				System.out.println("letzte Reihe:\t"+letzteRow);
+				logger.logInfo("letzte Reihe: "+letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
 				Label labelnebendiesembutton = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
@@ -229,7 +233,7 @@ public class ControllerAntwortenErfassen {
 				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
 
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
-					System.out.println("temp node:\t"+temp);
+					logger.logInfo("temp node: "+temp);
 					if (temp!=null)
 					{
 						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
@@ -248,12 +252,22 @@ public class ControllerAntwortenErfassen {
 				// Next
 				// controller.antwortListe an die Auswertung schicken
 				for (AzubiAntwort azubiAntwort : antwortListe) {
+					// TODO entfernen
 					System.out.println(azubiAntwort.toString());
 				}
 
 				// Auswertung zurückbekommen
-				mainapp.showAuswertungAnzeigen(name.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+				mainapp.showAuswertungAnzeigen(fragebogenName.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+
 			}
 		});
+	}
+	
+	/* Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen der Ansicht nötig sind. */
+	
+	public void speichern() {
+		
+		System.out.println("Hier wird später der Zustand des Objektes serialisiert");
+		
 	}
 }
