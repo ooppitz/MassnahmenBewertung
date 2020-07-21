@@ -148,7 +148,7 @@ public class Upload {
 			gitController.add().addFilepattern(".").call();
 
 			// git commit
-			gitController.commit().setMessage("Test").call();
+			gitController.commit().setAll(true).setMessage("Test").call();
 
 			// git push --> Schreibt die Änderungen in das remote Repo
 			// $ git push --all
