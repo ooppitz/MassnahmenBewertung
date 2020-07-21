@@ -12,6 +12,8 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class App {
 
+	static String remoteRepoPath = "https://github.com/gfigithubaccess/jgitest.git";
+	
 	public static void main(String[] args)
 			throws IOException, InvalidRemoteException, TransportException, GitAPIException {
 
