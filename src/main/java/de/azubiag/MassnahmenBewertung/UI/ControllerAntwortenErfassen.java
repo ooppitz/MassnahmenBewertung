@@ -199,7 +199,7 @@ public class ControllerAntwortenErfassen {
 				 */
 				
 				int letzteRow = anzahl_antworten+1;
-				System.out.println("letzte Reihe:\t"+letzteRow);
+				logger.logInfo("letzte Reihe: "+letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
 				Label labelnebendiesembutton = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
