@@ -134,6 +134,14 @@ public class ControllerFragebogenErstellen {
 		readdNode(ref2_x, 0, 5);
 		readdNode(referent_label, 1, 5);
 		readdNode(referent_name, 3, 5);
+		
+		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> { 
+			
+//			if (oldValue != "" || newValue != "")
+				tab.setText(newValue);
+//			else
+//				tab.setText("Unbenannter Fragebogen");
+		});
 	}
 
 	public void readdNode(Node node, int col, int row)
@@ -268,7 +276,7 @@ public class ControllerFragebogenErstellen {
 
 			try {
 				TextField temp = (TextField) node;
-				if (skip>=0 && !(temp.getText().equals("")) )
+				if (skip<=0 && !(temp.getText().equals("")) )
 				{
 					referentenNamen.add(temp.getText());
 				}
@@ -315,6 +323,21 @@ public class ControllerFragebogenErstellen {
 
 					if (result.get() == buttonTypeYes) { // Nutzer drückt "ja"
 
+						// Fortschritt anzeigen? Link anzeigen?
+
+						Dialog<ButtonType> dialog = new Dialog<>();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(MainApp.class.getResource("upload.fxml"));
+						DialogPane grid = (DialogPane) loader.load();
+						dialog.setDialogPane(grid);
+						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+						dialog.getDialogPane().getButtonTypes().add(cancel);
+
+						dialog.initOwner(mainapp.primaryStage);
+						dialog.initModality(Modality.APPLICATION_MODAL);
+						dialog.setTitle("Hochladen");
+						UploadController upload_controller = loader.getController();
+
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
@@ -334,22 +357,6 @@ public class ControllerFragebogenErstellen {
 							return;
 
 						}
-
-						// Fortschritt anzeigen? Link anzeigen?
-
-						Dialog<ButtonType> dialog = new Dialog<>();
-						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(MainApp.class.getResource("upload.fxml"));
-						DialogPane grid = (DialogPane) loader.load();
-						dialog.setDialogPane(grid);
-						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
-						dialog.getDialogPane().getButtonTypes().add(cancel);
-
-						dialog.initOwner(mainapp.primaryStage);
-						dialog.initModality(Modality.APPLICATION_MODAL);
-						dialog.setTitle("Hochladen");
-						UploadController upload_controller = loader.getController();
-
 						// 8.8.8.8 pingen
 						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
 						// da Github Pages trotzdem etwas anzeigt)

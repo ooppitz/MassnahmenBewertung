@@ -100,7 +100,7 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="ref1_x" mnemonicParsing="false" text="x" GridPane.rowIndex="4" />
+                  <Button fx:id="ref1_x" disable="true" mnemonicParsing="false" text="x" GridPane.rowIndex="4" />
                   <Button fx:id="ref2_x" disable="true" mnemonicParsing="false" text="x" GridPane.rowIndex="5" />
                   <Label fx:id="maßnahme_von" text="Maßnahme von" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                      <font>
