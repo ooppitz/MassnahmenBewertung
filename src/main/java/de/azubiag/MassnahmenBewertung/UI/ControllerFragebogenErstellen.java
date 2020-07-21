@@ -341,7 +341,7 @@ public class ControllerFragebogenErstellen {
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-							repoHandle.hochladen();
+				//			repoHandle.hochladen();
 
 						} catch (Exception exc) {
 							

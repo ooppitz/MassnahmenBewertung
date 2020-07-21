@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
@@ -266,7 +267,10 @@ public class ControllerAntwortenErfassen implements Serializable {
 	
 	public void speichern() {
 		
-		System.out.println("Hier wird später der Zustand des Objektes serialisiert");
+		Alert al = new Alert(AlertType.WARNING);
+		ButtonType jabutton = new ButtonType("ja");
+		ButtonType neinbutton = new ButtonType("nein");
+		al.getButtonTypes().setAll(jabutton, neinbutton);
 		
 	}
 }
