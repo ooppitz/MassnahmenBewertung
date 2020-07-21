@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 
 /* Eingeben der Antworten */
 
@@ -115,6 +116,8 @@ public class ControllerAntwortenErfassen {
 
 				if (verschluesselteAntwort == null)
 				{
+					Logger logger = Logger.getLogger();
+					logger.logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
 					Alert error = new Alert(AlertType.ERROR);
 					error.setTitle("Ihre Zwischenablage ist leer!");
 					error.setHeaderText("Ihre Zwischenablage ist leer!");
@@ -127,8 +130,8 @@ public class ControllerAntwortenErfassen {
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 
 				if (entschluesselteAntwort == null) {
-
-					System.err.println("Fehlerhafter String eingegeben!");
+					Logger logger = Logger.getLogger();
+					logger.logError("Beim Eingaben eines Antwortstrings: Fehlerhafter String eingegeben!");
 					Alert error = new Alert(AlertType.ERROR);
 					error.setTitle("Die eingefügten Daten waren fehlerhaft!");
 					error.setHeaderText("Die eingefügten Daten waren fehlerhaft!");
@@ -183,8 +186,8 @@ public class ControllerAntwortenErfassen {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
-				System.out.println("Es soll eine Antwort entfernt werden.");
+				Logger logger = Logger.getLogger();
+				logger.logInfo("Es soll eine Antwort entfernt werden.");
 				/*	Ablauf:
 				 * - letzter Button wird entfernt
 				 * - letzter Label wird entfernt
@@ -206,7 +209,7 @@ public class ControllerAntwortenErfassen {
 				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
 
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
-					System.out.println("temp node:\t"+temp);
+					logger.logInfo("temp node: "+temp);
 					if (temp!=null)
 					{
 						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
@@ -225,6 +228,7 @@ public class ControllerAntwortenErfassen {
 				// Next
 				// controller.antwortListe an die Auswertung schicken
 				for (AzubiAntwort azubiAntwort : antwortListe) {
+					// TODO entfernen
 					System.out.println(azubiAntwort.toString());
 				}
 
