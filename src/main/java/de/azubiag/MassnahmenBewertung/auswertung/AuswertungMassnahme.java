@@ -21,17 +21,17 @@ public class AuswertungMassnahme {
 	final static int BEW_REFERENT = 3;
 
 	// Maßnahmeverlauf:
-	int[] pktvertOrg = new int[5];
-	double durchschnOrg;
+	public int[] pktvertOrg = new int[5];
+	public double durchschnOrg;
 
-	int[] pktvertVerl = new int[5];
-	double durchschnVerl;
+	public int[] pktvertVerl = new int[5];
+	public double durchschnVerl;
 
 	ArrayList<String> alleBemerkVerl;
 
 	// Maßnahmebetreuung
-	int[] pktvertBetrng = new int[5];
-	double durchschnBetrng;
+	public int[] pktvertBetrng = new int[5];
+	public double durchschnBetrng;
 
 	ArrayList<String> alleBemerkBetrng;
 
