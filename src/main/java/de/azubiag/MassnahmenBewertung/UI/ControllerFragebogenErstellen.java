@@ -215,7 +215,8 @@ public class ControllerFragebogenErstellen {
 			@Override
 			public void handle(ActionEvent e) {
 
-				System.out.println("Aktion:   Referent soll gelöscht werden");
+				Logger logger = Logger.getLogger();
+				logger.logInfo("Aktion: Referent soll gelöscht werden");
 				/* Ablauf:
 				 * - letzter Button wird entfernt
 				 * - letzter Label wird entfernt
@@ -226,7 +227,7 @@ public class ControllerFragebogenErstellen {
 				 */
 
 				int letzteRow = anzahl_referenten+5;
-				System.out.println("letzte Reihe:\t"+letzteRow);
+				logger.logInfo("ControllerFragebogenErstellen.entferneReferent\nletzte Reihe: "+letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
 				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
@@ -287,7 +288,7 @@ public class ControllerFragebogenErstellen {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
+				Logger logger = Logger.getLogger();
 				try {
 
 					// Erstellen des Fragebogen-Files
@@ -320,7 +321,8 @@ public class ControllerFragebogenErstellen {
 							repoHandle.hochladen();
 
 						} catch (Exception exc) {
-
+							
+							logger.logError(exc);
 							// Hochladen hat nicht geklappt
 							Alert error = new Alert(AlertType.ERROR);
 							error.setTitle("Probleme beim Hochladen");
@@ -362,7 +364,7 @@ public class ControllerFragebogenErstellen {
 						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 						upload_controller.progress.setProgress(1);
 						Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
-						System.out.println(result2);
+						logger.logInfo("result2 = " + result2.toString());
 						// w�re praktisch, den Link noch woanders anzuzeigen
 
 						// Fenster f�r Klonen anzeigen
@@ -388,45 +390,17 @@ public class ControllerFragebogenErstellen {
 						// nichts tun
 					}
 
-				} catch (MalformedURLException e1) {
-					e1.printStackTrace();
-					Logger log = Logger.getLogger();
-					log.log(e1.getMessage());
+				} catch (IOException | URISyntaxException | GitAPIException e1) {
+					// SO KRIEGT MAN DEN TYP DER EXCEPTION: MIT GETCLASS.GETNAME!!!!!!!!!!!!!!!!!!!!!!
+					logger.logError(e1);
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Fehler");
 					alert.setHeaderText(
-							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n MalformedURLException beim Preview-Alert");
+							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n"
+									+ e1.getClass().getName() + " beim Preview-Alert. \n"
+									+ "Interne Fehlermeldung: " + e1.getMessage());
 					alert.showAndWait();
 
-				} catch (IOException e1) {
-					e1.printStackTrace();
-					Logger log = Logger.getLogger();
-					log.log(e1.getMessage());
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Fehler");
-					alert.setHeaderText(
-							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n IOException beim Preview-Alert");
-					alert.showAndWait();
-
-				} catch (URISyntaxException e1) {
-					e1.printStackTrace();
-					Logger log = Logger.getLogger();
-					log.log(e1.getMessage());
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Fehler");
-					alert.setHeaderText(
-							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n URISyntaxException beim Preview-Alert");
-					alert.showAndWait();
-
-				} catch (InvalidRemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (TransportException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (GitAPIException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 
 			}
