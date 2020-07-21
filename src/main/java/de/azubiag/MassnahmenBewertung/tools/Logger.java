@@ -37,7 +37,7 @@ public class Logger {
 	
 	public static Logger getLogger() {
 		if (theLogger == null) {
-			theLogger = new Logger();
+			theLogger = new Logger(); // TODO: Add default file for logging
 		}
 		return  theLogger;
 	}

@@ -8,6 +8,7 @@ package de.azubiag.MassnahmenBewertung.htmlcreator.test;
 
 import de.azubiag.MassnahmenBewertung.UI.MainApp;
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 import java.io.BufferedWriter;
@@ -51,8 +52,10 @@ public class App {
 			new HtmlCreator(referentenListe, fragebogenTemplatePfad, fragebogenOutputPfad).createHtml();
 
 		} catch (GitAPIException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+			Logger log = Logger.getLogger();
+			log.logError(e);
+			
 		}
 		
 	}
