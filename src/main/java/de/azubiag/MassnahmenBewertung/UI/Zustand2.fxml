@@ -79,7 +79,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="answ_del" mnemonicParsing="false" text="x" GridPane.rowIndex="1" />
+                  <Button fx:id="answ_del" disable="true" mnemonicParsing="false" text="x" GridPane.rowIndex="1" />
                </children>
                <opaqueInsets>
                   <Insets />

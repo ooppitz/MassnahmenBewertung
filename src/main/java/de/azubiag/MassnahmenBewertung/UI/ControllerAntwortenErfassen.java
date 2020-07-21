@@ -142,9 +142,9 @@ public class ControllerAntwortenErfassen {
 					System.out.println(
 							"Verschlüsselt: " + verschluesselteAntwort + " Entschlüsselt: " + entschluesselteAntwort);
 
-					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);
+//					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);   // <-- ZUM DEBUGGEN AUSGESCHALTET
 
-					antwortListe.add(antwort);
+//					antwortListe.add(antwort); // <-- ZUM DEBUGGEN AUSGESCHALTET
 				}
 
 				// TODO: In den else-Branch verschieben...
@@ -162,6 +162,7 @@ public class ControllerAntwortenErfassen {
 					}
 					Button del = new Button();
 					del.setText("x");
+					removeAnswer(del);
 					
 					Label temp = new Label();
 					temp.setText("  Verschlüsselte Antwort ");
@@ -170,9 +171,21 @@ public class ControllerAntwortenErfassen {
 
 					Label temp2 = new Label(clipboard.getString());
 					temp2.setFont(antwort_text.getFont());
-					gridpane.add(temp, 0, anzahl_antworten + 1, 0, 1);
+					gridpane.add(del, 0, anzahl_antworten + 1, 1, 1);
 					gridpane.add(temp, 1, anzahl_antworten + 1, 2, 1);
 					gridpane.add(temp2, 3, anzahl_antworten + 1, 3, 1);
+					
+					int letzteRow = anzahl_antworten+1;
+					for (int i = 1; i < letzteRow; i++) {
+						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+						if (temp3!=null)
+						{
+							((Button)temp3).setDisable(false);
+						}
+					}
+					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+					((Button)temp4).setDisable(true);
+					
 					anzahl_antworten++;
 				}
 			}
@@ -203,6 +216,16 @@ public class ControllerAntwortenErfassen {
 
 				gridpane.getChildren().removeAll(letzterButton, letzterLabel, labelnebendiesembutton);
 
+				for (int i = 5; i < letzteRow; i++) {
+					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+					if (temp!=null)
+					{
+						((Button)temp).setDisable(false);
+					}
+				}
+				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow-1, 0);
+				((Button)temp2).setDisable(true);
+				
 				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
 
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);

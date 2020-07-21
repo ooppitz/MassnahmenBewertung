@@ -322,6 +322,21 @@ public class ControllerFragebogenErstellen {
 
 					if (result.get() == buttonTypeYes) { // Nutzer drückt "ja"
 
+						// Fortschritt anzeigen? Link anzeigen?
+
+						Dialog<ButtonType> dialog = new Dialog<>();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(MainApp.class.getResource("upload.fxml"));
+						DialogPane grid = (DialogPane) loader.load();
+						dialog.setDialogPane(grid);
+						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+						dialog.getDialogPane().getButtonTypes().add(cancel);
+
+						dialog.initOwner(mainapp.primaryStage);
+						dialog.initModality(Modality.APPLICATION_MODAL);
+						dialog.setTitle("Hochladen");
+						UploadController upload_controller = loader.getController();
+
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
@@ -340,22 +355,6 @@ public class ControllerFragebogenErstellen {
 							return;
 
 						}
-
-						// Fortschritt anzeigen? Link anzeigen?
-
-						Dialog<ButtonType> dialog = new Dialog<>();
-						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(MainApp.class.getResource("upload.fxml"));
-						DialogPane grid = (DialogPane) loader.load();
-						dialog.setDialogPane(grid);
-						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
-						dialog.getDialogPane().getButtonTypes().add(cancel);
-
-						dialog.initOwner(mainapp.primaryStage);
-						dialog.initModality(Modality.APPLICATION_MODAL);
-						dialog.setTitle("Hochladen");
-						UploadController upload_controller = loader.getController();
-
 						// 8.8.8.8 pingen
 						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
 						// da Github Pages trotzdem etwas anzeigt)
