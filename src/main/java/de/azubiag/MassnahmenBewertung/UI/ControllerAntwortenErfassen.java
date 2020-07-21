@@ -65,7 +65,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	private MainApp mainapp;
 	
 	
-	private int verifyID;
+	private int verifyID;   // Serialisieren
 	
 	public void init() {
 		removeAnswer(answ_del);
