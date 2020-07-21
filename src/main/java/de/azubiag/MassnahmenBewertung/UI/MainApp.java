@@ -73,7 +73,7 @@ public class MainApp extends Application {
 	public void showLogin() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand0.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerLogin.fxml"));
 			GridPane login_grid = (GridPane) loader.load();
 			login_grid.setPrefSize(600, 200);
 
@@ -127,7 +127,7 @@ public class MainApp extends Application {
 		// Button sperren, wenn Name leer ist
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand1.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
 			BorderPane z1 = (BorderPane) loader.load(); // !!
 			Tab tab_z1 = new Tab();
 			tab_z1.setContent(z1);
@@ -160,7 +160,7 @@ public class MainApp extends Application {
 	public void showAntwortenErfassen(String name, int index) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
 			BorderPane z2 = (BorderPane) loader.load(); // !!
 			Tab tab_z2 = new Tab();
 			tab_z2.setContent(z2);
@@ -187,7 +187,7 @@ public class MainApp extends Application {
 	public void showAuswertungAnzeigen(String name, int index) { // incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand3.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
 			BorderPane z3 = (BorderPane) loader.load(); // !!
 			Tab tab_z3 = new Tab();
 			tab_z3.setContent(z3);
@@ -195,8 +195,8 @@ public class MainApp extends Application {
 			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z3.setText(name);
 			System.out.println(index);
-			rootLayout.getTabs().add(index, tab_z3);
-			rootLayout.getTabs().remove(index - 1);
+			rootLayout.getTabs().add(index +1, tab_z3);
+			rootLayout.getTabs().remove(index);
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
 			controller.setMainApp(this);
