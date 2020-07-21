@@ -1,7 +1,9 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.io.IOException;
+import java.util.List;
 
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -177,7 +179,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showAuswertungAnzeigen(String name, int index) { // incomplete
+	public void showAuswertungAnzeigen(String name, int index,List<AzubiAntwort> antwortListe) { // incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand3.fxml"));
@@ -195,6 +197,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			controller.setTab(tab_z3);
 			controller.setName(name);
+			controller.antwortListe = antwortListe;
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
 		} catch (IOException e) {

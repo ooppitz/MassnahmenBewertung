@@ -252,7 +252,7 @@ public class ControllerAntwortenErfassen {
 				}
 
 				// Auswertung zurückbekommen
-				mainapp.showAuswertungAnzeigen(name.getText(), tab.getTabPane().getTabs().indexOf(tab));
+				mainapp.showAuswertungAnzeigen(name.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 			}
 		});
 	}
