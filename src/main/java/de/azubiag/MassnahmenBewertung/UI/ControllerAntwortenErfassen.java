@@ -63,6 +63,9 @@ public class ControllerAntwortenErfassen {
 
 	private MainApp mainapp;
 	
+	
+	private int verifyID;
+	
 	public void init() {
 		removeAnswer(answ_del);
 		readdNode(desc, 1, 0);
@@ -259,5 +262,13 @@ public class ControllerAntwortenErfassen {
 				mainapp.showAuswertungAnzeigen(name.getText(), tab.getTabPane().getTabs().indexOf(tab));
 			}
 		});
+	}
+
+	public void setVerifyID(int verifyID) {
+		this.verifyID = verifyID;
+	}
+	
+	public int getVerifyID() {
+		return verifyID;
 	}
 }
