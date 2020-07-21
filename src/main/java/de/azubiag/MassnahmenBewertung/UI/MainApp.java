@@ -1,8 +1,12 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.io.File;
 import java.io.IOException;
 
 import de.azubiag.MassnahmenBewertung.tools.Logger;
+import org.eclipse.jgit.api.errors.GitAPIException;
+
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -210,6 +214,22 @@ public class MainApp extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				pane.getTabs().remove(thistab);
+				String seminarleiter = MainApp.getUserName();
+
+				try {
+					File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
+					if (f.delete()) // returns Boolean value
+					
+					{
+						Upload.getInstance().hochladen();
+						System.out.println(f.getName() + " deleted"); // getting and printing the file name
+					} else {
+						System.out.println("failed");
+					}
+				} catch (GitAPIException | IOException exc) {
+					// TODO Auto-generated catch block
+					exc.printStackTrace();
+				}
 			}
 		});
 	}
