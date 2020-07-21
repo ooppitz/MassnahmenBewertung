@@ -157,7 +157,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showAntwortenErfassen(String name, int index) {
+	public void showAntwortenErfassen(String name, int index, int verifyID) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
@@ -174,6 +174,7 @@ public class MainApp extends Application {
 			controller.setTab(tab_z2);
 			controller.setName(name);
 			controller.setMaintext(name);
+			controller.setVerifyID(verifyID);
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
