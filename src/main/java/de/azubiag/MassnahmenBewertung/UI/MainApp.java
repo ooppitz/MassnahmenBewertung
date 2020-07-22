@@ -215,6 +215,10 @@ public class MainApp extends Application {
 			controller.setTab(tab_z3);
 			controller.setName(name);
 			controller.init();
+			System.out.println("MainApp: "+antwortListe.size());
+			for (AzubiAntwort azubiAntwort : antwortListe) {
+				System.out.println("MainApp->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
+			}
 			controller.antwortListe = antwortListe;
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 

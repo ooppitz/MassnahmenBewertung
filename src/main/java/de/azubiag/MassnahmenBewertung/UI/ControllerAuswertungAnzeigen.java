@@ -8,6 +8,7 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -57,13 +58,25 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	}
 
 	public void init() {
-
+		
+		System.out.println("AuswertungAnzeigen: "+antwortListe.size());
+		for (AzubiAntwort azubiAntwort : antwortListe) {
+			System.out.println("AuswertungAnzeigen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
+		}
+		
+		if (antwortListe.size()==0)
+		{
+			Logger log = Logger.getLogger();
+			log.logError("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
+			Label warning = new Label("     In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
+			grid.add(warning, 0, zeile);
+			return;
+		}
+		
 		final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
 
-//		System.out.println("A-Anzeigen:");
 		for (AzubiAntwort azubiAntwort : antwortListe) {
 			bewertungListe.add(azubiAntwort.massnahme);
-//			System.out.println("A-Anzeigen >>> "+azubiAntwort.toString());
 		}
 
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);

@@ -27,6 +27,10 @@ import de.azubiag.MassnahmenBewertung.tools.Logger;
 public class ControllerAntwortenErfassen implements Serializable {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4954713836800270562L;
 	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
 	Tab tab;
 
@@ -146,7 +150,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 				} else {
 
-					System.out.println("Verschlüsselt: " + verschluesselteAntwort + " \nEntschlüsselt: " + entschluesselteAntwort);	// --> Debug
+//					System.out.println("Verschlüsselt: " + verschluesselteAntwort + " \nEntschlüsselt: " + entschluesselteAntwort);	// --> Debug
 					
 					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);   // <-- ZUM DEBUGGEN AUSGESCHALTET
 					
@@ -264,6 +268,11 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
+				System.out.println("AntwortenErfassen: "+antwortListe.size());
+				for (AzubiAntwort azubiAntwort : antwortListe) {
+					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
+				}
+				
 				mainapp.showAuswertungAnzeigen(fragebogenName.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
 			}
