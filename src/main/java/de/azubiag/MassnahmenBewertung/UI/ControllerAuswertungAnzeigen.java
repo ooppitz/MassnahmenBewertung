@@ -16,7 +16,7 @@ import javafx.scene.layout.GridPane;
 
 /* Ausgabe der Auswertung */
 
-public class ControllerAuswertungAnzeigen {
+public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss möglicherweise bei zeile>?? bei der Höhe +49 addieren
 
 	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
 	List<AuswertungReferent> auswertungenReferenten;
@@ -63,15 +63,16 @@ public class ControllerAuswertungAnzeigen {
 		for (AzubiAntwort azubiAntwort : antwortListe) {
 			bewertungListe.add(azubiAntwort.massnahme);
 		}
-		
+
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
 		auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
-		
+
 		zeile = 0;
 		verlauf();
 		betreuung();
 		bewertung();
 		bemerkungen();
+		referenten();
 
 	}
 
@@ -127,6 +128,7 @@ public class ControllerAuswertungAnzeigen {
 		grid.add(v_2, 5, zeile);
 		grid.add(v_d, 6, zeile);
 		zeile ++;
+		zeile ++;
 
 	}
 
@@ -165,6 +167,7 @@ public class ControllerAuswertungAnzeigen {
 		grid.add(b_2, 5, zeile);
 		grid.add(b_d, 6, zeile);
 		zeile ++;
+		zeile ++;
 	}
 
 	public void bewertung() {		// was fließt hier ein? möglicherweise gar nicht anzeigen
@@ -173,5 +176,128 @@ public class ControllerAuswertungAnzeigen {
 
 	public void bemerkungen() {		// wird wohl nicht gebraucht
 
+	}
+
+	public void referenten() {
+		Label ueberschrift = new Label("Auswertung der Referenten:");
+		grid.add(ueberschrift, 0, zeile);
+		zeile++;
+		zeile++;
+
+		for (AuswertungReferent auswertungReferent : auswertungenReferenten) {
+
+			Label ref_name = new Label(auswertungReferent.getName());
+			Label r__2 = new Label("-2");
+			Label r__1 = new Label("-1");
+			Label r_0 = new Label(" 0");
+			Label r_1 = new Label("+1");
+			Label r_2 = new Label("+2");
+			Label r_d = new Label("Ø");
+
+			grid.add(ref_name, 0, zeile);
+			grid.add(r__2, 1, zeile);
+			grid.add(r__1, 2, zeile);
+			grid.add(r_0, 3, zeile);
+			grid.add(r_1, 4, zeile);
+			grid.add(r_2, 5, zeile);
+			grid.add(r_d, 6, zeile);
+			zeile ++;
+
+			Label vorbereitung_frage = new Label("Wie war ihr/sein Unterricht vorbereitet ?");
+			Label vo__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[0]));
+			Label vo__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[1]));
+			Label vo_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[2]));
+			Label vo_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[3]));
+			Label vo_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[4]));
+			Label vo_d = new Label(Double.toString(auswertungReferent.durchschnittVorbereitung));
+
+			grid.add(vorbereitung_frage, 0, zeile);
+			grid.add(vo__2, 1, zeile);
+			grid.add(vo__1, 2, zeile);
+			grid.add(vo_0, 3, zeile);
+			grid.add(vo_1, 4, zeile);
+			grid.add(vo_2, 5, zeile);
+			grid.add(vo_d, 6, zeile);
+			zeile ++;
+
+			Label fachwissen_frage = new Label("Wie umfangreich war ihr/sein Fachwissen ? ");
+			Label f__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[0]));
+			Label f__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[1]));
+			Label f_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[2]));
+			Label f_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[3]));
+			Label f_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[4]));
+			Label f_d = new Label(Double.toString(auswertungReferent.durchschnittFachwissen));
+
+			grid.add(fachwissen_frage, 0, zeile);
+			grid.add(f__2, 1, zeile);
+			grid.add(f__1, 2, zeile);
+			grid.add(f_0, 3, zeile);
+			grid.add(f_1, 4, zeile);
+			grid.add(f_2, 5, zeile);
+			grid.add(f_d, 6, zeile);
+			zeile ++;
+
+			Label probleme_frage = new Label("Wie ging sie/er auf spezielle thematische Probleme ein ? ");
+			Label p__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[0]));
+			Label p__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[1]));
+			Label p_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[2]));
+			Label p_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[3]));
+			Label p_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[4]));
+			Label p_d = new Label(Double.toString(auswertungReferent.durchschnittEingehenAufProbleme));
+
+			grid.add(probleme_frage, 0, zeile);
+			grid.add(p__2, 1, zeile);
+			grid.add(p__1, 2, zeile);
+			grid.add(p_0, 3, zeile);
+			grid.add(p_1, 4, zeile);
+			grid.add(p_2, 5, zeile);
+			grid.add(p_d, 6, zeile);
+			zeile ++;
+
+			Label vermittlung_frage = new Label("Wie verständlich sie/er die Inhalte vermitteln ? ");
+			Label ve__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[0]));
+			Label ve__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[1]));
+			Label ve_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[2]));
+			Label ve_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[3]));
+			Label ve_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[4]));
+			Label ve_d = new Label(Double.toString(auswertungReferent.durchschnittInhaltsvermittlung));
+
+			grid.add(vermittlung_frage, 0, zeile);
+			grid.add(ve__2, 1, zeile);
+			grid.add(ve__1, 2, zeile);
+			grid.add(ve_0, 3, zeile);
+			grid.add(ve_1, 4, zeile);
+			grid.add(ve_2, 5, zeile);
+			grid.add(ve_d, 6, zeile);
+			zeile ++;
+
+			Label verhalten_frage = new Label("Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu ? ");
+			Label vr__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[0]));
+			Label vr__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[1]));
+			Label vr_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[2]));
+			Label vr_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[3]));
+			Label vr_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[4]));
+			Label vr_d = new Label(Double.toString(auswertungReferent.durchschnittVerhalten));
+
+			grid.add(verhalten_frage, 0, zeile);
+			grid.add(vr__2, 1, zeile);
+			grid.add(vr__1, 2, zeile);
+			grid.add(vr_0, 3, zeile);
+			grid.add(vr_1, 4, zeile);
+			grid.add(vr_2, 5, zeile);
+			grid.add(vr_d, 6, zeile);
+			zeile ++;
+
+			Label ueberschrift_bemerkungen = new Label("Bemerkungen zu: "+auswertungReferent.getName());
+			grid.add(ueberschrift_bemerkungen, 0, zeile);
+			zeile++;
+			for (String bemerkung : auswertungReferent.getBemerkungen()) {
+
+				Label temp_bemerkung = new Label(bemerkung);
+				grid.add(temp_bemerkung, 0, zeile);
+				zeile++;
+			}
+			zeile ++;
+		}
 	}
 }
