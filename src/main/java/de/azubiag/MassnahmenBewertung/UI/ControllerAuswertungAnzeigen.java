@@ -19,7 +19,7 @@ import javafx.scene.layout.GridPane;
 
 public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss möglicherweise bei zeile>?? bei der Höhe +49 addieren
 
-	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
+	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
 	List<AuswertungReferent> auswertungenReferenten;
 	AuswertungMassnahme auswertungMassnahme;
 

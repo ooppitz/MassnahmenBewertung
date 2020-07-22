@@ -31,7 +31,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -4954713836800270562L;
-	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
+	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
 	Tab tab;
 
 	int anzahl_antworten;    // Serialisieren 
