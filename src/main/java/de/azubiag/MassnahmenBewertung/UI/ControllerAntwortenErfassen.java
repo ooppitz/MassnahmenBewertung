@@ -264,14 +264,6 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
-				// controller.antwortListe an die Auswertung schicken
-//				System.out.println("A-Erfassen:");
-				for (AzubiAntwort azubiAntwort : antwortListe) {
-					// TODO entfernen
-//					System.out.println("A-Erfassen >>> "+azubiAntwort.toString());
-				}
-
-				// Auswertung zurückbekommen
 				mainapp.showAuswertungAnzeigen(fragebogenName.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
 			}
