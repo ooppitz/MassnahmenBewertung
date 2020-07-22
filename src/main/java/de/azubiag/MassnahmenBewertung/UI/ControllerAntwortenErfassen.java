@@ -13,7 +13,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
-import javafx.stage.WindowEvent;
 
 import java.io.Serializable;
 import java.util.ArrayList;

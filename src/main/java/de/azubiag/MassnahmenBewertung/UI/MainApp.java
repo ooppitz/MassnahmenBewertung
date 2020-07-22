@@ -21,7 +21,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -314,15 +313,13 @@ public class MainApp extends Application {
 		if(opbt.get()==jaButton) {
 			controller.speichern();
 			Platform.exit();
-			System.exit(0);
 		} else if(opbt.get()==neinButton) {
 			System.out.println("Fortschritt wird verworfen!");
 			Platform.exit();
-			System.exit(0);
 		} else {
 			System.out.println("Schließen wird abgebrochen");
 			event.consume();
 		}
-		System.out.println("Das soll nicht ausgedruckt werden!");
+		System.out.println("Der Rest der Methode wird noch durchgeführt!");
 	}
 }
