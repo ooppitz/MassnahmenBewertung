@@ -24,6 +24,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete für Nutzernamen
  * 			- Button in Zustand0 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
@@ -59,6 +60,7 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("SeminarLeiterApp");
+
 
 		showLogin();
 
@@ -112,8 +114,9 @@ public class MainApp extends Application {
 			primaryStage.setMaxHeight(600);
 			primaryStage.setMaxWidth(800);
 
-			// Berechnen, welche Tabs offen sein müssen
-
+			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
+			// Aufrufen von showAntwortenErfassen()
+			
 			showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
@@ -128,6 +131,7 @@ public class MainApp extends Application {
 	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
 		// Button sperren, wenn Name leer ist
 		try {
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
 			BorderPane z1 = (BorderPane) loader.load(); // !!
@@ -152,6 +156,7 @@ public class MainApp extends Application {
 				controller.preview.setDisable((newValue == "") ? true : false);
 				Logger logger = Logger.getLogger();
 				logger.logInfo("Textfeld-Eingabe, old: " + oldValue + " ---> new: " + newValue);
+			
 			});
 
 		} catch (IOException e) {
@@ -159,7 +164,10 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showAntwortenErfassen(String name, int index) {
+	/**
+	 * @param verifyID Id des Fragebogens
+	 */
+	public void showAntwortenErfassen(String fragebogenName, int indexInTabPane, int verifyID) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
@@ -168,19 +176,21 @@ public class MainApp extends Application {
 			tab_z2.setContent(z2);
 			tab_z2.setClosable(true);
 			// tab_z2.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z2.setText(name);
-			rootLayout.getTabs().add(index + 1, tab_z2);
+			tab_z2.setText(fragebogenName);
+			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			ControllerAntwortenErfassen controller = loader.getController();
+			onCloseMethod(controller);
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z2);
-			controller.setName(name);
-			controller.setMaintext(name);
+			controller.setName(fragebogenName);
+			controller.setMaintext(fragebogenName);
+			controller.setVerifyID(verifyID);
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
 			controller.addNext2ToButton();
-
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -268,6 +278,7 @@ public class MainApp extends Application {
 		});
 	}
 
+
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
@@ -275,4 +286,17 @@ public class MainApp extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	public void onCloseMethod(ControllerAntwortenErfassen controller) {
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				// TODO Auto-generated method stub
+				controller.speichern();
+				primaryStage.close();
+			}
+		});
+	}
+
 }
