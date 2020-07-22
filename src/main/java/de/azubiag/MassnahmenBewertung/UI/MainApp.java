@@ -294,27 +294,30 @@ public class MainApp extends Application {
 			@Override
 			public void handle(WindowEvent event) {
 				// TODO Auto-generated method stub
-				Alert al = new Alert(AlertType.WARNING);
-				ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
-				ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
-				ButtonType abbruchButton = new ButtonType("abbruch", ButtonData.CANCEL_CLOSE);
-				al.getButtonTypes().setAll(jaButton, neinButton, abbruchButton);
-				al.setTitle("Warnung");
-				al.setHeaderText("Wollen Sie den Fortschritt speichern?");
-				al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
-				
-				Optional<ButtonType> opbt = al.showAndWait();
-				if(opbt.get()==jaButton) {
-					System.out.println("Fortschritt wird gespeichert!");
-				} else if(opbt.get()==neinButton) {
-					System.out.println("Fortschritt wird verworfen!");
-				} else {
-					System.out.println("Schließen wird abgebrochen");
-					event.consume();
-				}
-				System.out.println("Hier wird später der Zustand des Objektes serialisiert");
+				warnfenster(event);
 			}
 		});
 	}
 
+	public void warnfenster(WindowEvent event) {
+		Alert al = new Alert(AlertType.WARNING);
+		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
+		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
+		ButtonType abbruchButton = new ButtonType("abbruch", ButtonData.CANCEL_CLOSE);
+		al.getButtonTypes().setAll(jaButton, neinButton, abbruchButton);
+		al.setTitle("Warnung");
+		al.setHeaderText("Wollen Sie den Fortschritt speichern?");
+		al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
+		
+		Optional<ButtonType> opbt = al.showAndWait();
+		if(opbt.get()==jaButton) {
+			System.out.println("Fortschritt wird gespeichert!");
+		} else if(opbt.get()==neinButton) {
+			System.out.println("Fortschritt wird verworfen!");
+		} else {
+			System.out.println("Schließen wird abgebrochen");
+			event.consume();
+		}
+		System.out.println("Hier wird später der Zustand des Objektes serialisiert");
+	}
 }
