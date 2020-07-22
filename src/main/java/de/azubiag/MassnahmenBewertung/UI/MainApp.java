@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -294,12 +295,12 @@ public class MainApp extends Application {
 			@Override
 			public void handle(WindowEvent event) {
 				// TODO Auto-generated method stub
-				warnfenster(event);
+				warnfenster(event, controller);
 			}
 		});
 	}
 
-	public void warnfenster(WindowEvent event) {
+	public void warnfenster(WindowEvent event, ControllerAntwortenErfassen controller) {
 		Alert al = new Alert(AlertType.WARNING);
 		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
 		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
@@ -311,13 +312,17 @@ public class MainApp extends Application {
 		
 		Optional<ButtonType> opbt = al.showAndWait();
 		if(opbt.get()==jaButton) {
-			System.out.println("Fortschritt wird gespeichert!");
+			controller.speichern();
+			Platform.exit();
+			System.exit(0);
 		} else if(opbt.get()==neinButton) {
 			System.out.println("Fortschritt wird verworfen!");
+			Platform.exit();
+			System.exit(0);
 		} else {
 			System.out.println("Schließen wird abgebrochen");
 			event.consume();
 		}
-		System.out.println("Hier wird später der Zustand des Objektes serialisiert");
+		System.out.println("Das soll nicht ausgedruckt werden!");
 	}
 }

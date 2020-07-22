@@ -270,9 +270,9 @@ public class ControllerAntwortenErfassen implements Serializable {
 	
 	/* Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen der Ansicht nötig sind. */
 	
-	public void speichern(WindowEvent event) {
+	public void speichern() {
 		
-	
+		System.out.println("Die Speichermethode wurde aufgerufen!");
 	}
 
 	public void setVerifyID(int verifyID) {
