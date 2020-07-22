@@ -112,8 +112,9 @@ public class MainApp extends Application {
 			primaryStage.setMaxHeight(600);
 			primaryStage.setMaxWidth(800);
 
-			// Berechnen, welche Tabs offen sein müssen
-
+			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
+			// Aufrufen von showAntwortenErfassen()
+			
 			showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
@@ -161,9 +162,10 @@ public class MainApp extends Application {
 		}
 	}
 
-	
-
-	public void showAntwortenErfassen(String name, int index) {
+	/**
+	 * @param verifyID Id des Fragebogens
+	 */
+	public void showAntwortenErfassen(String fragebogenName, int indexInTabPane, int verifyID) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
@@ -172,15 +174,16 @@ public class MainApp extends Application {
 			tab_z2.setContent(z2);
 			tab_z2.setClosable(true);
 			// tab_z2.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z2.setText(name);
-			rootLayout.getTabs().add(index + 1, tab_z2);
+			tab_z2.setText(fragebogenName);
+			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			ControllerAntwortenErfassen controller = loader.getController();
-			OnCloseMethod(controller);
+			onCloseMethod(controller);
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z2);
-			controller.setName(name);
-			controller.setMaintext(name);
+			controller.setName(fragebogenName);
+			controller.setMaintext(fragebogenName);
+			controller.setVerifyID(verifyID);
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
@@ -280,7 +283,7 @@ public class MainApp extends Application {
 		launch(args);
 	}
 	
-	public void OnCloseMethod(ControllerAntwortenErfassen controller) {
+	public void onCloseMethod(ControllerAntwortenErfassen controller) {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override

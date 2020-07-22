@@ -69,6 +69,9 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 	private MainApp mainapp;
 	
+	
+	private int verifyID;   // Serialisieren
+	
 	public void init() {
 		removeAnswer(answ_del);
 		readdNode(desc, 1, 0);
@@ -289,5 +292,14 @@ public class ControllerAntwortenErfassen implements Serializable {
 			System.out.println("Schließen wird abgebrochen");
 			event.consume();
 		}
+		System.out.println("Hier wird später der Zustand des Objektes serialisiert");
+	}	
+
+	public void setVerifyID(int verifyID) {
+		this.verifyID = verifyID;
+	}
+	
+	public int getVerifyID() {
+		return verifyID;
 	}
 }

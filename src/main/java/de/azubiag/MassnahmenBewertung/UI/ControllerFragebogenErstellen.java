@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
@@ -299,6 +300,9 @@ public class ControllerFragebogenErstellen {
 				Logger logger = Logger.getLogger();
 				try {
 
+					Random random = new Random();
+					int verifyID = random.nextInt();
+					
 					// Erstellen des Fragebogen-Files
 
 					String seminarleiterName = MainApp.getUserName();
@@ -306,13 +310,20 @@ public class ControllerFragebogenErstellen {
 					String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName, fragebogenname.getText());
 					
 					// Schreibt den Fragebogen in das Repository
-					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad).createHtml();
+					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad, verifyID).createHtml();
 					
 					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
 
+					// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
+					int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
+					int indexB = fragebogenOutputPfad.indexOf(".html");
+					String webpath = "https://" + fragebogenOutputPfad.substring(indexA, indexB);
+					webpath = webpath.replace('\\', '/');
+					Logger.getLogger().logInfo(webpath);
+					
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");
-					alert.setHeaderText("Fragebogen veröffentlichen?");
+					alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
 
 					ButtonType buttonTypeYes = new ButtonType("Ja");
 					ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
@@ -384,7 +395,7 @@ public class ControllerFragebogenErstellen {
 						Optional<ButtonType> result3 = alert3.showAndWait();
 
 						// Zustand2-Tab erstellen
-						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab));
+						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab), verifyID);
 
 						if (result3.get() == buttonTypeYes3) {
 							// Fragebogen klonen
