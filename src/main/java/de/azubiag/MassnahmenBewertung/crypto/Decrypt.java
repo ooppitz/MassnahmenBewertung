@@ -17,6 +17,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import de.azubiag.MassnahmenBewertung.tools.Logger;
+
 public class Decrypt {
 
 	/* Die Methode analysiert den cipherText, um festzustellen, welcher Crypto-Algorithmus verwendet wurde.
@@ -29,9 +31,11 @@ public class Decrypt {
 		String decrypted_text = null;
 
 		if (cipherText != null) {
-			// NOTE: Dieser Alg. kann dazu führen, dass bei Verschlüsselung mit Option B die Payload verändert wird.
-			// remove cipherText padding
-			cipherText = cipherText.replace("-", "").replace("<", "").replace(">", "").replace(" ", "").replace("\n", "");
+			// NOTE: Dieser Alg. kann dazu führen, dass bei Verschlüsselung mit Option B oder C die Payload verändert wird.
+			cipherText = cipherText.replace("-", "").replace("\n", "");
+			if (cipherText.charAt(0) != 'C') {
+				cipherText = cipherText.replace(" ", "");
+			}
 		}
 		
 		// First Char in cipherText indicates type of encryption
@@ -43,10 +47,15 @@ public class Decrypt {
 			case 'B':
 				decrypted_text = decrypt_type_B(cipherText.substring(1));
 				break;
+			case 'C':
+				decrypted_text = cipherText.substring(1);
+				break;
 			}
 		} catch (StringIndexOutOfBoundsException | IllegalArgumentException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException 
 				| NullPointerException | InvocationTargetException e) {
+			Logger l = new Logger();
+			l.logError(e);
 		}
 
 		return decrypted_text;

@@ -3,6 +3,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
@@ -10,16 +11,20 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -297,10 +302,32 @@ public class MainApp extends Application {
 			@Override
 			public void handle(WindowEvent event) {
 				// TODO Auto-generated method stub
-				controller.speichern();
-				primaryStage.close();
+				warnfenster(event, controller);
 			}
 		});
 	}
 
+	public void warnfenster(WindowEvent event, ControllerAntwortenErfassen controller) {
+		Alert al = new Alert(AlertType.WARNING);
+		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
+		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
+		ButtonType abbruchButton = new ButtonType("abbruch", ButtonData.CANCEL_CLOSE);
+		al.getButtonTypes().setAll(jaButton, neinButton, abbruchButton);
+		al.setTitle("Warnung");
+		al.setHeaderText("Wollen Sie den Fortschritt speichern?");
+		al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
+		
+		Optional<ButtonType> opbt = al.showAndWait();
+		if(opbt.get()==jaButton) {
+			controller.speichern();
+			Platform.exit();
+		} else if(opbt.get()==neinButton) {
+			System.out.println("Fortschritt wird verworfen!");
+			Platform.exit();
+		} else {
+			System.out.println("Schließen wird abgebrochen");
+			event.consume();
+		}
+		System.out.println("Der Rest der Methode wird noch durchgeführt!");
+	}
 }
