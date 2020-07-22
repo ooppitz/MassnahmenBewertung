@@ -60,8 +60,10 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 		final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
 
+//		System.out.println("A-Anzeigen:");
 		for (AzubiAntwort azubiAntwort : antwortListe) {
 			bewertungListe.add(azubiAntwort.massnahme);
+//			System.out.println("A-Anzeigen >>> "+azubiAntwort.toString());
 		}
 
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
