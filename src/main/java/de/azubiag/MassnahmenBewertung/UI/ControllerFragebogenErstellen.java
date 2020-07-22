@@ -314,9 +314,16 @@ public class ControllerFragebogenErstellen {
 					
 					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
 
+					// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
+					int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
+					int indexB = fragebogenOutputPfad.indexOf(".html");
+					String webpath = "https://" + fragebogenOutputPfad.substring(indexA, indexB);
+					webpath = webpath.replace('\\', '/');
+					Logger.getLogger().logInfo(webpath);
+					
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");
-					alert.setHeaderText("Fragebogen veröffentlichen?");
+					alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
 
 					ButtonType buttonTypeYes = new ButtonType("Ja");
 					ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
