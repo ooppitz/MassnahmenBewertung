@@ -27,16 +27,16 @@ public class AuswertungMassnahme {
 	public int[] pktvertVerl = new int[5];
 	public double durchschnVerl;
 
-	ArrayList<String> alleBemerkVerl;
+	public ArrayList<String> alleBemerkVerl;
 
 	// Maßnahmebetreuung
 	public int[] pktvertBetrng = new int[5];
 	public double durchschnBetrng;
 
-	ArrayList<String> alleBemerkBetrng;
+	public ArrayList<String> alleBemerkBetrng;
 
 	// Referentenbewertung
-	ArrayList<String> alleBemerkRefAllg;
+	public ArrayList<String> alleBemerkRefAllg;
 
 	// Anzahl der eingegangenen Bewertungen werden aufgez�hlt
 	int anzahl;

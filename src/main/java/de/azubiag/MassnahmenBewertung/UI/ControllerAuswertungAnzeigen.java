@@ -70,7 +70,6 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		zeile = 0;
 		verlauf();
 		betreuung();
-		bewertung();
 		bemerkungen();
 		referenten();
 
@@ -128,8 +127,17 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		grid.add(v_2, 5, zeile);
 		grid.add(v_d, 6, zeile);
 		zeile ++;
-		zeile ++;
 
+		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
+		grid.add(ueberschrift_bemerkungen, 0, zeile);
+		zeile++;
+		for (String bemerkung : auswertungMassnahme.alleBemerkVerl) {
+
+			Label temp_bemerkung = new Label(bemerkung);
+			grid.add(temp_bemerkung, 0, zeile);
+			zeile++;
+		}
+		zeile ++;
 	}
 
 	public void betreuung() {
@@ -167,15 +175,31 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		grid.add(b_2, 5, zeile);
 		grid.add(b_d, 6, zeile);
 		zeile ++;
+
+		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
+		grid.add(ueberschrift_bemerkungen, 0, zeile);
+		zeile++;
+		for (String bemerkung : auswertungMassnahme.alleBemerkBetrng) {
+
+			Label temp_bemerkung = new Label(bemerkung);
+			grid.add(temp_bemerkung, 0, zeile);
+			zeile++;
+		}
 		zeile ++;
 	}
 
-	public void bewertung() {		// was fließt hier ein? möglicherweise gar nicht anzeigen
+	public void bemerkungen() {
 
-	}
+		Label ueberschrift_bemerkungen = new Label("3.Bewertung der Referenten bzw. Referentinnen:");
+		grid.add(ueberschrift_bemerkungen, 0, zeile);
+		zeile++;
+		for (String bemerkung : auswertungMassnahme.alleBemerkRefAllg) {
 
-	public void bemerkungen() {		// wird wohl nicht gebraucht
-
+			Label temp_bemerkung = new Label(bemerkung);
+			grid.add(temp_bemerkung, 0, zeile);
+			zeile++;
+		}
+		zeile ++;
 	}
 
 	public void referenten() {
