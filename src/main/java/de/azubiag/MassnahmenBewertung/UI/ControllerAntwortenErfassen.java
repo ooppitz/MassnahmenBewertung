@@ -7,16 +7,20 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
+import javafx.stage.WindowEvent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
@@ -265,12 +269,25 @@ public class ControllerAntwortenErfassen implements Serializable {
 	
 	/* Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen der Ansicht nötig sind. */
 	
-	public void speichern() {
+	public void speichern(WindowEvent event) {
 		
 		Alert al = new Alert(AlertType.WARNING);
-		ButtonType jabutton = new ButtonType("ja");
-		ButtonType neinbutton = new ButtonType("nein");
-		al.getButtonTypes().setAll(jabutton, neinbutton);
+		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
+		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
+		ButtonType abbruchButton = new ButtonType("abbruch", ButtonData.CANCEL_CLOSE);
+		al.getButtonTypes().setAll(jaButton, neinButton, abbruchButton);
+		al.setTitle("Warnung");
+		al.setHeaderText("Wollen Sie den Fortschritt speichern?");
+		al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
 		
+		Optional<ButtonType> opbt = al.showAndWait();
+		if(opbt.get()==jaButton) {
+			System.out.println("Fortschritt wird gespeichert!");
+		} else if(opbt.get()==neinButton) {
+			System.out.println("Fortschritt wird verworfen!");
+		} else {
+			System.out.println("Schließen wird abgebrochen");
+			event.consume();
+		}
 	}
 }

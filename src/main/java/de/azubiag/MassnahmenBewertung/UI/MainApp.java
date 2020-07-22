@@ -286,8 +286,7 @@ public class MainApp extends Application {
 			@Override
 			public void handle(WindowEvent event) {
 				// TODO Auto-generated method stub
-				controller.speichern();
-				primaryStage.close();
+				controller.speichern(event);
 			}
 		});
 	}
