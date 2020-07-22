@@ -1,41 +1,103 @@
 package de.azubiag.MassnahmenBewertung.auswertung.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-
+import java.util.List;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.layout.BorderPane;
+import de.azubiag.MassnahmenBewertung.UI.ControllerAuswertungAnzeigen;
+import de.azubiag.MassnahmenBewertung.UI.MainApp;
 
-public class App {
+/**
+ * The User Interface
+ * 
+ * @author Filip Golanski
+ */
+public class App extends MainApp {
 
-	private static final String VERSION = "1.0";
-
-	/**
-	 * Liest Antwort-Strings (verschlüsselt oder unverschlüsselt )aus einem File
-	 * oder von der Kommandozeile und verarbeitet sie. Der Output sollte eine
-	 * komplette Auswertung sein.
-	 * 
-	 * @param args
-	 */
 	public static void main(String[] args) {
+		launch(args);
+	}
 
-		String verschluesselteAntwort1 = "---AU2FsdGVkX187J7t88AiFwFQeFQ3PSAIfca4+FMiyTpIAAJnOBbJm69+6ZpYUsJPmrdvBNHzuxco92C9HIByAObiKPOwzmy1MtL2qY98/H/IQXUbyDTb37EBZED/Nmp289sdTfaQLkX5lVkIbEQNyp51bqhFKfILhEx1rBCaiB8A7gzVt73jhRbxH+C4WXqC2---";
-		String verschluesselteAntwort2 = "---AU2FsdGVkX187J7t88AiFwFQeFQ3PSAIfca4+FMiyTpIAAJnOBbJm69+6ZpYUsJPmrdvBNHzuxco92C9HIByAObiKPOwzmy1MtL2qY98/H/IQXUbyDTb37EBZED/Nmp289sdTfaQLkX5lVkIbEQNyp51bqhFKfILhEx1rBCaiB8A7gzVt73jhRbxH+C4WXqC2---";
+	public void showAuswertungAnzeigen(String name, int index, List<AzubiAntwort> antwortListe) { // incomplete
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
+			BorderPane z3 = (BorderPane) loader.load(); // !!
+			Tab tab_z3 = new Tab();
+			tab_z3.setContent(z3);
+			tab_z3.setClosable(true);
+			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
+			tab_z3.setText(name);
+			System.out.println(index);
+			rootLayout.getTabs().add(index + 1, tab_z3);
+			// rootLayout.getTabs().remove(index);
+			ControllerAuswertungAnzeigen controller = loader.getController();
+			// System.out.println(controller);
 
-		String entschluesselteAntwort1 = Decrypt.decrypt_any_type(verschluesselteAntwort1);
-		String entschluesselteAntwort2 = Decrypt.decrypt_any_type(verschluesselteAntwort2);
+			controller.init(this, name, antwortListe);
+			controller.erzeugeDarstellung();
 
-		AzubiAntwort a1 = new AzubiAntwort(entschluesselteAntwort1);
-		AzubiAntwort a2 = new AzubiAntwort(entschluesselteAntwort2);
+			addDeleteToButton(controller.delete, rootLayout, tab_z3);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void showTabPane() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("tabpane.fxml"));
+			rootLayout = (TabPane) loader.load();
+			rootLayout.setPrefSize(800, 600);
+			rootLayout.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+
+			Scene scene = new Scene(rootLayout);
+			primaryStage.setScene(scene);
+			primaryStage.hide();
+			primaryStage.setMaxHeight(600);
+			primaryStage.setMaxWidth(800);
+
+			ArrayList<AzubiAntwort> antwortListe = getTestDaten();
+			showAuswertungAnzeigen("Testfragebogen XYZ", -1, antwortListe);
+
+			// showFragebogenErstellen();
+
+			// am Ende Plus Tab anzeigen
+			showPlus();
+
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ArrayList<AzubiAntwort> getTestDaten() {
+
+		String[] verschluesselteAntworten = {
+				"---AU2FsdGVkX187J7t88AiFwFQeFQ3PSAIfca4+FMiyTpIAAJnOBbJm69+6ZpYUsJPmrdvBNHzuxco92C9HIByAObiKPOwzmy1MtL2qY98/H/IQXUbyDTb37EBZED/Nmp289sdTfaQLkX5lVkIbEQNyp51bqhFKfILhEx1rBCaiB8A7gzVt73jhRbxH+C4WXqC2---",
+				"---AU2FsdGVkX187J7t88AiFwFQeFQ3PSAIfca4+FMiyTpIAAJnOBbJm69+6ZpYUsJPmrdvBNHzuxco92C9HIByAObiKPOwzmy1MtL2qY98/H/IQXUbyDTb37EBZED/Nmp289sdTfaQLkX5lVkIbEQNyp51bqhFKfILhEx1rBCaiB8A7gzVt73jhRbxH+C4WXqC2---",
+				"---AU2FsdGVkX187J7t88AiFwFQeFQ3PSAIfca4+FMiyTpIAAJnOBbJm69+6ZpYUsJPmrdvBNHzuxco92C9HIByAObiKPOwzmy1MtL2qY98/H/IQXUbyDTb37EBZED/Nmp289sdTfaQLkX5lVkIbEQNyp51bqhFKfILhEx1rBCaiB8A7gzVt73jhRbxH+C4WXqC2---"
+
+		};
 
 		ArrayList<AzubiAntwort> liste = new ArrayList<>();
-		liste.add(a1);
-		liste.add(a2);
 
-		System.out.println(a1.verifyID);
-		System.out.println(a2.verifyID);
+		for (String v : verschluesselteAntworten) {
+			String entschluesselteAntwort = Decrypt.decrypt_any_type(v);
+			AzubiAntwort a = new AzubiAntwort(entschluesselteAntwort);
+			System.out.println("VerifyID = " + a.verifyID + "  "  + a);
+			liste.add(a);
+		}
 
 		System.out.println(AuswertungMassnahme.getAuswertungMassnahme(liste));
 		var referenten = AuswertungReferent.getAuswertungenAllerReferenten(liste);
@@ -43,5 +105,6 @@ public class App {
 			System.out.println(referent);
 		}
 
+		return liste;
 	}
 }

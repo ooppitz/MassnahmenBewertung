@@ -57,7 +57,9 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		this.ueberschrift.setText("Ergebnisse für den Fragebogen "+name);
 	}
 
-	public void init() {
+	public void init(MainApp app, String tabName, List<AzubiAntwort> antwortListe) {
+		
+		this.setMainApp(app);
 		
 		System.out.println("AuswertungAnzeigen: "+antwortListe.size());
 		for (AzubiAntwort azubiAntwort : antwortListe) {
@@ -82,7 +84,13 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
 		auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
 
-		zeile = 0;
+		zeile = 0; 
+		
+		
+		}
+	
+	public void erzeugeDarstellung() {
+		
 		verlauf();
 		betreuung();
 		bemerkungen();

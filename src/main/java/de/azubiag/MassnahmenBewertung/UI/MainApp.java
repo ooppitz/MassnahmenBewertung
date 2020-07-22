@@ -2,6 +2,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,8 +59,8 @@ public class MainApp extends Application {
 	}
 
 
-	Stage primaryStage;
-	TabPane rootLayout;
+	protected Stage primaryStage;
+	protected TabPane rootLayout;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -122,7 +123,11 @@ public class MainApp extends Application {
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()
 			
-			showFragebogenErstellen();
+			
+			ArrayList<AzubiAntwort> antwortListe = 	de.azubiag.MassnahmenBewertung.auswertung.test.App.getTestDaten();
+			showAuswertungAnzeigen("Testfragebogen XYZ", -1, antwortListe);
+			
+			// showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
 			showPlus();
@@ -213,18 +218,13 @@ public class MainApp extends Application {
 			tab_z3.setText(name);
 			System.out.println(index);
 			rootLayout.getTabs().add(index +1, tab_z3);
-			rootLayout.getTabs().remove(index);
+			// rootLayout.getTabs().remove(index);
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
-			controller.setMainApp(this);
-			controller.setTab(tab_z3);
-			controller.setName(name);
-			controller.init();
-			System.out.println("MainApp: "+antwortListe.size());
-			for (AzubiAntwort azubiAntwort : antwortListe) {
-				System.out.println("MainApp->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
-			}
-			controller.antwortListe = antwortListe;
+		
+			controller.init(this, name, antwortListe);
+			controller.erzeugeDarstellung();
+			
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
 		} catch (IOException e) {
