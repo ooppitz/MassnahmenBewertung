@@ -27,18 +27,18 @@ public class HtmlCreator {
 	String inputFile;
 	String saveFile;
 	Document doc;
-	int verifyID;
+	int umfrageID;
 
 	@Deprecated
 	public HtmlCreator(ArrayList<String> referenten, String templatePath, String outputPath) {
 		this(referenten, templatePath, outputPath, 0);
 	}
 	
-	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int verifyID) {
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int umfrageID) {
 		this.refListe = referentenList;
 		this.saveFile = fragebogenOutputFile;
 		this.inputFile = templateFile;
-		this.verifyID = verifyID;
+		this.umfrageID = umfrageID;
 	}
 
 	public void createHtml() throws IOException {
@@ -53,7 +53,7 @@ public class HtmlCreator {
 		
 		int anzahlReferenten = refListe.size();
 		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
-		bodyElement.attr("verifyID", String.valueOf(verifyID));
+		bodyElement.attr("umfrageID", String.valueOf(umfrageID));
 	
 		ArrayList<Element> elementListe = new ArrayList<>();
 		

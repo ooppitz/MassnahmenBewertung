@@ -13,9 +13,9 @@ public class AzubiAntwort {
 	
 	public List<BewertungReferent> referenten;   // Seite 3 d. Referenzdokuments
 	
-	public final int verifyID;
+	public final int umfrageID;
 	
-	public final int fragebogenID;
+	public final int antwortID;
 	
 	/** Erzeugt ein AzubiAntwort-Objekt.
 	 * 
@@ -23,8 +23,8 @@ public class AzubiAntwort {
 	 */
 	public AzubiAntwort(String kodiert) {
 		String[] array = kodiert.split("\\|", -1); // -1 verhindert, dass split() leere Strings am Ende verwirft und dann das Array zu kurz ist
-		verifyID = Integer.parseInt(array[0]);
-		fragebogenID = Integer.parseInt(array[1]);
+		umfrageID = Integer.parseInt(array[0]);
+		antwortID = Integer.parseInt(array[1]);
 		massnahme = new BewertungMassnahme(subarray(array, 2, 8));
 		referenten = new ArrayList<>(10);
 		int index = 8;
@@ -48,7 +48,7 @@ public class AzubiAntwort {
 	
 	@Override
 	public String toString() {
-		return String.format("AzubiAntwort [%s, %s, verifyID=%d, randomID=%d]", massnahme, referenten, verifyID, fragebogenID);
+		return String.format("AzubiAntwort [%s, %s, verifyID=%d, randomID=%d]", massnahme, referenten, umfrageID, antwortID);
 	}
 	
 }

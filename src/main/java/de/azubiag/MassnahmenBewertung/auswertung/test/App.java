@@ -95,7 +95,7 @@ public class App extends MainApp {
 		for (String v : verschluesselteAntworten) {
 			String entschluesselteAntwort = Decrypt.decrypt_any_type(v);
 			AzubiAntwort a = new AzubiAntwort(entschluesselteAntwort);
-			System.out.println("VerifyID = " + a.verifyID + "  "  + a);
+			System.out.println("VerifyID = " + a.umfrageID + "  "  + a);
 			liste.add(a);
 		}
 

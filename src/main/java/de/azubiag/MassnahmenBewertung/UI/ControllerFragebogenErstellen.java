@@ -361,7 +361,7 @@ public class ControllerFragebogenErstellen {
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-			//				repoHandle.hochladen();
+//							repoHandle.hochladen(fragebogenname.getText(),seminarleiterName);					// <-- zum testen auskommentiert
 
 						} catch (Exception exc) {
 							
