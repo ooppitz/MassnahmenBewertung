@@ -284,7 +284,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		// Add Objects here
 		data.add(antwortListe); // Object 0
 		data.add(anzahl_antworten); // Object 1
-		data.add(fragebogenName); // Object 2
+		data.add(fragebogenName.getText()); // Object 2
 		data.add(verifyID); // Object 3
 
 		try {
@@ -318,7 +318,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		// Recieve loaded objects here
 		antwortListe = (List<AzubiAntwort>) deserialized.get(0); // Object 0
 		anzahl_antworten = (int) deserialized.get(1); // Object 1
-		fragebogenName = (Label) deserialized.get(2); // Object 2
+		fragebogenName.setText((String) deserialized.get(2)); // Object 2
 		verifyID = (int) deserialized.get(3); // Object 3
 
 	}
