@@ -442,9 +442,9 @@ public class ControllerFragebogenErstellen {
 				    return true; 
 				} else {
 					Alert alert = new Alert(AlertType.WARNING);
+
 					alert.setTitle("Bitte alles ausfuellen");
-					alert.setHeaderText("Bitte fuellen Sie alle Felder aus und legen Sie mindestens einen Referenten an. "
-							);
+					alert.setHeaderText("Bitte fuellen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					alert.showAndWait();
 					return false;
 				}
