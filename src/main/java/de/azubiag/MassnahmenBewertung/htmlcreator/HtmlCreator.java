@@ -28,17 +28,30 @@ public class HtmlCreator {
 	String saveFile;
 	Document doc;
 	int verifyID;
+	
+	String startdatum = "31.1.2008";
+	String enddatum = "31.12.2009";
+	String auftragsnummer = "F-27-99";
+	String seminarleitername = "Frau Moll";
+	String datum = "23.7.2020 a.d.";
 
 	@Deprecated
 	public HtmlCreator(ArrayList<String> referenten, String templatePath, String outputPath) {
-		this(referenten, templatePath, outputPath, 0);
+		// this(referenten, templatePath, outputPath, 0);
 	}
 	
-	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int verifyID) {
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int verifyID, 
+			String startdatum, String enddatum, String auftragsnummer, String seminarleitername, String datum) {
 		this.refListe = referentenList;
 		this.saveFile = fragebogenOutputFile;
 		this.inputFile = templateFile;
 		this.verifyID = verifyID;
+		
+		this.startdatum = startdatum;
+		this.enddatum = enddatum;
+		this.auftragsnummer = auftragsnummer;
+		this.seminarleitername = seminarleitername;
+		this.datum = datum;
 	}
 
 	public void createHtml() throws IOException {
@@ -88,22 +101,16 @@ public class HtmlCreator {
 	
 	public void changeHeaderinformation(Element e) {
 		
-		String startdatum = "31.1.2008";
-		String enddatum = "31.12.2009";
-		String auftragsnummer = "F-27-99";
-		String seminarleitername = "Frau Moll";
-		String datum = "23.7.2020 a.d.";
-		
 		Element e_startdatum = e.getElementById("startdatum");
-		e_startdatum.text(startdatum);
+		e_startdatum.text("von " + startdatum);
 		Element e_enddatum = e.getElementById("enddatum");
-		e_enddatum.text(enddatum);
-//		Element e_auftragsnummer = e.getElementById("auftragsnummer");   Feld existiert noch nicht im template
-//		e_auftragsnummer.text(auftragsnummer);
+		e_enddatum.text("bis " + enddatum);
+		Element e_auftragsnummer = e.getElementById("auftragsnummer");
+		e_auftragsnummer.text("Auftragsnummer: " + auftragsnummer);
 		Element e_seminarleitername = e.getElementById("seminarleitername");
-		e_seminarleitername.text(seminarleitername);
+		e_seminarleitername.text("Seminarleitung: " +seminarleitername);
 		Element e_datum = e.getElementById("datum");
-		e_datum.text(datum);
+		e_datum.text("Datum: " + datum);
 		
 	}
 
