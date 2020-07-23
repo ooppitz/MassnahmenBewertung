@@ -148,8 +148,7 @@ public class MainApp extends Application {
 			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z1.setText("Unbenannter Fragebogen");
 			rootLayout.getTabs().add(tab_z1);
-			ControllerFragebogenErstellen controller = loader.getController();
-			schliesen(controller);
+			ControllerFragebogenErstellen controller = loader.getController();	
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
@@ -329,13 +328,5 @@ public class MainApp extends Application {
 		System.out.println("Der Rest der Methode wird noch durchgeführt!");
 	}
 	
-	public void schliesen(ControllerFragebogenErstellen controller) {
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				System.out.println("schließen");
-				ClipboardLoeschenTest.loeschenTest();
-			}
-		});
-	}
+	
 }
