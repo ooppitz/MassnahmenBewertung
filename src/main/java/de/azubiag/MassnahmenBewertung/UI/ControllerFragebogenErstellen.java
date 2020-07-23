@@ -53,33 +53,33 @@ public class ControllerFragebogenErstellen {
 	@FXML
 	Label description;
 
-	@FXML 
+	@FXML
 	TextField fragebogenname;
-	
+
 	@FXML
 	Label maßnahme_von;
-	
+
 	@FXML
 	DatePicker von_Datum;
-	
+
 	@FXML
 	Label maßnahme_bis;
-	
-	@FXML 
+
+	@FXML
 	DatePicker bis_Datum;
-	
+
 	@FXML
 	Label auftragsnummer_label;
-	
-	@FXML 
+
+	@FXML
 	TextField auftragsnummer_textfield;
-	
+
 	@FXML
 	Label leiter_label1;
-	
-	@FXML 
+
+	@FXML
 	Label leiter_label2;
-	
+
 	@FXML
 	DatePicker heute_datum;
 
@@ -114,7 +114,7 @@ public class ControllerFragebogenErstellen {
 		entferneReferent(ref2_x);
 		readdNode(description, 1, 0);
 		readdNode(fragebogenname, 3, 0);
-		
+
 		readdNode(maßnahme_von, 1, 1);
 		readdNode(von_Datum, 3, 1);
 //		((TextField) von_Datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont()); 	// Ansatz geht nicht
@@ -129,30 +129,29 @@ public class ControllerFragebogenErstellen {
 		readdNode(heute_datum, 5, 3);
 		heute_datum.setValue(LocalDate.now());
 //		((TextField) heute_datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont());
-		
+
 		readdNode(ref1_x, 0, 4);
 		readdNode(referent_label_first, 1, 4);
 		readdNode(referent_name_first, 3, 4);
 		readdNode(ref2_x, 0, 5);
 		readdNode(referent_label, 1, 5);
 		readdNode(referent_name, 3, 5);
-		
-		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> { 
-			
+
+		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> {
+
 //			if (oldValue != "" || newValue != "")
-				tab.setText(newValue);
+			tab.setText(newValue);
 //			else
 //				tab.setText("Unbenannter Fragebogen");
 		});
 	}
 
-	public void readdNode(Node node, int col, int row)
-	{
+	public void readdNode(Node node, int col, int row) {
 		gridpane.getChildren().remove(node);
 		gridpane.add(node, col, row);
 	}
 
-	public void setMainApp (MainApp app){
+	public void setMainApp(MainApp app) {
 		mainapp = app;
 	}
 
@@ -202,18 +201,17 @@ public class ControllerFragebogenErstellen {
 					gridpane.add(temp, 1, anzahl_referenten + 6, 2, 1);
 					gridpane.add(temp2, 3, anzahl_referenten + 5, 3, 1);
 					anzahl_referenten++;
-					
-					int letzteRow = anzahl_referenten+5;
+
+					int letzteRow = anzahl_referenten + 5;
 					for (int i = 5; i < letzteRow; i++) {
 						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-						if (temp3!=null)
-						{
-							((Button)temp3).setDisable(false);
+						if (temp3 != null) {
+							((Button) temp3).setDisable(false);
 						}
 					}
 					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-					((Button)temp4).setDisable(true);
-					
+					((Button) temp4).setDisable(true);
+
 					temp2.requestFocus();
 				}
 			}
@@ -227,39 +225,36 @@ public class ControllerFragebogenErstellen {
 
 				Logger logger = Logger.getLogger();
 				logger.logInfo("Aktion: Referent soll gelöscht werden");
-				/* Ablauf:
-				 * - letzter Button wird entfernt
-				 * - letzter Label wird entfernt
-				 * - TextField neben diesem Button wird entfernt
-				 * - alle Textfields darunter werden nach oben verschoben
-				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner			<--  fehlt noch
-				 * - anzahlReferenten wird dekrementiert
+				/*
+				 * Ablauf: - letzter Button wird entfernt - letzter Label wird entfernt -
+				 * TextField neben diesem Button wird entfernt - alle Textfields darunter werden
+				 * nach oben verschoben - möglicherweise wird das Gridpane um 49 Höhe kleiner
+				 * <-- fehlt noch - anzahlReferenten wird dekrementiert
 				 */
 
-				int letzteRow = anzahl_referenten+5;
-				logger.logInfo("ControllerFragebogenErstellen.entferneReferent\nletzte Reihe: "+letzteRow);
+				int letzteRow = anzahl_referenten + 5;
+				logger.logInfo("ControllerFragebogenErstellen.entferneReferent\nletzte Reihe: " + letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
-				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
+				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane,
+						GridPane.getRowIndex(button), 3);
 
 				gridpane.getChildren().removeAll(letzterButton, letzterLabel, textfieldnebendiesembutton);
 
 				for (int i = 5; i < letzteRow; i++) {
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-					if (temp!=null)
-					{
-						((Button)temp).setDisable(false);
+					if (temp != null) {
+						((Button) temp).setDisable(false);
 					}
 				}
-				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow-1, 0);
-				((Button)temp2).setDisable(true);
-				
-				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
+				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow - 1, 0);
+				((Button) temp2).setDisable(true);
+
+				for (int i = GridPane.getRowIndex(button) + 1; i <= letzteRow; i++) {
 
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
 //					System.out.println("temp node:\t"+temp);
-					if (temp!=null)
-					{
+					if (temp != null) {
 						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
 					}
 				}
@@ -278,12 +273,9 @@ public class ControllerFragebogenErstellen {
 
 			try {
 				TextField temp = (TextField) node;
-				if (skip<=0 && !(temp.getText().equals("")) )
-				{
+				if (skip <= 0 && !(temp.getText().equals(""))) {
 					referentenNamen.add(temp.getText());
-				}
-				else
-				{
+				} else {
 					skip--;
 				}
 			} catch (Exception e) {
@@ -293,143 +285,160 @@ public class ControllerFragebogenErstellen {
 		return referentenNamen;
 	}
 
-
 	public void addVorschauButtonHandler() {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
-				try {
+				if (allValuesEntered()) {
+					try {
 
-					Random random = new Random();
-					int verifyID = random.nextInt();
-					
-					// Erstellen des Fragebogen-Files
+						Random random = new Random();
+						int verifyID = random.nextInt();
 
-					String seminarleiterName = MainApp.getUserName();
-					String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory() + "template_fragebogen.html";
-					String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName, fragebogenname.getText());
-					
-					// Schreibt den Fragebogen in das Repository
-					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad, verifyID).createHtml();
-					
-					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
+						// Erstellen des Fragebogen-Files
 
-					// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
-					int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
-					int indexB = fragebogenOutputPfad.indexOf(".html");
-					String webpath = "https://" + fragebogenOutputPfad.substring(indexA, indexB);
-					webpath = webpath.replace('\\', '/');
-					Logger.getLogger().logInfo(webpath);
-					
-					
-					
-					
-					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.setTitle("Fragebogen veröffentlichen?");
-					alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
-					
-					//Dialgofenster zum Hochladen soll über der Browservorschau angezeigt werden, um den Nutzer nicht 
-					//zu verwirren:
-					Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow(); 
-					alertStage.setAlwaysOnTop(true);
+						String seminarleiterName = MainApp.getUserName();
+						String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory()
+								+ "template_fragebogen.html";
+						String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName,
+								fragebogenname.getText());
 
-					ButtonType buttonTypeYes = new ButtonType("Ja");
-					ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+						// Schreibt den Fragebogen in das Repository
+						new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad,
+								verifyID).createHtml();
 
-					alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
+						Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
 
-					Optional<ButtonType> result = alert.showAndWait();
+						// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
+						int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
+						int indexB = fragebogenOutputPfad.indexOf(".html");
+						String webpath = "https://" + fragebogenOutputPfad.substring(indexA, indexB);
+						webpath = webpath.replace('\\', '/');
+						Logger.getLogger().logInfo(webpath);
 
-					if (result.get() == buttonTypeYes) { // Nutzer drückt "ja"
+						Alert alert = new Alert(AlertType.CONFIRMATION);
+						alert.setTitle("Fragebogen veröffentlichen?");
+						alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
 
-						// Fortschritt anzeigen? Link anzeigen?
+						// Dialgofenster zum Hochladen soll über der Browservorschau angezeigt werden,
+						// um den Nutzer nicht
+						// zu verwirren:
+						Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+						alertStage.setAlwaysOnTop(true);
 
-						Dialog<ButtonType> dialog = new Dialog<>();
-						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(MainApp.class.getResource("upload.fxml"));
-						DialogPane grid = (DialogPane) loader.load();
-						dialog.setDialogPane(grid);
-						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
-						dialog.getDialogPane().getButtonTypes().add(cancel);
+						ButtonType buttonTypeYes = new ButtonType("Ja");
+						ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
 
-						dialog.initOwner(mainapp.primaryStage);
-						dialog.initModality(Modality.APPLICATION_MODAL);
-						dialog.setTitle("Hochladen");
-						UploadController upload_controller = loader.getController();
+						alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 
-						try {
+						Optional<ButtonType> result = alert.showAndWait();
 
-							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-			//				repoHandle.hochladen();
+						if (result.get() == buttonTypeYes) { // Nutzer drückt "ja"
 
-						} catch (Exception exc) {
-							
-							logger.logError(exc);
-							// Hochladen hat nicht geklappt
-							Alert error = new Alert(AlertType.ERROR);
-							error.setTitle("Probleme beim Hochladen");
-							error.setHeaderText(
-									"Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
-							ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-							error.getButtonTypes().setAll(end);
-							error.showAndWait();
-							return;
+							// Fortschritt anzeigen? Link anzeigen?
 
-						}
-						// 8.8.8.8 pingen
-						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
-						// da Github Pages trotzdem etwas anzeigt)
-						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
-						// fx-thread nicht blockieren !!!
-						// Abbrechen erlauben ?
+							Dialog<ButtonType> dialog = new Dialog<>();
+							FXMLLoader loader = new FXMLLoader();
+							loader.setLocation(MainApp.class.getResource("upload.fxml"));
+							DialogPane grid = (DialogPane) loader.load();
+							dialog.setDialogPane(grid);
+							ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+							dialog.getDialogPane().getButtonTypes().add(cancel);
 
-						dialog.getDialogPane().getButtonTypes().remove(cancel);
-						ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
-						dialog.getDialogPane().getButtonTypes().add(next);
+							dialog.initOwner(mainapp.primaryStage);
+							dialog.initModality(Modality.APPLICATION_MODAL);
+							dialog.setTitle("Hochladen");
+							UploadController upload_controller = loader.getController();
 
-						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
-						upload_controller.progress.setProgress(1);
-						Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
-						logger.logInfo("result2 = " + result2.toString());
-						// w�re praktisch, den Link noch woanders anzuzeigen
+							try {
 
-						// Fenster f�r Klonen anzeigen
-						Alert alert3 = new Alert(AlertType.CONFIRMATION);
-						alert3.setTitle("Neuen Fragebogen mit denselben Referenten anlegen?");
-						alert3.setHeaderText("Neuen Fragebogen mit denselben Referenten anlegen?");
-						ButtonType buttonTypeYes3 = new ButtonType("Ja");
-						ButtonType buttonTypeCancel3 = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
-						alert3.getButtonTypes().setAll(buttonTypeYes3, buttonTypeCancel3);
-						Optional<ButtonType> result3 = alert3.showAndWait();
+								Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
+								// repoHandle.hochladen();
 
-						// Zustand2-Tab erstellen
-						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab), verifyID);
+							} catch (Exception exc) {
 
-						if (result3.get() == buttonTypeYes3) {
-							// Fragebogen klonen
-							setName("Kopie von " + getName());
+								logger.logError(exc);
+								// Hochladen hat nicht geklappt
+								Alert error = new Alert(AlertType.ERROR);
+								error.setTitle("Probleme beim Hochladen");
+								error.setHeaderText(
+										"Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+								ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
+								error.getButtonTypes().setAll(end);
+								error.showAndWait();
+								return;
+
+							}
+							// 8.8.8.8 pingen
+							// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
+							// da Github Pages trotzdem etwas anzeigt)
+							// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
+							// fx-thread nicht blockieren !!!
+							// Abbrechen erlauben ?
+
+							dialog.getDialogPane().getButtonTypes().remove(cancel);
+							ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
+							dialog.getDialogPane().getButtonTypes().add(next);
+
+							upload_controller.upload_pending.setText("Hochladen erfolgreich!");
+							upload_controller.progress.setProgress(1);
+							Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
+							logger.logInfo("result2 = " + result2.toString());
+							// w�re praktisch, den Link noch woanders anzuzeigen
+
+							// Fenster f�r Klonen anzeigen
+							Alert alert3 = new Alert(AlertType.CONFIRMATION);
+							alert3.setTitle("Neuen Fragebogen mit denselben Referenten anlegen?");
+							alert3.setHeaderText("Neuen Fragebogen mit denselben Referenten anlegen?");
+							ButtonType buttonTypeYes3 = new ButtonType("Ja");
+							ButtonType buttonTypeCancel3 = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+							alert3.getButtonTypes().setAll(buttonTypeYes3, buttonTypeCancel3);
+							Optional<ButtonType> result3 = alert3.showAndWait();
+
+							// Zustand2-Tab erstellen
+							mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab), verifyID);
+
+							if (result3.get() == buttonTypeYes3) {
+								// Fragebogen klonen
+								setName("Kopie von " + getName());
+							} else {
+								mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
+							}
+
 						} else {
-							mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
+							// nichts tun
 						}
 
-					} else {
-						// nichts tun
+					} catch (IOException | URISyntaxException | GitAPIException e1) {
+						// SO KRIEGT MAN DEN TYP DER EXCEPTION: MIT
+						// GETCLASS.GETNAME!!!!!!!!!!!!!!!!!!!!!!
+						logger.logError(e1);
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Fehler");
+						alert.setHeaderText(
+								"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n"
+										+ e1.getClass().getName() + " beim Preview-Alert. \n"
+										+ "Interne Fehlermeldung: " + e1.getMessage());
+						alert.showAndWait();
+
 					}
-
-				} catch (IOException | URISyntaxException | GitAPIException e1) {
-					// SO KRIEGT MAN DEN TYP DER EXCEPTION: MIT GETCLASS.GETNAME!!!!!!!!!!!!!!!!!!!!!!
-					logger.logError(e1);
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Fehler");
-					alert.setHeaderText(
-							"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n"
-									+ e1.getClass().getName() + " beim Preview-Alert. \n"
-									+ "Interne Fehlermeldung: " + e1.getMessage());
-					alert.showAndWait();
-
 				}
 
+			}
+
+			private boolean allValuesEntered() {
+				boolean fragebogennameEntered = !fragebogenname.getText().equals("");
+				boolean auftragsnummerEntered = !auftragsnummer_textfield.getText().equals("");
+				boolean vonDatumEntered = !von_Datum.getValue().equals(null) ;
+				boolean bisDatumEntered = !bis_Datum.getValue().equals(null) ;
+				
+				System.out.println("|"+fragebogennameEntered+"|"+"|"+auftragsnummerEntered+"|"+"|"+vonDatumEntered+"|"+"|"+bisDatumEntered+"|"+"|"+anzahl_referenten+"|");
+				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && auftragsnummerEntered && anzahl_referenten>0) {
+				    return true; 
+				} else {
+					return false;
+				}
 			}
 		});
 	}

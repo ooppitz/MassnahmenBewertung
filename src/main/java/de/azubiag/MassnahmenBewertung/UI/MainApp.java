@@ -3,6 +3,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,7 @@ public class MainApp extends Application {
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
+	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -155,16 +157,8 @@ public class MainApp extends Application {
 			addDeleteToButton(controller.delete, rootLayout, tab_z1);
 			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();
-			controller.fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> { // für eine "normale"
-				// Methode müssten all
-				// diese Buttons gleich
-				// heißen
-				controller.preview.setDisable((newValue == "") ? true : false);
-				Logger logger = Logger.getLogger();
-				logger.logInfo("Textfeld-Eingabe, old: " + oldValue + " ---> new: " + newValue);
+		
 			
-			});
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
