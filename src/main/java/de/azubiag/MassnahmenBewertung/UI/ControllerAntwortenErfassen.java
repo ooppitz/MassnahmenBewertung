@@ -242,6 +242,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 						return;
 					}
 				}
+				clipboard.clear();
 			}
 		});
 	}
