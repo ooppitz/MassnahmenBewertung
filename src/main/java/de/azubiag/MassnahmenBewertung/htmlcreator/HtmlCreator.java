@@ -50,7 +50,7 @@ public class HtmlCreator {
 		
 		int anzahlReferenten = refListe.size();
 		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
-		bodyElement.attr("verifyID", String.valueOf(verifyID));
+		bodyElement.attr("umfrageID", String.valueOf(verifyID));
 	
 		for (String ref : refListe) {
 			bodyElement.attr("referent" + prefix, ref);
