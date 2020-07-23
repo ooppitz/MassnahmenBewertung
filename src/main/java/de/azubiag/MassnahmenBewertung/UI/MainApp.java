@@ -123,11 +123,7 @@ public class MainApp extends Application {
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()
 			
-			
-			ArrayList<AzubiAntwort> antwortListe = 	de.azubiag.MassnahmenBewertung.auswertung.test.App.getTestDaten();
-			showAuswertungAnzeigen("Testfragebogen XYZ", -1, antwortListe);
-			
-			// showFragebogenErstellen();
+			 showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
 			showPlus();
@@ -218,7 +214,7 @@ public class MainApp extends Application {
 			tab_z3.setText(name);
 			System.out.println(index);
 			rootLayout.getTabs().add(index +1, tab_z3);
-			// rootLayout.getTabs().remove(index);
+			 rootLayout.getTabs().remove(index);
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
 		
