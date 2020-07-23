@@ -2,12 +2,15 @@ package de.azubiag.MassnahmenBewertung.UI;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
-
 import de.azubiag.MassnahmenBewertung.upload.Upload;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -56,8 +59,8 @@ public class MainApp extends Application {
 	}
 
 
-	Stage primaryStage;
-	TabPane rootLayout;
+	protected Stage primaryStage;
+	protected TabPane rootLayout;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -80,7 +83,7 @@ public class MainApp extends Application {
 	public void showLogin() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand0.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerLogin.fxml"));
 			GridPane login_grid = (GridPane) loader.load();
 			login_grid.setPrefSize(600, 200);
 
@@ -120,7 +123,7 @@ public class MainApp extends Application {
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()
 			
-			showFragebogenErstellen();
+			 showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
 			showPlus();
@@ -136,7 +139,7 @@ public class MainApp extends Application {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand1.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
 			BorderPane z1 = (BorderPane) loader.load(); // !!
 			Tab tab_z1 = new Tab();
 			tab_z1.setContent(z1);
@@ -173,7 +176,7 @@ public class MainApp extends Application {
 	public void showAntwortenErfassen(String fragebogenName, int indexInTabPane, int verifyID) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand2.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
 			BorderPane z2 = (BorderPane) loader.load(); // !!
 			Tab tab_z2 = new Tab();
 			tab_z2.setContent(z2);
@@ -199,10 +202,10 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showAuswertungAnzeigen(String name, int index) { // incomplete
+	public void showAuswertungAnzeigen(String name, int index,List<AzubiAntwort> antwortListe) { // incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("Zustand3.fxml"));
+			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
 			BorderPane z3 = (BorderPane) loader.load(); // !!
 			Tab tab_z3 = new Tab();
 			tab_z3.setContent(z3);
@@ -210,13 +213,14 @@ public class MainApp extends Application {
 			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z3.setText(name);
 			System.out.println(index);
-			rootLayout.getTabs().add(index, tab_z3);
-			rootLayout.getTabs().remove(index - 1);
+			rootLayout.getTabs().add(index +1, tab_z3);
+			 rootLayout.getTabs().remove(index);
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
-			controller.setMainApp(this);
-			controller.setTab(tab_z3);
-			controller.setName(name);
+		
+			controller.init(this, name, antwortListe);
+			controller.erzeugeDarstellung();
+			
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
 		} catch (IOException e) {

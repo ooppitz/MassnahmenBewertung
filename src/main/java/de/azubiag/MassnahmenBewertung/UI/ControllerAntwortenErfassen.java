@@ -34,7 +34,11 @@ import de.azubiag.MassnahmenBewertung.tools.Logger;
 public class ControllerAntwortenErfassen implements Serializable {
 
 
-	public List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4954713836800270562L;
+	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
 	Tab tab;
 
 	int anzahl_antworten;    // Serialisieren 
@@ -153,54 +157,65 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 				} else {
 
-					System.out.println(
-							"Verschlüsselt: " + verschluesselteAntwort + " Entschlüsselt: " + entschluesselteAntwort);
-
-//					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);   // <-- ZUM DEBUGGEN AUSGESCHALTET
-
-//					antwortListe.add(antwort); // <-- ZUM DEBUGGEN AUSGESCHALTET
-				}
-
-				// TODO: In den else-Branch verschieben...
-
-				// wenn richtiger String, dann hier weiter
-				if (anzahl_antworten == 0) {
-					antwort_text.setText(clipboard.getString());
-					anzahl_antworten++;
-				} else if (anzahl_antworten > 0) {
-					if (anzahl_antworten > 9) {
-						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
-						gridpane.addRow(anzahl_antworten + 1);
-						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
-						// aussieht
-					}
-					Button del = new Button();
-					del.setText("x");
-					removeAnswer(del);
+//					System.out.println("Verschlüsselt: " + verschluesselteAntwort + " \nEntschlüsselt: " + entschluesselteAntwort);	// --> Debug
 					
-					Label temp = new Label();
-					temp.setText("  Verschlüsselte Antwort ");
-					temp.setText(temp.getText() + (anzahl_antworten + 1) + ":");
-					temp.setFont(antwort_name.getFont());
-
-					Label temp2 = new Label(clipboard.getString());
-					temp2.setFont(antwort_text.getFont());
-					gridpane.add(del, 0, anzahl_antworten + 1, 1, 1);
-					gridpane.add(temp, 1, anzahl_antworten + 1, 2, 1);
-					gridpane.add(temp2, 3, anzahl_antworten + 1, 3, 1);
+					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);   // <-- ZUM DEBUGGEN AUSGESCHALTET
 					
-					int letzteRow = anzahl_antworten+1;
-					for (int i = 1; i < letzteRow; i++) {
-						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-						if (temp3!=null)
-						{
-							((Button)temp3).setDisable(false);
+					if(antwort.verifyID == verifyID) {
+
+						antwortListe.add(antwort); // <-- ZUM DEBUGGEN AUSGESCHALTET
+						
+						if (anzahl_antworten == 0) {
+							antwort_text.setText(clipboard.getString());
+							anzahl_antworten++;
+						} else if (anzahl_antworten > 0) {
+							if (anzahl_antworten > 9) {
+								gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
+								gridpane.addRow(anzahl_antworten + 1);
+								// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+								// aussieht
+							}
+							Button del = new Button();
+							del.setText("x");
+							removeAnswer(del);
+							
+							Label temp = new Label();
+							temp.setText("  Verschlüsselte Antwort ");
+							temp.setText(temp.getText() + (anzahl_antworten + 1) + ":");
+							temp.setFont(antwort_name.getFont());
+
+							Label temp2 = new Label(clipboard.getString());
+							temp2.setFont(antwort_text.getFont());
+							gridpane.add(del, 0, anzahl_antworten + 1, 1, 1);
+							gridpane.add(temp, 1, anzahl_antworten + 1, 2, 1);
+							gridpane.add(temp2, 3, anzahl_antworten + 1, 3, 1);
+							
+							int letzteRow = anzahl_antworten+1;
+							for (int i = 1; i < letzteRow; i++) {
+								Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+								if (temp3!=null)
+								{
+									((Button)temp3).setDisable(false);
+								}
+							}
+							Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+							((Button)temp4).setDisable(true);
+							
+							anzahl_antworten++;
 						}
 					}
-					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-					((Button)temp4).setDisable(true);
-					
-					anzahl_antworten++;
+					else
+					{
+						Logger logger = Logger.getLogger();
+						logger.logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
+						Alert error = new Alert(AlertType.ERROR);
+						error.setTitle("Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
+						error.setHeaderText("Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
+						ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
+						error.getButtonTypes().setAll(end);
+						error.show();
+						return;
+					}
 				}
 			}
 		});
@@ -260,14 +275,13 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
-				// controller.antwortListe an die Auswertung schicken
+				System.out.println("AntwortenErfassen: "+antwortListe.size());
 				for (AzubiAntwort azubiAntwort : antwortListe) {
-					// TODO entfernen
-					System.out.println(azubiAntwort.toString());
+					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
 				}
+				
+				mainapp.showAuswertungAnzeigen(fragebogenName.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
-				// Auswertung zurückbekommen
-				mainapp.showAuswertungAnzeigen(fragebogenName.getText(), tab.getTabPane().getTabs().indexOf(tab));
 			}
 		});
 	}
