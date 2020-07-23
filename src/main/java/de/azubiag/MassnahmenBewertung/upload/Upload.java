@@ -164,13 +164,16 @@ public class Upload {
 
 	}
 	
-	public void getProgrammDatenOrdner() {
+	public File getProgrammDatenOrdner() {
 		String username =System.getProperty("user.name");
-		File f1 = new File("C:\\Users\\"+username+"\\AppData\\Roaming\\gfigithubaccess");
-		if(f1.exists()==true) {
+		File saveDirectory = new File("C:\\Users\\"+username+"\\AppData\\Roaming\\gfigithubaccess");
+		
+		if(saveDirectory.exists()==true) {
 			System.out.println("Ordner existiert!");
+			return saveDirectory;
 		} else {
 			System.out.println("Kein derartiger Ordner vorhanden");
+			return null;
 		}
 		
 	}
