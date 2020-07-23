@@ -2,6 +2,8 @@ package de.azubiag.MassnahmenBewertung.upload;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -160,6 +162,17 @@ public class Upload {
 			return false;
 		}
 
+	}
+	
+	public void getProgrammDatenOrdner() {
+		String username =System.getProperty("user.name");
+		File f1 = new File("C:\\Users\\"+username+"\\AppData\\Roaming\\gfigithubaccess");
+		if(f1.exists()==true) {
+			System.out.println("Ordner existiert!");
+		} else {
+			System.out.println("Kein derartiger Ordner vorhanden");
+		}
+		
 	}
 
 }
