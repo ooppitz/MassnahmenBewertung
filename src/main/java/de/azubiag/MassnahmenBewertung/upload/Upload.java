@@ -166,8 +166,7 @@ public class Upload {
 	
 	public File getProgrammDatenOrdner() {
 		String appData = System.getenv("LOCALAPPDATA");
-		System.out.println(appData);
-		File saveDirectory = new File(appData+"\\gfigithubaccess");
+		File saveDirectory = new File(appData+"\\"+repositoryName);
 		
 		if(saveDirectory.exists()==true) {
 			System.out.println("Ordner existiert!");
