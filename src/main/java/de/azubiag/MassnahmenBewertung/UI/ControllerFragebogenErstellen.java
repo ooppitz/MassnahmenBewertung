@@ -431,15 +431,17 @@ public class ControllerFragebogenErstellen {
 			}
 
 			private boolean allValuesEntered() {
+				//das Feld mit dem Datum der Umfrage wird nicht abgefragt, da es vorausgefuellt ist
 				boolean fragebogennameEntered = !fragebogenname.getText().equals("");
 				boolean auftragsnummerEntered = !auftragsnummer_textfield.getText().equals("");
-				boolean vonDatumEntered = !von_Datum.getValue().equals(null) ;
-				boolean bisDatumEntered = !bis_Datum.getValue().equals(null) ;
+				boolean vonDatumEntered = !(von_Datum.getValue()== null) ;
+				boolean bisDatumEntered = !(bis_Datum.getValue()==null) ;
+				int anzahl_referenten = getReferentenNamen().size(); 
 				
-				System.out.println("|"+fragebogennameEntered+"|"+"|"+auftragsnummerEntered+"|"+"|"+vonDatumEntered+"|"+"|"+bisDatumEntered+"|"+"|"+anzahl_referenten+"|");
 				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && auftragsnummerEntered && anzahl_referenten>0) {
 				    return true; 
 				} else {
+					//TODO Hinweis ausgeben, dass alle Felder ausgefüllt werden + mindestens ein Referent da sein muss
 					return false;
 				}
 			}
