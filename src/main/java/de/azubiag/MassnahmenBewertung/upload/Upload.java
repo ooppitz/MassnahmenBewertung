@@ -2,6 +2,8 @@ package de.azubiag.MassnahmenBewertung.upload;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -162,6 +164,20 @@ public class Upload {
 			return false;
 		}
 
+	}
+	
+	public File getProgrammDatenOrdner() {
+		String appData = System.getenv("LOCALAPPDATA");
+		File saveDirectory = new File(appData+"\\"+repositoryName);
+		
+		if(saveDirectory.exists()==true) {
+			System.out.println("Ordner existiert!");
+			return saveDirectory;
+		} else {
+			System.out.println("Kein derartiger Ordner vorhanden");
+			return null;
+		}
+		
 	}
 
 }
