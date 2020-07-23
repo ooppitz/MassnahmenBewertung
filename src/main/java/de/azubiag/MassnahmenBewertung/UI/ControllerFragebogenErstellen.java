@@ -38,6 +38,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /* Erstellen des Fragebogens */
 
@@ -321,9 +322,17 @@ public class ControllerFragebogenErstellen {
 					webpath = webpath.replace('\\', '/');
 					Logger.getLogger().logInfo(webpath);
 					
+					
+					
+					
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Fragebogen veröffentlichen?");
 					alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
+					
+					//Dialgofenster zum Hochladen soll über der Browservorschau angezeigt werden, um den Nutzer nicht 
+					//zu verwirren:
+					Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow(); 
+					alertStage.setAlwaysOnTop(true);
 
 					ButtonType buttonTypeYes = new ButtonType("Ja");
 					ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
