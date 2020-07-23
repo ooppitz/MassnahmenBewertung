@@ -14,6 +14,11 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.GridPane;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -271,7 +276,49 @@ public class ControllerAntwortenErfassen implements Serializable {
 	
 	public void speichern() {
 		
-		System.out.println("Die Speichermethode wurde aufgerufen!");
+		// ArrayList to store all objects
+		ArrayList<Object> data = new ArrayList<Object>();
+
+		// Add Objects here
+		data.add(antwortListe); // Object 0
+		data.add(anzahl_antworten); // Object 1
+		data.add(fragebogenName); // Object 2
+		data.add(verifyID); // Object 3
+
+		try {
+			FileOutputStream fos = new FileOutputStream("data.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(data);
+			oos.close();
+			fos.close();
+
+		} catch (IOException e) {
+			Logger l = new Logger();
+			l.logError(e);
+		}
+	}
+	
+	public void laden() {
+		// ArrayList to store all deserialized objects
+		ArrayList<Object> deserialized = new ArrayList<Object>();
+		
+		try {
+			FileInputStream fis = new FileInputStream("data.ser");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			deserialized = (ArrayList<Object>) ois.readObject();
+			ois.close();
+			fis.close();
+		} catch (IOException | ClassNotFoundException e) {
+			Logger l = new Logger();
+			l.logError(e);
+		}
+		
+		// Recieve loaded objects here
+		antwortListe = (List<AzubiAntwort>) deserialized.get(0); // Object 0
+		anzahl_antworten = (int) deserialized.get(1); // Object 1
+		fragebogenName = (Label) deserialized.get(2); // Object 2
+		verifyID = (int) deserialized.get(3); // Object 3
+
 	}
 
 	public void setVerifyID(int verifyID) {
