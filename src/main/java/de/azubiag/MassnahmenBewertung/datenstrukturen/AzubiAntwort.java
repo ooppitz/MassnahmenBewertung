@@ -15,7 +15,7 @@ public class AzubiAntwort {
 	
 	public final int verifyID;
 	
-	public final int randomID;
+	public final int fragebogenID;
 	
 	/** Erzeugt ein AzubiAntwort-Objekt.
 	 * 
@@ -24,7 +24,7 @@ public class AzubiAntwort {
 	public AzubiAntwort(String kodiert) {
 		String[] array = kodiert.split("\\|", -1); // -1 verhindert, dass split() leere Strings am Ende verwirft und dann das Array zu kurz ist
 		verifyID = Integer.parseInt(array[0]);
-		randomID = Integer.parseInt(array[1]);
+		fragebogenID = Integer.parseInt(array[1]);
 		massnahme = new BewertungMassnahme(subarray(array, 2, 8));
 		referenten = new ArrayList<>(10);
 		int index = 8;
@@ -48,7 +48,7 @@ public class AzubiAntwort {
 	
 	@Override
 	public String toString() {
-		return String.format("AzubiAntwort [%s, %s, verifyID=%d, randomID=%d]", massnahme, referenten, verifyID, randomID);
+		return String.format("AzubiAntwort [%s, %s, verifyID=%d, randomID=%d]", massnahme, referenten, verifyID, fragebogenID);
 	}
 	
 }

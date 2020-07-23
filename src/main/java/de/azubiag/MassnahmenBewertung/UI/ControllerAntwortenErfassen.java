@@ -165,7 +165,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 						boolean flag = false;
 						for (AzubiAntwort azubiAntwort : antwortListe) {
-							if (azubiAntwort.randomID == antwort.randomID)
+							if (azubiAntwort.fragebogenID == antwort.fragebogenID)
 							{
 								flag = true;
 							}
