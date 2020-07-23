@@ -276,6 +276,8 @@ public class ControllerAntwortenErfassen implements Serializable {
 	
 	public void speichern() {
 		
+		System.out.println("Speichern wurde aufgerufen!");
+		
 		// ArrayList to store all objects
 		ArrayList<Object> data = new ArrayList<Object>();
 
