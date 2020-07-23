@@ -137,6 +137,9 @@ public class ControllerFragebogenErstellen {
 		readdNode(referent_label, 1, 5);
 		readdNode(referent_name, 3, 5);
 
+		//DIESER BUTTON WIRD WAHRSCHEINLICH SCHON IM FXML-FILE AUSGEGRAUT. WEGEN ÄNDERUNGEN SOLL ER DAS ABER NICHT MEHR SEIN
+		//WENN DER DISABLED-ZUSTAND IM FXML AUF FALSE GESETZT WIRD, KANN DIE NÄCHSTE ZEILE RAUSGELÖSCHT WERDEN
+		preview.setDisable(false);
 		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> {
 
 //			if (oldValue != "" || newValue != "")
