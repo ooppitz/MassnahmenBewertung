@@ -63,6 +63,8 @@ public class Upload {
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
 		gitController = new Git(lokalRepo);
+		
+		gitController.pull().setCredentialsProvider(cp).call();
 	}
 
 	

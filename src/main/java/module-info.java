@@ -12,5 +12,6 @@ module de.azubiag.MassnahmenBewertung {
     opens de.azubiag.MassnahmenBewertung to javafx.fxml;
     exports de.azubiag.MassnahmenBewertung;
     exports de.azubiag.MassnahmenBewertung.UI;
+    exports de.azubiag.MassnahmenBewertung.auswertung.test;
     opens de.azubiag.MassnahmenBewertung.UI;
 }
