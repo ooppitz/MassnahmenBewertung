@@ -61,10 +61,10 @@ public class QuickTest1 {
 			liste.add(new AzubiAntwort(input));
 		} while (input.length() > 0);
 		
-		int verifyID = liste.get(0).verifyID;
+		int verifyID = liste.get(0).umfrageID;
 		boolean verified = true;
 		for (AzubiAntwort aa : liste) {
-			if(aa.verifyID != verifyID) {
+			if(aa.umfrageID != verifyID) {
 				verified = false;
 				break;
 			}
