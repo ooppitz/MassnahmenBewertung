@@ -163,5 +163,37 @@ public class Upload {
 		}
 
 	}
+	
+	/**
+	 * Lädt einen Fragebogen hoch. Die Methode kümmert sich um alle Details: git
+	 * pull, git add, git commit, git push Setzt voraus, dass der Fragebogen in
+	 * einem Folder des Repos abgelegt wurde.
+	 * @param
+	 * @return boolean : Zeigt Erfolg oder Misserfolg an
+	 */
+
+	public boolean hochladen(String fragebogenname, String nutzername) {
+
+		try {
+			// git pull
+			gitController.pull().setCredentialsProvider(cp).call();
+
+			// git add . --> Fügt Fragebogen im Staging Area hinzu
+			gitController.add().addFilepattern(".").call();
+
+			// git commit
+			gitController.commit().setAll(true).setMessage(fragebogenname+" von "+nutzername).call();
+
+			// git push --> Schreibt die Änderungen in das remote Repo
+			// $ git push --all
+			gitController.push().setCredentialsProvider(cp).setPushAll().call();
+
+			return true;
+			
+		} catch (GitAPIException e) {
+			return false;
+		}
+
+	}
 
 }
