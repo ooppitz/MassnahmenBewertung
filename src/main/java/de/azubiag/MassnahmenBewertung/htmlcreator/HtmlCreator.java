@@ -57,11 +57,13 @@ public class HtmlCreator {
 	
 		ArrayList<Element> elementListe = new ArrayList<>();
 		
+		
 		for (String ref : refListe) {
 			bodyElement.attr("referent" + prefix, ref);
 			elementListe.add(makeReferentenBox(ref, prefix));
 			prefix++;
 		}
+		changeHeaderinformation(elementListe);
 		addElementsToHtml(elementListe);
 		
 		saveHtml(saveFile);
@@ -80,6 +82,29 @@ public class HtmlCreator {
 		Element elementFieldset1 = doc.getElementById("massnahme_fs1");
 		appendWarningIntoTableRow(elementFieldset1, "[name=b_r0]", "b_r0");
 
+	}
+	
+	public void changeHeaderinformation(ArrayList<Element> elementListe) {
+		
+		String startdatum = "a";
+		String enddatum = "b";
+		String auftragsnummer = "c";
+		String seminarleitername = "d";
+		String datum = "e";
+		
+		Element e = elementListe.get(0);
+		
+		Element e_startdatum = e.getElementById("startdatum");
+		e_startdatum.text(startdatum);
+		Element e_enddatum = e.getElementById("enddatum");
+		e_enddatum.text(enddatum);
+//		Element e_auftragsnummer = e.getElementById("auftragsnummer");   Feld existiert noch nicht im template
+//		e_auftragsnummer.text(auftragsnummer);
+		Element e_seminarleitername = e.getElementById("seminarleitername");
+		e_seminarleitername.text(seminarleitername);
+		Element e_datum = e.getElementById("datum");
+		e_datum.text(datum);
+		
 	}
 
 	public Element makeReferentenBox(String referentName, int radioButtonNamePrefix) throws IOException {
