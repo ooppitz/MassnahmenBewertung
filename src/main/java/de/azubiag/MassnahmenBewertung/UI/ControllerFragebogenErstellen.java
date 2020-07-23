@@ -441,7 +441,11 @@ public class ControllerFragebogenErstellen {
 				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && auftragsnummerEntered && anzahl_referenten>0) {
 				    return true; 
 				} else {
-					//TODO Hinweis ausgeben, dass alle Felder ausgefüllt werden + mindestens ein Referent da sein muss
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Bitte alles ausfuellen");
+					alert.setHeaderText("Bitte fuellen Sie alle Felder aus und legen Sie mindestens einen Referenten an. "
+							);
+					alert.showAndWait();
 					return false;
 				}
 			}
