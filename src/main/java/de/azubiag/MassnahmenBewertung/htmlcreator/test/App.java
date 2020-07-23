@@ -49,7 +49,7 @@ public class App {
 					+ "template\\template_fragebogen.html";
 
 			// Schreibt den Fragebogen in das Repository
-			new HtmlCreator(referentenListe, fragebogenTemplatePfad, fragebogenOutputPfad).createHtml();
+			new HtmlCreator(referentenListe, fragebogenTemplatePfad, fragebogenOutputPfad, 0x374664).createHtml();
 
 		} catch (GitAPIException | IOException e) {
 		

@@ -49,21 +49,23 @@ public class HtmlCreator {
 
 		Element bodyElement = doc.getElementsByTag("body").first();
 
+		// Header (A)
+		changeHeaderinformation(bodyElement); // Benedikt
+		
+		// Massnahme (B)
 		konfiguriereMassnahmenBox();
 		
+		// Referenten (C, D, E, ... )
 		int anzahlReferenten = refListe.size();
 		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
 		bodyElement.attr("verifyID", String.valueOf(verifyID));
 	
 		ArrayList<Element> elementListe = new ArrayList<>();
-		
-		
 		for (String ref : refListe) {
 			bodyElement.attr("referent" + prefix, ref);
 			elementListe.add(makeReferentenBox(ref, prefix));
 			prefix++;
 		}
-		changeHeaderinformation(elementListe);
 		addElementsToHtml(elementListe);
 		
 		saveHtml(saveFile);
@@ -84,15 +86,13 @@ public class HtmlCreator {
 
 	}
 	
-	public void changeHeaderinformation(ArrayList<Element> elementListe) {
+	public void changeHeaderinformation(Element e) {
 		
-		String startdatum = "a";
-		String enddatum = "b";
-		String auftragsnummer = "c";
-		String seminarleitername = "d";
-		String datum = "e";
-		
-		Element e = elementListe.get(0);
+		String startdatum = "31.1.2008";
+		String enddatum = "31.12.2009";
+		String auftragsnummer = "F-27-99";
+		String seminarleitername = "Frau Moll";
+		String datum = "23.7.2020 a.d.";
 		
 		Element e_startdatum = e.getElementById("startdatum");
 		e_startdatum.text(startdatum);
