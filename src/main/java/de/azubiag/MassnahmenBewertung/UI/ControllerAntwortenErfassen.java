@@ -27,6 +27,7 @@ import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 
 /* Eingeben der Antworten */
@@ -138,12 +139,9 @@ public class ControllerAntwortenErfassen implements Serializable {
 				{
 					Logger logger = Logger.getLogger();
 					logger.logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
-					Alert error = new Alert(AlertType.ERROR);
-					error.setTitle("Ihre Zwischenablage ist leer!");
-					error.setHeaderText("Ihre Zwischenablage ist leer!");
-					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-					error.getButtonTypes().setAll(end);
-					error.show();
+					
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
+					
 					return;
 				}
 
