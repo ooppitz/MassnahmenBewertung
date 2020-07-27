@@ -44,6 +44,11 @@
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>3.5.0.201409260305-r</version>
 		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.10</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

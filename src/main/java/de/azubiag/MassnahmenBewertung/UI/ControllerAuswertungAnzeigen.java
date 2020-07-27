@@ -1,7 +1,18 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
@@ -379,6 +390,24 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 				zeile++;
 			}
 			zeile ++;
+		}
+	}
+	
+	public void saveAsPDF() {
+		Document document = new Document();
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream("iTextHelloWorld.pdf"));
+
+
+			document.open();
+			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+			Chunk chunk = new Chunk("Hello World", font);
+
+			document.add(chunk);
+			document.close();
+		} catch (FileNotFoundException | DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
