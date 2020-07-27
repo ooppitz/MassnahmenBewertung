@@ -122,10 +122,10 @@ public class ControllerFragebogenErstellen {
 
 		readdNode(maßnahme_von, 1, 1);
 		readdNode(von_Datum, 3, 1);
-//		((TextField) von_Datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont()); 	// Ansatz geht nicht
+		von_Datum.getEditor().setFont(maßnahme_von.getFont());
 		readdNode(maßnahme_bis, 4, 1);
 		readdNode(bis_Datum, 5, 1);
-//		((TextField) bis_Datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont());
+		bis_Datum.getEditor().setFont(maßnahme_bis.getFont());
 		readdNode(auftragsnummer_label, 1, 2);
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);
@@ -133,7 +133,7 @@ public class ControllerFragebogenErstellen {
 		leiter_label2.setText(mainapp.getUserName());
 		readdNode(heute_datum, 5, 3);
 		heute_datum.setValue(LocalDate.now());
-//		((TextField) heute_datum.getChildrenUnmodifiable().get(0)).setFont(referent_label.getFont());
+		heute_datum.getEditor().setFont(maßnahme_bis.getFont());
 
 		readdNode(ref1_x, 0, 4);
 		readdNode(referent_label_first, 1, 4);
