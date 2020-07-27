@@ -66,8 +66,8 @@ public class MainApp extends Application {
 		return testmodusAktiv;
 	}
 
-	public static void setTestmodusAktiv(boolean testmodusAktiv) {
-		testmodusAktiv = testmodusAktiv;
+	public static void setTestmodusAktiv(boolean _testmodusAktiv) {
+		testmodusAktiv = _testmodusAktiv;
 	}
 
 	protected Stage primaryStage;
