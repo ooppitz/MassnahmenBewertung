@@ -1,9 +1,13 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -20,6 +24,7 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -403,8 +408,15 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		
 		Document document = new Document();
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream("iTextTable.pdf"));
-
+			try {
+				File file = new File(Upload.getInstance().getRepositoryPfad()+"\\PDFSpeicher\\iTextTable.pdf");
+				file.mkdirs();
+				PdfWriter.getInstance(document, new FileOutputStream(file));
+			} catch (GitAPIException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			document.open();
 
 			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
@@ -423,7 +435,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			document.add(table);
 			document.close();
 
-		} catch (FileNotFoundException | DocumentException e) {
+		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
