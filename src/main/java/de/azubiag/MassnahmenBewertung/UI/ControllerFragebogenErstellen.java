@@ -307,19 +307,19 @@ public class ControllerFragebogenErstellen {
 					Random random = new Random();
 					int verifyID = random.nextInt();
 					
-					von_Datum.setValue(LocalDate.of(1999, 9, 9)); // TODO : entfernen
-					bis_Datum.setValue(LocalDate.of(1999, 9, 9));
-					
 					// Erstellen des Fragebogen-Files
 
 					String seminarleiterName = MainApp.getUserName();
 					String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory() + "template_fragebogen.html";
 					String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName, fragebogenname.getText());
 					
+					
+					String stringVonDatum = (von_Datum.getValue() == null) ? "<nicht definiert>" : von_Datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")); 
+					String stringBisDatum = (bis_Datum.getValue() == null) ? "<nicht definiert>" : bis_Datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")); 
+					
 					// Schreibt den Fragebogen in das Repository
 					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad, verifyID,
-							von_Datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
-							bis_Datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+							stringVonDatum,	stringBisDatum,
 							auftragsnummer_textfield.getText(),
 							seminarleiterName,
 							heute_datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).createHtml();
