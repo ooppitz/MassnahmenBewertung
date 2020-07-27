@@ -22,7 +22,19 @@ public class FragebogenEigenschaften implements Serializable{
 	public String ausstellungs_datum;
 	public String link;
 
-	public FragebogenEigenschaften(String fragebogen_name, String seminarleiter_name, String auftrags_nummer, LocalDate von_Datum, LocalDate bis_Datum, LocalDate ausstellungs_datum, String link) {
+	
+	/* Der Konstruktor liest die Werte aus den Feldern des Controllers aus */
+	public FragebogenEigenschaften(ControllerFragebogenErstellen controller, String webpath) {
+		
+		this(controller.getName(), MainApp.getUserName(), 
+			controller.auftragsnummer_textfield.getText(), 
+			controller.von_Datum.getValue(), controller.bis_Datum.getValue(), 
+			controller.heute_datum.getValue(), webpath);
+		
+	}
+	
+	public FragebogenEigenschaften(String fragebogen_name, String seminarleiter_name, String auftrags_nummer, 
+			LocalDate von_Datum, LocalDate bis_Datum, LocalDate ausstellungs_datum, String link) {
 		this.fragebogen_name = fragebogen_name;
 		this.seminarleiter_name = seminarleiter_name;
 		this.auftrags_nummer = auftrags_nummer;

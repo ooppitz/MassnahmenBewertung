@@ -296,7 +296,13 @@ public class ControllerFragebogenErstellen {
 	}
 
 public void addVorschauButtonHandler() {
+	
+	
+		ControllerFragebogenErstellen controller = this;
+		
 		preview.setOnAction(new EventHandler<ActionEvent>() {
+			
+			
 			@Override
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
@@ -394,7 +400,7 @@ public void addVorschauButtonHandler() {
 								buttonTypeCancelKlonen);
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
-						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(getName(), MainApp.getUserName(), auftragsnummer_textfield.getText(), von_Datum.getValue(), bis_Datum.getValue(), heute_datum.getValue(), webpath);
+						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
 						
 						// Auswertung-Tab erstellen
 						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), verifyID);
@@ -510,7 +516,7 @@ public void addVorschauButtonHandler() {
 
 			private void zeigeVorschauFragebogen(String fragebogenOutputPfad)
 					throws IOException, URISyntaxException, MalformedURLException {
-					Desktop.getDesktop().browse(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""))
+					Desktop.getDesktop().browse(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""));
 			}
 
 			private String erstelleFragebogenImLokalenRepo(FragebogenEigenschaften eigenschaften, int verifyID)
