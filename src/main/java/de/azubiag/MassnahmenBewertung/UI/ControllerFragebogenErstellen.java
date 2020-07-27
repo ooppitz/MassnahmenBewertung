@@ -3,6 +3,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -312,8 +313,8 @@ public class ControllerFragebogenErstellen {
 					
 					// Schreibt den Fragebogen in das Repository
 					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad, verifyID).createHtml();
-					
-					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
+					System.out.println(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""));
+					Desktop.getDesktop().browse(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""));
 
 					// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
 					int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");

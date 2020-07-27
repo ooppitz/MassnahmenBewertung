@@ -124,7 +124,7 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("tabpane.fxml"));
 			rootLayout = (TabPane) loader.load();
-			rootLayout.setPrefSize(800, 600);
+			rootLayout.setPrefSize(1280, 720);
 			rootLayout.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 
 			Scene scene = new Scene(rootLayout);
@@ -132,6 +132,7 @@ public class MainApp extends Application {
 			primaryStage.hide();
 			primaryStage.setMinHeight(600);
 			primaryStage.setMinWidth(800);
+			
 
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()

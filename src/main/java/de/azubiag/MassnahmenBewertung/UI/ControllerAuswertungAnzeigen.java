@@ -10,10 +10,12 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 /* Ausgabe der Auswertung */
 
@@ -77,7 +79,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			log.logError("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			Label warning = new Label("     In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			grid.add(warning, 0, zeile);
-			zeile = 1;
+			zeile = 2;
 			return;
 		}
 		
@@ -92,7 +94,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		
 		setName(eigenschaft.fragebogen_name);
 
-		zeile = 0; 
+		zeile = 1; 
 		
 		
 	}
@@ -104,6 +106,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		betreuung();
 		bemerkungen();
 		referenten();
+		setze_alle_Fonts();
 
 	}
 
@@ -379,6 +382,15 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 				zeile++;
 			}
 			zeile ++;
+		}
+	}
+	
+	public void setze_alle_Fonts() {
+		
+		for (Node node : grid.getChildrenUnmodifiable() ) {
+			
+			Label label = (Label) node;
+			label.setFont(new Font(20));
 		}
 	}
 }
