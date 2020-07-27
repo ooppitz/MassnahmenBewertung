@@ -297,18 +297,16 @@ public class ControllerFragebogenErstellen {
 
 public void addVorschauButtonHandler() {
 	
-	
 		ControllerFragebogenErstellen controller = this;
 		
 		preview.setOnAction(new EventHandler<ActionEvent>() {
-			
 			
 			@Override
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
 
 				if (allValuesEntered() ) {
-					fortfahren(logger);
+					fragebogenHandling(logger);
 				} else {
 					// Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber
 					// diese Daten alle in der Auswertung wünschen
@@ -323,7 +321,7 @@ public void addVorschauButtonHandler() {
 								buttonTypeCancelIgnorieren);
 
 						if (resultIgnorieren.get() == buttonTypeYesIgnorieren) { 
-							fortfahren(logger);
+							fragebogenHandling(logger);
 						}
 					} else {
 						zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
@@ -332,16 +330,19 @@ public void addVorschauButtonHandler() {
 
 			}
 
-			private void fortfahren(Logger logger) {
+			/* Erstellen, Hochladen usw. eines Fragebogens */
+			
+			private void fragebogenHandling(Logger logger) {
 				try {
 
 					Random random = new Random();
 					int verifyID = random.nextInt();
 
 					// Erstellen des Fragebogen-Files
-					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(getName(), MainApp.getUserName(), auftragsnummer_textfield.getText(), von_Datum.getValue(), bis_Datum.getValue(), heute_datum.getValue(), "Ungültiger Webpath");
+					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
 					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(eigenschaftenX, verifyID);
-					zeigeVorschauFragebogen(fragebogenOutputPfad);
+					zeigeVorschauFragebogen(fragebogenOutputPfad); // Zeigt den Fragebogen im Browser
+					
 					String webpath = getFragebogenWebPath(fragebogenOutputPfad);
 
 					ButtonType buttonTypeYesVeroeffentlichen = new ButtonType("Ja");
