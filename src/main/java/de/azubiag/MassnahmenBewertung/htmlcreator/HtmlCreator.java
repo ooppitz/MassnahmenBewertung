@@ -40,8 +40,10 @@ public class HtmlCreator {
 		// this(referenten, templatePath, outputPath, 0);
 	}
 	
-	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int umfrageID, 
-			String startdatum, String enddatum, String auftragsnummer, String seminarleitername, String datum) {
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, 
+			String fragebogenOutputFile, int umfrageID, 
+			String startdatum, String enddatum, String auftragsnummer, 
+			String seminarleitername, String datum) {
 		this.refListe = referentenList;
 		this.saveFile = fragebogenOutputFile;
 		this.inputFile = templateFile;
