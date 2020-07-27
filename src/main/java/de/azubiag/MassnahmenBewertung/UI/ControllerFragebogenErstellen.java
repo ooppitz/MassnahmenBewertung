@@ -297,92 +297,7 @@ public void addVorschauButtonHandler() {
 				Logger logger = Logger.getLogger();
 
 				if (allValuesEntered()) {
-					try {
-
-						Random random = new Random();
-						int verifyID = random.nextInt();
-
-						// Erstellen des Fragebogen-Files
-
-						String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(verifyID);
-						zeigeVorschauFragebogen(fragebogenOutputPfad);
-						String webpath = getFragebogenWebPath(fragebogenOutputPfad);
-
-						ButtonType buttonTypeYesVeroeffentlichen = new ButtonType("Ja");
-						ButtonType buttonTypeCancelVeroeffentlichen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
-
-						/*hier wird nicht getEntscheidungÜBerDialog genutzt, da das Fenster permanent üvber einem anderen angezeigt werden soll (Sonderfall)*/
-						Optional<ButtonType> resultVeroeffentlichen = getEntscheidungVeroeffentlichen(webpath,
-								buttonTypeYesVeroeffentlichen, buttonTypeCancelVeroeffentlichen);
-
-						if (resultVeroeffentlichen.get() == buttonTypeYesVeroeffentlichen) { // Nutzer drückt "ja"
-
-							// Fortschritt anzeigen? Link anzeigen?
-
-							Dialog<ButtonType> dialog = new Dialog<>();
-							ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
-							
-							zeigeHochladenDialog(dialog, cancel);
-							try {
-
-								Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-								// repoHandle.hochladen();
-
-							} catch (Exception exc) {
-
-								logger.logError(exc);
-								// Hochladen hat nicht geklappt
-								zeigeErrorHochladen();
-								return;
-
-							}
-							// 8.8.8.8 pingen
-							// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
-							// da Github Pages trotzdem etwas anzeigt)
-							// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
-							// fx-thread nicht blockieren !!!
-							// Abbrechen erlauben ?
-
-							zeigeHochladenErfolgreichFenster(logger, dialog, cancel);
-
-							
-							
-							ButtonType buttonTypeYesKlonen = new ButtonType("Ja");
-							ButtonType buttonTypeCancelKlonen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
-
-							// Fenster f�r Klonen anzeigen
-							Optional<ButtonType> buttonTypeKlonen = getEntscheidungÜberDialog(
-									"Neuen Fragebogen mit denselben Referenten anlegen?",
-									"Neuen Fragebogen mit denselben Referenten anlegen?", buttonTypeYesKlonen,
-									buttonTypeCancelKlonen);
-							
-							// Auswertung-Tab erstellen
-							mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab), verifyID);
-
-							if (buttonTypeKlonen.get() == buttonTypeYesKlonen) {
-								// Fragebogen klonen
-								setName("Kopie von " + getName());
-							} else {
-								//Tab schließen
-								mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
-							}
-						} else {
-							// nichts tun
-						}
-
-					} catch (IOException | URISyntaxException | GitAPIException e1) {
-						// SO KRIEGT MAN DEN TYP DER EXCEPTION: MIT
-						// GETCLASS.GETNAME!!!!!!!!!!!!!!!!!!!!!!
-						logger.logError(e1);
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("Fehler");
-						alert.setHeaderText(
-								"Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n"
-										+ e1.getClass().getName() + " beim Preview-Alert. \n"
-										+ "Interne Fehlermeldung: " + e1.getMessage());
-						alert.showAndWait();
-
-					}
+					fortfahren(logger);
 				} else {
 					// Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber
 					// diese Daten alle in der Auswertung wünschen
@@ -393,37 +308,121 @@ public void addVorschauButtonHandler() {
 						ButtonType buttonTypeCancelIgnorieren = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
 
 						Optional<ButtonType> resultIgnorieren = getEntscheidungÜberDialog(" --TESTMODUS-- Eingaben unvollständig",
-								"Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ", buttonTypeYesIgnorieren,
+								"--TESTMODUS-- Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ", buttonTypeYesIgnorieren,
 								buttonTypeCancelIgnorieren);
 
-						if (resultIgnorieren.get() == buttonTypeYesIgnorieren) { // Nutzer drückt "ja"
-							// nach Refactoring Methode(n) aufrufen
+						if (resultIgnorieren.get() == buttonTypeYesIgnorieren) { 
+							fortfahren(logger);
 						}
 					} else {
-						Alert alert = new Alert(AlertType.WARNING);
-						alert.setTitle("Bitte alles ausfüllen");
-						alert.setHeaderText(
-								"Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
-						alert.showAndWait();
+						zeigeErrorAlert("Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
 			}
 
-			private void zeigeHochladenDialog(Dialog<ButtonType> dialog, ButtonType cancel) throws IOException {
+			private void fortfahren(Logger logger) {
+				try {
+
+					Random random = new Random();
+					int verifyID = random.nextInt();
+
+					// Erstellen des Fragebogen-Files
+					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(verifyID);
+					zeigeVorschauFragebogen(fragebogenOutputPfad);
+					String webpath = getFragebogenWebPath(fragebogenOutputPfad);
+
+					ButtonType buttonTypeYesVeroeffentlichen = new ButtonType("Ja");
+					ButtonType buttonTypeCancelVeroeffentlichen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+
+					/*hier wird nicht getEntscheidungÜberDialog genutzt, da das Fenster permanent über einem anderen angezeigt werden soll (Sonderfall)*/
+					Optional<ButtonType> resultVeroeffentlichen = getEntscheidungVeroeffentlichen(webpath,
+							buttonTypeYesVeroeffentlichen, buttonTypeCancelVeroeffentlichen);
+
+					if (resultVeroeffentlichen.get() == buttonTypeYesVeroeffentlichen) { 
+						// Fortschritt anzeigen? Link anzeigen?
+
+						Dialog<ButtonType> dialog = new Dialog<>();			
+						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+						
+						UploadController upload_controller = initHochladenFenster(dialog, cancel);
+
+						try {
+
+							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
+						//zu Testzwecken auskommentiert
+//				repoHandle.hochladen();
+
+						} catch (Exception exc) {
+							
+							logger.logError(exc);
+							// Hochladen hat nicht geklappt
+							
+							zeigeErrorAlert("Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							return;
+
+						}
+						// 8.8.8.8 pingen
+						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
+						// da Github Pages trotzdem etwas anzeigt)
+						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
+						// fx-thread nicht blockieren !!!
+						// Abbrechen erlauben ?
+
+						zeigeHochladenErfolgreich(logger, dialog, cancel, upload_controller);
+
+						ButtonType buttonTypeYesKlonen = new ButtonType("Ja");
+						ButtonType buttonTypeCancelKlonen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+
+						// Fenster f�r Klonen anzeigen
+						Optional<ButtonType> buttonTypeKlonen = getEntscheidungÜberDialog(
+								"Neuen Fragebogen mit denselben Referenten anlegen?",
+								"Neuen Fragebogen mit denselben Referenten anlegen?", buttonTypeYesKlonen,
+								buttonTypeCancelKlonen);
+						
+						// Auswertung-Tab erstellen
+						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab), verifyID);
+
+						if (buttonTypeKlonen.get() == buttonTypeYesKlonen) {
+							// Fragebogen klonen
+							setName("Kopie von " + getName());
+						} else {
+							//Tab schließen
+							mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
+						}
+					} else {
+						// nichts tun
+					}
+
+				} catch (IOException | URISyntaxException | GitAPIException e1) {
+					// SO KRIEGT MAN DEN TYP DER EXCEPTION: MIT
+					// GETCLASS.GETNAME!!!!!!!!!!!!!!!!!!!!!!
+					logger.logError(e1);
+					String errorMessage = "Etwas ist fehlgeschlagen. \nGeben Sie die Nachricht an die Administratoren weiter:\n"
+									+ e1.getClass().getName() + " beim Preview-Alert. \n"
+									+ "Interne Fehlermeldung: " + e1.getMessage();
+					
+					zeigeErrorAlert("Fehler", errorMessage);
+				}
+			}
+
+			private UploadController initHochladenFenster(Dialog<ButtonType> dialog, ButtonType cancel)
+					throws IOException {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(MainApp.class.getResource("upload.fxml"));
 				DialogPane grid = (DialogPane) loader.load();
 				dialog.setDialogPane(grid);
-				
+
 				dialog.getDialogPane().getButtonTypes().add(cancel);
 
 				dialog.initOwner(mainapp.primaryStage);
 				dialog.initModality(Modality.APPLICATION_MODAL);
 				dialog.setTitle("Hochladen");
+				UploadController upload_controller = loader.getController();
+				return upload_controller;
 			}
 
-			private void zeigeHochladenErfolgreichFenster(Logger logger, Dialog<ButtonType> dialog, ButtonType cancel,
+			private void zeigeHochladenErfolgreich(Logger logger, Dialog<ButtonType> dialog, ButtonType cancel,
 					UploadController upload_controller) {
 				dialog.getDialogPane().getButtonTypes().remove(cancel);
 				ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
@@ -465,11 +464,11 @@ public void addVorschauButtonHandler() {
 				return buttonTypeKlonen;
 			}
 
-			private void zeigeErrorHochladen() {
+			private void zeigeErrorAlert(String title, String headerText) {
 				Alert error = new Alert(AlertType.ERROR);
-				error.setTitle("Probleme beim Hochladen");
+				error.setTitle(title);
 				error.setHeaderText(
-						"Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+						headerText);
 				ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
 				error.getButtonTypes().setAll(end);
 				error.showAndWait();
