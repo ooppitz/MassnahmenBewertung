@@ -226,12 +226,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 					{
 						Logger logger = Logger.getLogger();
 						logger.logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
-						Alert error = new Alert(AlertType.ERROR);
-						error.setTitle("Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
-						error.setHeaderText("Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
-						ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-						error.getButtonTypes().setAll(end);
-						error.show();
+						AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Eingefügte Antwort gehört nicht zu diesem Fragebogen!", "Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
 						return;
 					}
 				}
