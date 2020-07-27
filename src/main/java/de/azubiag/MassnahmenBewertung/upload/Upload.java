@@ -29,26 +29,26 @@ import de.azubiag.MassnahmenBewertung.tools.Tools;
  */
 
 public class Upload {
-	
+
 	// Zugangsdaten für den bei der Registrierung verwendenten Gmail-Account
 	static String gitHubEmail = "gfigithubaccess@gmail.com";
 	static String emailPasswort = "GfiGitHubAccess2020!";
 	static String telefonNummer = "017672414900"; // Oliver Oppitz
-	
+
 	// Zugriffsdaten etc. für Github
 	static String repositoryName = "gfigithubaccess.github.io";
 	static String gitHubBenutzernamen = "gfigithubaccess"; // Nutzername für den GitHub-Account
 	static String gitHubPasswort = "GfiGitHubAccess2020!"; // Passwort für den GitHub-Account
 	static String remoteRepoPath = "https://github.com/gfigithubaccess/gfigithubaccess.github.io.git";
-	
+
 	static Upload instance = null;
-	
+
 	CredentialsProvider cp;
 	String remotePfad;
 
 	Git gitController;
 	Repository lokalRepo;
-	
+
 	// Credentials werden an den Constructor übergeben oder in Upload fest
 	// implementiert
 
@@ -56,28 +56,28 @@ public class Upload {
 
 	public Upload(String gitHubBenutzername, String gitHubPasswort, String remotePfad, String repositoryName)
 			throws InvalidRemoteException, TransportException, GitAPIException, IOException {
-		
+
 		this.remotePfad = remotePfad;
 		this.repositoryName = repositoryName;
-		
+
 		repoUeberpruefen();
-		
+
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
 		gitController = new Git(lokalRepo);
-		
+
 		gitController.pull().setCredentialsProvider(cp).call();
 	}
 
-	
+
 	public static Upload getInstance() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
-		
+
 		if ( instance == null ) {
 			instance = new Upload(gitHubBenutzernamen, gitHubPasswort, remoteRepoPath, repositoryName);
 		}
 		return instance;
 	}
-	
+
 	/*
 	 * Wird genutzt, um den Fragebogen beim Erzeugen an der richtigen Stelle
 	 * abzulegen.
@@ -85,7 +85,7 @@ public class Upload {
 	public String getRepositoryPfad() {
 
 		if (repositoryPfad == null) {
-			repositoryPfad = System.getProperty("java.io.tmpdir") + repositoryName + "\\";
+			repositoryPfad = System.getenv("LOCALAPPDATA")+"\\" + repositoryName + "\\";
 		}
 		return repositoryPfad;
 	}
@@ -94,12 +94,12 @@ public class Upload {
 	public String getTemplateDirectory() {
 		return getRepositoryPfad() + "template\\";
 	}
-	
+
 	/* Pfad zum Ordner des Seminarleiters mit seinen Fragebögen. 
 	   @param seminarleiterName wird normalisiert.
 	 */
 	public String getSeminarleiterDirectory(String seminarleiterName) {
-	
+
 		seminarleiterName = Tools.normalisiereString(seminarleiterName);
 		return getRepositoryPfad() + "fragebogen\\" + seminarleiterName + "\\"; 
 	}
@@ -108,15 +108,15 @@ public class Upload {
 	 * @param seminarleiterName wird normalisiert 
 	 * @param fragebogenName wird normalisiert */
 	public String getFragebogenPfad(String seminarleiterName, String fragebogenName) {
-		
+
 		fragebogenName = Tools.normalisiereString(fragebogenName);		
 		return getSeminarleiterDirectory(seminarleiterName) + fragebogenName + ".html"; 
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/*
 	 * Falls das Repo lokal schon existiert, kehrt die Methode zurück. Falls kein
 	 * ein lokales Repo existiert, wird es angelegt durch clonen des remote Repo.
@@ -129,7 +129,7 @@ public class Upload {
 		} catch (IOException e) {
 			// Clonen des remote Repo
 			Git.cloneRepository().setURI(remotePfad).setDirectory(new File(getRepositoryPfad()))
-					.setCredentialsProvider(cp).call();
+			.setCredentialsProvider(cp).call();
 		}
 
 	}
@@ -159,17 +159,17 @@ public class Upload {
 			gitController.push().setCredentialsProvider(cp).setPushAll().call();
 
 			return true;
-			
+
 		} catch (GitAPIException e) {
 			return false;
 		}
 
 	}
-	
+
 	public File getProgrammDatenOrdner() {
 		String appData = System.getenv("LOCALAPPDATA");
 		File saveDirectory = new File(appData+"\\"+repositoryName);
-		
+
 		if(saveDirectory.exists()==true) {
 			System.out.println("Ordner existiert!");
 			return saveDirectory;
@@ -177,7 +177,8 @@ public class Upload {
 			System.out.println("Kein derartiger Ordner vorhanden");
 			return null;
 		}
-		
+	}
+
 	/**
 	 * Lädt einen Fragebogen hoch. Die Methode kümmert sich um alle Details: git
 	 * pull, git add, git commit, git push Setzt voraus, dass der Fragebogen in
@@ -203,7 +204,7 @@ public class Upload {
 			gitController.push().setCredentialsProvider(cp).setPushAll().call();
 
 			return true;
-			
+
 		} catch (GitAPIException e) {
 			return false;
 		}
