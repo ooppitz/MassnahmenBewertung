@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.tools.Tools;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
@@ -81,14 +82,9 @@ public class ControllerLogin {
 		{
 			if(test_file.exists())
 			{
-				Alert error = new Alert(AlertType.ERROR);
+				AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Eine Datei mit diesem Namen existiert leider schon!", "Eine Datei mit diesem Namen existiert leider schon!");
 				Logger log = Logger.getLogger();
 				log.logError("Eine Datei mit diesem Namen existiert leider schon!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
-				error.setTitle("Eine Datei mit diesem Namen existiert leider schon!");
-				error.setHeaderText("Eine Datei mit diesem Namen existiert leider schon!");
-				ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-				error.getButtonTypes().setAll(end);
-				error.show();
 				return false;
 			}
 			else
@@ -99,13 +95,7 @@ public class ControllerLogin {
 					System.out.println("Directory could not be created!!!");
 					Logger log = Logger.getLogger();
 					log.logError("Dieser Benutzername kann nicht verwendet werden!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
-					// Alert
-					Alert error = new Alert(AlertType.ERROR);
-					error.setTitle("Dieser Benutzername kann nicht verwendet werden!");
-					error.setHeaderText("Dieser Benutzername kann nicht verwendet werden!");
-					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-					error.getButtonTypes().setAll(end);
-					error.show();
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Dieser Benutzername kann nicht verwendet werden!", "Dieser Benutzername kann nicht verwendet werden!");
 					return false;
 				}
 				else
