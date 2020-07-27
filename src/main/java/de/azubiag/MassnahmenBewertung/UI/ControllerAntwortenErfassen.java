@@ -81,7 +81,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	private int umfrageID;   // Serialisieren
 
 	public void init() {
-		removeAnswer(answ_del);
+		setHandlerRemoveAnswer(answ_del);
 		readdNode(desc, 1, 0);
 		readdNode(fragebogenName, 3, 0);
 		readdNode(answ_del, 0, 1);
@@ -123,18 +123,14 @@ public class ControllerAntwortenErfassen implements Serializable {
 		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen "+maintext);
 	}
 
-	public void addAnswerToButton() {
+	public void setHandlerAnswerButton() {
 		add.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 
-				// Ergebnis von der Zwischenablage kopieren
 				Clipboard clipboard = Clipboard.getSystemClipboard();
 
-				// String muss dekodiert und überprüft werden
-
 				String verschluesselteAntwort = clipboard.getString();
-
 				if (verschluesselteAntwort == null)
 				{
 					Logger.getLogger().logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
@@ -143,20 +139,17 @@ public class ControllerAntwortenErfassen implements Serializable {
 				}
 
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
-
-				if (entschluesselteAntwort == null) {
-					
-					Logger.getLogger().logError("Beim Eingaben eines Antwortstrings: Fehlerhafter String eingegeben!");
+				if (entschluesselteAntwort == null) 
+				{	
+					Logger.getLogger().logError("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!");
 					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
 					return;
 
 				} else {
 
-					//					System.out.println("Verschlüsselt: " + verschluesselteAntwort + " \nEntschlüsselt: " + entschluesselteAntwort);	// --> Debug
+					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);  
 
-					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);   // <-- ZUM DEBUGGEN AUSGESCHALTET
-
-					if(antwort.umfrageID == umfrageID) {
+					if (antwort.umfrageID == umfrageID) {
 
 						boolean flag = false;
 						for (AzubiAntwort azubiAntwort : antwortListe) {
@@ -180,20 +173,19 @@ public class ControllerAntwortenErfassen implements Serializable {
 									// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
 									// aussieht
 								}
-								Button del = new Button();
-								del.setText("x");
-								removeAnswer(del);
+								Button deleteButton = new Button();
+								deleteButton.setText("x");
+								setHandlerRemoveAnswer(deleteButton);
 
-								Label temp = new Label();
-								temp.setText("  Verschlüsselte Antwort ");
-								temp.setText(temp.getText() + (anzahl_antworten + 1) + ":");
-								temp.setFont(antwort_name.getFont());
+								Label tempLabel = new Label();
+								tempLabel.setText("  Verschlüsselte Antwort " + (anzahl_antworten + 1) + ":");
+								tempLabel.setFont(antwort_name.getFont());
 
-								Label temp2 = new Label(clipboard.getString());
-								temp2.setFont(antwort_text.getFont());
-								gridpane.add(del, 0, anzahl_antworten + 1, 1, 1);
-								gridpane.add(temp, 1, anzahl_antworten + 1, 2, 1);
-								gridpane.add(temp2, 3, anzahl_antworten + 1, 3, 1);
+								Label tempLabel2 = new Label(clipboard.getString());
+								tempLabel2.setFont(antwort_text.getFont());
+								gridpane.add(deleteButton, 0, anzahl_antworten + 1, 1, 1);
+								gridpane.add(tempLabel, 1, anzahl_antworten + 1, 2, 1);
+								gridpane.add(tempLabel2, 3, anzahl_antworten + 1, 3, 1);
 
 								int letzteRow = anzahl_antworten+1;
 								for (int i = 1; i < letzteRow; i++) {
@@ -229,7 +221,8 @@ public class ControllerAntwortenErfassen implements Serializable {
 		});
 	}
 
-	public void removeAnswer(Button button) {
+	public void setHandlerRemoveAnswer(Button button) {
+		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {

@@ -204,7 +204,7 @@ public class MainApp extends Application {
 			controller.setVerifyID(verifyID);
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
-			controller.addAnswerToButton();
+			controller.setHandlerAnswerButton();
 			controller.addNext2ToButton();
 			
 		} catch (IOException e) {
