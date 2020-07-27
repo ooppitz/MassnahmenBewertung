@@ -28,17 +28,30 @@ public class HtmlCreator {
 	String saveFile;
 	Document doc;
 	int umfrageID;
+	
+	String startdatum = "31.1.2999";
+	String enddatum = "31.12.2999";
+	String auftragsnummer = "F-XX-YY";
+	String seminarleitername = "Frau ABCDEFGH";
+	String datum = "99.9.2999";
 
 	@Deprecated
 	public HtmlCreator(ArrayList<String> referenten, String templatePath, String outputPath) {
-		this(referenten, templatePath, outputPath, 0);
+		// this(referenten, templatePath, outputPath, 0);
 	}
 	
-	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int umfrageID) {
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int umfrageID, 
+			String startdatum, String enddatum, String auftragsnummer, String seminarleitername, String datum) {
 		this.refListe = referentenList;
 		this.saveFile = fragebogenOutputFile;
 		this.inputFile = templateFile;
 		this.umfrageID = umfrageID;
+		
+		this.startdatum = startdatum;
+		this.enddatum = enddatum;
+		this.auftragsnummer = auftragsnummer;
+		this.seminarleitername = seminarleitername;
+		this.datum = datum;
 	}
 
 	public void createHtml() throws IOException {
@@ -49,14 +62,18 @@ public class HtmlCreator {
 
 		Element bodyElement = doc.getElementsByTag("body").first();
 
+		// Header (A)
+		changeHeaderinformation(bodyElement); // Benedikt
+		
+		// Massnahme (B)
 		konfiguriereMassnahmenBox();
 		
+		// Referenten (C, D, E, ... )
 		int anzahlReferenten = refListe.size();
 		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
 		bodyElement.attr("umfrageID", String.valueOf(umfrageID));
 	
 		ArrayList<Element> elementListe = new ArrayList<>();
-		
 		for (String ref : refListe) {
 			bodyElement.attr("referent" + prefix, ref);
 			elementListe.add(makeReferentenBox(ref, prefix));
@@ -80,6 +97,21 @@ public class HtmlCreator {
 		Element elementFieldset1 = doc.getElementById("massnahme_fs1");
 		appendWarningIntoTableRow(elementFieldset1, "[name=b_r0]", "b_r0");
 
+	}
+	
+	public void changeHeaderinformation(Element e) {
+		
+		Element e_startdatum = e.getElementById("startdatum");
+		e_startdatum.text("von " + startdatum);
+		Element e_enddatum = e.getElementById("enddatum");
+		e_enddatum.text("bis " + enddatum);
+		Element e_auftragsnummer = e.getElementById("auftragsnummer");
+		e_auftragsnummer.text("Auftragsnummer: " + auftragsnummer);
+		Element e_seminarleitername = e.getElementById("seminarleitername");
+		e_seminarleitername.text("Seminarleitung: " +seminarleitername);
+		Element e_datum = e.getElementById("datum");
+		e_datum.text("Datum: " + datum);
+		
 	}
 
 	public Element makeReferentenBox(String referentName, int radioButtonNamePrefix) throws IOException {

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -311,7 +312,12 @@ public class ControllerFragebogenErstellen {
 					String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName, fragebogenname.getText());
 					
 					// Schreibt den Fragebogen in das Repository
-					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad, verifyID).createHtml();
+					new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory, fragebogenOutputPfad, verifyID,
+							von_Datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+							bis_Datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+							auftragsnummer_textfield.getText(),
+							seminarleiterName,
+							heute_datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).createHtml();
 					
 					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
 
