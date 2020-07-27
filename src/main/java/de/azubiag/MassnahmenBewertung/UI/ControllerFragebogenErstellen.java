@@ -336,11 +336,11 @@ public void addVorschauButtonHandler() {
 				try {
 
 					Random random = new Random();
-					int verifyID = random.nextInt();
+					int umfrageID = random.nextInt();
 
 					// Erstellen des Fragebogen-Files
 					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
-					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(eigenschaftenX, verifyID);
+					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(eigenschaftenX, umfrageID);
 					zeigeVorschauFragebogen(fragebogenOutputPfad); // Zeigt den Fragebogen im Browser
 					
 					String webpath = getFragebogenWebPath(fragebogenOutputPfad);
@@ -404,7 +404,7 @@ public void addVorschauButtonHandler() {
 						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
 						
 						// Auswertung-Tab erstellen
-						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), verifyID);
+						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
 
 						if (buttonTypeKlonen.get() == buttonTypeYesKlonen) {
 							// Fragebogen klonen
@@ -520,7 +520,7 @@ public void addVorschauButtonHandler() {
 					Desktop.getDesktop().browse(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""));
 			}
 
-			private String erstelleFragebogenImLokalenRepo(FragebogenEigenschaften eigenschaften, int verifyID)
+			private String erstelleFragebogenImLokalenRepo(FragebogenEigenschaften eigenschaften, int umfrageID)
 					throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 				String seminarleiterName = MainApp.getUserName();
 				String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory()
@@ -529,7 +529,6 @@ public void addVorschauButtonHandler() {
 						fragebogenname.getText());
 
 				// Schreibt den Fragebogen in das Repository
-				int umfrageID = 1234;
 				
 				new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory,
 						fragebogenOutputPfad,  umfrageID, 
