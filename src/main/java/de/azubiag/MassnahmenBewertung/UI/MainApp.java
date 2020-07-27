@@ -206,6 +206,8 @@ public class MainApp extends Application {
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
 			controller.addNext2ToButton();
+			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
+			single_model.select(tab_z2);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -230,6 +232,8 @@ public class MainApp extends Application {
 			controller.setEigenschaft(eigenschaft);
 			controller.init(this, eigenschaft, antwortListe);
 			controller.erzeugeDarstellung();
+			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
+			single_model.select(tab_z3);
 			
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
