@@ -29,11 +29,11 @@ public class HtmlCreator {
 	Document doc;
 	int umfrageID;
 	
-	String startdatum = "31.1.2999";
-	String enddatum = "31.12.2999";
+	String startdatum = "31.1.1999";
+	String enddatum = "31.12.1999";
 	String auftragsnummer = "F-XX-YY";
 	String seminarleitername = "Frau ABCDEFGH";
-	String datum = "99.9.2999";
+	String datum = "9.9.1999";
 
 	@Deprecated
 	public HtmlCreator(ArrayList<String> referenten, String templatePath, String outputPath) {

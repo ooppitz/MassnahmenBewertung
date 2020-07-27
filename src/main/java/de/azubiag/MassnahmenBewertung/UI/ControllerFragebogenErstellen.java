@@ -305,6 +305,9 @@ public class ControllerFragebogenErstellen {
 					Random random = new Random();
 					int verifyID = random.nextInt();
 					
+					von_Datum.setValue(LocalDate.of(1999, 9, 9)); // TODO : entfernen
+					bis_Datum.setValue(LocalDate.of(1999, 9, 9));
+					
 					// Erstellen des Fragebogen-Files
 
 					String seminarleiterName = MainApp.getUserName();
