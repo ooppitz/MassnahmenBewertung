@@ -314,14 +314,11 @@ public void addVorschauButtonHandler() {
 
 					if (mainapp.isTestmodusAktiv()) {
 						// im Testmodus die Möglichkeit hinzufügen, die Warnung zu ignorieren
-						ButtonType buttonTypeYesIgnorieren = new ButtonType("Ja");
-						ButtonType buttonTypeCancelIgnorieren = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+						
+						boolean resultIgnorieren = AlertMethoden.entscheidungViaDialogAbfragen(" --TESTMODUS-- Eingaben unvollständig",
+								"--TESTMODUS-- Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ");
 
-						Optional<ButtonType> resultIgnorieren = getEntscheidungÜberDialog(" --TESTMODUS-- Eingaben unvollständig",
-								"--TESTMODUS-- Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ", buttonTypeYesIgnorieren,
-								buttonTypeCancelIgnorieren);
-
-						if (resultIgnorieren.get() == buttonTypeYesIgnorieren) { 
+						if (resultIgnorieren) { 
 							fragebogenHandling(logger);
 						}
 					} else {
