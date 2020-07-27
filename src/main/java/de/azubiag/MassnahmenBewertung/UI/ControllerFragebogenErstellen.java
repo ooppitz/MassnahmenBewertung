@@ -1,8 +1,10 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -324,8 +326,8 @@ public class ControllerFragebogenErstellen {
 							seminarleiterName,
 							heute_datum.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).createHtml();
 					
-					Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
-
+					Desktop.getDesktop().browse(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""));
+						
 					// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
 					int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
 					int indexB = fragebogenOutputPfad.indexOf(".html");
