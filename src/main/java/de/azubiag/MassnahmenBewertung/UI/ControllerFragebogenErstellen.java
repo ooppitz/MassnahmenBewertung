@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -370,7 +372,15 @@ public class ControllerFragebogenErstellen {
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-//							repoHandle.hochladen(fragebogenname.getText(),seminarleiterName);					// <-- zum testen auskommentiert
+							if (!MainApp.testmodusAktiv) repoHandle.hochladen(fragebogenname.getText(),seminarleiterName);
+							else {
+								int uploadConfirm = JOptionPane.showConfirmDialog(null, "Hochladen?", "Testmodus", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								if (uploadConfirm == JOptionPane.YES_OPTION) {
+									repoHandle.hochladen();
+								} else {
+									logger.logWarning("Nicht Hochgeladen");
+								}
+							}
 
 						} catch (Exception exc) {
 							

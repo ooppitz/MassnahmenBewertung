@@ -68,6 +68,7 @@ public class MainApp extends Application {
 
 	public static void setTestmodusAktiv(boolean _testmodusAktiv) {
 		testmodusAktiv = _testmodusAktiv;
+		Logger.getLogger().logInfo(testmodusAktiv? "Testmodus aktiviert" : "Testmodus deaktiviert");
 	}
 
 	protected Stage primaryStage;
@@ -303,6 +304,11 @@ public class MainApp extends Application {
 	}
 
 	public static void main(String[] args) {
+		
+		for (int i=0; i<args.length; i++) {
+			if (args[i].equals("--test")) setTestmodusAktiv(true);
+		}
+		
 		launch(args);
 	}
 	
