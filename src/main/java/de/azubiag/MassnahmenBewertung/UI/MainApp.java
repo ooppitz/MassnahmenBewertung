@@ -100,6 +100,8 @@ public class MainApp extends Application {
 
 			Scene scene = new Scene(login_grid);
 			primaryStage.setScene(scene);
+			primaryStage.setMinHeight(200);
+			primaryStage.setMinWidth(600);
 
 			ControllerLogin controller = loader.getController();
 			// System.out.println(controller);
@@ -128,8 +130,8 @@ public class MainApp extends Application {
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.hide();
-			primaryStage.setMaxHeight(600);
-			primaryStage.setMaxWidth(800);
+			primaryStage.setMinHeight(600);
+			primaryStage.setMinWidth(800);
 
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()
@@ -184,7 +186,7 @@ public class MainApp extends Application {
 	/**
 	 * @param verifyID Id des Fragebogens
 	 */
-	public void showAntwortenErfassen(String fragebogenName, int indexInTabPane, int verifyID) {
+	public void showAntwortenErfassen(FragebogenEigenschaften eigenschaft, int indexInTabPane, int verifyID) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
@@ -193,15 +195,16 @@ public class MainApp extends Application {
 			tab_z2.setContent(z2);
 			tab_z2.setClosable(true);
 			// tab_z2.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z2.setText(fragebogenName);
+			tab_z2.setText(eigenschaft.fragebogen_name);
 			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			ControllerAntwortenErfassen controller = loader.getController();
 			onCloseMethod(controller);
 			// System.out.println(controller);
 			controller.setMainApp(this);
+			controller.setEigenschaft(eigenschaft);
 			controller.setTab(tab_z2);
-			controller.setName(fragebogenName);
-			controller.setMaintext(fragebogenName);
+			controller.setName(eigenschaft.fragebogen_name);
+			controller.setMaintext(eigenschaft.fragebogen_name);
 			controller.setVerifyID(verifyID);
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
@@ -213,7 +216,7 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showAuswertungAnzeigen(String name, int index,List<AzubiAntwort> antwortListe) { // incomplete
+	public void showAuswertungAnzeigen(FragebogenEigenschaften eigenschaft, int index,List<AzubiAntwort> antwortListe) { // incomplete
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
@@ -222,14 +225,14 @@ public class MainApp extends Application {
 			tab_z3.setContent(z3);
 			tab_z3.setClosable(true);
 			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z3.setText(name);
+			tab_z3.setText(eigenschaft.fragebogen_name);
 			System.out.println(index);
 			rootLayout.getTabs().add(index +1, tab_z3);
 			 rootLayout.getTabs().remove(index);
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
-		
-			controller.init(this, name, antwortListe);
+			controller.setEigenschaft(eigenschaft);
+			controller.init(this, eigenschaft, antwortListe);
 			controller.erzeugeDarstellung();
 			
 			addDeleteToButton(controller.delete, rootLayout, tab_z3);

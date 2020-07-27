@@ -22,6 +22,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
 	List<AuswertungReferent> auswertungenReferenten;
 	AuswertungMassnahme auswertungMassnahme;
+	FragebogenEigenschaften eigenschaft;
 
 	int zeile;
 
@@ -41,6 +42,10 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 	private MainApp mainapp;
 
+	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
+		this.eigenschaft = eigenschaft;
+	}
+	
 	public void setMainApp (MainApp app){
 		mainapp = app;
 	}
@@ -57,10 +62,10 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		this.ueberschrift.setText("Ergebnisse für den Fragebogen "+name);
 	}
 
-	public void init(MainApp app, String tabName, List<AzubiAntwort> antwortListe) {
+	public void init(MainApp app, FragebogenEigenschaften eigenschaft, List<AzubiAntwort> antwortListe) {
 		
 		this.setMainApp(app);
-		
+		setName(eigenschaft.fragebogen_name);
 		System.out.println("AuswertungAnzeigen: "+antwortListe.size());
 		for (AzubiAntwort azubiAntwort : antwortListe) {
 			System.out.println("AuswertungAnzeigen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
@@ -72,6 +77,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			log.logError("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			Label warning = new Label("     In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			grid.add(warning, 0, zeile);
+			zeile = 1;
 			return;
 		}
 		
@@ -93,6 +99,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	
 	public void erzeugeDarstellung() {
 		
+		anfang();
 		verlauf();
 		betreuung();
 		bemerkungen();
@@ -100,6 +107,31 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 	}
 
+	public void anfang() {
+		
+		Label massnahme = new Label();
+		massnahme.setText("Maßnahme von "+eigenschaft.von_datum+" bis "+eigenschaft.bis_datum);
+		grid.add(massnahme, 0, zeile);
+		zeile++;
+		
+		Label auftrnummer = new Label();
+		auftrnummer.setText("Auftragsnummer: "+eigenschaft.auftrags_nummer);
+		grid.add(auftrnummer, 0, zeile);
+		zeile++;
+		
+		Label leitung = new Label();
+		leitung.setText("Seminarleitung: "+eigenschaft.seminarleiter_name);
+		grid.add(leitung, 0, zeile);
+		zeile++;
+		
+		Label datum = new Label();
+		datum.setText("Datum: "+eigenschaft.ausstellungs_datum);
+		grid.add(datum, 0, zeile);
+		zeile++;
+		zeile++;
+		
+	}
+	
 	public void verlauf() {
 
 		Label ueberschrift_verlauf = new Label("1. Maßnahmeverlauf:");

@@ -403,8 +403,10 @@ public class ControllerFragebogenErstellen {
 						alert3.getButtonTypes().setAll(buttonTypeYes3, buttonTypeCancel3);
 						Optional<ButtonType> result3 = alert3.showAndWait();
 
+						// Fragebogen-Eigenschaften-Objekt erstellen
+						FragebogenEigenschaften eigenschaft = new FragebogenEigenschaften(getName(), seminarleiterName, auftragsnummer_textfield.getText(), von_Datum.getValue(), bis_Datum.getValue(), heute_datum.getValue(), webpath);
 						// Zustand2-Tab erstellen
-						mainapp.showAntwortenErfassen(getName(), tab.getTabPane().getTabs().indexOf(tab), verifyID);
+						mainapp.showAntwortenErfassen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), verifyID);
 
 						if (result3.get() == buttonTypeYes3) {
 							// Fragebogen klonen

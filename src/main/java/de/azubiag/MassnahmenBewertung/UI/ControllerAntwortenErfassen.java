@@ -39,6 +39,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	 */
 	private static final long serialVersionUID = -4954713836800270562L;
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
+	FragebogenEigenschaften eigenschaft;
 	Tab tab;
 
 	int anzahl_antworten;    // Serialisieren 
@@ -85,6 +86,10 @@ public class ControllerAntwortenErfassen implements Serializable {
 		readdNode(answ_del, 0, 1);
 		readdNode(antwort_name, 1, 1);
 		readdNode(antwort_text, 3, 1);
+	}
+	
+	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
+		this.eigenschaft = eigenschaft;
 	}
 
 	public void readdNode(Node node, int col, int row)
@@ -306,7 +311,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
 				}
 
-				mainapp.showAuswertungAnzeigen(fragebogenName.getText(), tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+				mainapp.showAuswertungAnzeigen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
 			}
 		});
