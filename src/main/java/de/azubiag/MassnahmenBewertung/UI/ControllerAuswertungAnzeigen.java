@@ -394,6 +394,13 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	}
 	
 	public void saveAsPDF() {
+		String[][] stringarray = new String[3][3];
+		for(int i=0; i<stringarray.length; i++) {
+			for(int j=0; j<stringarray[i].length; j++) {
+				stringarray[i][j]=i+" "+j;
+			}
+		}
+		
 		Document document = new Document();
 		try {
 			PdfWriter.getInstance(document, new FileOutputStream("iTextTable.pdf"));
@@ -406,9 +413,12 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			document.add(chunk);
 			
 			PdfPTable table = new PdfPTable(3);
-			table.addCell("Hello");
-			table.addCell("World");
-			table.addCell("!");
+			
+			for(int i=0; i<stringarray.length; i++) {
+				for(int j=0; j<stringarray[i].length; j++) {
+					table.addCell(stringarray[i][j]);
+				}
+			}
 
 			document.add(table);
 			document.close();
