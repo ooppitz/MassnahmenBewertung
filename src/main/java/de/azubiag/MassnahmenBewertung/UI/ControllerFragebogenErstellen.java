@@ -276,7 +276,7 @@ public class ControllerFragebogenErstellen {
 
 			try {
 				TextField temp = (TextField) node;
-				if (skip <= 0 && !(temp.getText().equals(""))) {
+				if (skip <= 0 && (temp.getText().matches(".*\\S.*"))) {
 					referentenNamen.add(temp.getText());
 				} else {
 					skip--;
@@ -432,8 +432,8 @@ public class ControllerFragebogenErstellen {
 
 			private boolean allValuesEntered() {
 				//das Feld mit dem Datum der Umfrage wird nicht abgefragt, da es vorausgefuellt ist
-				boolean fragebogennameEntered = !fragebogenname.getText().equals("");
-				boolean auftragsnummerEntered = !auftragsnummer_textfield.getText().equals("");
+				boolean fragebogennameEntered = fragebogenname.getText().matches(".*\\S+.*");
+				boolean auftragsnummerEntered = auftragsnummer_textfield.getText().matches(".*\\S+.*");
 				boolean vonDatumEntered = !(von_Datum.getValue()== null) ;
 				boolean bisDatumEntered = !(bis_Datum.getValue()==null) ;
 				int anzahl_referenten = getReferentenNamen().size(); 
@@ -443,8 +443,8 @@ public class ControllerFragebogenErstellen {
 				} else {
 					Alert alert = new Alert(AlertType.WARNING);
 
-					alert.setTitle("Bitte alles ausfuellen");
-					alert.setHeaderText("Bitte fuellen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+					alert.setTitle("Bitte alles ausfüllen");
+					alert.setHeaderText("Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					alert.showAndWait();
 					return false;
 				}
