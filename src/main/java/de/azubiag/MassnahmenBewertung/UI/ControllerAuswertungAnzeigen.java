@@ -90,7 +90,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
 		auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
 		
-		setName(tabName);
+		setName(eigenschaft.fragebogen_name);
 
 		zeile = 0; 
 		
