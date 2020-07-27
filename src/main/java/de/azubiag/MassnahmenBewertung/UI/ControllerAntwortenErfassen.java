@@ -221,12 +221,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 						{
 							Logger logger = Logger.getLogger();
 							logger.logWarning("Eingefügte Antwort ist bereits vorhanden!");
-							Alert error = new Alert(AlertType.ERROR);
-							error.setTitle("Eingefügte Antwort ist bereits vorhanden!");
-							error.setHeaderText("Eingefügte Antwort ist bereits vorhanden!");
-							ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-							error.getButtonTypes().setAll(end);
-							error.show();
+							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Eingefügte Antwort ist bereits vorhanden!", "Eingefügte Antwort ist bereits vorhanden!");
 							return;
 						}
 
