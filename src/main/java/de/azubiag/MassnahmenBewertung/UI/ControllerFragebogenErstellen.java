@@ -426,6 +426,12 @@ public class ControllerFragebogenErstellen {
 						alert.showAndWait();
 
 					}
+				}else {
+					//Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber Daten in der Auswertung wünschen
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Bitte alles ausfüllen");
+					alert.setHeaderText("Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+					alert.showAndWait();
 				}
 
 			}
@@ -441,11 +447,6 @@ public class ControllerFragebogenErstellen {
 				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && auftragsnummerEntered && anzahl_referenten>0) {
 				    return true; 
 				} else {
-					Alert alert = new Alert(AlertType.WARNING);
-
-					alert.setTitle("Bitte alles ausfüllen");
-					alert.setHeaderText("Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
-					alert.showAndWait();
 					return false;
 				}
 			}
