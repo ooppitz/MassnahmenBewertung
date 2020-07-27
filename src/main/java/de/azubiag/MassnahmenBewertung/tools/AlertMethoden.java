@@ -31,7 +31,8 @@ public class AlertMethoden {
 		}
 
 		/**
-		 * Zeige einfaches Alert-Fenster mit Ok-Button um das Fenster zu schließen. Geeignet fuer AlertType.WARNING, AlertType.ERROR, AlertType.INFORMATION.
+		 * Zeige einfaches Alert-Fenster mit Ok-Button um das Fenster zu schließen. 
+		 * Geeignet fuer AlertType.WARNING, AlertType.ERROR, AlertType.INFORMATION.
 		 * Fuer einen Confirmation-Alert nutzen Sie bitte die entscheidungUeberDialogAbfragen()-Methode
 		 * @param alertType
 		 * @param title Titel des Alert-Fensters

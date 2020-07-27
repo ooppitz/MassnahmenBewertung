@@ -27,6 +27,7 @@ import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 
 /* Eingeben der Antworten */
@@ -136,28 +137,17 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 				if (verschluesselteAntwort == null)
 				{
-					Logger logger = Logger.getLogger();
-					logger.logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
-					Alert error = new Alert(AlertType.ERROR);
-					error.setTitle("Ihre Zwischenablage ist leer!");
-					error.setHeaderText("Ihre Zwischenablage ist leer!");
-					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-					error.getButtonTypes().setAll(end);
-					error.show();
+					Logger.getLogger().logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
 					return;
 				}
 
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 
 				if (entschluesselteAntwort == null) {
-					Logger logger = Logger.getLogger();
-					logger.logError("Beim Eingaben eines Antwortstrings: Fehlerhafter String eingegeben!");
-					Alert error = new Alert(AlertType.ERROR);
-					error.setTitle("Die eingefügten Daten waren fehlerhaft!");
-					error.setHeaderText("Die eingefügten Daten waren fehlerhaft!");
-					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-					error.getButtonTypes().setAll(end);
-					error.show();
+					
+					Logger.getLogger().logError("Beim Eingaben eines Antwortstrings: Fehlerhafter String eingegeben!");
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
 					return;
 
 				} else {
@@ -221,29 +211,16 @@ public class ControllerAntwortenErfassen implements Serializable {
 						}
 						else
 						{
-							Logger logger = Logger.getLogger();
-							logger.logWarning("Eingefügte Antwort ist bereits vorhanden!");
-							Alert error = new Alert(AlertType.ERROR);
-							error.setTitle("Eingefügte Antwort ist bereits vorhanden!");
-							error.setHeaderText("Eingefügte Antwort ist bereits vorhanden!");
-							ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-							error.getButtonTypes().setAll(end);
-							error.show();
+							Logger.getLogger().logWarning("Eingefügte Antwort ist bereits vorhanden!");
+							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Antwort ist bereits vorhanden!", "Die eingefügten Antwort ist bereits vorhanden!");
 							return;
 						}
-
 
 					}
 					else
 					{
-						Logger logger = Logger.getLogger();
-						logger.logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
-						Alert error = new Alert(AlertType.ERROR);
-						error.setTitle("Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
-						error.setHeaderText("Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
-						ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-						error.getButtonTypes().setAll(end);
-						error.show();
+						Logger.getLogger().logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
+						AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügte Antwort gehört nicht zu diesem Fragebogen!", "Die eingefügte Antwort gehört nicht zu diesem Fragebogen!");
 						return;
 					}
 				}
