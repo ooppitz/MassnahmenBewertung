@@ -89,6 +89,8 @@ public class MainApp extends Application {
 
 			Scene scene = new Scene(login_grid);
 			primaryStage.setScene(scene);
+			primaryStage.setMinHeight(200);
+			primaryStage.setMinWidth(600);
 
 			ControllerLogin controller = loader.getController();
 			// System.out.println(controller);
@@ -117,8 +119,8 @@ public class MainApp extends Application {
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.hide();
-			primaryStage.setMaxHeight(600);
-			primaryStage.setMaxWidth(800);
+			primaryStage.setMinHeight(600);
+			primaryStage.setMinWidth(800);
 
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()
