@@ -21,6 +21,7 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.beans.value.ChangeListener;
@@ -324,7 +325,7 @@ public void addVorschauButtonHandler() {
 							fragebogenHandling(logger);
 						}
 					} else {
-						zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						AlertMethoden.zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
@@ -460,6 +461,9 @@ public void addVorschauButtonHandler() {
 
 			private Optional<ButtonType> getEntscheidungVeroeffentlichen(String webpath,
 					ButtonType buttonTypeYesVeroeffentlichen, ButtonType buttonTypeCancelVeroeffentlichen) {
+				
+				/*Sonderfall: da dieser Alert durch die Methode setAlwaysOnTop() vor der Browservorschau geziegt werden osll, 
+				 * gibt es diese Methode*/
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Fragebogen veröffentlichen?");
 				alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
@@ -476,35 +480,6 @@ public void addVorschauButtonHandler() {
 				return result;
 			}
 
-			private Optional<ButtonType> getEntscheidungÜberDialog(String dialogTitel, String headerText,
-					ButtonType buttonTypeYesKlonen, ButtonType buttonTypeCancelKlonen) {
-				Alert alertKlonen = new Alert(AlertType.CONFIRMATION);
-				alertKlonen.setTitle(dialogTitel);
-				alertKlonen.setHeaderText(headerText);
-
-				alertKlonen.getButtonTypes().setAll(buttonTypeYesKlonen, buttonTypeCancelKlonen);
-				Optional<ButtonType> buttonTypeKlonen = alertKlonen.showAndWait();
-				return buttonTypeKlonen;
-			}
-
-			/**
-			 * Zeige einfachen Alert mit Close-Button
-			 * @param alertType
-			 * @param title
-			 * @param headerText
-			 */
-			private void zeigeEinfachenAlert(AlertType alertType, String title, String headerText) {
-				Alert error = new Alert(alertType);
-				error.setTitle(title);
-				error.setHeaderText(
-						headerText);
-				ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-				error.getButtonTypes().setAll(end);
-				error.showAndWait();
-			}
-
-			
-			
 			private String getFragebogenWebPath(String fragebogenOutputPfad) {
 				// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
 				int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
