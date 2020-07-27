@@ -376,7 +376,7 @@ public void addVorschauButtonHandler() {
 							logger.logError(exc);
 							// Hochladen hat nicht geklappt
 							
-							zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
 							return;
 
 						}
