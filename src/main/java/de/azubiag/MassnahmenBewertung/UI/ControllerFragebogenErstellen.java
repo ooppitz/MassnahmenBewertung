@@ -393,10 +393,9 @@ public void addVorschauButtonHandler() {
 						ButtonType buttonTypeCancelKlonen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
 
 						// Fenster f�r Klonen anzeigen
-						Optional<ButtonType> buttonTypeKlonen = getEntscheidungÜberDialog(
+						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
 								"Neuen Fragebogen mit denselben Referenten anlegen?",
-								"Neuen Fragebogen mit denselben Referenten anlegen?", buttonTypeYesKlonen,
-								buttonTypeCancelKlonen);
+								"Neuen Fragebogen mit denselben Referenten anlegen?");
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
 						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
@@ -404,7 +403,7 @@ public void addVorschauButtonHandler() {
 						// Auswertung-Tab erstellen
 						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), verifyID);
 
-						if (buttonTypeKlonen.get() == buttonTypeYesKlonen) {
+						if (resultKlonen) {
 							// Fragebogen klonen
 							setName("Kopie von " + getName());
 						} else {
