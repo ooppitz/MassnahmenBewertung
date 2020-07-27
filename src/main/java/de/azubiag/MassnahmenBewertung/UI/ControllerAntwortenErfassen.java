@@ -150,12 +150,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				if (entschluesselteAntwort == null) {
 					Logger logger = Logger.getLogger();
 					logger.logError("Beim Eingaben eines Antwortstrings: Fehlerhafter String eingegeben!");
-					Alert error = new Alert(AlertType.ERROR);
-					error.setTitle("Die eingefügten Daten waren fehlerhaft!");
-					error.setHeaderText("Die eingefügten Daten waren fehlerhaft!");
-					ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-					error.getButtonTypes().setAll(end);
-					error.show();
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
 					return;
 
 				} else {
