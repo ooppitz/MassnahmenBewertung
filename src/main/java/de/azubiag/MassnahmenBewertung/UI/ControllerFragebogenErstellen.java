@@ -427,11 +427,29 @@ public class ControllerFragebogenErstellen {
 
 					}
 				}else {
-					//Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber Daten in der Auswertung wünschen
+					//Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber diese Daten alle in der Auswertung wünschen
+					
+					if(mainapp.isTestmodusAktiv()) {
+						//im Testmodus die Möglichkeit hinzufügen, die Warnung zu ignorieren
+						Alert alert = new Alert(AlertType.CONFIRMATION);
+						alert.setTitle("Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ");
+						alert.setHeaderText(" --TESTMODUS-- Eingaben unvollständig");
+						ButtonType buttonTypeYes = new ButtonType("Ja");
+						ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+
+						alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
+
+						Optional<ButtonType> result = alert.showAndWait();
+						
+						if (result.get() == buttonTypeYes) { // Nutzer drückt "ja"
+							//nach Refactoring Methode(n) aufrufen
+						}
+					}else {
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.setTitle("Bitte alles ausfüllen");
 					alert.setHeaderText("Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					alert.showAndWait();
+					}
 				}
 
 			}
