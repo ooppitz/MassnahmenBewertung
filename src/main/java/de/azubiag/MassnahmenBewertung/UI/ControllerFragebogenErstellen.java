@@ -296,7 +296,7 @@ public void addVorschauButtonHandler() {
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
 
-				if (allValuesEntered()) {
+				if (allValuesEntered() ) {
 					fortfahren(logger);
 				} else {
 					// Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber
@@ -315,7 +315,7 @@ public void addVorschauButtonHandler() {
 							fortfahren(logger);
 						}
 					} else {
-						zeigeErrorAlert("Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
@@ -358,7 +358,7 @@ public void addVorschauButtonHandler() {
 							logger.logError(exc);
 							// Hochladen hat nicht geklappt
 							
-							zeigeErrorAlert("Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
 							return;
 
 						}
@@ -402,7 +402,7 @@ public void addVorschauButtonHandler() {
 									+ e1.getClass().getName() + " beim Preview-Alert. \n"
 									+ "Interne Fehlermeldung: " + e1.getMessage();
 					
-					zeigeErrorAlert("Fehler", errorMessage);
+					zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
 				}
 			}
 
@@ -464,8 +464,14 @@ public void addVorschauButtonHandler() {
 				return buttonTypeKlonen;
 			}
 
-			private void zeigeErrorAlert(String title, String headerText) {
-				Alert error = new Alert(AlertType.ERROR);
+			/**
+			 * Zeige einfachen Alert mit Close-Button
+			 * @param alertType
+			 * @param title
+			 * @param headerText
+			 */
+			private void zeigeEinfachenAlert(AlertType alertType, String title, String headerText) {
+				Alert error = new Alert(alertType);
 				error.setTitle(title);
 				error.setHeaderText(
 						headerText);
@@ -474,6 +480,8 @@ public void addVorschauButtonHandler() {
 				error.showAndWait();
 			}
 
+			
+			
 			private String getFragebogenWebPath(String fragebogenOutputPfad) {
 				// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
 				int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
