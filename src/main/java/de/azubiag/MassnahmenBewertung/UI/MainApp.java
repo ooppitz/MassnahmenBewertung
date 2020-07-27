@@ -59,6 +59,16 @@ public class MainApp extends Application {
 		MainApp.userName = userName;
 	}
 
+	/* Zeigt an, ob die App im Testmodus läuft. Kann über KOmmandozeilenparameter gesteuert werden, */
+	static boolean testmodusAktiv; 
+
+	public static boolean isTestmodusAktiv() {
+		return testmodusAktiv;
+	}
+
+	public static void setTestmodusAktiv(boolean testmodusAktiv) {
+		testmodusAktiv = testmodusAktiv;
+	}
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
