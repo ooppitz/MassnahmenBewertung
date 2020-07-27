@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import de.azubiag.MassnahmenBewertung.UI.test.ClipboardLoeschenTest;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -59,6 +60,16 @@ public class MainApp extends Application {
 		MainApp.userName = userName;
 	}
 
+	/* Zeigt an, ob die App im Testmodus läuft. Kann über KOmmandozeilenparameter gesteuert werden, */
+	static boolean testmodusAktiv; 
+
+	public static boolean isTestmodusAktiv() {
+		return testmodusAktiv;
+	}
+
+	public static void setTestmodusAktiv(boolean testmodusAktiv) {
+		testmodusAktiv = testmodusAktiv;
+	}
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
@@ -139,7 +150,7 @@ public class MainApp extends Application {
 	public void showFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
 		// Button sperren, wenn Name leer ist
 		try {
-			
+		
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
 			BorderPane z1 = (BorderPane) loader.load(); // !!
@@ -149,7 +160,7 @@ public class MainApp extends Application {
 			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			tab_z1.setText("Unbenannter Fragebogen");
 			rootLayout.getTabs().add(tab_z1);
-			ControllerFragebogenErstellen controller = loader.getController();
+			ControllerFragebogenErstellen controller = loader.getController();	
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
@@ -320,4 +331,6 @@ public class MainApp extends Application {
 		}
 		System.out.println("Der Rest der Methode wird noch durchgeführt!");
 	}
+	
+	
 }

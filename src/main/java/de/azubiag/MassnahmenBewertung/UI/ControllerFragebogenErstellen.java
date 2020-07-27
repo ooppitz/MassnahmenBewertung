@@ -293,6 +293,7 @@ public class ControllerFragebogenErstellen {
 			@Override
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
+
 				if (allValuesEntered()) {
 					try {
 
@@ -408,8 +409,7 @@ public class ControllerFragebogenErstellen {
 							} else {
 								mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
 							}
-
-						} else {
+							} else {
 							// nichts tun
 						}
 

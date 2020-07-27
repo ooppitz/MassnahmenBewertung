@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,25 +23,26 @@ import org.jsoup.nodes.Element;
 public class HtmlCreator {
 
 	ArrayList<String> refListe;
-	ArrayList<Element> elementListe = new ArrayList<>();
+	
 	String inputFile;
 	String saveFile;
 	Document doc;
-	int verifyID;
+	int umfrageID;
 
 	@Deprecated
 	public HtmlCreator(ArrayList<String> referenten, String templatePath, String outputPath) {
 		this(referenten, templatePath, outputPath, 0);
 	}
 	
-	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int verifyID) {
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile, int umfrageID) {
 		this.refListe = referentenList;
 		this.saveFile = fragebogenOutputFile;
 		this.inputFile = templateFile;
-		this.verifyID = verifyID;
+		this.umfrageID = umfrageID;
 	}
 
 	public void createHtml() throws IOException {
+		
 		File file = new File(inputFile);
 		doc = Jsoup.parse(file, "UTF-8");
 		int prefix = 0;
@@ -50,14 +53,17 @@ public class HtmlCreator {
 		
 		int anzahlReferenten = refListe.size();
 		bodyElement.attr("anzahlreferenten", Integer.toString(anzahlReferenten));
-		bodyElement.attr("verifyID", String.valueOf(verifyID));
+		bodyElement.attr("umfrageID", String.valueOf(umfrageID));
 	
+		ArrayList<Element> elementListe = new ArrayList<>();
+		
 		for (String ref : refListe) {
 			bodyElement.attr("referent" + prefix, ref);
-			elementListe.add(makeRefBox(ref, prefix));
+			elementListe.add(makeReferentenBox(ref, prefix));
 			prefix++;
 		}
-		addElementsToHtml();
+		addElementsToHtml(elementListe);
+		
 		saveHtml(saveFile);
 
 		System.out.println("doc = " + doc.outerHtml());
@@ -76,20 +82,19 @@ public class HtmlCreator {
 
 	}
 
-	public Element makeRefBox(String referent, int prefix) throws IOException {
+	public Element makeReferentenBox(String referentName, int radioButtonNamePrefix) throws IOException {
 
 		// hole das Fieldset von den Refereten
 		Element elementFieldset = doc.getElementsByAttributeValue("id", "referent").first().clone();
 		// Ändere Name
 		Element refName = elementFieldset.getElementById("name");
-		refName.text("Name: " + referent);
+		refName.text("Name: " + referentName);
 
 		// Passe die RadioButtons an
-		String buttonSelector;
+		
 		for (int dozentenFragenIndex = 0; dozentenFragenIndex <= 4; dozentenFragenIndex++) {
-			buttonSelector = "[name=r"+ Integer.toString(dozentenFragenIndex) + "]";
-
-			String radioButtonName = Integer.toString(prefix) + "_r" + Integer.toString(dozentenFragenIndex);
+			String buttonSelector = "[name=r"+ Integer.toString(dozentenFragenIndex) + "]";
+			String radioButtonName = Integer.toString(radioButtonNamePrefix) + "_r" + Integer.toString(dozentenFragenIndex);
 			appendWarningIntoTableRow(elementFieldset, buttonSelector, radioButtonName);
 
 			for (int radioButtonIndex = 0; radioButtonIndex <= 4; radioButtonIndex++) {
@@ -98,7 +103,7 @@ public class HtmlCreator {
 			}
 
 			Element textarea = elementFieldset.select("textarea").first();
-			textarea.attr("id", Integer.toString(prefix) + "_text");
+			textarea.attr("id", Integer.toString(radioButtonNamePrefix) + "_text");
 
 		}
 		return elementFieldset;
@@ -124,14 +129,19 @@ public class HtmlCreator {
 
 	}
 
-	public void addElementsToHtml() {
+	/** Fügt die fertig konfigurierten HTML-Blöcke für die Referenten hinzu. 
+	 * @param elementListe
+	 */
+	public void addElementsToHtml(List<Element> elementListe) {
+		
+		// Entfernt das nicht mehr benötigte Original aus dem Dokument
 		Element element = doc.getElementsByAttributeValue("id", "referent").first();
 		element.remove();
 		
-		Element elementOKButton = doc.getElementById("OKButton");
+		Element elementAtBottomOfPage = doc.getElementById("OKButton");
 		
 		for (Element e : elementListe) {
-			elementOKButton.before(e);
+			elementAtBottomOfPage.before(e);
 		}
 	}
 

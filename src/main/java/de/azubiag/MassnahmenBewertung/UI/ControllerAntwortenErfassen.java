@@ -76,7 +76,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	private MainApp mainapp;
 
 
-	private int verifyID;   // Serialisieren
+	private int umfrageID;   // Serialisieren
 
 	public void init() {
 		removeAnswer(answ_del);
@@ -161,11 +161,11 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);   // <-- ZUM DEBUGGEN AUSGESCHALTET
 
-					if(antwort.verifyID == verifyID) {
+					if(antwort.umfrageID == umfrageID) {
 
 						boolean flag = false;
 						for (AzubiAntwort azubiAntwort : antwortListe) {
-							if (azubiAntwort.fragebogenID == antwort.fragebogenID)
+							if (azubiAntwort.antwortID == antwort.antwortID)
 							{
 								flag = true;
 							}
@@ -242,6 +242,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 						return;
 					}
 				}
+				clipboard.clear();
 			}
 		});
 	}
@@ -324,7 +325,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		data.add(antwortListe); // Object 0
 		data.add(anzahl_antworten); // Object 1
 		data.add(fragebogenName.getText()); // Object 2
-		data.add(verifyID); // Object 3
+		data.add(umfrageID); // Object 3
 
 		try {
 			FileOutputStream fos = new FileOutputStream("data.ser");
@@ -358,15 +359,15 @@ public class ControllerAntwortenErfassen implements Serializable {
 		antwortListe = (List<AzubiAntwort>) deserialized.get(0); // Object 0
 		anzahl_antworten = (int) deserialized.get(1); // Object 1
 		fragebogenName.setText((String) deserialized.get(2)); // Object 2
-		verifyID = (int) deserialized.get(3); // Object 3
+		umfrageID = (int) deserialized.get(3); // Object 3
 
 	}
 
 	public void setVerifyID(int verifyID) {
-		this.verifyID = verifyID;
+		this.umfrageID = verifyID;
 	}
 
 	public int getVerifyID() {
-		return verifyID;
+		return umfrageID;
 	}
 }
