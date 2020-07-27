@@ -17,7 +17,7 @@ public class AlertMethoden {
 		 * 
 		 * @return true, wenn "ja" geklickt wurde, false, wenn "nein" geklickt wurde
 		 */
-		private boolean entscheidungViaDialogAbfragen(String dialogTitel, String frage) {
+		public static boolean entscheidungViaDialogAbfragen(String dialogTitel, String frage) {
 			ButtonType buttonTypeYes = new ButtonType("Ja");
 			ButtonType buttonTypeCancel = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
 			Alert alertKlonen = new Alert(AlertType.CONFIRMATION);
@@ -37,7 +37,7 @@ public class AlertMethoden {
 		 * @param title Titel des Alert-Fensters
 		 * @param text Text, der in dem Alert-Fenster angezeigt werden soll
 		 */
-		private void zeigeEinfachenAlert(AlertType alertType, String title, String text) {
+		public static void zeigeEinfachenAlert(AlertType alertType, String title, String text) {
 			Alert error = new Alert(alertType);
 			error.setTitle(title);
 			error.setHeaderText(
