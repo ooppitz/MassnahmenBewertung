@@ -396,15 +396,23 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	public void saveAsPDF() {
 		Document document = new Document();
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream("iTextHelloWorld.pdf"));
-
+			PdfWriter.getInstance(document, new FileOutputStream("iTextTable.pdf"));
 
 			document.open();
+
 			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
 			Chunk chunk = new Chunk("Hello World", font);
-
+			 
 			document.add(chunk);
+			
+			PdfPTable table = new PdfPTable(3);
+			table.addCell("Hello");
+			table.addCell("World");
+			table.addCell("!");
+
+			document.add(table);
 			document.close();
+
 		} catch (FileNotFoundException | DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
