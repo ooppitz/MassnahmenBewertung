@@ -65,7 +65,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	public void init(MainApp app, FragebogenEigenschaften eigenschaft, List<AzubiAntwort> antwortListe) {
 		
 		this.setMainApp(app);
-		
+		setName(eigenschaft.fragebogen_name);
 		System.out.println("AuswertungAnzeigen: "+antwortListe.size());
 		for (AzubiAntwort azubiAntwort : antwortListe) {
 			System.out.println("AuswertungAnzeigen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
@@ -77,6 +77,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			log.logError("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			Label warning = new Label("     In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			grid.add(warning, 0, zeile);
+			zeile = 1;
 			return;
 		}
 		

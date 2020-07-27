@@ -395,7 +395,7 @@ public class ControllerFragebogenErstellen {
 						Optional<ButtonType> result3 = alert3.showAndWait();
 
 						// Fragebogen-Eigenschaften-Objekt erstellen
-						FragebogenEigenschaften eigenschaft = new FragebogenEigenschaften(getName(), seminarleiterName, auftragsnummer_textfield.getText(), von_Datum.getValue(), bis_Datum.getValue(), heute_datum.getValue());
+						FragebogenEigenschaften eigenschaft = new FragebogenEigenschaften(getName(), seminarleiterName, auftragsnummer_textfield.getText(), von_Datum.getValue(), bis_Datum.getValue(), heute_datum.getValue(), webpath);
 						// Zustand2-Tab erstellen
 						mainapp.showAntwortenErfassen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), verifyID);
 
