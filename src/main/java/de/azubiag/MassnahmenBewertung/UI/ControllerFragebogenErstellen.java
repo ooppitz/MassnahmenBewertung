@@ -422,7 +422,7 @@ public void addVorschauButtonHandler() {
 									+ e1.getClass().getName() + " beim Preview-Alert. \n"
 									+ "Interne Fehlermeldung: " + e1.getMessage();
 					
-					zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
 				}
 			}
 
