@@ -83,11 +83,13 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
 		auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
+		
+		setName(tabName);
 
 		zeile = 0; 
 		
 		
-		}
+	}
 	
 	public void erzeugeDarstellung() {
 		
