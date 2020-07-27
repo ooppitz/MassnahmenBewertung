@@ -510,7 +510,7 @@ public void addVorschauButtonHandler() {
 
 			private void zeigeVorschauFragebogen(String fragebogenOutputPfad)
 					throws IOException, URISyntaxException, MalformedURLException {
-				Desktop.getDesktop().browse(new URL("file://" + fragebogenOutputPfad).toURI());
+					Desktop.getDesktop().browse(new URI("file",fragebogenOutputPfad.replace('\\', '/'),""))
 			}
 
 			private String erstelleFragebogenImLokalenRepo(FragebogenEigenschaften eigenschaften, int verifyID)
