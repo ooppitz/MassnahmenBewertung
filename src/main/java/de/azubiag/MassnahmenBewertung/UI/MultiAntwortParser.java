@@ -29,65 +29,37 @@ public class MultiAntwortParser {
 		this.source = raw;
 	}
 	
-	private int minuses;
-	private boolean inGap;
-	private int strindex;
-	private boolean loopOn;
 	
-	private StringBuilder sb;
 	
 	private static final char MINUS = '-';
 	private static final int MINUSES_REQUIRED = 3;
-	
-	private ArrayList<String> buffer;
-	
+		
 	private ArrayList<String> doTheParsing() {
-		init();
-		while(loop());
-		return buffer;
-	}
-
-	private boolean loop() {
-		if (source.charAt(strindex) == MINUS) {
-			minuses++;
-		} else {
-			minuses = 0;
-		}
-		if (minuses >= MINUSES_REQUIRED) {
-			if (inGap) {
-				sb = new StringBuilder();
-				for (int i=3; i-->0;) {
+		int minusesInARow = 0;
+		var buffer = new ArrayList<String>();
+		StringBuilder sb = new StringBuilder();
+		boolean inGap = true;
+		for(int i=0; i<source.length(); i++) {
+			if (source.charAt(i) == MINUS) {
+				minusesInARow++;
+			} else {
+				minusesInARow = 0;
+			}
+			if (minusesInARow >= MINUSES_REQUIRED) {
+				if (inGap) {
+					sb = new StringBuilder();
+					for (int j=3; j-->0;) {
+						sb.append(MINUS);
+					}
+					inGap = false;
+				} else {
 					sb.append(MINUS);
+					buffer.add(sb.toString());
+					inGap = true;
 				}
-				inGap = false;
-			} else {
-				sb.append(MINUS);
-				buffer.add(sb.toString());
-				inGap = true;
-			}
-		} else {
-			if (inGap) {
-				// pass
-			} else {
-				sb.append(source.charAt(strindex));
-			}
+			} else if (!inGap) sb.append(source.charAt(i));
 		}
-		loopEndActions();
-		return loopOn;
-	}
-
-	private void loopEndActions() {
-		strindex++;
-		if (strindex >= source.length()) loopOn = false;
-	}
-
-	private void init() {
-		loopOn = true;
-		minuses = 0;
-		buffer = new ArrayList<>();
-		sb = new StringBuilder();
-		inGap = true;
-		strindex = 0;
+		return buffer;
 	}
 
 }
