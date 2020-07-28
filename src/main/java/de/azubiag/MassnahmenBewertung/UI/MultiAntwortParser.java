@@ -1,12 +1,22 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MultiAntwortParser {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws UnsupportedFlavorException, IOException {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Clipboard clipboard = toolkit.getSystemClipboard();
+		String data = (String) clipboard.getData(DataFlavor.stringFlavor);
+		var result = parse(data);
+		for (String line : result) {
+			System.out.println(line);
+		}
 	}
 	
 	public static ArrayList<String> parse(String fromClipboard) {
@@ -38,6 +48,30 @@ public class MultiAntwortParser {
 	}
 
 	private boolean loop() {
+		if (source.charAt(strindex) == MINUS) {
+			minuses++;
+		} else {
+			minuses = 0;
+		}
+		if (minuses >= MINUSES_REQUIRED) {
+			if (inGap) {
+				sb = new StringBuilder();
+				for (int i=3; i-->0;) {
+					sb.append(MINUS);
+				}
+				inGap = false;
+			} else {
+				sb.append(MINUS);
+				buffer.add(sb.toString());
+				inGap = true;
+			}
+		} else {
+			if (inGap) {
+				// pass
+			} else {
+				sb.append(source.charAt(strindex));
+			}
+		}
 		loopEndActions();
 		return loopOn;
 	}
