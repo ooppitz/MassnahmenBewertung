@@ -23,12 +23,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 /* Eingeben der Antworten */
 
@@ -41,41 +42,41 @@ public class ControllerAntwortenErfassen implements Serializable {
 	private static final long serialVersionUID = -4954713836800270562L;
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
 	FragebogenEigenschaften eigenschaft;
-	Tab tab;
+	 transient Tab tab;
 
 	int anzahl_antworten;    // Serialisieren 
 
 	@FXML
-	Label desc;
+	 transient Label desc;
 
 	@FXML
-	Label antwort_name;
+	 transient Label antwort_name;
 
 	@FXML
-	Label antwort_text;
+	 transient Label antwort_text;
 
 	@FXML
-	GridPane gridpane;
+	 transient GridPane gridpane;
 
 	@FXML
-	private Label fragebogenName;  // Serialisieren
+	private transient Label fragebogenName;  // Serialisieren
 
 	@FXML
-	private Label maintext;
+	private transient Label maintext;
 
 	@FXML
-	Button answ_del;
+	transient Button answ_del;
 
 	@FXML
-	public Button add;
+	public transient Button add;
 
 	@FXML
-	public Button next;
+	public transient Button next;
 
 	@FXML
-	public Button delete;
+	public transient Button delete;
 
-	private MainApp mainapp;
+	 transient private MainApp mainapp;
 
 
 	private int umfrageID;   // Serialisieren
@@ -292,54 +293,69 @@ public class ControllerAntwortenErfassen implements Serializable {
 		});
 	}
 
+	public final void writeObject(ObjectOutputStream os) {
+		
+		try {
+//			os.defaultWriteObject();
+			os.writeObject(antwortListe);
+			os.writeObject(eigenschaft);
+			os.writeInt(umfrageID);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public final void readObject(ObjectInputStream is) {
+		
+		try {
+//			is.defaultReadObject();
+			antwortListe = (List<AzubiAntwort>) is.readObject();	// unchecked cast
+			eigenschaft = (FragebogenEigenschaften) is.readObject();
+			umfrageID = is.readInt();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void tab_wiederherstellen() {  // Labels wieder richtig einstellen usw
+		anzahl_antworten = antwortListe.size();	// kann michael nach seinem refactoring entfernen
+		// wahrscheinlich noch weiteres
+		init();
+	}
+	
 	/* Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen der Ansicht nötig sind. */
 
-	public void speichern() {
+	public static void speichern() {
 
 		System.out.println("Speichern wurde aufgerufen!");
 
-		// ArrayList to store all objects
-		ArrayList<Object> data = new ArrayList<Object>();
-
-		// Add Objects here
-		data.add(antwortListe); // Object 0
-		data.add(anzahl_antworten); // Object 1
-		data.add(fragebogenName.getText()); // Object 2
-		data.add(umfrageID); // Object 3
-
 		try {
-			FileOutputStream fos = new FileOutputStream("data.ser");
+			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
+			FileOutputStream fos = new FileOutputStream(ordner+"_save");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(data);
+			oos.writeObject(MainApp.controller_liste);
 			oos.close();
 			fos.close();
 
-		} catch (IOException e) {
+		} catch (IOException | GitAPIException e) {
 			Logger l = new Logger();
 			l.logError(e);
 		}
 	}
 
-	public void laden() {
-		// ArrayList to store all deserialized objects
-		ArrayList<Object> deserialized = new ArrayList<Object>();
+	public static void laden() {
 
 		try {
-			FileInputStream fis = new FileInputStream("data.ser");
+			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
+			FileInputStream fis = new FileInputStream(ordner+"_save");
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			deserialized = (ArrayList<Object>) ois.readObject();
+			MainApp.controller_liste = (ArrayList<ControllerAntwortenErfassen>) ois.readObject();	// unchecked cast
 			ois.close();
 			fis.close();
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | GitAPIException e) {
 			Logger l = new Logger();
 			l.logError(e);
 		}
-
-		// Recieve loaded objects here
-		antwortListe = (List<AzubiAntwort>) deserialized.get(0); // Object 0
-		anzahl_antworten = (int) deserialized.get(1); // Object 1
-		fragebogenName.setText((String) deserialized.get(2)); // Object 2
-		umfrageID = (int) deserialized.get(3); // Object 3
 
 	}
 

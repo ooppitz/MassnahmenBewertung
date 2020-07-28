@@ -63,7 +63,7 @@ public class AzubiAntwort implements Serializable{
 	public final void writeObject(ObjectOutputStream os) {
 		
 		try {
-			os.defaultWriteObject();
+//			os.defaultWriteObject();
 			os.writeObject(massnahme);
 			os.writeObject(referenten);
 			os.writeInt(umfrageID);
@@ -76,7 +76,7 @@ public class AzubiAntwort implements Serializable{
 	
 	public final void readObject(ObjectInputStream is) {
 		try {
-			is.defaultReadObject();
+//			is.defaultReadObject();
 			massnahme = (BewertungMassnahme) is.readObject();
 			referenten = (List<BewertungReferent>) is.readObject();	// unchecked cast?
 			umfrageID = is.readInt();

@@ -70,7 +70,7 @@ public class FragebogenEigenschaften implements Serializable{
 	public final void writeObject(ObjectOutputStream os) {
 
 		try {
-			os.defaultWriteObject();
+//			os.defaultWriteObject();
 			os.writeUTF(fragebogen_name);
 			os.writeUTF(seminarleiter_name);
 			os.writeUTF(auftrags_nummer);
@@ -87,7 +87,7 @@ public class FragebogenEigenschaften implements Serializable{
 	public final void readObject(ObjectInputStream is) {
 
 		try {
-			is.defaultReadObject();
+//			is.defaultReadObject();
 			fragebogen_name = is.readUTF();
 			seminarleiter_name = is.readUTF();
 			auftrags_nummer = is.readUTF();
@@ -95,7 +95,7 @@ public class FragebogenEigenschaften implements Serializable{
 			bis_datum = is.readUTF();
 			ausstellungs_datum = is.readUTF();
 			link = is.readUTF();
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

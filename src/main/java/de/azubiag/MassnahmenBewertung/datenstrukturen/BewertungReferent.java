@@ -88,7 +88,7 @@ public class BewertungReferent implements Serializable{
 	public final void writeObject(ObjectOutputStream os) {
 		
 		try {
-			os.defaultWriteObject();
+//			os.defaultWriteObject();
 			os.writeUTF(name);
 			os.writeInt(vorbereitet);
 			os.writeInt(fachwissen);
@@ -104,7 +104,7 @@ public class BewertungReferent implements Serializable{
 	public final void readObject(ObjectInputStream is) {
 		
 		try {
-			is.defaultReadObject();
+//			is.defaultReadObject();
 			name = is.readUTF();
 			vorbereitet = is.readInt();
 			fachwissen = is.readInt();
@@ -112,7 +112,7 @@ public class BewertungReferent implements Serializable{
 			inhalteVermitteln = is.readInt();
 			verhalten = is.readInt();
 			bemerkungen = is.readUTF();
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

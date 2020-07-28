@@ -46,7 +46,7 @@ public class BewertungMassnahme implements Serializable{
 	public final void writeObject(ObjectOutputStream os) {
 		
 		try {
-			os.defaultWriteObject();
+//			os.defaultWriteObject();
 			os.writeInt(organisation);
 			os.writeInt(verlauf);
 			os.writeUTF(bemerkungVerlauf);
@@ -61,14 +61,14 @@ public class BewertungMassnahme implements Serializable{
 	public final void readObject(ObjectInputStream is) {
 		
 		try {
-			is.defaultReadObject();
+//			is.defaultReadObject();
 			organisation = is.readInt();
 			verlauf = is.readInt();
 			bemerkungVerlauf = is.readUTF();
 			betreuung = is.readInt();
 			bemerkungBetreuung = is.readUTF();
 			bemerkungReferentenAllgemein = is.readUTF();
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
