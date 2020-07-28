@@ -136,6 +136,11 @@ public class AuswertungMassnahme {
 		durchschnOrg /= anzahl;
 		durchschnVerl /= anzahl;
 		durchschnBetrng /= anzahl;
+		
+		// BUGFIX: Werte sollen von -2 zu +2 gehen, nicht von 0 bis 5
+		durchschnOrg -= 3;
+		durchschnVerl -= 3;
+		durchschnBetrng -= 3;
 	}
 
 	/**

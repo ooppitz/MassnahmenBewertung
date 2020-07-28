@@ -306,10 +306,10 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
-				System.out.println("AntwortenErfassen: "+antwortListe.size());
-				for (AzubiAntwort azubiAntwort : antwortListe) {
-					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
-				}
+//				System.out.println("AntwortenErfassen: "+antwortListe.size());
+//				for (AzubiAntwort azubiAntwort : antwortListe) {
+//					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
+//				}
 
 				mainapp.showAuswertungAnzeigen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
