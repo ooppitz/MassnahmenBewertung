@@ -368,11 +368,11 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 	}
 
-	public void setVerifyID(int verifyID) {
-		this.umfrageID = verifyID;
+	public void setUmfrageID(int umfrageID) {
+		this.umfrageID = umfrageID;
 	}
 
-	public int getVerifyID() {
+	public int getUmfrageID() {
 		return umfrageID;
 	}
 }

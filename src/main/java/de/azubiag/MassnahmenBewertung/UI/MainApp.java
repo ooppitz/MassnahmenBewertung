@@ -201,7 +201,7 @@ public class MainApp extends Application {
 			controller.setTab(tab_z2);
 			controller.setName(eigenschaft.fragebogen_name);
 			controller.setMaintext(eigenschaft.fragebogen_name);
-			controller.setVerifyID(verifyID);
+			controller.setUmfrageID(verifyID);
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.addAnswerToButton();
