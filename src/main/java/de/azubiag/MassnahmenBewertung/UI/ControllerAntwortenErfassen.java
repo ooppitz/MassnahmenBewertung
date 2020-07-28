@@ -133,16 +133,19 @@ public class ControllerAntwortenErfassen implements Serializable {
 				String verschluesselteAntwort = clipboard.getString();
 				if (verschluesselteAntwort == null)
 				{
+
 					Logger.getLogger().logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
-					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
+		
 					return;
 				}
 
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
+
 				if (entschluesselteAntwort == null) 
 				{	
 					Logger.getLogger().logError("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!");
-					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
 					return;
 
 				} else {
@@ -204,7 +207,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 						else
 						{
 							Logger.getLogger().logWarning("Eingefügte Antwort ist bereits vorhanden!");
-							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Antwort ist bereits vorhanden!", "Die eingefügten Antwort ist bereits vorhanden!");
+							AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eingefügte Antwort ist bereits vorhanden!", "Eingefügte Antwort ist bereits vorhanden!");
 							return;
 						}
 
@@ -212,7 +215,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 					else
 					{
 						Logger.getLogger().logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
-						AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügte Antwort gehört nicht zu diesem Fragebogen!", "Die eingefügte Antwort gehört nicht zu diesem Fragebogen!");
+						AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eingefügte Antwort gehört nicht zu diesem Fragebogen!", "Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
 						return;
 					}
 				}
