@@ -21,11 +21,13 @@ import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -295,6 +297,8 @@ public class ControllerFragebogenErstellen {
 		return referentenNamen;
 	}
 
+String webpath;
+
 public void addVorschauButtonHandler() {
 	
 		ControllerFragebogenErstellen controller = this;
@@ -313,18 +317,15 @@ public void addVorschauButtonHandler() {
 
 					if (mainapp.isTestmodusAktiv()) {
 						// im Testmodus die Möglichkeit hinzufügen, die Warnung zu ignorieren
-						ButtonType buttonTypeYesIgnorieren = new ButtonType("Ja");
-						ButtonType buttonTypeCancelIgnorieren = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+						
+						boolean resultIgnorieren = AlertMethoden.entscheidungViaDialogAbfragen(" --TESTMODUS-- Eingaben unvollständig",
+								"--TESTMODUS-- Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ");
 
-						Optional<ButtonType> resultIgnorieren = getEntscheidungÜberDialog(" --TESTMODUS-- Eingaben unvollständig",
-								"--TESTMODUS-- Eingabe nicht vollständig. Wollen Sie trotzdem fortfahren ? ", buttonTypeYesIgnorieren,
-								buttonTypeCancelIgnorieren);
-
-						if (resultIgnorieren.get() == buttonTypeYesIgnorieren) { 
+						if (resultIgnorieren) { 
 							fragebogenHandling(logger);
 						}
 					} else {
-						zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						AlertMethoden.zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
@@ -360,11 +361,14 @@ public void addVorschauButtonHandler() {
 						
 						UploadController upload_controller = initHochladenFenster(dialog, cancel);
 
+						
+						
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-							if (!MainApp.testmodusAktiv) repoHandle.hochladen(fragebogenname.getText(), MainApp.getUserName());
-							else {
+							if (!MainApp.testmodusAktiv) {
+								repoHandle.hochladen(fragebogenname.getText(), MainApp.getUserName());
+							} else {
 								int uploadConfirm = JOptionPane.showConfirmDialog(null, "Hochladen?", "Testmodus", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 								if (uploadConfirm == JOptionPane.YES_OPTION) {
 									repoHandle.hochladen();
@@ -378,7 +382,7 @@ public void addVorschauButtonHandler() {
 							logger.logError(exc);
 							// Hochladen hat nicht geklappt
 							
-							zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
 							return;
 
 						}
@@ -389,16 +393,27 @@ public void addVorschauButtonHandler() {
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
 
-						zeigeHochladenErfolgreich(logger, dialog, cancel, upload_controller);
+						dialog.getDialogPane().getButtonTypes().remove(cancel);
+						upload_controller.setLink(webpath);
+						upload_controller.link.setOnAction(y -> {
+						    if(Desktop.isDesktopSupported())
+						    {
+						        try {
+						            Desktop.getDesktop().browse(new URI(webpath));
+						        } catch (IOException e1) {
+						            e1.printStackTrace();
+						        } catch (URISyntaxException e1) {
+						            e1.printStackTrace();
+						        }
+						    }
+						});
 
-						ButtonType buttonTypeYesKlonen = new ButtonType("Ja");
-						ButtonType buttonTypeCancelKlonen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+						zeigeStatusHochladen(dialog, cancel, upload_controller);
 
 						// Fenster f�r Klonen anzeigen
-						Optional<ButtonType> buttonTypeKlonen = getEntscheidungÜberDialog(
+						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
 								"Neuen Fragebogen mit denselben Referenten anlegen?",
-								"Neuen Fragebogen mit denselben Referenten anlegen?", buttonTypeYesKlonen,
-								buttonTypeCancelKlonen);
+								"Neuen Fragebogen mit denselben Referenten anlegen?");
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
 						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
@@ -406,7 +421,7 @@ public void addVorschauButtonHandler() {
 						// Auswertung-Tab erstellen
 						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
 
-						if (buttonTypeKlonen.get() == buttonTypeYesKlonen) {
+						if (resultKlonen) {
 							// Fragebogen klonen
 							setName("Kopie von " + getName());
 						} else {
@@ -425,7 +440,7 @@ public void addVorschauButtonHandler() {
 									+ e1.getClass().getName() + " beim Preview-Alert. \n"
 									+ "Interne Fehlermeldung: " + e1.getMessage();
 					
-					zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
+					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
 				}
 			}
 
@@ -445,21 +460,29 @@ public void addVorschauButtonHandler() {
 				return upload_controller;
 			}
 
-			private void zeigeHochladenErfolgreich(Logger logger, Dialog<ButtonType> dialog, ButtonType cancel,
+			private void zeigeStatusHochladen(Dialog<ButtonType> dialog, ButtonType cancel,
 					UploadController upload_controller) {
+				
+				
+				// Entfernen des Cancel Buttons
 				dialog.getDialogPane().getButtonTypes().remove(cancel);
+				
 				ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
 				dialog.getDialogPane().getButtonTypes().add(next);
 
 				upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 				upload_controller.progress.setProgress(1);
 				Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
-				logger.logInfo("result2 = " + result2.toString());
+				
+				Logger.getLogger().logInfo("result2 = " + result2.toString());
 				// w�re praktisch, den Link noch woanders anzuzeigen
 			}
 
 			private Optional<ButtonType> getEntscheidungVeroeffentlichen(String webpath,
 					ButtonType buttonTypeYesVeroeffentlichen, ButtonType buttonTypeCancelVeroeffentlichen) {
+				
+				/*Sonderfall: da dieser Alert durch die Methode setAlwaysOnTop() vor der Browservorschau geziegt werden osll, 
+				 * gibt es diese Methode*/
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Fragebogen veröffentlichen?");
 				alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
@@ -476,35 +499,6 @@ public void addVorschauButtonHandler() {
 				return result;
 			}
 
-			private Optional<ButtonType> getEntscheidungÜberDialog(String dialogTitel, String headerText,
-					ButtonType buttonTypeYesKlonen, ButtonType buttonTypeCancelKlonen) {
-				Alert alertKlonen = new Alert(AlertType.CONFIRMATION);
-				alertKlonen.setTitle(dialogTitel);
-				alertKlonen.setHeaderText(headerText);
-
-				alertKlonen.getButtonTypes().setAll(buttonTypeYesKlonen, buttonTypeCancelKlonen);
-				Optional<ButtonType> buttonTypeKlonen = alertKlonen.showAndWait();
-				return buttonTypeKlonen;
-			}
-
-			/**
-			 * Zeige einfachen Alert mit Close-Button
-			 * @param alertType
-			 * @param title
-			 * @param headerText
-			 */
-			private void zeigeEinfachenAlert(AlertType alertType, String title, String headerText) {
-				Alert error = new Alert(alertType);
-				error.setTitle(title);
-				error.setHeaderText(
-						headerText);
-				ButtonType end = new ButtonType("OK", ButtonData.CANCEL_CLOSE);
-				error.getButtonTypes().setAll(end);
-				error.showAndWait();
-			}
-
-			
-			
 			private String getFragebogenWebPath(String fragebogenOutputPfad) {
 				// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
 				int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
