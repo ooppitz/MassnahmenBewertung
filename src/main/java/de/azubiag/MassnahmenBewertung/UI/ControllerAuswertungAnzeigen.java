@@ -228,39 +228,45 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		grid.add(ueberschrift_bemerkungen, 0, zeile);
 		zeile++;
 
-		if (auswertungMassnahme.alleBemerkVerl.isEmpty()) {
-		    Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-		    grid.add(leer_hinweiß, 0, zeile);
-		    zeile++;
-		} else {
-		    int anzahlBemerkungen = auswertungMassnahme.alleBemerkVerl.size(); 
-		    for (int i = 0; i < anzahlBemerkungen; i++) {
-			String bemerkung = auswertungMassnahme.alleBemerkVerl.get(i);
-			if (bemerkung.contains("\n")) {
-			    String[] zeilenDerBemerkung = bemerkung.split("\\n");
-			    for (String zeileBem : zeilenDerBemerkung) {
-				Label labelZeile = new Label(zeileBem);
-				labelZeile.setWrapText(true);
-				grid.add(labelZeile, 0, zeile);
-				zeile++;
-			    }
-			} else {
-			    Label temp_bemerkung = new Label(bemerkung);
-			    temp_bemerkung.setWrapText(true);
-			    grid.add(temp_bemerkung, 0, zeile);
-			    zeile++;
-			}
+		addBemerkungenVerlaufToGrid();
+	}
 
-			if (i<anzahlBemerkungen-1) {
-			    Label lblTrennlinie = new Label("-------");
-			    lblTrennlinie.setWrapText(true);
-			    grid.add(lblTrennlinie, 0, zeile);
-			}
-		    }
-		}
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile ++;
+	private void addBemerkungenVerlaufToGrid() {
+	    
+	    if (auswertungMassnahme.alleBemerkVerl.isEmpty()) {
+	        Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
+	        grid.add(leer_hinweiß, 0, zeile);
+	        zeile++;
+	    } else { 
+	        int anzBemerkungen = auswertungMassnahme.alleBemerkVerl.size(); 
+	        
+	        for (int i = 0; i < anzBemerkungen; i++) {
+	    	String bemerkung = auswertungMassnahme.alleBemerkVerl.get(i);
+	    	
+	    	if (bemerkung.contains("\n")) {//mehrzeilige Bemerkungen auf mehrere Zeilen der GridPane aufteilen, da sie sonst unvollständig angeziegt werden
+	    	    String[] zeilenDerBemerkung = bemerkung.split("\\n");
+	    	    for (String zeileBem : zeilenDerBemerkung) {
+	    		addLabelToGrid(grid, zeileBem, 0, zeile);
+	    		zeile++;
+	    	    }
+	    	} else { //einzeilige Bemerkungen in einem einzigen Label anzeigen
+	    	    addLabelToGrid(grid, bemerkung, 0, zeile );
+	    	    zeile++;
+	    	}
+	    	if (i<anzBemerkungen-1) { //Bemerkungen verschiedener Teilnehmer voneinander trennen
+	    	    addLabelToGrid(grid, "-------", 0, zeile);
+	    	}
+	        }
+	    }
+	    Label spacer = new Label("  ");
+	    grid.add(spacer, 0, zeile);
+	    zeile ++;
+	}
+
+	private void addLabelToGrid(GridPane gridPane, String labelContent, int col, int row) {
+	    Label lblTrennlinie = new Label(labelContent);
+	    lblTrennlinie.setWrapText(true);
+	    gridPane.add(lblTrennlinie, col, row);
 	}
 
 	public void betreuung() {
