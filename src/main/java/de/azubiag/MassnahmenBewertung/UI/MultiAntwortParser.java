@@ -46,6 +46,7 @@ public class MultiAntwortParser {
 				minusesInARow = 0;
 			}
 			if (minusesInARow >= MINUSES_REQUIRED) {
+				minusesInARow = 0;
 				if (inGap) {
 					sb = new StringBuilder();
 					for (int j=3; j-->0;) {
