@@ -165,6 +165,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		datum.setText("Datum: "+eigenschaft.ausstellungs_datum);
 		grid.add(datum, 0, zeile);
 		zeile++;
+		Label spacer = new Label("  ");
+		grid.add(spacer, 0, zeile);
 		zeile++;
 
 	}
@@ -241,6 +243,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 				zeile++;
 			}
 		}
+		Label spacer = new Label("  ");
+		grid.add(spacer, 0, zeile);
 		zeile ++;
 	}
 
@@ -299,6 +303,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 				zeile++;
 			}
 		}
+		Label spacer = new Label("  ");
+		grid.add(spacer, 0, zeile);
 		zeile ++;
 	}
 
@@ -323,6 +329,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 				zeile++;
 			}
 		}
+		Label spacer = new Label("  ");
+		grid.add(spacer, 0, zeile);
 		zeile ++;
 	}
 
@@ -330,6 +338,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label ueberschrift = new Label("4.Auswertung der Referenten:");
 		grid.add(ueberschrift, 0, zeile);
 		zeile++;
+		Label spacer = new Label("  ");
+		grid.add(spacer, 0, zeile);
 		zeile++;
 
 		for (AuswertungReferent auswertungReferent : auswertungenReferenten) {
@@ -457,6 +467,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 					zeile++;
 				}
 			}
+			Label spacer2 = new Label("  ");
+			grid.add(spacer2, 0, zeile);
 			zeile ++;
 		}
 	}
