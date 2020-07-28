@@ -37,7 +37,7 @@ public class AlertMethoden {
 		 * @param title Titel des Alert-Fensters
 		 * @param text Text, der in dem Alert-Fenster angezeigt werden soll
 		 */
-		public static void zeigeEinfachenAlert(AlertType alertType, String title, String text) {
+		public static void zeigeOKAlert(AlertType alertType, String title, String text) {
 			Alert error = new Alert(alertType);
 			error.setTitle(title);
 			error.setHeaderText(

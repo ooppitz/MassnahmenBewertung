@@ -322,7 +322,7 @@ public void addVorschauButtonHandler() {
 							fragebogenHandling(logger);
 						}
 					} else {
-						AlertMethoden.zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
@@ -376,7 +376,7 @@ public void addVorschauButtonHandler() {
 							logger.logError(exc);
 							// Hochladen hat nicht geklappt
 							
-							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
 							return;
 
 						}
@@ -422,7 +422,7 @@ public void addVorschauButtonHandler() {
 									+ e1.getClass().getName() + " beim Preview-Alert. \n"
 									+ "Interne Fehlermeldung: " + e1.getMessage();
 					
-					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Fehler", errorMessage);
 				}
 			}
 
