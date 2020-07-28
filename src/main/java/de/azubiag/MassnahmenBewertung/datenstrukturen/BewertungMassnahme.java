@@ -1,10 +1,19 @@
 package de.azubiag.MassnahmenBewertung.datenstrukturen;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /** Seite 2 des Referenzdokuments *
  * 
  */
-public class BewertungMassnahme {
+public class BewertungMassnahme implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3089124079433422368L;
 	public int organisation;
 	public int verlauf;
 	public String bemerkungVerlauf;
@@ -32,5 +41,35 @@ public class BewertungMassnahme {
 				+ "bemerkungBetreuung = \"%s\", "
 				+ "bemerkungReferentenAllgemein = \"%s\"]",
 				organisation, verlauf, bemerkungVerlauf, betreuung, bemerkungBetreuung, bemerkungReferentenAllgemein);
+	}
+	
+	public final void writeObject(ObjectOutputStream os) {
+		
+		try {
+			os.defaultWriteObject();
+			os.writeInt(organisation);
+			os.writeInt(verlauf);
+			os.writeUTF(bemerkungVerlauf);
+			os.writeInt(betreuung);
+			os.writeUTF(bemerkungBetreuung);
+			os.writeUTF(bemerkungReferentenAllgemein);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public final void readObject(ObjectInputStream is) {
+		
+		try {
+			is.defaultReadObject();
+			organisation = is.readInt();
+			verlauf = is.readInt();
+			bemerkungVerlauf = is.readUTF();
+			betreuung = is.readInt();
+			bemerkungBetreuung = is.readUTF();
+			bemerkungReferentenAllgemein = is.readUTF();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

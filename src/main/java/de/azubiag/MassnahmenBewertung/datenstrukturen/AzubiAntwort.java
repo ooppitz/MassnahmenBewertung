@@ -1,21 +1,30 @@
 package de.azubiag.MassnahmenBewertung.datenstrukturen;
 
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Klasse für Kursbewertung durch _einen_ Azubi.
  */
-public class AzubiAntwort {
+public class AzubiAntwort implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3149579952902991635L;
+
 	public BewertungMassnahme massnahme;         // Seite 2 d. Referenzdokuments
 	
 	public List<BewertungReferent> referenten;   // Seite 3 d. Referenzdokuments
 	
-	public final int umfrageID;
+	public int umfrageID;
 	
-	public final int antwortID;
+	public int antwortID;
 	
 	/** Erzeugt ein AzubiAntwort-Objekt.
 	 * 
@@ -49,6 +58,32 @@ public class AzubiAntwort {
 	@Override
 	public String toString() {
 		return String.format("AzubiAntwort [%s, %s, verifyID=%d, randomID=%d]", massnahme, referenten, umfrageID, antwortID);
+	}
+	
+	public final void writeObject(ObjectOutputStream os) {
+		
+		try {
+			os.defaultWriteObject();
+			os.writeObject(massnahme);
+			os.writeObject(referenten);
+			os.writeInt(umfrageID);
+			os.writeInt(antwortID);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public final void readObject(ObjectInputStream is) {
+		try {
+			is.defaultReadObject();
+			massnahme = (BewertungMassnahme) is.readObject();
+			referenten = (List<BewertungReferent>) is.readObject();	// unchecked cast?
+			umfrageID = is.readInt();
+			antwortID = is.readInt();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

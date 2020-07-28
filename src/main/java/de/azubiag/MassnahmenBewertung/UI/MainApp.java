@@ -339,5 +339,8 @@ public class MainApp extends Application {
 		System.out.println("Der Rest der Methode wird noch durchgeführt!");
 	}
 	
-	
+	public boolean existieren_speicherdaten() {
+		
+		return false;
+	}
 }
