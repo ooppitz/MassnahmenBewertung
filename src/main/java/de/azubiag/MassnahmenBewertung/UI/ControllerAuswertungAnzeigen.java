@@ -228,21 +228,35 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		grid.add(ueberschrift_bemerkungen, 0, zeile);
 		zeile++;
 
-		if (auswertungMassnahme.alleBemerkVerl.isEmpty())
-		{
-			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-			grid.add(leer_hinweiß, 0, zeile);
-			zeile++;
-		}
-		else
-		{
-			for (String bemerkung : auswertungMassnahme.alleBemerkVerl) {
-
-				Label temp_bemerkung = new Label(bemerkung);
-				temp_bemerkung.setWrapText(true);
-				grid.add(temp_bemerkung, 0, zeile);
+		if (auswertungMassnahme.alleBemerkVerl.isEmpty()) {
+		    Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
+		    grid.add(leer_hinweiß, 0, zeile);
+		    zeile++;
+		} else {
+		    int anzahlBemerkungen = auswertungMassnahme.alleBemerkVerl.size(); 
+		    for (int i = 0; i < anzahlBemerkungen; i++) {
+			String bemerkung = auswertungMassnahme.alleBemerkVerl.get(i);
+			if (bemerkung.contains("\n")) {
+			    String[] zeilenDerBemerkung = bemerkung.split("\\n");
+			    for (String zeileBem : zeilenDerBemerkung) {
+				Label labelZeile = new Label(zeileBem);
+				labelZeile.setWrapText(true);
+				grid.add(labelZeile, 0, zeile);
 				zeile++;
+			    }
+			} else {
+			    Label temp_bemerkung = new Label(bemerkung);
+			    temp_bemerkung.setWrapText(true);
+			    grid.add(temp_bemerkung, 0, zeile);
+			    zeile++;
 			}
+
+			if (i<anzahlBemerkungen-1) {
+			    Label lblTrennlinie = new Label("-------");
+			    lblTrennlinie.setWrapText(true);
+			    grid.add(lblTrennlinie, 0, zeile);
+			}
+		    }
 		}
 		Label spacer = new Label("  ");
 		grid.add(spacer, 0, zeile);
