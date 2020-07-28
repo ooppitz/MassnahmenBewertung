@@ -99,7 +99,7 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerLogin.fxml"));
 			GridPane login_grid = (GridPane) loader.load();
-			login_grid.setPrefSize(600, 200);
+			login_grid.setPrefSize(800, 200);
 
 			Scene scene = new Scene(login_grid);
 			primaryStage.setScene(scene);

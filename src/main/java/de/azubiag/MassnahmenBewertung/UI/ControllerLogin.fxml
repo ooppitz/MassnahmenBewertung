@@ -20,7 +20,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Willkommen im Referentenbewertungsprogramm für die GFI!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Label text="Willkommen Seminaleiter/-in im Referentenbewertungsprogramm für die GFI!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>

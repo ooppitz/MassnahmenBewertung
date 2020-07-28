@@ -27,6 +27,7 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -296,6 +297,8 @@ public class ControllerFragebogenErstellen {
 		return referentenNamen;
 	}
 
+String webpath;
+
 public void addVorschauButtonHandler() {
 	
 		ControllerFragebogenErstellen controller = this;
@@ -358,11 +361,14 @@ public void addVorschauButtonHandler() {
 						
 						UploadController upload_controller = initHochladenFenster(dialog, cancel);
 
+						
+						
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-							if (!MainApp.testmodusAktiv) repoHandle.hochladen(fragebogenname.getText(), MainApp.getUserName());
-							else {
+							if (!MainApp.testmodusAktiv) {
+								repoHandle.hochladen(fragebogenname.getText(), MainApp.getUserName());
+							} else {
 								int uploadConfirm = JOptionPane.showConfirmDialog(null, "Hochladen?", "Testmodus", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 								if (uploadConfirm == JOptionPane.YES_OPTION) {
 									repoHandle.hochladen();
@@ -387,10 +393,22 @@ public void addVorschauButtonHandler() {
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
 
-						zeigeHochladenErfolgreich(logger, dialog, cancel, upload_controller);
+						dialog.getDialogPane().getButtonTypes().remove(cancel);
+						upload_controller.setLink(webpath);
+						upload_controller.link.setOnAction(y -> {
+						    if(Desktop.isDesktopSupported())
+						    {
+						        try {
+						            Desktop.getDesktop().browse(new URI(webpath));
+						        } catch (IOException e1) {
+						            e1.printStackTrace();
+						        } catch (URISyntaxException e1) {
+						            e1.printStackTrace();
+						        }
+						    }
+						});
 
-						ButtonType buttonTypeYesKlonen = new ButtonType("Ja");
-						ButtonType buttonTypeCancelKlonen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
+						zeigeStatusHochladen(dialog, cancel, upload_controller);
 
 						// Fenster f�r Klonen anzeigen
 						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
@@ -442,16 +460,21 @@ public void addVorschauButtonHandler() {
 				return upload_controller;
 			}
 
-			private void zeigeHochladenErfolgreich(Logger logger, Dialog<ButtonType> dialog, ButtonType cancel,
+			private void zeigeStatusHochladen(Dialog<ButtonType> dialog, ButtonType cancel,
 					UploadController upload_controller) {
+				
+				
+				// Entfernen des Cancel Buttons
 				dialog.getDialogPane().getButtonTypes().remove(cancel);
+				
 				ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
 				dialog.getDialogPane().getButtonTypes().add(next);
 
 				upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 				upload_controller.progress.setProgress(1);
 				Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
-				logger.logInfo("result2 = " + result2.toString());
+				
+				Logger.getLogger().logInfo("result2 = " + result2.toString());
 				// w�re praktisch, den Link noch woanders anzuzeigen
 			}
 
