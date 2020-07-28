@@ -136,11 +136,13 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 					Logger.getLogger().logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
 					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
-		
+					
+
 					return;
 				}
 
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
+
 
 				if (entschluesselteAntwort == null) 
 				{	
