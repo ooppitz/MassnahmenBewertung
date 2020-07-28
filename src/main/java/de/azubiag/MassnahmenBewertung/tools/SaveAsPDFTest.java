@@ -31,12 +31,10 @@ public class SaveAsPDFTest {
 				stringarray[i][j]=i+" "+j;
 			}
 		}
-		
 		Document document = new Document();
 		try {
 			try {
-				File file = new File(Upload.getInstance().getRepositoryPfad()+"\\PDFSpeicher\\iTextTable.pdf");
-				file.mkdirs();
+				File file = new File(Upload.getInstance().getRepositoryPfad()+"\\iTextTable.pdf");
 				PdfWriter.getInstance(document, new FileOutputStream(file));
 			} catch (GitAPIException | IOException e) {
 				// TODO Auto-generated catch block
