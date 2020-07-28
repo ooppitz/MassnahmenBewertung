@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import de.azubiag.MassnahmenBewertung.UI.test.ClipboardLoeschenTest;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
@@ -323,20 +324,12 @@ public class MainApp extends Application {
 	}
 
 	public void warnfenster(WindowEvent event, ControllerAntwortenErfassen controller) {
-		Alert al = new Alert(AlertType.WARNING);
-		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
-		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
-		ButtonType abbruchButton = new ButtonType("abbruch", ButtonData.CANCEL_CLOSE);
-		al.getButtonTypes().setAll(jaButton, neinButton, abbruchButton);
-		al.setTitle("Warnung");
-		al.setHeaderText("Wollen Sie den Fortschritt speichern?");
-		al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
+		int resultFortschrittSpeichern = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Warnung", "Wollen Sie den Fortschritt speichern?");
 		
-		Optional<ButtonType> opbt = al.showAndWait();
-		if(opbt.get()==jaButton) {
+		if(resultFortschrittSpeichern == 1) {
 			controller.speichern();
 			Platform.exit();
-		} else if(opbt.get()==neinButton) {
+		} else if(resultFortschrittSpeichern == 0) {
 			System.out.println("Fortschritt wird verworfen!");
 			Platform.exit();
 		} else {
