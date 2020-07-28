@@ -1,6 +1,9 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
@@ -25,6 +28,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	List<AuswertungReferent> auswertungenReferenten;
 	AuswertungMassnahme auswertungMassnahme;
 	FragebogenEigenschaften eigenschaft;
+	private static DecimalFormat zweiStellenNachKomma = new DecimalFormat("#.##");
 
 	int zeile;
 
@@ -47,7 +51,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
 		this.eigenschaft = eigenschaft;
 	}
-	
+
 	public void setMainApp (MainApp app){
 		mainapp = app;
 	}
@@ -65,14 +69,14 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	}
 
 	public void init(MainApp app, FragebogenEigenschaften eigenschaft, List<AzubiAntwort> antwortListe) {
-		
+
 		this.setMainApp(app);
 		setName(eigenschaft.fragebogen_name);
 		System.out.println("AuswertungAnzeigen: "+antwortListe.size());
 		for (AzubiAntwort azubiAntwort : antwortListe) {
 			System.out.println("AuswertungAnzeigen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
 		}
-		
+
 		if (antwortListe.size()==0)
 		{
 			Logger log = Logger.getLogger();
@@ -82,7 +86,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			zeile = 2;
 			return;
 		}
-		
+
 		final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
 
 		for (AzubiAntwort azubiAntwort : antwortListe) {
@@ -91,16 +95,46 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 		auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
 		auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
-		
+
+		auswertungMassnahme.alleBemerkBetrng = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkBetrng);
+		auswertungMassnahme.alleBemerkRefAllg = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkRefAllg);
+		auswertungMassnahme.alleBemerkVerl = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkVerl);
+
 		setName(eigenschaft.fragebogen_name);
 
 		zeile = 1; 
-		
-		
+
+
 	}
-	
+
+	public ArrayList<String> filtereUndMischeArrayList(ArrayList<String> liste) {
+
+		for (int i=0; i<liste.size(); i++) {	// entfernen von leeren Einträgen
+			if (liste.get(i) == null || liste.get(i).isBlank())
+			{
+				liste.remove(i);
+			}
+		}
+		Collections.shuffle(liste);				// zufällige Reihenfolge
+		return liste;
+	}
+
+	public ArrayList<String> filtereUndMischeList(List<String> eingabe) {
+
+		ArrayList<String> liste = (ArrayList<String>) eingabe;
+		for (int i=0; i<liste.size(); i++) {	// entfernen von leeren Einträgen
+			if (liste.get(i) == null || liste.get(i).isBlank())
+			{
+				liste.remove(i);
+			}
+		}
+		Collections.shuffle(liste);				// zufällige Reihenfolge
+		return liste;
+	}
+
+
 	public void erzeugeDarstellung() {
-		
+
 		anfang();
 		verlauf();
 		betreuung();
@@ -111,30 +145,30 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	}
 
 	public void anfang() {
-		
+
 		Label massnahme = new Label();
 		massnahme.setText("Maßnahme von "+eigenschaft.von_datum+" bis "+eigenschaft.bis_datum);
 		grid.add(massnahme, 0, zeile);
 		zeile++;
-		
+
 		Label auftrnummer = new Label();
 		auftrnummer.setText("Auftragsnummer: "+eigenschaft.auftrags_nummer);
 		grid.add(auftrnummer, 0, zeile);
 		zeile++;
-		
+
 		Label leitung = new Label();
 		leitung.setText("Seminarleitung: "+eigenschaft.seminarleiter_name);
 		grid.add(leitung, 0, zeile);
 		zeile++;
-		
+
 		Label datum = new Label();
 		datum.setText("Datum: "+eigenschaft.ausstellungs_datum);
 		grid.add(datum, 0, zeile);
 		zeile++;
 		zeile++;
-		
+
 	}
-	
+
 	public void verlauf() {
 
 		Label ueberschrift_verlauf = new Label("1. Maßnahmeverlauf:");
@@ -160,7 +194,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label o_0 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[2]));
 		Label o_1 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[3]));
 		Label o_2 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[4]));
-		Label o_d = new Label(Double.toString(auswertungMassnahme.durchschnOrg));
+		Label o_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnOrg));
 
 		grid.add(organisation_frage, 0, zeile);
 		grid.add(o__2, 1, zeile);
@@ -177,7 +211,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label v_0 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[2]));
 		Label v_1 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[3]));
 		Label v_2 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[4]));
-		Label v_d = new Label(Double.toString(auswertungMassnahme.durchschnVerl));
+		Label v_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnVerl));
 
 		grid.add(verlauf_frage, 0, zeile);
 		grid.add(v__2, 1, zeile);
@@ -191,11 +225,21 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
 		grid.add(ueberschrift_bemerkungen, 0, zeile);
 		zeile++;
-		for (String bemerkung : auswertungMassnahme.alleBemerkVerl) {
 
-			Label temp_bemerkung = new Label(bemerkung);
-			grid.add(temp_bemerkung, 0, zeile);
+		if (auswertungMassnahme.alleBemerkVerl.isEmpty())
+		{
+			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
+			grid.add(leer_hinweiß, 0, zeile);
 			zeile++;
+		}
+		else
+		{
+			for (String bemerkung : auswertungMassnahme.alleBemerkVerl) {
+
+				Label temp_bemerkung = new Label(bemerkung);
+				grid.add(temp_bemerkung, 0, zeile);
+				zeile++;
+			}
 		}
 		zeile ++;
 	}
@@ -225,7 +269,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label b_0 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[2]));
 		Label b_1 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[3]));
 		Label b_2 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[4]));
-		Label b_d = new Label(Double.toString(auswertungMassnahme.durchschnBetrng));
+		Label b_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnBetrng));
 
 		grid.add(betreuung_frage, 0, zeile);
 		grid.add(b__2, 1, zeile);
@@ -239,11 +283,21 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
 		grid.add(ueberschrift_bemerkungen, 0, zeile);
 		zeile++;
-		for (String bemerkung : auswertungMassnahme.alleBemerkBetrng) {
 
-			Label temp_bemerkung = new Label(bemerkung);
-			grid.add(temp_bemerkung, 0, zeile);
+		if (auswertungMassnahme.alleBemerkBetrng.isEmpty())
+		{
+			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
+			grid.add(leer_hinweiß, 0, zeile);
 			zeile++;
+		}
+		else
+		{
+			for (String bemerkung : auswertungMassnahme.alleBemerkBetrng) {
+
+				Label temp_bemerkung = new Label(bemerkung);
+				grid.add(temp_bemerkung, 0, zeile);
+				zeile++;
+			}
 		}
 		zeile ++;
 	}
@@ -253,17 +307,27 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		Label ueberschrift_bemerkungen = new Label("3.Bewertung der Referenten bzw. Referentinnen:");
 		grid.add(ueberschrift_bemerkungen, 0, zeile);
 		zeile++;
-		for (String bemerkung : auswertungMassnahme.alleBemerkRefAllg) {
 
-			Label temp_bemerkung = new Label(bemerkung);
-			grid.add(temp_bemerkung, 0, zeile);
+		if (auswertungMassnahme.alleBemerkRefAllg.isEmpty())
+		{
+			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
+			grid.add(leer_hinweiß, 0, zeile);
 			zeile++;
+		}
+		else
+		{
+			for (String bemerkung : auswertungMassnahme.alleBemerkRefAllg) {
+
+				Label temp_bemerkung = new Label(bemerkung);
+				grid.add(temp_bemerkung, 0, zeile);
+				zeile++;
+			}
 		}
 		zeile ++;
 	}
 
 	public void referenten() {
-		Label ueberschrift = new Label("Auswertung der Referenten:");
+		Label ueberschrift = new Label("4.Auswertung der Referenten:");
 		grid.add(ueberschrift, 0, zeile);
 		zeile++;
 		zeile++;
@@ -293,7 +357,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			Label vo_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[2]));
 			Label vo_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[3]));
 			Label vo_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[4]));
-			Label vo_d = new Label(Double.toString(auswertungReferent.durchschnittVorbereitung));
+			Label vo_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittVorbereitung));
 
 			grid.add(vorbereitung_frage, 0, zeile);
 			grid.add(vo__2, 1, zeile);
@@ -310,7 +374,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			Label f_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[2]));
 			Label f_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[3]));
 			Label f_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[4]));
-			Label f_d = new Label(Double.toString(auswertungReferent.durchschnittFachwissen));
+			Label f_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittFachwissen));
 
 			grid.add(fachwissen_frage, 0, zeile);
 			grid.add(f__2, 1, zeile);
@@ -327,7 +391,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			Label p_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[2]));
 			Label p_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[3]));
 			Label p_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[4]));
-			Label p_d = new Label(Double.toString(auswertungReferent.durchschnittEingehenAufProbleme));
+			Label p_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittEingehenAufProbleme));
 
 			grid.add(probleme_frage, 0, zeile);
 			grid.add(p__2, 1, zeile);
@@ -344,7 +408,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			Label ve_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[2]));
 			Label ve_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[3]));
 			Label ve_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[4]));
-			Label ve_d = new Label(Double.toString(auswertungReferent.durchschnittInhaltsvermittlung));
+			Label ve_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittInhaltsvermittlung));
 
 			grid.add(vermittlung_frage, 0, zeile);
 			grid.add(ve__2, 1, zeile);
@@ -361,7 +425,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			Label vr_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[2]));
 			Label vr_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[3]));
 			Label vr_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[4]));
-			Label vr_d = new Label(Double.toString(auswertungReferent.durchschnittVerhalten));
+			Label vr_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittVerhalten));
 
 			grid.add(verhalten_frage, 0, zeile);
 			grid.add(vr__2, 1, zeile);
@@ -372,23 +436,35 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			grid.add(vr_d, 6, zeile);
 			zeile ++;
 
+			ArrayList<String> bemerkungen = filtereUndMischeList(auswertungReferent.getBemerkungen());
+
 			Label ueberschrift_bemerkungen = new Label("Bemerkungen zu: "+auswertungReferent.getName());
 			grid.add(ueberschrift_bemerkungen, 0, zeile);
 			zeile++;
-			for (String bemerkung : auswertungReferent.getBemerkungen()) {
 
-				Label temp_bemerkung = new Label(bemerkung);
-				grid.add(temp_bemerkung, 0, zeile);
+			if (bemerkungen.isEmpty())
+			{
+				Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
+				grid.add(leer_hinweiß, 0, zeile);
 				zeile++;
+			}
+			else
+			{
+				for (String bemerkung : bemerkungen) {
+
+					Label temp_bemerkung = new Label(bemerkung);
+					grid.add(temp_bemerkung, 0, zeile);
+					zeile++;
+				}
 			}
 			zeile ++;
 		}
 	}
-	
+
 	public void setze_alle_Fonts() {
-		
+
 		for (Node node : grid.getChildrenUnmodifiable() ) {
-			
+
 			Label label = (Label) node;
 			label.setFont(new Font(20));
 		}
