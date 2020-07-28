@@ -19,22 +19,10 @@ public class MultiAntwortParser {
 		}
 	}
 	
-	public static ArrayList<String> parse(String fromClipboard) {
-		return new MultiAntwortParser(fromClipboard).doTheParsing();
-	}
-	
-	private String source;
-	
-	private MultiAntwortParser(String raw) {
-		this.source = raw;
-	}
-	
-	
-	
 	private static final char MINUS = '-';
 	private static final int MINUSES_REQUIRED = 3;
-		
-	private ArrayList<String> doTheParsing() {
+	
+	public static ArrayList<String> parse(String source) {
 		int minusesInARow = 0;
 		var buffer = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder();
