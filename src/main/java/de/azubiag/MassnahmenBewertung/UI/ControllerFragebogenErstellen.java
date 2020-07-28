@@ -3,6 +3,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -293,6 +295,7 @@ public class ControllerFragebogenErstellen {
 		return referentenNamen;
 	}
 
+	String webpath;
 
 	public void addVorschauButtonHandler() {
 		preview.setOnAction(new EventHandler<ActionEvent>() {
@@ -318,7 +321,7 @@ public class ControllerFragebogenErstellen {
 					// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
 					int indexA = fragebogenOutputPfad.indexOf("gfigithubaccess");
 					int indexB = fragebogenOutputPfad.indexOf(".html");
-					String webpath = "https://" + fragebogenOutputPfad.substring(indexA, indexB);
+					webpath = "https://" + fragebogenOutputPfad.substring(indexA, indexB);
 					webpath = webpath.replace('\\', '/');
 					Logger.getLogger().logInfo(webpath);
 					
@@ -358,6 +361,8 @@ public class ControllerFragebogenErstellen {
 						dialog.setTitle("Hochladen");
 						UploadController upload_controller = loader.getController();
 
+						
+						
 						try {
 
 							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
@@ -385,11 +390,24 @@ public class ControllerFragebogenErstellen {
 						// Abbrechen erlauben ?
 
 						dialog.getDialogPane().getButtonTypes().remove(cancel);
+						upload_controller.setLink(webpath);
+						upload_controller.link.setOnAction(y -> {
+						    if(Desktop.isDesktopSupported())
+						    {
+						        try {
+						            Desktop.getDesktop().browse(new URI(webpath));
+						        } catch (IOException e1) {
+						            e1.printStackTrace();
+						        } catch (URISyntaxException e1) {
+						            e1.printStackTrace();
+						        }
+						    }
+						});
 						ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
 						dialog.getDialogPane().getButtonTypes().add(next);
 
-						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 						upload_controller.progress.setProgress(1);
+						upload_controller.upload_pending.setText("Hochladen erfolgreich!");
 						Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
 						logger.logInfo("result2 = " + result2.toString());
 						// w�re praktisch, den Link noch woanders anzuzeigen
