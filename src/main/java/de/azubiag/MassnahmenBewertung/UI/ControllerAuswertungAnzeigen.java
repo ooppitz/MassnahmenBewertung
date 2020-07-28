@@ -239,6 +239,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			for (String bemerkung : auswertungMassnahme.alleBemerkVerl) {
 
 				Label temp_bemerkung = new Label(bemerkung);
+				temp_bemerkung.setWrapText(true);
 				grid.add(temp_bemerkung, 0, zeile);
 				zeile++;
 			}
@@ -299,6 +300,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			for (String bemerkung : auswertungMassnahme.alleBemerkBetrng) {
 
 				Label temp_bemerkung = new Label(bemerkung);
+				temp_bemerkung.setWrapText(true);
 				grid.add(temp_bemerkung, 0, zeile);
 				zeile++;
 			}
@@ -325,6 +327,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 			for (String bemerkung : auswertungMassnahme.alleBemerkRefAllg) {
 
 				Label temp_bemerkung = new Label(bemerkung);
+				temp_bemerkung.setWrapText(true);
 				grid.add(temp_bemerkung, 0, zeile);
 				zeile++;
 			}
@@ -463,6 +466,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 				for (String bemerkung : bemerkungen) {
 
 					Label temp_bemerkung = new Label(bemerkung);
+					temp_bemerkung.setWrapText(true);
 					grid.add(temp_bemerkung, 0, zeile);
 					zeile++;
 				}
