@@ -63,7 +63,7 @@ public class MainApp extends Application {
 	}
 
 	/* Zeigt an, ob die App im Testmodus läuft. Kann über KOmmandozeilenparameter gesteuert werden, */
-	static boolean testmodusAktiv; 
+	static boolean testmodusAktiv = true; 
 
 	public static boolean isTestmodusAktiv() {
 		return testmodusAktiv;
