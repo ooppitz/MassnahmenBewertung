@@ -47,16 +47,18 @@ public class ControllerLogin {
 			@Override
 			public void handle(ActionEvent e) {
 
-				String clean_username = Tools.normalisiereString(username.getText());
-				// schauen, ob das Feld nicht leer ist
-				// Auswahlliste von Namen davor anzeigen
-				boolean alles_ok = erstelleNeuenOrdnerFallsNotwendig(clean_username);
+			    String clean_username = Tools.normalisiereString(username.getText());
+			    // schauen, ob das Feld nicht leer ist
+			    // Auswahlliste von Namen davor anzeigen
+			    boolean alles_ok = erstelleNeuenOrdnerFallsNotwendig(clean_username);
 
-				if(alles_ok)
-				{
-					MainApp.setUserName(username.getText());
-					mainapp.showTabPane();
-				}
+			    if(alles_ok)
+			    {
+				String userName = username.getText();
+				MainApp.setUserName(userName);
+				mainapp.primaryStage.setTitle("SeminarLeiterApp " +userName);
+				mainapp.showTabPane();
+			    }
 			}
 
 		});
