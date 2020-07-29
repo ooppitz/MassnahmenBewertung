@@ -137,7 +137,11 @@ public class ControllerAntwortenErfassen implements Serializable {
 					return;
 				}
 
-				hinzufuegenAntwort(verschluesselteAntwort);
+				ArrayList<String> antworten = MultiAntwortParser.parse(verschluesselteAntwort);
+				
+				for(String a : antworten) {
+					hinzufuegenAntwort(a);
+				}
 			}
 
 			private void hinzufuegenAntwort(String verschluesselteAntwort) {

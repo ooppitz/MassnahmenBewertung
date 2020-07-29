@@ -22,6 +22,11 @@ public class MultiAntwortParser {
 	private static final char MINUS = '-';
 	private static final int MINUSES_REQUIRED = 3;
 	
+	/**
+	 * Zerlegt einen String mit einer oder mehreren verschlüsselten Antworten in einzelne Strings.
+	 * @param source ein String mit einer oder mehrerer verschlüsselter Antworten
+	 * @return
+	 */
 	public static ArrayList<String> parse(String source) {
 		int minusesInARow = 0;
 		var buffer = new ArrayList<String>();
