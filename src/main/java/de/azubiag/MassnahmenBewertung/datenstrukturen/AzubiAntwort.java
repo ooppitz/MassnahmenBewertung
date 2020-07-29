@@ -46,6 +46,23 @@ public class AzubiAntwort implements Serializable{
 		}
 	}
 	
+	/**
+	 * @deprecated
+	 */
+	public AzubiAntwort(String kodiert) {	//TODO: Aufrufe hiervon abändern
+		verschlüsselterString = kodiert;
+		String[] array = kodiert.split("\\|", -1); // -1 verhindert, dass split() leere Strings am Ende verwirft und dann das Array zu kurz ist
+		umfrageID = Integer.parseInt(array[0]);
+		antwortID = Integer.parseInt(array[1]);
+		massnahme = new BewertungMassnahme(subarray(array, 2, 8));
+		referenten = new ArrayList<>(10);
+		int index = 8;
+		while (index+6 < array.length) {
+			referenten.add(new BewertungReferent(subarray(array, index, index+7)));
+			index += 7;
+		}
+	}
+	
 	private static String[] subarray(String[] mainArray, int start, int end) {
 		String[] newarray = new String[end-start];
 		System.arraycopy(mainArray, start, newarray, 0, end-start);
