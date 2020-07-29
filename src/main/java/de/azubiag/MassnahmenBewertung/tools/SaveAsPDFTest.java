@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -50,45 +53,48 @@ public class SaveAsPDFTest {
 			} catch (GitAPIException | IOException e) {
 				e.printStackTrace();
 			}
-
 			document.open();
 
 			// Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
 			// Chunk chunk = new Chunk("Hello World", font);
 
 			// document.add(chunk);
-
-			PdfPTable table = new PdfPTable(5);
-
+			
+			Chunk space = new Chunk("                    ");
+			Paragraph title1 = new Paragraph("Maßnahmeverlauf");
+			Paragraph t1q1 = new Paragraph("Wie empfinden die Teilnehmer die Organisation des Seminars?");
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
-				table.addCell(String.valueOf(am.pktvertOrg[i]));
+				t1q1.add(new Chunk(String.valueOf(am.pktvertOrg[i])+" "));
 			}
+			System.out.println(t1q1.size());
+			Paragraph t1q2 = new Paragraph("Wie empfinden die Teilnehmer den Verlauf des Seminars");
+			Paragraph t1b = new Paragraph("Bemerkungen dazu:");
+			Chapter massnahmeverlauf = new Chapter(title1, 1);
+			massnahmeverlauf.add(t1q1);
+			massnahmeverlauf.add(t1q2);
+			massnahmeverlauf.add(t1b);
+			
+			
+			document.add(massnahmeverlauf);
+			
 			for (int i = 0; i < am.pktvertVerl.length; i++) {
-				table.addCell(String.valueOf(am.pktvertVerl[i]));
+				document.add(new Phrase(String.valueOf(am.pktvertVerl[i])));
 			}
 			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
-				table.addCell(am.alleBemerkVerl.get(i));
+				document.add(new Phrase(am.alleBemerkVerl.get(i)));
 			}
-			table.completeRow();
 			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
-				table.addCell(String.valueOf(am.pktvertBetrng[i]));
+				document.add(new Phrase(String.valueOf(am.pktvertBetrng[i])));
 			}
-			table.completeRow();
 			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
-				table.addCell(am.alleBemerkRefAllg.get(i));
+				document.add(new Phrase(am.alleBemerkRefAllg.get(i)));
 			}
-			table.completeRow();
-
-			table.addCell("Durchschnitt Organisation:");
-			table.addCell(String.valueOf(am.durchschnOrg));
-			table.completeRow();
-			table.addCell("Durchschnitt Verlauf:");
-			table.addCell(String.valueOf(am.durchschnVerl));
-			table.completeRow();
-			table.addCell("Durchschnitt Betreuung:");
-			table.addCell(String.valueOf(am.durchschnBetrng));
-			table.completeRow();
-			document.add(table);
+			document.add(new Phrase("Durchschnitt Organisation:"));
+			document.add(new Phrase(String.valueOf(am.durchschnOrg)));
+			document.add(new Phrase("Durchschnitt Verlauf:"));
+			document.add(new Phrase(String.valueOf(am.durchschnVerl)));
+			document.add(new Phrase("Durchschnitt Betreuung:"));
+			document.add(new Phrase(String.valueOf(am.durchschnBetrng)));
 			document.close();
 
 		} catch (DocumentException e) {
