@@ -126,9 +126,11 @@ public class ControllerFragebogenErstellen {
 		readdNode(maßnahme_von, 1, 1);
 		readdNode(von_Datum, 3, 1);
 		von_Datum.getEditor().setFont(maßnahme_von.getFont());
+		von_Datum.setValue(LocalDate.of(LocalDate.now().getYear(), 9, 1));
 		readdNode(maßnahme_bis, 4, 1);
 		readdNode(bis_Datum, 5, 1);
 		bis_Datum.getEditor().setFont(maßnahme_bis.getFont());
+		bis_Datum.setValue(LocalDate.of(LocalDate.now().getYear()+3, 8, 31));
 		readdNode(auftragsnummer_label, 1, 2);
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);

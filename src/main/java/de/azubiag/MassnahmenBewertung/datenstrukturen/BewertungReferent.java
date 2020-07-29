@@ -1,5 +1,10 @@
 package de.azubiag.MassnahmenBewertung.datenstrukturen;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  * @author Luna
  * 
@@ -7,8 +12,14 @@ package de.azubiag.MassnahmenBewertung.datenstrukturen;
 
 /** Bewertung <b>eines</b> Referenten durch einen Azubi */
 
-public class BewertungReferent {
+public class BewertungReferent implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8694075946155473512L;
+
+
 	/**
 	 * Der Name des Referenten
 	 */

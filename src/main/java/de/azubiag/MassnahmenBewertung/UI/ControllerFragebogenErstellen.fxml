@@ -111,8 +111,8 @@
                         <Insets left="30.0" />
                      </GridPane.margin>
                   </Label>
-                  <DatePicker fx:id="von_Datum" promptText="10.10.2020" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <DatePicker fx:id="bis_Datum" promptText="11.11.2020" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <DatePicker fx:id="von_Datum" promptText="01.09.2020" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <DatePicker fx:id="bis_Datum" promptText="31.08.2023" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                   <Label fx:id="maßnahme_bis" text="bis" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <font>
                         <Font size="20.0" />
