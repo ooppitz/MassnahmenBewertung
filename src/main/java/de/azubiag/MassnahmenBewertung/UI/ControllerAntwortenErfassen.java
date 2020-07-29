@@ -290,9 +290,12 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
-				MainApp.listeControllerAntwortenErfassen.remove(controller);
-				mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
-
+				int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
+						"Ein Fragebogen kann nur 1 mal ausgewertet werden. Jetzt auswerten?");
+				if(userAntwort == 1) {
+					MainApp.listeControllerAntwortenErfassen.remove(controller);
+					mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+				}
 			}
 		});
 	}
