@@ -23,21 +23,21 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
-public class SaveAsPDFTest {
+public class alsPDFSpeichern {
 	AzubiAntwort aa;
 	AuswertungMassnahme am;
 	ArrayList<String> als = new ArrayList<>();
 
 	public static void main(String[] args) {
-		new SaveAsPDFTest();
+		new alsPDFSpeichern();
 	}
 
-	public SaveAsPDFTest() {
-		createExampleAuswertungMassnahme();
+	public alsPDFSpeichern() {
+		beispielAuswertungMassnahmeErstellen();
 		saveAsPDF();
 	}
 
-	public void createExampleAuswertungMassnahme() {
+	public void beispielAuswertungMassnahmeErstellen() {
 		als.add("1|3|0|4|Nö|3||Lass mich in Ruhe|Robert Hackfuß|3|1|2|2|0|Warum trägt er immer ein Hackebeil?|Franz Karrenschlepper|3|1|0|0|3|Seine Augen sind immer weit offen.Das ist unheimlich!|");
 		als.add("2|4|3|1|Alles war toll|4|Das war super toll|Es war klasse!|Robert Hackfuß|4|4|4|4|0|Er macht mir Angst!|Franz Karrenschlepper|2|0|0|0|4||");
 		als.add("5|5|4|4||0|Gr8 b8 m8 r8 8/8|Werf Sie raus!!!|Robert Hackfuß|1|2|1|0|3||Franz Karrenschlepper|0|1|1|0|0|Er hätte beim Karrenschleppen bleiben sollen.");
@@ -60,22 +60,25 @@ public class SaveAsPDFTest {
 
 			// document.add(chunk);
 			
-			Chunk space = new Chunk("                    ");
-			Paragraph title1 = new Paragraph("Maßnahmeverlauf");
+			Paragraph title1 = new Paragraph("Maßnahmenverlauf");
+			leerzeichenSetzen(title1);
+			title1.add(new Chunk("-2 -1  0  1  2"));
 			Paragraph t1q1 = new Paragraph("Wie empfinden die Teilnehmer die Organisation des Seminars?");
+			leerzeichenSetzen(t1q1);
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
-				t1q1.add(new Chunk(String.valueOf(am.pktvertOrg[i])+" "));
+				t1q1.add(new Chunk(" "+String.valueOf(am.pktvertOrg[i])+" "));
 			}
-			System.out.println(t1q1.size());
+			
 			Paragraph t1q2 = new Paragraph("Wie empfinden die Teilnehmer den Verlauf des Seminars");
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:");
-			Chapter massnahmeverlauf = new Chapter(title1, 1);
-			massnahmeverlauf.add(t1q1);
-			massnahmeverlauf.add(t1q2);
-			massnahmeverlauf.add(t1b);
+
+			document.add(title1);
+			document.add(t1q1);
+			document.add(t1q2);
+			document.add(t1b);
+			System.out.println(title1.getContent());
+			System.out.println(t1q1.getContent());
 			
-			
-			document.add(massnahmeverlauf);
 			
 			for (int i = 0; i < am.pktvertVerl.length; i++) {
 				document.add(new Phrase(String.valueOf(am.pktvertVerl[i])));
@@ -102,4 +105,11 @@ public class SaveAsPDFTest {
 			e.printStackTrace();
 		}
 	}
+	
+	void leerzeichenSetzen(Paragraph paragraph) {
+		while(paragraph.getContent().length()<95) {
+			paragraph.add(" ");
+		}
+	}
+	
 }
