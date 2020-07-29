@@ -142,13 +142,22 @@ public class MainApp extends Application {
 			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
 			// Aufrufen von showAntwortenErfassen()
 			if (existieren_speicherdaten())
-				System.out.println("Datei existiert!");
+				Logger.getLogger().logInfo("Speicherdatei existiert!");
 			else
-				System.out.println("Datei existiert nicht!");
+				Logger.getLogger().logInfo("Speicherdatei existiert nicht!");
 
 			if (existieren_speicherdaten()) {
 				speicherdaten_laden();
-				//				speicherdaten_löschen();
+				boolean erfolg = speicherdaten_löschen();
+				if (erfolg)
+				{
+				Logger.getLogger().logInfo("Alte Speicherdatei konnte gelöscht werden!");
+				}
+				else
+				{
+					Logger.getLogger().logWarning("Alte Speicherdatei konnte  NICHT  gelöscht werden!");
+					// TODO: Fehlermeldung, dann schließen des Programms?
+				}
 			}
 			else
 			{
@@ -263,7 +272,6 @@ public class MainApp extends Application {
 		for (int i = 0; i < controller_liste.size(); i++) {
 			ladeAntwortenErfassen(i, controller_liste.get(i));
 		}
-		
 	}
 	
 	public void ladeAntwortenErfassen(int indexInTabPane, ControllerAntwortenErfassen alter_controller) {
@@ -292,7 +300,21 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public boolean speicherdaten_löschen() {
+		
+		try {
+			Upload upload = Upload.getInstance();
+			String ordner = upload.getSeminarleiterDirectory(userName);
+			File speicherdatei = new File(ordner+"_save");
+			return speicherdatei.delete();
+		} catch (GitAPIException | IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 	public void setze_setOnClosed_listener(Tab tab_z2, ControllerAntwortenErfassen controller) {
 		tab_z2.setOnClosed(new EventHandler<Event>() {
 			@Override
