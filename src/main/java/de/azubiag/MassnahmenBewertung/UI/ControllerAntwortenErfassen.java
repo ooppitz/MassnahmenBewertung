@@ -212,12 +212,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				}
 			}
 
-
-		}
-
-	}
-
-});
+		});
 
 	}
 
