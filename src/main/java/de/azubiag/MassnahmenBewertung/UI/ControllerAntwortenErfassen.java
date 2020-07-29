@@ -294,7 +294,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 //				for (AzubiAntwort azubiAntwort : antwortListe) {
 //					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
 //				}
-				MainApp.controller_liste.remove(controller);
+				MainApp.listeControllerAntwortenErfassen.remove(controller);
 				mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
 			}
@@ -381,7 +381,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
 			FileOutputStream fos = new FileOutputStream(ordner+"_save");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(MainApp.controller_liste);
+			oos.writeObject(MainApp.listeControllerAntwortenErfassen);
 			oos.close();
 			fos.close();
 
@@ -390,20 +390,22 @@ public class ControllerAntwortenErfassen implements Serializable {
 			l.logError(e);
 		}
 	}
+	
+	public static ArrayList<ControllerAntwortenErfassen> laden() {
 
-	public static void laden() {
-
+		ArrayList<ControllerAntwortenErfassen> controllerListe = null;
 		try {
 			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
 			FileInputStream fis = new FileInputStream(ordner+"_save");
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			MainApp.controller_liste = (ArrayList<ControllerAntwortenErfassen>) ois.readObject();	// unchecked cast
+			controllerListe = (ArrayList<ControllerAntwortenErfassen>) ois.readObject();	// unchecked cast
 			ois.close();
 			fis.close();
 		} catch (IOException | ClassNotFoundException | GitAPIException e) {
 			Logger l = new Logger();
 			l.logError(e);
 		}
+		return controllerListe;
 
 	}
 

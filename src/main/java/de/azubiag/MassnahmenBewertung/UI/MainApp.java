@@ -51,7 +51,7 @@ import javafx.stage.WindowEvent;
  */
 public class MainApp extends Application {
 
-	static ArrayList<ControllerAntwortenErfassen> controller_liste = new ArrayList<ControllerAntwortenErfassen>();
+	static ArrayList<ControllerAntwortenErfassen> listeControllerAntwortenErfassen = new ArrayList<ControllerAntwortenErfassen>();
 	static String userName = "";
 
 	public static String getUserName() {
@@ -220,10 +220,11 @@ public class MainApp extends Application {
 			Tab tab_z2 = erzeugeTab(z2, eigenschaft.fragebogen_name, controller);
 			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			
-			// System.out.println(controller);
 			controller.setMainApp(this);
-			controller.setEigenschaft(eigenschaft);
 			controller.setTab(tab_z2);
+			
+			controller.setEigenschaft(eigenschaft);
+			
 			
 			controller.setName(eigenschaft.fragebogen_name);
 			controller.setMaintext(eigenschaft.fragebogen_name);
@@ -234,10 +235,8 @@ public class MainApp extends Application {
 			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z2);
-			controller_liste.add(controller);
-			setze_setOnClosed_listener(tab_z2, controller);
-			
-
+			listeControllerAntwortenErfassen.add(controller);
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -245,6 +244,7 @@ public class MainApp extends Application {
 
 	public void showTabAuswertungAnzeigen(FragebogenEigenschaften eigenschaft, int index,List<AzubiAntwort> antwortListe) { // incomplete
 		try {
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
 			BorderPane z3 = (BorderPane) loader.load(); // !!
@@ -273,13 +273,13 @@ public class MainApp extends Application {
 
 	public void speicherdaten_laden() {
 
-		ControllerAntwortenErfassen.laden();
-		for (int i = 0; i < controller_liste.size(); i++) {
-			ladeAntwortenErfassen(i, controller_liste.get(i));
+		listeControllerAntwortenErfassen = ControllerAntwortenErfassen.laden();
+		for (int i = 0; i < listeControllerAntwortenErfassen.size(); i++) {
+			wiederherstellenTabAntwortenErfassen(i, listeControllerAntwortenErfassen.get(i));
 		}
 	}
 	
-	public void ladeAntwortenErfassen(int indexInTabPane, ControllerAntwortenErfassen deserialisierterController) {
+	public void wiederherstellenTabAntwortenErfassen(int indexInTabPane, ControllerAntwortenErfassen deserialisierterController) {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -302,9 +302,9 @@ public class MainApp extends Application {
 			addDeleteToButton(neuer_controller.delete, rootLayout, tab_z2);
 			neuer_controller.setHandlerAnswerButton();
 			neuer_controller.addNext2ToButton(neuer_controller);
-			setze_setOnClosed_listener(tab_z2, neuer_controller);
-			controller_liste.remove(indexInTabPane);
-			controller_liste.add(indexInTabPane, neuer_controller);
+	
+			listeControllerAntwortenErfassen.remove(indexInTabPane);
+			listeControllerAntwortenErfassen.add(indexInTabPane, neuer_controller);
 			
 
 		} catch (IOException e) {
@@ -312,7 +312,9 @@ public class MainApp extends Application {
 		}
 	}
 
+	
 	private Tab erzeugeTab(BorderPane z2, String tabName, ControllerAntwortenErfassen controller) {
+	
 		Tab tab_z2 = new Tab();
 		tab_z2.setContent(z2);
 		tab_z2.setClosable(true);
@@ -321,7 +323,7 @@ public class MainApp extends Application {
 		tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
 			public void handle(Event event) {
-				MainApp.controller_liste.remove(controller);
+				MainApp.listeControllerAntwortenErfassen.remove(controller);
 			}
 		});
 		
@@ -340,16 +342,6 @@ public class MainApp extends Application {
 			return false;
 		}
 		
-	}
-	
-	public void setze_setOnClosed_listener(Tab tab_z2, ControllerAntwortenErfassen controller) {
-		tab_z2.setOnClosed(new EventHandler<Event>() {
-			@Override
-			public void handle(Event t) {
-
-				controller_liste.remove(controller);
-			}
-		});
 	}
 
 	public void addDeleteToButton(Button button, TabPane pane, Tab thistab) {
@@ -422,7 +414,7 @@ public class MainApp extends Application {
 
 	
 	public void warnfenster(WindowEvent event) {
-		if (!controller_liste.isEmpty())
+		if (!listeControllerAntwortenErfassen.isEmpty())
 		{
 			int resultFortschrittSpeichern = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Warnung", "Wollen Sie den Fortschritt speichern?");
 	
