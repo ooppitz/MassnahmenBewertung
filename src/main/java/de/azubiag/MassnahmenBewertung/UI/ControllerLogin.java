@@ -2,6 +2,7 @@ package de.azubiag.MassnahmenBewertung.UI;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -32,6 +33,36 @@ public class ControllerLogin {
 
 	private MainApp mainapp;
 
+	ArrayList<String> alle_Nutzer;
+	ArrayList<String> zutreffende_Nutzer;
+
+	public ArrayList<String> getZutreffende_Nutzer() {
+		if (zutreffende_Nutzer == null)
+		{
+			zutreffende_Nutzer = new ArrayList<String>();
+		}
+		return zutreffende_Nutzer;
+	}
+
+	public ArrayList<String> getAlle_Nutzer() {
+		if (alle_Nutzer == null)
+		{
+			try {
+				String pfad = Upload.getInstance().getRepositoryPfad();
+				pfad += "//Fragebogen";
+				File fragebogen_ordner = new File(pfad);
+				String[] array = fragebogen_ordner.list();
+				alle_Nutzer = new ArrayList<String>();
+				for (String string : array) {
+					alle_Nutzer.add(string);
+				}
+			} catch (GitAPIException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return alle_Nutzer;
+	}
+
 	public MainApp getMainapp() {
 		return mainapp;
 	}
@@ -46,8 +77,7 @@ public class ControllerLogin {
 			public void handle(ActionEvent e) {
 
 				String clean_username = Tools.normalisiereString(username.getText());
-				// schauen, ob das Feld nicht leer ist
-				// Auswahlliste von Namen davor anzeigen
+
 				boolean nutzer_vorhanden = isNutzerVorhanden(clean_username);
 
 				if(nutzer_vorhanden)
@@ -66,6 +96,25 @@ public class ControllerLogin {
 				}
 			}
 
+		});
+	}
+
+	public void addListener_TextFieldSuggestion() {
+		username.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isBlank())
+			{
+				String spaces_vorne_entfernt = newValue.replaceFirst("^\\s*", "");
+				String clean_username = Tools.normalisiereString(spaces_vorne_entfernt).toLowerCase();
+				zutreffende_Nutzer.clear();
+				for (String string : getAlle_Nutzer()) {
+					if(string.matches(clean_username+"\\S*")  || string.matches("\\S*_"+clean_username+"\\S*"))
+					{
+						zutreffende_Nutzer.add(string);
+						System.out.println(string);
+					}
+				}
+				System.out.println();
+			}
 		});
 	}
 

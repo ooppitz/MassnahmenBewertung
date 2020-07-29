@@ -112,10 +112,10 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
+			controller.getZutreffende_Nutzer();		// muss wegen singleton pattern aufgerufen werden
+			controller.addListener_TextFieldSuggestion();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
 				controller.next.setDisable((newValue == "") ? true : false);
-				Logger logger = Logger.getLogger();
-				logger.logInfo("Login-Textfeld-Eingabe, old: " + oldValue + " ---> new: " + newValue);
 			});
 
 			primaryStage.show();
