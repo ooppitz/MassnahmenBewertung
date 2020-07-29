@@ -24,22 +24,7 @@ import javafx.scene.text.Text;
 
 /* Ausgabe der Auswertung */
 
-/**
- * @author Louisa
- *
- */
-/**
- * @author Louisa
- *
- */
-/**
- * @author Louisa
- *
- */
-/**
- * @author Louisa
- *
- */
+
 public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
 					    // addieren
 
