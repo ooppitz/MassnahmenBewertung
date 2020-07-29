@@ -43,33 +43,4 @@ public class BewertungMassnahme implements Serializable{
 				organisation, verlauf, bemerkungVerlauf, betreuung, bemerkungBetreuung, bemerkungReferentenAllgemein);
 	}
 	
-	public final void writeObject(ObjectOutputStream os) {
-		
-		try {
-//			os.defaultWriteObject();
-			os.writeInt(organisation);
-			os.writeInt(verlauf);
-			os.writeUTF(bemerkungVerlauf);
-			os.writeInt(betreuung);
-			os.writeUTF(bemerkungBetreuung);
-			os.writeUTF(bemerkungReferentenAllgemein);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public final void readObject(ObjectInputStream is) {
-		
-		try {
-//			is.defaultReadObject();
-			organisation = is.readInt();
-			verlauf = is.readInt();
-			bemerkungVerlauf = is.readUTF();
-			betreuung = is.readInt();
-			bemerkungBetreuung = is.readUTF();
-			bemerkungReferentenAllgemein = is.readUTF();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

@@ -63,32 +63,4 @@ public class AzubiAntwort implements Serializable{
 		return String.format("AzubiAntwort [%s, %s, verifyID=%d, randomID=%d]", massnahme, referenten, umfrageID, antwortID);
 	}
 	
-	public final void writeObject(ObjectOutputStream os) {
-		
-		try {
-//			os.defaultWriteObject();
-			os.writeObject(massnahme);
-			os.writeObject(referenten);
-			os.writeInt(umfrageID);
-			os.writeInt(antwortID);
-			os.writeUTF(verschlüsselterString);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public final void readObject(ObjectInputStream is) {
-		try {
-//			is.defaultReadObject();
-			massnahme = (BewertungMassnahme) is.readObject();
-			referenten = (List<BewertungReferent>) is.readObject();	// unchecked cast?
-			umfrageID = is.readInt();
-			antwortID = is.readInt();
-			verschlüsselterString = is.readUTF();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 }

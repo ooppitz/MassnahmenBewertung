@@ -85,36 +85,4 @@ public class BewertungReferent implements Serializable{
 				+ "bemerkungen = \"%s\"]", name, vorbereitet, fachwissen, thematischeProbleme, inhalteVermitteln, verhalten, bemerkungen);
 	}
 	
-	public final void writeObject(ObjectOutputStream os) {
-		
-		try {
-//			os.defaultWriteObject();
-			os.writeUTF(name);
-			os.writeInt(vorbereitet);
-			os.writeInt(fachwissen);
-			os.writeInt(thematischeProbleme);
-			os.writeInt(inhalteVermitteln);
-			os.writeInt(verhalten);
-			os.writeUTF(bemerkungen);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public final void readObject(ObjectInputStream is) {
-		
-		try {
-//			is.defaultReadObject();
-			name = is.readUTF();
-			vorbereitet = is.readInt();
-			fachwissen = is.readInt();
-			thematischeProbleme = is.readInt();
-			inhalteVermitteln = is.readInt();
-			verhalten = is.readInt();
-			bemerkungen = is.readUTF();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 }

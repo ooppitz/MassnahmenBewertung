@@ -66,37 +66,4 @@ public class FragebogenEigenschaften implements Serializable{
 		this.link = link;
 	}
 
-
-	public final void writeObject(ObjectOutputStream os) {
-
-		try {
-//			os.defaultWriteObject();
-			os.writeUTF(fragebogen_name);
-			os.writeUTF(seminarleiter_name);
-			os.writeUTF(auftrags_nummer);
-			os.writeUTF(von_datum);
-			os.writeUTF(bis_datum);
-			os.writeUTF(ausstellungs_datum);
-			os.writeUTF(link);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public final void readObject(ObjectInputStream is) {
-
-		try {
-//			is.defaultReadObject();
-			fragebogen_name = is.readUTF();
-			seminarleiter_name = is.readUTF();
-			auftrags_nummer = is.readUTF();
-			von_datum = is.readUTF();
-			bis_datum = is.readUTF();
-			ausstellungs_datum = is.readUTF();
-			link = is.readUTF();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }
