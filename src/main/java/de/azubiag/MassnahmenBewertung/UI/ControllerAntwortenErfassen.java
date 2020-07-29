@@ -137,6 +137,11 @@ public class ControllerAntwortenErfassen implements Serializable {
 					return;
 				}
 
+				hinzufuegenAntwort(verschluesselteAntwort);
+			}
+
+			private void hinzufuegenAntwort(String verschluesselteAntwort) {
+				
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 				if (entschluesselteAntwort == null) {	
 					Logger.getLogger().logError("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!");
