@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -35,7 +36,11 @@ import javafx.scene.text.Text;
  * @author Louisa
  *
  */
-public class ControllerAuswertungAnzeigen { // was fehlt: GridPane muss möglicherweise bei zeile>?? bei der Höhe +49
+/**
+ * @author Louisa
+ *
+ */
+public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
 					    // addieren
 
     List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
@@ -144,125 +149,124 @@ public class ControllerAuswertungAnzeigen { // was fehlt: GridPane muss möglich
 
     public void erzeugeDarstellung() {
 
-	addHeaderToGrid();
-	addBewertungVerlaufToGrid();
-	addBetreuungToGrid();
+	addHeaderTo();
+	addBewertungVerlaufTo();
+	addBetreuungTo();
 	addBemerkungenReferentenAllg();
-	addReferentenbewertungenToGrid();
+	addReferentenbewertungenTo();
 	setze_alle_Fonts();
 
     }
 
-    public void addHeaderToGrid() {
+    public void addHeaderTo() {
 
-	addTextToGrid(grid, "Maßnahme von " + eigenschaft.von_datum + " bis " + eigenschaft.bis_datum, 0, true);
-	addTextToGrid(grid, "Auftragsnummer: " + eigenschaft.auftrags_nummer, 0, true);
-	addTextToGrid(grid, "Seminarleitung: " + eigenschaft.seminarleiter_name, 0, true);
-	addTextToGrid(grid, "Datum: " + eigenschaft.ausstellungs_datum, 0, true);
-	addTextToGrid(grid, "  ", 0, true);
+	addTextTo( "Maßnahme von " + eigenschaft.von_datum + " bis " + eigenschaft.bis_datum, 0, true);
+	addTextTo( "Auftragsnummer: " + eigenschaft.auftrags_nummer, 0, true);
+	addTextTo( "Seminarleitung: " + eigenschaft.seminarleiter_name, 0, true);
+	addTextTo( "Datum: " + eigenschaft.ausstellungs_datum, 0, true);
+	addTextTo( "  ", 0, true);
     }
 
-    public void addBewertungVerlaufToGrid() {
-	addPunkteVerlaufToGrid();
-	addBemerkungenToGrid("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkVerl);
+    public void addBewertungVerlaufTo() {
+	addPunkteVerlaufTo();
+	addBemerkungenTo("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkVerl);
     }
 
-    private void addPunkteVerlaufToGrid() {
-	addTextToGrid(grid, "1. Maßnahmeverlauf:", 0, false);
-	addWertungsheaderToGrid();
-	addPunkteauswertungToGrid(grid, "Wie empfinden die Teilnehmer die Organisation des Seminars?",
+    private void addPunkteVerlaufTo() {
+	addTextTo( "1. Maßnahmeverlauf:", 0, false);
+	addWertungsheaderTo();
+	addPunkteauswertungTo("Wie empfinden die Teilnehmer die Organisation des Seminars?",
 		auswertungMassnahme.pktvertOrg, auswertungMassnahme.durchschnOrg);
-	addPunkteauswertungToGrid(grid, "Wie empfinden die Teilnehmer den Verlauf des Seminars?",
+	addPunkteauswertungTo( "Wie empfinden die Teilnehmer den Verlauf des Seminars?",
 		auswertungMassnahme.pktvertVerl, auswertungMassnahme.durchschnVerl);
     }
 
-    private void addPunkteauswertungToGrid(GridPane grid, String fragestellung, int[] punkteverteilung,
+    private void addPunkteauswertungTo( String fragestellung, int[] punkteverteilung,
 	    double durchschnitt) {
-	addTextToGrid(grid, fragestellung, 0, false);
-	addTextToGrid(grid, Integer.toString(punkteverteilung[0]), 1, false);
-	addTextToGrid(grid, Integer.toString(punkteverteilung[1]), 2, false);
-	addTextToGrid(grid, Integer.toString(punkteverteilung[2]), 3, false);
-	addTextToGrid(grid, Integer.toString(punkteverteilung[3]), 4, false);
-	addTextToGrid(grid, Integer.toString(punkteverteilung[4]), 5, false);
-	addTextToGrid(grid, zweiStellenNachKomma.format(durchschnitt), 6, false);
+	addTextTo( fragestellung, 0, false);
+	addTextTo( Integer.toString(punkteverteilung[0]), 1, false);
+	addTextTo( Integer.toString(punkteverteilung[1]), 2, false);
+	addTextTo( Integer.toString(punkteverteilung[2]), 3, false);
+	addTextTo( Integer.toString(punkteverteilung[3]), 4, false);
+	addTextTo( Integer.toString(punkteverteilung[4]), 5, false);
+	addTextTo( zweiStellenNachKomma.format(durchschnitt), 6, false);
 	zeile++;
     }
 
-    private void addWertungsheaderToGrid() {
-	addTextToGrid(grid, "-2", 1, false);
-	addTextToGrid(grid, "-1", 2, false);
-	addTextToGrid(grid, " 0", 3, false);
-	addTextToGrid(grid, "+1", 4, false);
-	addTextToGrid(grid, "+2", 5, false);
-	addTextToGrid(grid, "Ø", 6, false);
+    private void addWertungsheaderTo() {
+	addTextTo( "-2", 1, false);
+	addTextTo( "-1", 2, false);
+	addTextTo( " 0", 3, false);
+	addTextTo( "+1", 4, false);
+	addTextTo( "+2", 5, false);
+	addTextTo( "Ø", 6, false);
 	zeile++;
     }
 
-    private void addBemerkungenToGrid(String ueberschrift, ArrayList<String> bemerkungenKategorie) {
-	addTextToGrid(grid, ueberschrift, 0, true);
+    private void addBemerkungenTo(String ueberschrift, ArrayList<String> bemerkungenKategorie) {
+	addTextTo( ueberschrift, 0, true);
 
 	if (bemerkungenKategorie.isEmpty()) {
-	    addTextToGrid(grid, "(Es gibt keine Bemerkungen.)", 0, true);
+	    addTextTo( "(Es gibt keine Bemerkungen.)", 0, true);
 	} else {
 	    int anzBemerkungen = bemerkungenKategorie.size();
 
 	    for (int i = 0; i < anzBemerkungen; i++) {
 		String bemerkung = bemerkungenKategorie.get(i);
-		addTextToGrid(grid, bemerkung, 0, true);
+		addTextTo(bemerkung, 0, true);
 		if (i < anzBemerkungen - 1) { // Bemerkungen verschiedener Teilnehmer voneinander trennen
-		    addTextToGrid(grid, "-------", 0, true);
+		    addTextTo( "-------", 0, true);
 		}
 	    }
 	}
-	addTextToGrid(grid, "  ", 0, true);
+	addTextTo( "  ", 0, true);
     }
 
-    
-    private void addTextToGrid(GridPane gridPane, String textContent, int col, boolean linefeed) {
+    private void addTextTo(String textContent, int col, boolean linefeed) {
 	Text text = new Text(textContent);
-	gridPane.add(text, col, zeile);
+	grid.add(text, col, zeile);
 	if (linefeed) {
 	    zeile++;
 	}
     }
 
-    public void addBetreuungToGrid() {
-	addTextToGrid(grid, "2. Maßnahmenbetreuung", 0, false);
+    public void addBetreuungTo() {
+	addTextTo( "2. Maßnahmenbetreuung", 0, false);
 
-	addWertungsheaderToGrid();
-	addPunkteauswertungToGrid(grid, "Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",
+	addWertungsheaderTo();
+	addPunkteauswertungTo( "Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",
 		auswertungMassnahme.pktvertBetrng, auswertungMassnahme.durchschnBetrng);
-	addBemerkungenToGrid("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkBetrng);
+	addBemerkungenTo("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkBetrng);
     }
 
     public void addBemerkungenReferentenAllg() {
-	addBemerkungenToGrid("3.Bewertung der Referenten bzw. Referentinnen:", auswertungMassnahme.alleBemerkRefAllg);
+	addBemerkungenTo("3.Bewertung der Referenten bzw. Referentinnen:", auswertungMassnahme.alleBemerkRefAllg);
     }
 
-    public void addReferentenbewertungenToGrid() {
-	addTextToGrid(grid, "4.Auswertung der Referenten:", 0, true);
-	addTextToGrid(grid, "  ", 0, true);
+    public void addReferentenbewertungenTo() {
+	addTextTo( "4.Auswertung der Referenten:", 0, true);
+	addTextTo("  ", 0, true);
 
 	for (AuswertungReferent auswertungReferent : auswertungenReferenten) {
-	    addTextToGrid(grid, auswertungReferent.getName(), 0, false);
-	    addWertungsheaderToGrid();
+	    addTextTo(auswertungReferent.getName(), 0, false);
+	    addWertungsheaderTo();
 
-	    addPunkteauswertungToGrid(grid, "Wie war ihr/sein Unterricht vorbereitet ?",
+	    addPunkteauswertungTo( "Wie war ihr/sein Unterricht vorbereitet ?",
 		    auswertungReferent.stimmenProRadioBtnVorbereitung, auswertungReferent.durchschnittVorbereitung);
-	    addPunkteauswertungToGrid(grid, "Wie umfangreich war ihr/sein Fachwissen ? ",
+	    addPunkteauswertungTo( "Wie umfangreich war ihr/sein Fachwissen ? ",
 		    auswertungReferent.stimmenProRadioBtnFachwissen, auswertungReferent.durchschnittFachwissen);
-	    addPunkteauswertungToGrid(grid, "Wie ging sie/er auf spezielle thematische Probleme ein ? ",
+	    addPunkteauswertungTo( "Wie ging sie/er auf spezielle thematische Probleme ein ? ",
 		    auswertungReferent.stimmenProRadioBtnEingehenAufProbleme,
 		    auswertungReferent.durchschnittEingehenAufProbleme);
-	    addPunkteauswertungToGrid(grid, "Wie verständlich sie/er die Inhalte vermitteln ? ",
+	    addPunkteauswertungTo( "Wie verständlich sie/er die Inhalte vermitteln ? ",
 		    auswertungReferent.stimmenProRadioBtnInhaltsvermittlung,
 		    auswertungReferent.durchschnittInhaltsvermittlung);
-	    addPunkteauswertungToGrid(grid, "Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu ? ",
+	    addPunkteauswertungTo( "Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu ? ",
 		    auswertungReferent.stimmenProRadioBtnVerhalten, auswertungReferent.durchschnittVerhalten);
 
 	    ArrayList<String> bemerkungen = filtereUndMischeList(auswertungReferent.getBemerkungen());
 
-	    addBemerkungenToGrid("Bemerkungen zu: " + auswertungReferent.getName(), bemerkungen);
+	    addBemerkungenTo("Bemerkungen zu: " + auswertungReferent.getName(), bemerkungen);
 	}
     }
 
