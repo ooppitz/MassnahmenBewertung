@@ -418,19 +418,22 @@ public class MainApp extends Application {
 	}
 
 	public void warnfenster(WindowEvent event, ControllerAntwortenErfassen controller) {
-		int resultFortschrittSpeichern = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Warnung", "Wollen Sie den Fortschritt speichern?");
-
-		if(resultFortschrittSpeichern == 1) {
-			ControllerAntwortenErfassen.speichern();
-			Platform.exit();
-		} else if(resultFortschrittSpeichern == 0) {
-			System.out.println("Fortschritt wird verworfen!");
-			Platform.exit();
-		} else {
-			System.out.println("Schließen wird abgebrochen");
-			event.consume();
+		if (!controller_liste.isEmpty())
+		{
+			int resultFortschrittSpeichern = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Warnung", "Wollen Sie den Fortschritt speichern?");
+	
+			if(resultFortschrittSpeichern == 1) {
+				ControllerAntwortenErfassen.speichern();
+				Platform.exit();
+			} else if(resultFortschrittSpeichern == 0) {
+				System.out.println("Fortschritt wird verworfen!");
+				Platform.exit();
+			} else {
+				System.out.println("Schließen wird abgebrochen");
+				event.consume();
+			}
+			System.out.println("Der Rest der Methode wird noch durchgeführt!");
 		}
-		System.out.println("Der Rest der Methode wird noch durchgeführt!");
 	}
 
 	public boolean existieren_speicherdaten() {
