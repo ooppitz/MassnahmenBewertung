@@ -54,11 +54,11 @@ public class ControllerLogin {
 
 			    if(alles_ok)
 			    {
-				String userName = username.getText();
-				MainApp.setUserName(userName);
-				mainapp.primaryStage.setTitle("SeminarLeiterApp " +userName);
-				mainapp.showTabPane();
-			    }
+					String userName = username.getText();
+					MainApp.setUserName(userName);
+					mainapp.primaryStage.setTitle("SeminarLeiterApp " + userName);
+					mainapp.showTabPane();
+				 }
 			}
 
 		});
