@@ -24,9 +24,11 @@ public class SaveAsPDFTest {
 	AzubiAntwort aa;
 	AuswertungMassnahme am;
 	ArrayList<String> als = new ArrayList<>();
+
 	public static void main(String[] args) {
 		new SaveAsPDFTest();
 	}
+
 	public SaveAsPDFTest() {
 		createExampleAuswertungMassnahme();
 		saveAsPDF();
@@ -43,7 +45,7 @@ public class SaveAsPDFTest {
 		Document document = new Document();
 		try {
 			try {
-				File file = new File(Upload.getInstance().getRepositoryPfad()+"\\iTextTable.pdf");
+				File file = new File(Upload.getInstance().getRepositoryPfad() + "\\iTextTable.pdf");
 				PdfWriter.getInstance(document, new FileOutputStream(file));
 			} catch (GitAPIException | IOException e) {
 				e.printStackTrace();
@@ -51,31 +53,28 @@ public class SaveAsPDFTest {
 
 			document.open();
 
-			//			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-			//			Chunk chunk = new Chunk("Hello World", font);
+			// Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+			// Chunk chunk = new Chunk("Hello World", font);
 
-			//			document.add(chunk);
-
+			// document.add(chunk);
 
 			PdfPTable table = new PdfPTable(5);
 
-
-
-			for(int i =0; i<am.pktvertOrg.length;i++) {
+			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				table.addCell(String.valueOf(am.pktvertOrg[i]));
 			}
-			for(int i =0; i<am.pktvertVerl.length;i++) {
+			for (int i = 0; i < am.pktvertVerl.length; i++) {
 				table.addCell(String.valueOf(am.pktvertVerl[i]));
 			}
-			for(int i =0; i<am.alleBemerkVerl.size();i++) {
+			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
 				table.addCell(am.alleBemerkVerl.get(i));
 			}
 			table.completeRow();
-			for(int i =0; i<am.alleBemerkBetrng.size();i++) {
+			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
 				table.addCell(String.valueOf(am.pktvertBetrng[i]));
 			}
 			table.completeRow();
-			for(int i =0; i<am.alleBemerkRefAllg.size();i++) {
+			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
 				table.addCell(am.alleBemerkRefAllg.get(i));
 			}
 			table.completeRow();
