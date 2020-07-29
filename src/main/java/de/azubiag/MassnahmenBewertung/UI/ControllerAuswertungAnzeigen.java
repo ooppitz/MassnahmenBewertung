@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 /* Ausgabe der Auswertung */
 
@@ -135,8 +136,8 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 	public void erzeugeDarstellung() {
 
-		anfang();
-		verlauf();
+		addHeaderToGrid();
+		addBewertungVerlaufToGrid();
 		betreuung();
 		bemerkungen();
 		referenten();
@@ -144,8 +145,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 	}
 
-	public void anfang() {
-
+	public void addHeaderToGrid() {
 		Label massnahme = new Label();
 		massnahme.setText("Maßnahme von "+eigenschaft.von_datum+" bis "+eigenschaft.bis_datum);
 		grid.add(massnahme, 0, zeile);
@@ -171,90 +171,69 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 	}
 
-	public void verlauf() {
-
-		Label ueberschrift_verlauf = new Label("1. Maßnahmeverlauf:");
-		Label u__2 = new Label("-2");
-		Label u__1 = new Label("-1");
-		Label u_0 = new Label(" 0");
-		Label u_1 = new Label("+1");
-		Label u_2 = new Label("+2");
-		Label u_d = new Label("Ø");
-
-		grid.add(ueberschrift_verlauf, 0, zeile);
-		grid.add(u__2, 1, zeile);
-		grid.add(u__1, 2, zeile);
-		grid.add(u_0, 3, zeile);
-		grid.add(u_1, 4, zeile);
-		grid.add(u_2, 5, zeile);
-		grid.add(u_d, 6, zeile);
-		zeile ++;
-
-		Label organisation_frage = new Label("Wie empfinden die Teilnehmer die Organisation des Seminars?");
-		Label o__2 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[0]));
-		Label o__1 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[1]));
-		Label o_0 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[2]));
-		Label o_1 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[3]));
-		Label o_2 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[4]));
-		Label o_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnOrg));
-
-		grid.add(organisation_frage, 0, zeile);
-		grid.add(o__2, 1, zeile);
-		grid.add(o__1, 2, zeile);
-		grid.add(o_0, 3, zeile);
-		grid.add(o_1, 4, zeile);
-		grid.add(o_2, 5, zeile);
-		grid.add(o_d, 6, zeile);
-		zeile ++;
-
-		Label verlauf_frage = new Label("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
-		Label v__2 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[0]));
-		Label v__1 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[1]));
-		Label v_0 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[2]));
-		Label v_1 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[3]));
-		Label v_2 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[4]));
-		Label v_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnVerl));
-
-		grid.add(verlauf_frage, 0, zeile);
-		grid.add(v__2, 1, zeile);
-		grid.add(v__1, 2, zeile);
-		grid.add(v_0, 3, zeile);
-		grid.add(v_1, 4, zeile);
-		grid.add(v_2, 5, zeile);
-		grid.add(v_d, 6, zeile);
-		zeile ++;
-
-		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
-		grid.add(ueberschrift_bemerkungen, 0, zeile);
-		zeile++;
-
-		addBemerkungenVerlaufToGrid();
+	public void addBewertungVerlaufToGrid() {
+	    addPunkteVerlaufToGrid();
+	    addBemerkungenToGrid("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkVerl);
 	}
 
-	private void addBemerkungenVerlaufToGrid() {
+	private void addPunkteVerlaufToGrid() {
+	    addTextToGrid(grid,"1. Maßnahmeverlauf:", 0, zeile); 
 	    
-	    if (auswertungMassnahme.alleBemerkVerl.isEmpty()) {
+	    addTextToGrid(grid,"-2", 1, zeile); 
+	    addTextToGrid(grid,"-1", 2, zeile); 
+	    addTextToGrid(grid," 0", 3, zeile); 
+	    addTextToGrid(grid,"+1", 4, zeile); 
+	    addTextToGrid(grid,"+2", 5, zeile); 
+	    addTextToGrid(grid,"Ø", 6, zeile); 
+	    zeile ++;
+	    
+	    addTextToGrid(grid,"Wie empfinden die Teilnehmer die Organisation des Seminars?", 0, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertOrg[0]), 1, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertOrg[1]), 2, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertOrg[2]), 3, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertOrg[3]), 4, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertOrg[4]), 5, zeile); 
+	    addTextToGrid(grid,zweiStellenNachKomma.format(auswertungMassnahme.durchschnOrg), 6, zeile); 
+	    zeile ++;
+	    
+	    addTextToGrid(grid,"Wie empfinden die Teilnehmer den Verlauf des Seminars?", 0, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertVerl[0]), 1, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertVerl[1]), 2, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertVerl[2]), 3, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertVerl[3]), 4, zeile); 
+	    addTextToGrid(grid,Integer.toString(auswertungMassnahme.pktvertVerl[4]), 5, zeile); 
+	    addTextToGrid(grid,zweiStellenNachKomma.format(auswertungMassnahme.durchschnVerl), 6, zeile); 
+	    zeile ++;
+	}
+
+	private void addBemerkungenToGrid(String ueberschrift, ArrayList<String> bemerkungenKategorie
+		) {
+	    Label ueberschrift_bemerkungen = new Label(ueberschrift);
+		grid.add(ueberschrift_bemerkungen, 0, zeile);
+		zeile++;
+	    
+	    if (bemerkungenKategorie.isEmpty()) {
 	        Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
 	        grid.add(leer_hinweiß, 0, zeile);
 	        zeile++;
 	    } else { 
-	        int anzBemerkungen = auswertungMassnahme.alleBemerkVerl.size(); 
+	        int anzBemerkungen = bemerkungenKategorie.size(); 
 	        
 	        for (int i = 0; i < anzBemerkungen; i++) {
-	    	String bemerkung = auswertungMassnahme.alleBemerkVerl.get(i);
+	    	String bemerkung = bemerkungenKategorie.get(i);
 	    	
-	    	if (bemerkung.contains("\n")) {//mehrzeilige Bemerkungen auf mehrere Zeilen der GridPane aufteilen, da sie sonst unvollständig angeziegt werden
-	    	    String[] zeilenDerBemerkung = bemerkung.split("\\n");
-	    	    for (String zeileBem : zeilenDerBemerkung) {
-	    		addLabelToGrid(grid, zeileBem, 0, zeile);
-	    		zeile++;
-	    	    }
-	    	} else { //einzeilige Bemerkungen in einem einzigen Label anzeigen
-	    	    addLabelToGrid(grid, bemerkung, 0, zeile );
+//	    	if (bemerkung.contains("\n")) {//mehrzeilige Bemerkungen auf mehrere Zeilen der GridPane aufteilen, da sie sonst unvollständig angeziegt werden
+//	    	    String[] zeilenDerBemerkung = bemerkung.split("\\n");
+//	    	    for (String zeileBem : zeilenDerBemerkung) {
+//	    		addLabelToGrid(grid, zeileBem, 0, zeile);
+//	    		zeile++;
+//	    	    }
+//	    	} else { //einzeilige Bemerkungen in einem einzigen Label anzeigen
+	    	    addTextToGrid(grid, bemerkung, 0, zeile );
 	    	    zeile++;
-	    	}
+//	    	}
 	    	if (i<anzBemerkungen-1) { //Bemerkungen verschiedener Teilnehmer voneinander trennen
-	    	    addLabelToGrid(grid, "-------", 0, zeile);
+	    	    addTextToGrid(grid, "-------", 0, zeile);
 	    	}
 	        }
 	    }
@@ -263,10 +242,15 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	    zeile ++;
 	}
 
-	private void addLabelToGrid(GridPane gridPane, String labelContent, int col, int row) {
-	    Label lblTrennlinie = new Label(labelContent);
-	    lblTrennlinie.setWrapText(true);
-	    gridPane.add(lblTrennlinie, col, row);
+	private void addTextToGrid(GridPane gridPane, String labelContent, int col, int row) {
+	    
+	    Text text = new Text(labelContent);
+	    
+//	    Label lblTrennlinie = new Label(labelContent);
+//	    lblTrennlinie.setWrapText(true);
+//	    gridPane.add(lblTrennlinie, col, row);
+	    
+	    gridPane.add(text, col, row);
 	}
 
 	public void betreuung() {
@@ -305,56 +289,11 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		grid.add(b_d, 6, zeile);
 		zeile ++;
 
-		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
-		grid.add(ueberschrift_bemerkungen, 0, zeile);
-		zeile++;
-
-		if (auswertungMassnahme.alleBemerkBetrng.isEmpty())
-		{
-			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-			grid.add(leer_hinweiß, 0, zeile);
-			zeile++;
-		}
-		else
-		{
-			for (String bemerkung : auswertungMassnahme.alleBemerkBetrng) {
-
-				Label temp_bemerkung = new Label(bemerkung);
-				temp_bemerkung.setWrapText(true);
-				grid.add(temp_bemerkung, 0, zeile);
-				zeile++;
-			}
-		}
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile ++;
+		addBemerkungenToGrid("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkBetrng);
 	}
 
 	public void bemerkungen() {
-
-		Label ueberschrift_bemerkungen = new Label("3.Bewertung der Referenten bzw. Referentinnen:");
-		grid.add(ueberschrift_bemerkungen, 0, zeile);
-		zeile++;
-
-		if (auswertungMassnahme.alleBemerkRefAllg.isEmpty())
-		{
-			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-			grid.add(leer_hinweiß, 0, zeile);
-			zeile++;
-		}
-		else
-		{
-			for (String bemerkung : auswertungMassnahme.alleBemerkRefAllg) {
-
-				Label temp_bemerkung = new Label(bemerkung);
-				temp_bemerkung.setWrapText(true);
-				grid.add(temp_bemerkung, 0, zeile);
-				zeile++;
-			}
-		}
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile ++;
+		addBemerkungenToGrid("3.Bewertung der Referenten bzw. Referentinnen:", auswertungMassnahme.alleBemerkRefAllg);
 	}
 
 	public void referenten() {
