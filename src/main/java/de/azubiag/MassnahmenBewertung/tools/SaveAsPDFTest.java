@@ -28,17 +28,17 @@ public class SaveAsPDFTest {
 		new SaveAsPDFTest();
 	}
 	public SaveAsPDFTest() {
-		createExampleAuswetungMassnahme();
+		createExampleAuswertungMassnahme();
 		saveAsPDF();
 	}
 
-	public void createExampleAuswetungMassnahme() {
+	public void createExampleAuswertungMassnahme() {
 		als.add("1|3|0|4|Nö|3||Lass mich in Ruhe|Robert Hackfuß|3|1|2|2|0|Warum trägt er immer ein Hackebeil?|Franz Karrenschlepper|3|1|0|0|3|Seine Augen sind immer weit offen.Das ist unheimlich!|");
 		als.add("2|4|3|1|Alles war toll|4|Das war super toll|Es war klasse!|Robert Hackfuß|4|4|4|4|0|Er macht mir Angst!|Franz Karrenschlepper|2|0|0|0|4||");
 		als.add("5|5|4|4||0|Gr8 b8 m8 r8 8/8|Werf Sie raus!!!|Robert Hackfuß|1|2|1|0|3||Franz Karrenschlepper|0|1|1|0|0|Er hätte beim Karrenschleppen bleiben sollen.");
 		am = am.getAuswertungMassnahme(aa.konvertiereStringsInAzubiAntworten(als));
 	}
-	
+
 	public void saveAsPDF() {
 		Document document = new Document();
 		try {
@@ -48,19 +48,19 @@ public class SaveAsPDFTest {
 			} catch (GitAPIException | IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			document.open();
 
-//			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-//			Chunk chunk = new Chunk("Hello World", font);
-			 
-//			document.add(chunk);
-			
-			
+			//			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+			//			Chunk chunk = new Chunk("Hello World", font);
+
+			//			document.add(chunk);
+
+
 			PdfPTable table = new PdfPTable(5);
 
-			
-			
+
+
 			for(int i =0; i<am.pktvertOrg.length;i++) {
 				table.addCell(String.valueOf(am.pktvertOrg[i]));
 			}
@@ -79,7 +79,7 @@ public class SaveAsPDFTest {
 				table.addCell(am.alleBemerkRefAllg.get(i));
 			}
 			table.completeRow();
-			
+
 			table.addCell("Durchschnitt Organisation:");
 			table.addCell(String.valueOf(am.durchschnOrg));
 			table.completeRow();
