@@ -113,7 +113,8 @@ public class MainApp extends Application {
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
-				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false);
+				// Knopf wird aktiviert, wenn non-whitespace Zeichen vorhanden sind
+				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false); 
 				
 			});
 
