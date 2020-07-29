@@ -277,7 +277,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		});
 	}
 
-	public void addNext2ToButton() { // Auswertung
+	public void addNext2ToButton(ControllerAntwortenErfassen controller) { // Auswertung
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -286,7 +286,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 //				for (AzubiAntwort azubiAntwort : antwortListe) {
 //					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
 //				}
-
+				MainApp.controller_liste.remove(controller);
 				mainapp.showAuswertungAnzeigen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
 			}

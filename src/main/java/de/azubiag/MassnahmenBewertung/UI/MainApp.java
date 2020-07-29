@@ -227,11 +227,18 @@ public class MainApp extends Application {
 			controller.init();
 			addDeleteToButton(controller.delete, rootLayout, tab_z2);
 			controller.setHandlerAnswerButton();
-			controller.addNext2ToButton();
+			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z2);
 			controller_liste.add(controller);
 			setze_setOnClosed_listener(tab_z2, controller);
+			tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
+
+				@Override
+				public void handle(Event event) {
+					MainApp.controller_liste.remove(controller);
+				}
+			});
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -291,10 +298,17 @@ public class MainApp extends Application {
 			neuer_controller.tab_wiederherstellen(alter_controller);
 			addDeleteToButton(neuer_controller.delete, rootLayout, tab_z2);
 			neuer_controller.setHandlerAnswerButton();
-			neuer_controller.addNext2ToButton();
+			neuer_controller.addNext2ToButton(neuer_controller);
 			setze_setOnClosed_listener(tab_z2, neuer_controller);
 			controller_liste.remove(indexInTabPane);
 			controller_liste.add(indexInTabPane, neuer_controller);
+			tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
+
+				@Override
+				public void handle(Event event) {
+					MainApp.controller_liste.remove(neuer_controller);
+				}
+			});
 
 		} catch (IOException e) {
 			e.printStackTrace();
