@@ -280,10 +280,7 @@ public class MainApp extends Application {
 			onCloseMethod(neuer_controller);
 			neuer_controller.setMainApp(this);
 			neuer_controller.setTab(tab_z2);
-			neuer_controller.setName(alter_controller.eigenschaft.fragebogen_name);
-			neuer_controller.setMaintext(alter_controller.eigenschaft.fragebogen_name);
-			neuer_controller.setUmfrageID(alter_controller.getUmfrageID());
-			neuer_controller.init();
+			neuer_controller.tab_wiederherstellen(alter_controller);
 			addDeleteToButton(neuer_controller.delete, rootLayout, tab_z2);
 			neuer_controller.setHandlerAnswerButton();
 			neuer_controller.addNext2ToButton();

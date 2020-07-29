@@ -153,7 +153,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 				} else {
 
-					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);  
+					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort);  
 
 					if (antwort.umfrageID == umfrageID) {
 
@@ -317,10 +317,50 @@ public class ControllerAntwortenErfassen implements Serializable {
 		}
 	}
 	
-	public void tab_wiederherstellen() {  // Labels wieder richtig einstellen usw
-		anzahl_antworten = antwortListe.size();	// kann michael nach seinem refactoring entfernen
+	public void tab_wiederherstellen(ControllerAntwortenErfassen alter_controller) {  // Labels wieder richtig einstellen usw
+		
+		anzahl_antworten = alter_controller.antwortListe.size();	// kann michael nach seinem refactoring entfernen
+		setName(alter_controller.eigenschaft.fragebogen_name);
+		setMaintext(alter_controller.eigenschaft.fragebogen_name);
+		setUmfrageID(alter_controller.getUmfrageID());
+		eigenschaft = alter_controller.eigenschaft;
+		antwortListe = alter_controller.antwortListe;
 		// wahrscheinlich noch weiteres
 		init();
+		
+		// Schleife, um Antworten hinzuzufügen
+		for(int bisherige_antworten = 0 ; bisherige_antworten < alter_controller.antwortListe.size(); bisherige_antworten++)
+		{
+			if (bisherige_antworten>0)
+			{
+			Button deleteButton = new Button();
+			deleteButton.setText("x");
+			setHandlerRemoveAnswer(deleteButton);
+
+			Label tempLabel = new Label();
+			tempLabel.setText("  Verschlüsselte Antwort " + (bisherige_antworten + 1) + ":");
+			tempLabel.setFont(antwort_name.getFont());
+			
+			gridpane.add(deleteButton, 0, bisherige_antworten + 1, 1, 1);
+			gridpane.add(tempLabel, 1, bisherige_antworten + 1, 2, 1);
+			}
+
+			Label tempLabel2 = new Label(alter_controller.antwortListe.get(bisherige_antworten).verschlüsselterString);
+			tempLabel2.setFont(antwort_text.getFont());
+			
+			gridpane.add(tempLabel2, 3, bisherige_antworten + 1, 3, 1);
+
+			int letzteRow = bisherige_antworten+1;
+			for (int i = 1; i < letzteRow; i++) {
+				Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+				if (temp3!=null)
+				{
+					((Button)temp3).setDisable(false);
+				}
+			}
+			Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+			((Button)temp4).setDisable(true);
+		}
 	}
 	
 	/* Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen der Ansicht nötig sind. */
