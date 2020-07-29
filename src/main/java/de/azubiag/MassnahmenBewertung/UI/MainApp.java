@@ -113,9 +113,8 @@ public class MainApp extends Application {
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
-				controller.next.setDisable((newValue == "") ? true : false);
-				Logger logger = Logger.getLogger();
-				logger.logInfo("Login-Textfeld-Eingabe, old: " + oldValue + " ---> new: " + newValue);
+				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false);
+				
 			});
 
 			primaryStage.show();
