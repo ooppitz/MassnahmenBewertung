@@ -35,17 +35,25 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class ControllerAntwortenErfassen implements Serializable {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4954713836800270562L;
+	
+	/**
+	 * Die folgenden Felder werden serilalisiert 
+	 */
+	
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
-	FragebogenEigenschaften eigenschaft;
-	 transient Tab tab;
-
+	
+	FragebogenEigenschaften eigenschaften; // Serialisieren
+	
+	private int umfrageID;   // Serialisieren
+		
 	int anzahl_antworten;    // Serialisieren 
+	
+	
+	
 
+	transient Tab tab;
+	 
 	@FXML
 	 transient Label desc;
 
@@ -59,7 +67,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	 transient GridPane gridpane;
 
 	@FXML
-	private transient Label fragebogenName;  // Serialisieren
+	private transient Label fragebogenName;  
 
 	@FXML
 	private transient Label maintext;
@@ -79,7 +87,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	 transient private MainApp mainapp;
 
 
-	private int umfrageID;   // Serialisieren
+
 
 	public void init() {
 		setHandlerRemoveAnswer(answ_del);
@@ -91,7 +99,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	}
 	
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
-		this.eigenschaft = eigenschaft;
+		this.eigenschaften = eigenschaft;
 	}
 
 	public void readdNode(Node node, int col, int row)
@@ -287,7 +295,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 //					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
 //				}
 				MainApp.controller_liste.remove(controller);
-				mainapp.showAuswertungAnzeigen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+				mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 
 			}
 		});
@@ -298,7 +306,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		try {
 //			os.defaultWriteObject();
 			os.writeObject(antwortListe);
-			os.writeObject(eigenschaft);
+			os.writeObject(eigenschaften);
 			os.writeInt(umfrageID);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -310,7 +318,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		try {
 //			is.defaultReadObject();
 			antwortListe = (List<AzubiAntwort>) is.readObject();	// unchecked cast
-			eigenschaft = (FragebogenEigenschaften) is.readObject();
+			eigenschaften = (FragebogenEigenschaften) is.readObject();
 			umfrageID = is.readInt();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
@@ -320,10 +328,10 @@ public class ControllerAntwortenErfassen implements Serializable {
 	public void tab_wiederherstellen(ControllerAntwortenErfassen alter_controller) {  // Labels wieder richtig einstellen usw
 		
 		anzahl_antworten = alter_controller.antwortListe.size();	// kann michael nach seinem refactoring entfernen
-		setName(alter_controller.eigenschaft.fragebogen_name);
-		setMaintext(alter_controller.eigenschaft.fragebogen_name);
+		setName(alter_controller.eigenschaften.fragebogen_name);
+		setMaintext(alter_controller.eigenschaften.fragebogen_name);
 		setUmfrageID(alter_controller.getUmfrageID());
-		eigenschaft = alter_controller.eigenschaft;
+		eigenschaften = alter_controller.eigenschaften;
 		antwortListe = alter_controller.antwortListe;
 		// wahrscheinlich noch weiteres
 		init();

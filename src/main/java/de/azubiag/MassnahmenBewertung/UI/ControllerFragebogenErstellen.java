@@ -421,7 +421,7 @@ public void addVorschauButtonHandler() {
 						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
 						
 						// Auswertung-Tab erstellen
-						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
+						mainapp.showTabAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
 
 						if (resultKlonen) {
 							// Fragebogen klonen

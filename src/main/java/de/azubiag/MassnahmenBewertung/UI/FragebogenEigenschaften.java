@@ -35,17 +35,14 @@ public class FragebogenEigenschaften implements Serializable{
 	
 	public FragebogenEigenschaften(String fragebogen_name, String seminarleiter_name, String auftrags_nummer, 
 			LocalDate von_Datum, LocalDate bis_Datum, LocalDate ausstellungs_datum, String link) {
+		
 		this.fragebogen_name = fragebogen_name;
 		this.seminarleiter_name = seminarleiter_name;
 		this.auftrags_nummer = auftrags_nummer;
-		if (von_Datum==null)
-		{
-			this.von_datum = "";
-		}
-		else
-		{
-			this.von_datum = Integer.toString(von_Datum.getDayOfMonth())+"."+Integer.toString(von_Datum.getMonthValue())+"."+Integer.toString(von_Datum.getYear());
-		}
+				
+		
+		this.von_datum = (von_Datum==null) ? "" : von_Datum.getDayOfMonth() + "." + von_Datum.getMonthValue() + "." + von_Datum.getYear();
+	
 
 		if (bis_Datum==null)
 		{

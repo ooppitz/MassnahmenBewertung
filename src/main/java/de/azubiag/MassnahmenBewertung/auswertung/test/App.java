@@ -73,7 +73,7 @@ public class App extends MainApp {
 			// showFragebogenErstellen();
 
 			// am Ende Plus Tab anzeigen
-			showPlus();
+			showTabPlus();
 
 			primaryStage.show();
 		} catch (IOException e) {
