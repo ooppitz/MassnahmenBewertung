@@ -282,6 +282,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 						"Ein Fragebogen kann nur 1 mal ausgewertet werden. Jetzt auswerten?");
 				if(userAntwort == AlertMethoden.JA) {
 					MainApp.listeControllerAntwortenErfassen.remove(controller);
+					speichern(); 		// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 					mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 				}
 			}

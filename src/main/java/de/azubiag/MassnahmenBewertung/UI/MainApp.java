@@ -156,16 +156,6 @@ public class MainApp extends Application {
 
 			if (existieren_speicherdaten()) {
 				speicherdaten_laden();
-				boolean erfolg = speicherdaten_löschen();
-				if (erfolg)
-				{
-				Logger.getLogger().logInfo("Alte Speicherdatei konnte gelöscht werden!");
-				}
-				else
-				{
-					Logger.getLogger().logWarning("Alte Speicherdatei konnte  NICHT  gelöscht werden!");
-					// TODO: Fehlermeldung, dann schließen des Programms?
-				}
 			}
 			else
 			{
@@ -239,6 +229,7 @@ public class MainApp extends Application {
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z2);
 			listeControllerAntwortenErfassen.add(controller);
+			ControllerAntwortenErfassen.speichern(); 	// speichern, nachdem der Tab erstellt worden ist
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -333,6 +324,9 @@ public class MainApp extends Application {
 		return tab_z2;
 	}
 	
+	/**
+	 * @deprecated
+	 */
 	public boolean speicherdaten_löschen() {
 		
 		try {
