@@ -104,11 +104,16 @@ public class AlertMethoden {
 			al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
 			Optional<ButtonType> opbt = al.showAndWait();
 			if(opbt.get()==jaButton) {
-				return 1;
+				return JA;
 			}else if (opbt.get()==neinButton) {
-				return 0; 
+				return NEIN; 
 			}else //AbbruchButton{
-				return -1; 
+				return CANCEL; 
 			}
+		
+		public static final int JA = 1;
+		public static final int NEIN = 0;
+		public static final int CANCEL = -1;
+		
 		}
 	
