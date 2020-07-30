@@ -174,47 +174,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 						}
 						
 						if (flag == false)
-						{
-							antwortListe.add(antwort); // <-- ZUM DEBUGGEN AUSGESCHALTET
-
-							if (anzahl_antworten == 0) {
-								antwort_text.setText(clipboard.getString());
-								anzahl_antworten++;
-							} else if (anzahl_antworten > 0) {
-								if (anzahl_antworten > 9) {
-									gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
-									gridpane.addRow(anzahl_antworten + 1);
-									// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
-									// aussieht
-								}
-								Button deleteButton = new Button();
-								deleteButton.setText("x");
-								setHandlerRemoveAnswer(deleteButton);
-
-								Label tempLabel = new Label();
-								tempLabel.setText("  Verschlüsselte Antwort " + (anzahl_antworten + 1) + ":");
-								tempLabel.setFont(antwort_name.getFont());
-
-								Label tempLabel2 = new Label(clipboard.getString());
-								tempLabel2.setFont(antwort_text.getFont());
-								gridpane.add(deleteButton, 0, anzahl_antworten + 1, 1, 1);
-								gridpane.add(tempLabel, 1, anzahl_antworten + 1, 2, 1);
-								gridpane.add(tempLabel2, 3, anzahl_antworten + 1, 3, 1);
-
-								int letzteRow = anzahl_antworten+1;
-								for (int i = 1; i < letzteRow; i++) {
-									Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-									if (temp3!=null)
-									{
-										((Button)temp3).setDisable(false);
-									}
-								}
-								Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-								((Button)temp4).setDisable(true);
-
-								anzahl_antworten++;
-							}
-						}
+							antwort_zu_GUI_hinzufügen(clipboard, antwort);
 						else
 						{
 							Logger.getLogger().logWarning("Eingefügte Antwort ist bereits vorhanden!");
@@ -252,7 +212,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				 * - anzahlAntworten wird dekrementiert
 				 */
 
-				int letzteRow = anzahl_antworten+1;
+				int letzteRow = antwortListe.size()+1;
 				logger.logInfo("letzte Reihe: "+letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
@@ -280,7 +240,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 					}
 				}
 
-				anzahl_antworten--;
+//				anzahl_antworten--;
 			}
 		});
 	}
@@ -327,7 +287,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	
 	public void tab_wiederherstellen(ControllerAntwortenErfassen alter_controller) {  // Labels wieder richtig einstellen usw
 		
-		anzahl_antworten = alter_controller.antwortListe.size();	// kann michael nach seinem refactoring entfernen
+//		anzahl_antworten = alter_controller.antwortListe.size();	// kann michael nach seinem refactoring entfernen
 		setName(alter_controller.eigenschaften.fragebogen_name);
 		setMaintext(alter_controller.eigenschaften.fragebogen_name);
 		setUmfrageID(alter_controller.getUmfrageID());
@@ -415,5 +375,49 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 	public int getUmfrageID() {
 		return umfrageID;
+	}
+
+	public void antwort_zu_GUI_hinzufügen(Clipboard clipboard, AzubiAntwort antwort) {
+		{
+			antwortListe.add(antwort); // <-- ZUM DEBUGGEN AUSGESCHALTET
+
+			if (anzahl_antworten == 0) {
+				antwort_text.setText(clipboard.getString());
+				anzahl_antworten++;
+			} else if (anzahl_antworten > 0) {
+				if (anzahl_antworten > 9) {
+					gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
+					gridpane.addRow(anzahl_antworten + 1);
+					// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+					// aussieht
+				}
+				Button deleteButton = new Button();
+				deleteButton.setText("x");
+				setHandlerRemoveAnswer(deleteButton);
+
+				Label tempLabel = new Label();
+				tempLabel.setText("  Verschlüsselte Antwort " + (anzahl_antworten + 1) + ":");
+				tempLabel.setFont(antwort_name.getFont());
+
+				Label tempLabel2 = new Label(clipboard.getString());
+				tempLabel2.setFont(antwort_text.getFont());
+				gridpane.add(deleteButton, 0, anzahl_antworten + 1, 1, 1);
+				gridpane.add(tempLabel, 1, anzahl_antworten + 1, 2, 1);
+				gridpane.add(tempLabel2, 3, anzahl_antworten + 1, 3, 1);
+
+				int letzteRow = anzahl_antworten+1;
+				for (int i = 1; i < letzteRow; i++) {
+					Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+					if (temp3!=null)
+					{
+						((Button)temp3).setDisable(false);
+					}
+				}
+				Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+				((Button)temp4).setDisable(true);
+
+				anzahl_antworten++;
+			}
+		}
 	}
 }
