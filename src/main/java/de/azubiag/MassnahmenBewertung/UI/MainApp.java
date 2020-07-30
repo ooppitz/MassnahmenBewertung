@@ -112,8 +112,7 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
-			controller.getAlle_Nutzer();			// muss wegen singleton pattern aufgerufen werden	später durch init ersetzen
-			controller.getZutreffende_Nutzer();		// muss wegen singleton pattern aufgerufen werden
+			controller.init();
 			controller.addListener_TextFieldSuggestion();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
 

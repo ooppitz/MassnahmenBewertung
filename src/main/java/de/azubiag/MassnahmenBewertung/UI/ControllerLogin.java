@@ -13,9 +13,11 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 
 
@@ -27,14 +29,17 @@ public class ControllerLogin {
 
 	@FXML
 	public Button next;
-
+	
 	@FXML
-	public TextField username;
+	public GridPane grid;
+
+	public TextField_mitVorschlägen username;
 
 	private MainApp mainapp;
 
 	ArrayList<String> alle_Nutzer;
 	ArrayList<String> zutreffende_Nutzer;
+	private final int LIMIT = 10;
 
 	public ArrayList<String> getZutreffende_Nutzer() {
 		if (zutreffende_Nutzer == null)
@@ -71,6 +76,15 @@ public class ControllerLogin {
 		this.mainapp = mainapp;
 	}
 
+	public void init() {
+		username = new TextField_mitVorschlägen();
+		grid.add(username, 0, 2);
+		username.setFont(next.getFont());
+		GridPane.setMargin((Node)username, new Insets(5, 5, 5, 5));
+		getAlle_Nutzer();
+		getZutreffende_Nutzer();
+	}
+	
 	public void addUsernameNextToButton() {
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -113,11 +127,13 @@ public class ControllerLogin {
 					if(string.matches(clean_username+"\\S*")  || string.matches("\\S*_"+clean_username+"\\S*"))
 					{
 						zutreffende_Nutzer.add(string);
-						System.out.println(string);
 					}
+					if (zutreffende_Nutzer.size()>LIMIT)
+						return;
 				}
-				System.out.println();
+//				System.out.println("Zutreffende Nutzer: "+zutreffende_Nutzer);
 			}
+			username.fill_context_menu(zutreffende_Nutzer);
 		});
 	}
 
