@@ -539,57 +539,21 @@ public void addVorschauButtonHandler() {
 			}
 
 			private boolean allValuesEntered() {
+				// das Feld mit dem Datum der Umfrage wird nicht abgefragt, da es vorausgefuellt
+				// ist
 				boolean fragebogennameEntered = fragebogenname.getText().matches(".*\\S+.*");
 				boolean auftragsnummerEntered = auftragsnummer_textfield.getText().matches(".*\\S+.*");
-				boolean vonDatumEntered = datumIsNotBullshit(von_Datum.getEditor().getText());
-				boolean bisDatumEntered = datumIsNotBullshit(bis_Datum.getEditor().getText());
-				boolean heuteDatumEntered = datumIsNotBullshit(heute_datum.getEditor().getText());
+				boolean vonDatumEntered = !(von_Datum.getValue() == null);
+				boolean bisDatumEntered = !(bis_Datum.getValue() == null);
 				int anzahl_referenten = getReferentenNamen().size();
 
-				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && heuteDatumEntered && auftragsnummerEntered
+				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && auftragsnummerEntered
 						&& anzahl_referenten > 0) {
 					return true;
 				} else {
 					return false;
 				}
 			}
-			
-			private boolean datumIsNotBullshit(String datum) {
-				String[] teile = datum.split("\\.", -1);
-				try {
-					int tag = Integer.parseInt(teile[0]);
-					int monat = Integer.parseInt(teile[1]);
-					int jahr = Integer.parseInt(teile[2]);
-					return tag > 0 && tag <= tageImMonat(monat, jahr)
-							&& monat > 0 && monat <= 12
-							&& jahr >= MINIMUM_PLAUSIBLE_YEAR && jahr <= MAXIMUM_PLAUSIBLE_YEAR;
-				} catch (NumberFormatException | ArrayIndexOutOfBoundsException nf_aioobex) {
-					return false;
-				}
-			}
-			
-			private int tageImMonat(int monat, int jahr) {
-				switch (monat) {
-				case 4:
-				case 6:
-				case 9:
-				case 11:
-					return 30;
-				case 2:
-					return schaltjahr(jahr)? 29 : 28;
-				default:
-					return 31;
-				}
-			}
-			
-			private boolean schaltjahr(int jahr) {
-				if (jahr % 400 == 0) return true;
-				if (jahr % 100 == 0) return false;
-				return jahr % 4 == 0;
-			}
 		});
 	}
-
-	private static final int MINIMUM_PLAUSIBLE_YEAR = 1900;
-	private static final int MAXIMUM_PLAUSIBLE_YEAR = 2110;
 }
