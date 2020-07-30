@@ -134,34 +134,81 @@ public class AlsPDFSpeichern {
 			document.add(title3);
 			
 			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:", font);
+			leerzeichenSetzen(title4);
+			title4.add(new Chunk("-2 -1  0  1  2"));
 			
 			document.add(title4);
 			
 			Paragraph r = new Paragraph("", font);
 			
-			Phrase rVorb = new Phrase("");
+			Phrase rVorb = new Phrase();
+			Phrase rFach = new Phrase();
+			Phrase rEing = new Phrase();
+			Phrase rInh = new Phrase();
+			Phrase rVerh = new Phrase();
+			Phrase rBem = new Phrase();
+			
 			for(int i = 0; i<ar.size(); i++) {
 				r.add(new Chunk(ar.get(i).name+"\n"));
-				rVorb.add(new Chunk("Wie war Ihr/Sein Unterricht vorbereitet?"));
+				
+				rVorb.add(new Chunk("Wie war ihr/sein Unterricht vorbereitet?"));
 				leerzeichenSetzen(rVorb);
 				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
 					rVorb.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j))+" "));	
 				}	
 				rVorb.add("\n");
 				
+				rFach.add(new Chunk("Wie umfangreich war ihr/sein Fachwissen?"));
+				leerzeichenSetzen(rFach);
+				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
+					rFach.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.FACHWISSEN, j))+" "));	
+				}	
+				rFach.add("\n");
 				
+				rEing.add(new Chunk("Wie ging sie/er auf spezielle thematische Probleme ein?"));
+				leerzeichenSetzen(rEing);
+				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
+					rEing.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.EINGEHENAUFPROBLEME, j))+" "));	
+				}	
+				rEing.add("\n");
 				
+				rInh.add(new Chunk("Wie verständlich konnte sie/er die Inhalte vermitteln?"));
+				leerzeichenSetzen(rInh);
+				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
+					rInh.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.INHALTSVERMITTLUNG, j))+" "));	
+				}	
+				rInh.add("\n");
 				
+				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu?"));
+				leerzeichenSetzen(rVerh);
+				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
+					rVerh.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j))+" "));	
+				}	
+				rVerh.add("\n");
 				
-				
-				
-				
-				
-				
-				
+				rBem.add(new Chunk("Bermerkungen zu: "+ar.get(i).name+"\n"));
+				for (int j = 0; j < ar.get(i).bemerkungen.size(); j++) {
+					rBem.add(new Chunk(ar.get(i).bemerkungen.get(j)+"; "));
+				}
+				rBem.add("\n");
 				
 				r.add(rVorb);
 				rVorb.clear();
+				
+				r.add(rFach);
+				rFach.clear();
+				
+				r.add(rEing);
+				rEing.clear();
+				
+				r.add(rInh);
+				rInh.clear();
+				
+				r.add(rVerh);
+				rVerh.clear();
+				
+				r.add(rBem);
+				rBem.clear();
 			}
 			
 			
@@ -175,13 +222,13 @@ public class AlsPDFSpeichern {
 	}
 	
 	void leerzeichenSetzen(Paragraph paragraph) {
-		while(paragraph.getContent().length()<70) {
+		while(paragraph.getContent().length()<71) {
 			paragraph.add(" ");
 		}
 	}
 	
 	void leerzeichenSetzen(Phrase phrase) {
-		while(phrase.getContent().length()<70) {
+		while(phrase.getContent().length()<71) {
 			phrase.add(" ");
 		}
 	}
