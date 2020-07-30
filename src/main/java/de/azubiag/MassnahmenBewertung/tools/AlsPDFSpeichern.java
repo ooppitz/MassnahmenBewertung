@@ -54,50 +54,62 @@ public class AlsPDFSpeichern {
 				e.printStackTrace();
 			}
 			document.open();
-
-			// Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+			
+			Font font = FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK);
 			// Chunk chunk = new Chunk("Hello World", font);
 
 			// document.add(chunk);
+			Paragraph m1 = new Paragraph();
 			
-			Paragraph title1 = new Paragraph("Maßnahmenverlauf");
+			Paragraph title1 = new Paragraph("1. Maßnahmenverlauf", font);
 			leerzeichenSetzen(title1);
 			title1.add(new Chunk("-2 -1  0  1  2"));
-			Paragraph t1q1 = new Paragraph("Wie empfinden die Teilnehmer die Organisation des Seminars?");
+			
+			Paragraph t1q1 = new Paragraph("Wie empfinden die Teilnehmer die Organisation des Seminars?",font);
 			leerzeichenSetzen(t1q1);
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q1.add(new Chunk(" "+String.valueOf(am.pktvertOrg[i])+" "));
+			}	
+			
+			Paragraph t1q2 = new Paragraph("Wie empfinden die Teilnehmer den Verlauf des Seminars?", font);
+			leerzeichenSetzen(t1q2);
+			for (int i = 0; i < am.pktvertOrg.length; i++) {
+				t1q2.add(new Chunk(" "+String.valueOf(am.pktvertVerl[i])+" "));
 			}
 			
-			Paragraph t1q2 = new Paragraph("Wie empfinden die Teilnehmer den Verlauf des Seminars");
-			Paragraph t1b = new Paragraph("Bemerkungen dazu:");
-
-			document.add(title1);
-			document.add(t1q1);
-			document.add(t1q2);
-			document.add(t1b);
-			System.out.println(title1.getContent());
-			System.out.println(t1q1.getContent());
-			
-			
-			for (int i = 0; i < am.pktvertVerl.length; i++) {
-				document.add(new Phrase(String.valueOf(am.pktvertVerl[i])));
-			}
+			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
-				document.add(new Phrase(am.alleBemerkVerl.get(i)));
+				t1b.add(new Phrase(am.alleBemerkVerl.get(i)+"; "));
 			}
+			
+			m1.add(title1);
+			m1.add(t1q1);
+			m1.add(t1q2);
+			m1.add(t1b);
+			
+			document.add(m1);
+			
+			Paragraph m2 = new Paragraph("", font);
+			
+			Paragraph title2 = new Paragraph("2. Maßnahmebetreuung");
+			leerzeichenSetzen(title2);
+			title2.add(new Chunk("-2 -1  0  1  2"));
+			
+			Paragraph t2q1 = new Paragraph("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?");
+			leerzeichenSetzen(t2q1);
 			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
-				document.add(new Phrase(String.valueOf(am.pktvertBetrng[i])));
+				t2q1.add(new Phrase(String.valueOf(am.pktvertBetrng[i])));
 			}
+			
 			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
 				document.add(new Phrase(am.alleBemerkRefAllg.get(i)));
 			}
-			document.add(new Phrase("Durchschnitt Organisation:"));
-			document.add(new Phrase(String.valueOf(am.durchschnOrg)));
-			document.add(new Phrase("Durchschnitt Verlauf:"));
-			document.add(new Phrase(String.valueOf(am.durchschnVerl)));
-			document.add(new Phrase("Durchschnitt Betreuung:"));
-			document.add(new Phrase(String.valueOf(am.durchschnBetrng)));
+			
+			m2.add(title2);
+			m2.add(t2q1);
+			
+			document.add(m2);
+			
 			document.close();
 
 		} catch (DocumentException e) {
@@ -107,7 +119,7 @@ public class AlsPDFSpeichern {
 	}
 	
 	void leerzeichenSetzen(Paragraph paragraph) {
-		while(paragraph.getContent().length()<95) {
+		while(paragraph.getContent().length()<70) {
 			paragraph.add(" ");
 		}
 	}
