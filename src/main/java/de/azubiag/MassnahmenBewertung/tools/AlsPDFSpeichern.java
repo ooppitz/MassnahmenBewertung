@@ -21,9 +21,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class AlsPDFSpeichern {
+	Testdaten td;
 	AzubiAntwort aa;
 	AuswertungMassnahme am;
 	ArrayList<String> als = new ArrayList<>();
@@ -38,10 +40,11 @@ public class AlsPDFSpeichern {
 	}
 
 	public void beispielAuswertungMassnahmeErstellen() {
-		als.add("1|3|0|4|Nö|3||Lass mich in Ruhe|Robert Hackfuß|3|1|2|2|0|Warum trägt er immer ein Hackebeil?|Franz Karrenschlepper|3|1|0|0|3|Seine Augen sind immer weit offen.Das ist unheimlich!|");
-		als.add("2|4|3|1|Alles war toll|4|Das war super toll|Es war klasse!|Robert Hackfuß|4|4|4|4|0|Er macht mir Angst!|Franz Karrenschlepper|2|0|0|0|4||");
-		als.add("5|5|4|4||0|Gr8 b8 m8 r8 8/8|Werf Sie raus!!!|Robert Hackfuß|1|2|1|0|3||Franz Karrenschlepper|0|1|1|0|0|Er hätte beim Karrenschleppen bleiben sollen.");
-		am = am.getAuswertungMassnahme(aa.konvertiereStringsInAzubiAntworten(als));
+		td = new Testdaten();
+		aa.konvertiereStringsInAzubiAntworten(td.getTestdaten());
+		am = am.getAuswertungMassnahme(aa.konvertiereStringsInAzubiAntworten(Testdaten.getTestdaten()));
+		
+		
 	}
 
 	public void saveAsPDF() {
@@ -79,7 +82,7 @@ public class AlsPDFSpeichern {
 			
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
-				t1b.add(new Phrase(am.alleBemerkVerl.get(i)+"; "));
+				t1b.add(new Chunk(am.alleBemerkVerl.get(i)+"; "));
 			}
 			
 			m1.add(title1);
@@ -89,26 +92,36 @@ public class AlsPDFSpeichern {
 			
 			document.add(m1);
 			
-			Paragraph m2 = new Paragraph("", font);
+			Paragraph m2 = new Paragraph();
 			
-			Paragraph title2 = new Paragraph("2. Maßnahmebetreuung");
+			Paragraph title2 = new Paragraph("2. Maßnahmebetreuung",font);
 			leerzeichenSetzen(title2);
 			title2.add(new Chunk("-2 -1  0  1  2"));
 			
-			Paragraph t2q1 = new Paragraph("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?");
+			Paragraph t2q1 = new Paragraph("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",font);
 			leerzeichenSetzen(t2q1);
-			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
-				t2q1.add(new Phrase(String.valueOf(am.pktvertBetrng[i])));
+			for (int i = 0; i < am.pktvertBetrng.length; i++) {
+				t2q1.add(new Chunk(" "+String.valueOf(am.pktvertBetrng[i])+" "));
 			}
-			
-			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
-				document.add(new Phrase(am.alleBemerkRefAllg.get(i)));
+			Paragraph t2b1 = new Paragraph("Bermerkungen dazu:\n",font);
+			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
+				t2b1.add(new Chunk(am.alleBemerkBetrng.get(i)+"; ",font));
 			}
 			
 			m2.add(title2);
 			m2.add(t2q1);
+			m2.add(t2b1);
 			
 			document.add(m2);
+			
+			Paragraph m3 = new Paragraph();
+			
+			Paragraph title3 = new Paragraph("3. Bewertung der Referenten bzw. Referentinnen:",font);
+			leerzeichenSetzen(title3);
+			title3.add(new Chunk("-2 -1  0  1  2\n"));
+			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
+				title3.add(new Chunk(am.alleBemerkRefAllg.get(i)+"; ",font));
+			}
 			
 			document.close();
 
