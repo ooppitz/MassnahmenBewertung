@@ -1,8 +1,6 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.util.ArrayList;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
@@ -14,13 +12,11 @@ import javafx.scene.control.TextField;
 public class TextField_mitVorschlägen extends TextField{
 
 	private ContextMenu kontext;
-	private final SortedSet<String> set;
 
 
 	public TextField_mitVorschlägen() {
 
 		super();	// Konstruktor des TextFields
-		this.set = new TreeSet<String>();
 		kontext = new ContextMenu();
 	}
 
@@ -36,13 +32,26 @@ public class TextField_mitVorschlägen extends TextField{
 		{	// jedes Element der Liste muss in ein MenuItem umgewandelt werden
 			for (String nutzer : zutreffende_Nutzer) {
 				
-				Label dieses_label = new Label(nutzer);
-				dieses_label.setFont(this.getFont());
-				CustomMenuItem dieses_menu_item = new CustomMenuItem(dieses_label,true);
+				CustomMenuItem dieses_menu_item = erstelle_CustomMenuItem(nutzer);
+				setListener(nutzer, dieses_menu_item);
 				kontext.getItems().add(dieses_menu_item);
 			}
 			kontext.show(TextField_mitVorschlägen.this, Side.BOTTOM, 0, 0);
 		}
 //		System.out.println("TextField Items-> "+kontext.getItems());
+	}
+
+	public void setListener(String nutzer, CustomMenuItem dieses_menu_item) {
+		dieses_menu_item.setOnAction(actionEvent -> {
+			TextField_mitVorschlägen.this.setText(nutzer);
+			kontext.hide();
+		});
+	}
+
+	public CustomMenuItem erstelle_CustomMenuItem(String nutzer) {
+		Label dieses_label = new Label(nutzer);
+		dieses_label.setFont(this.getFont());
+		CustomMenuItem dieses_menu_item = new CustomMenuItem(dieses_label,true);
+		return dieses_menu_item;
 	}
 }
