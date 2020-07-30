@@ -77,7 +77,10 @@ public class ControllerLogin {
 			public void handle(ActionEvent e) {
 
 				String clean_username = Tools.normalisiereString(username.getText());
-
+				mainapp.primaryStage.setTitle("SeminarLeiterApp " + username.getText());
+				
+				// schauen, ob das Feld nicht leer ist
+				// Auswahlliste von Namen davor anzeigen
 				boolean nutzer_vorhanden = isNutzerVorhanden(clean_username);
 
 				if(nutzer_vorhanden)

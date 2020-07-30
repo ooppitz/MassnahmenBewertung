@@ -116,7 +116,10 @@ public class MainApp extends Application {
 			controller.getZutreffende_Nutzer();		// muss wegen singleton pattern aufgerufen werden
 			controller.addListener_TextFieldSuggestion();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
-				controller.next.setDisable((newValue == "") ? true : false);
+
+				// Knopf wird aktiviert, wenn non-whitespace Zeichen vorhanden sind
+				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false); 
+				
 			});
 
 			primaryStage.show();
