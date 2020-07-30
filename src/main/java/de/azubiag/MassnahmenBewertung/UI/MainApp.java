@@ -112,7 +112,10 @@ public class MainApp extends Application {
 			// System.out.println(controller);
 			controller.setMainapp(this);
 			controller.addUsernameNextToButton();
+			controller.init();
+			controller.addListener_TextFieldSuggestion();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
+
 				// Knopf wird aktiviert, wenn non-whitespace Zeichen vorhanden sind
 				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false); 
 				
@@ -437,7 +440,7 @@ public class MainApp extends Application {
 		try {
 			Upload upload = Upload.getInstance();
 			String ordner = upload.getSeminarleiterDirectory(userName);
-			File speicherdatei = new File(ordner+"_save");
+			File speicherdatei = new File(ordner+ControllerAntwortenErfassen.saveFileName);
 			if (speicherdatei.isFile())
 			{
 				return true;
