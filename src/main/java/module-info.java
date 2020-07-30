@@ -8,11 +8,8 @@ module de.azubiag.MassnahmenBewertung {
 	requires javafx.base;
 	requires org.jsoup;
 	requires org.eclipse.jgit;
-<<<<<<< HEAD
 	requires itextpdf;
-=======
 	requires pdfbox;
->>>>>>> refs/heads/master
 
     opens de.azubiag.MassnahmenBewertung to javafx.fxml;
     exports de.azubiag.MassnahmenBewertung;

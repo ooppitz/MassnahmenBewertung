@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -29,7 +30,7 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 public class AlsPDFSpeichern {
 	FragebogenEigenschaften fe;
 	AuswertungMassnahme am;
-	AuswertungReferent ar;
+	List<AuswertungReferent> ar;
 	ArrayList<String> als = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -44,7 +45,7 @@ public class AlsPDFSpeichern {
 	public void beispielAuswertungMassnahmeErstellen() {
 		fe = Testdaten.getFragebogenEigenschaften();
 		am = Testdaten.getAuswertungMassnahme();
-		ar = (AuswertungReferent) Testdaten.getAuswertungReferenten();
+		ar = Testdaten.getAuswertungReferenten();
 	}
 
 	public void saveAsPDF() {
@@ -62,7 +63,18 @@ public class AlsPDFSpeichern {
 			// Chunk chunk = new Chunk("Hello World", font);
 
 			// document.add(chunk);
+			
+			Paragraph header = new Paragraph("", font);
+			header.setSpacingAfter(50);
+			header.add(new Phrase("Maßnahme von "+fe.von_datum+" bis "+fe.bis_datum+"\n"));
+			header.add(new Phrase("Auftragsnummer: "+fe.auftrags_nummer+"\n"));
+			header.add(new Phrase("Seminarleitung: "+fe.seminarleiter_name+"\n"));
+			header.add(new Phrase("Datum: "+fe.ausstellungs_datum));
+			
+			document.add(header);
+			
 			Paragraph m1 = new Paragraph();
+			m1.setSpacingAfter(50);
 			
 			Paragraph title1 = new Paragraph("1. Maßnahmenverlauf", font);
 			leerzeichenSetzen(title1);
@@ -93,6 +105,7 @@ public class AlsPDFSpeichern {
 			document.add(m1);
 			
 			Paragraph m2 = new Paragraph();
+			m2.setSpacingAfter(50);
 			
 			Paragraph title2 = new Paragraph("2. Maßnahmebetreuung",font);
 			leerzeichenSetzen(title2);
@@ -114,19 +127,17 @@ public class AlsPDFSpeichern {
 			
 			document.add(m2);
 			
-			Paragraph m3 = new Paragraph();
-			
-			Paragraph title3 = new Paragraph("3. Bewertung der Referenten bzw. Referentinnen:",font);
-			leerzeichenSetzen(title3);
-			title3.add(new Chunk("-2 -1  0  1  2\n"));
+			Paragraph title3 = new Paragraph("3. Bewertung der Referenten bzw. Referentinnen:\n",font);
 			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
 				title3.add(new Chunk(am.alleBemerkRefAllg.get(i)+"; ",font));
 			}
+			title3.setSpacingAfter(50);
+			
+			document.add(title3);
 			
 			document.close();
 
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
