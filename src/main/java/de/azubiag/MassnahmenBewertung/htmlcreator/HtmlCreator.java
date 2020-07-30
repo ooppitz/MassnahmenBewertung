@@ -157,7 +157,7 @@ public class HtmlCreator {
 		warningTag.attr("hidden", "true");
 		warningTag.attr("class", "warnung");
 		warningTag.attr("id", radioButtonName + "_warnung");
-		warningTag.text("*********** Bitte Ausfüllen! *****************");
+		warningTag.text("*** Bitte ausfüllen! ***");
 
 		return warningTag;
 
