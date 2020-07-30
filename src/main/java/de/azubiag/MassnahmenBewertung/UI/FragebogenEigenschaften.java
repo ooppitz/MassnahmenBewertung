@@ -27,13 +27,13 @@ public class FragebogenEigenschaften implements Serializable {
     public FragebogenEigenschaften(ControllerFragebogenErstellen controller, String webpath) {
 
 	this(controller.getName(), MainApp.getUserName(), controller.auftragsnummer_textfield.getText(),
-		controller.von_Datum.getValue(), controller.bis_Datum.getValue(), controller.heute_datum.getValue(),
-		webpath);
+		controller.von_Datum.getEditor().getText(), controller.bis_Datum.getEditor().getText(),
+		controller.heute_datum.getEditor().getText(), webpath);
 
     }
 
     public FragebogenEigenschaften(String fragebogen_name, String seminarleiter_name, String auftrags_nummer,
-	    LocalDate von_Datum, LocalDate bis_Datum, LocalDate ausstellungs_Datum, String link) {
+	    String von_Datum, String bis_Datum, String ausstellungs_Datum, String link) {
 
 	this.fragebogen_name = fragebogen_name;
 	this.seminarleiter_name = seminarleiter_name;
@@ -41,9 +41,9 @@ public class FragebogenEigenschaften implements Serializable {
 
 	DateTimeFormatter formatddmmyyyy = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-	this.von_datum = (von_Datum == null) ? "" : von_Datum.format(formatddmmyyyy);
-	this.bis_datum = (bis_Datum == null) ? "" : bis_Datum.format(formatddmmyyyy);
-	this.ausstellungs_datum = (ausstellungs_Datum == null) ? "" : ausstellungs_Datum.format(formatddmmyyyy);
+	this.von_datum = von_Datum;
+	this.bis_datum = bis_Datum;
+	this.ausstellungs_datum = ausstellungs_Datum;
 	
     }
 
