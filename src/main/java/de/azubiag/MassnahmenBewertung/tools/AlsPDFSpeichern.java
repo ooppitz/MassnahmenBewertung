@@ -3,13 +3,11 @@ package de.azubiag.MassnahmenBewertung.tools;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -17,13 +15,12 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
-import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.auswertung.Frage;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
@@ -31,7 +28,6 @@ public class AlsPDFSpeichern {
 	FragebogenEigenschaften fe;
 	AuswertungMassnahme am;
 	List<AuswertungReferent> ar;
-	ArrayList<String> als = new ArrayList<>();
 
 	public static void main(String[] args) {
 		new AlsPDFSpeichern();
@@ -73,24 +69,26 @@ public class AlsPDFSpeichern {
 			
 			document.add(header);
 			
-			Paragraph m1 = new Paragraph();
+			Paragraph m1 = new Paragraph("", font);
 			m1.setSpacingAfter(50);
 			
-			Paragraph title1 = new Paragraph("1. Maßnahmenverlauf", font);
+			Phrase title1 = new Phrase("1. Maßnahmenverlauf");
 			leerzeichenSetzen(title1);
-			title1.add(new Chunk("-2 -1  0  1  2"));
+			title1.add(new Chunk("-2 -1  0  1  2\n"));
 			
-			Paragraph t1q1 = new Paragraph("Wie empfinden die Teilnehmer die Organisation des Seminars?",font);
+			Phrase t1q1 = new Phrase("Wie empfinden die Teilnehmer die Organisation des Seminars?");
 			leerzeichenSetzen(t1q1);
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q1.add(new Chunk(" "+String.valueOf(am.pktvertOrg[i])+" "));
 			}	
+			t1q1.add("\n");
 			
-			Paragraph t1q2 = new Paragraph("Wie empfinden die Teilnehmer den Verlauf des Seminars?", font);
+			Phrase t1q2 = new Phrase("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
 			leerzeichenSetzen(t1q2);
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q2.add(new Chunk(" "+String.valueOf(am.pktvertVerl[i])+" "));
 			}
+			t1q2.add("\n");
 			
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
@@ -135,6 +133,40 @@ public class AlsPDFSpeichern {
 			
 			document.add(title3);
 			
+			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:", font);
+			
+			document.add(title4);
+			
+			Paragraph r = new Paragraph("", font);
+			
+			Phrase rVorb = new Phrase("");
+			for(int i = 0; i<ar.size(); i++) {
+				r.add(new Chunk(ar.get(i).name+"\n"));
+				rVorb.add(new Chunk("Wie war Ihr/Sein Unterricht vorbereitet?"));
+				leerzeichenSetzen(rVorb);
+				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
+					rVorb.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j))+" "));	
+				}	
+				rVorb.add("\n");
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				r.add(rVorb);
+				rVorb.clear();
+			}
+			
+			
+			document.add(r);
+			
 			document.close();
 
 		} catch (DocumentException e) {
@@ -148,4 +180,9 @@ public class AlsPDFSpeichern {
 		}
 	}
 	
+	void leerzeichenSetzen(Phrase phrase) {
+		while(phrase.getContent().length()<70) {
+			phrase.add(" ");
+		}
+	}
 }
