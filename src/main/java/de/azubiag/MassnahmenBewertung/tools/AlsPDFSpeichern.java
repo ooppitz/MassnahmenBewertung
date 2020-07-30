@@ -82,7 +82,7 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q1.add(new Chunk(" " + String.valueOf(am.pktvertOrg[i]) + " "));
 			}
-			t1q1.add(new Chunk(" "+String.valueOf(am.durchschnOrg)));
+			t1q1.add(new Chunk(" " + String.valueOf(am.durchschnOrg)));
 			t1q1.add("\n");
 
 			Phrase t1q2 = new Phrase("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
@@ -90,7 +90,7 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q2.add(new Chunk(" " + String.valueOf(am.pktvertVerl[i]) + " "));
 			}
-			t1q2.add(new Chunk(" "+String.valueOf(am.durchschnVerl)));
+			t1q2.add(new Chunk(" " + String.valueOf(am.durchschnVerl)));
 			t1q2.add("\n");
 
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
@@ -119,8 +119,8 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertBetrng.length; i++) {
 				t2q1.add(new Chunk(" " + String.valueOf(am.pktvertBetrng[i]) + " "));
 			}
-			t2q1.add(new Chunk(" "+String.valueOf(am.durchschnBetrng)));
-			
+			t2q1.add(new Chunk(" " + String.valueOf(am.durchschnBetrng)));
+
 			Paragraph t2b1 = new Paragraph("Bermerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
 				t2b1.add(new Chunk(am.alleBemerkBetrng.get(i) + ";\n", font));
@@ -142,10 +142,8 @@ public class AlsPDFSpeichern {
 			document.add(title3);
 
 			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:\n", font);
-			
 
 			document.add(title4);
-			
 
 			Paragraph rAlle = new Paragraph("", font);
 
@@ -157,7 +155,7 @@ public class AlsPDFSpeichern {
 			Phrase rBem = new Phrase();
 
 			for (int i = 0; i < ar.size(); i++) {
-				rAlle.add(new Chunk("\nReferent / Referentin: "+ar.get(i).getName() + "\n"));
+				rAlle.add(new Chunk("\nReferent / Referentin: " + ar.get(i).getName() + "\n"));
 				Phrase durchschnitt3 = new Phrase();
 				leerzeichenSetzen(durchschnitt3);
 				durchschnitt3.add(new Chunk("-2 -1  0  1  2   Ø\n"));
@@ -169,7 +167,7 @@ public class AlsPDFSpeichern {
 					rVorb.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
 				}
-				rVorb.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittVorbereitung)));
+				rVorb.add(new Chunk(" " + String.valueOf(ar.get(i).durchschnittVorbereitung)));
 				rVorb.add("\n");
 
 				rFach.add(new Chunk("Wie umfangreich war ihr/sein Fachwissen?"));
@@ -178,7 +176,7 @@ public class AlsPDFSpeichern {
 					rFach.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.FACHWISSEN, j)) + " "));
 				}
-				rFach.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittFachwissen)));
+				rFach.add(new Chunk(" " + String.valueOf(ar.get(i).durchschnittFachwissen)));
 				rFach.add("\n");
 
 				rEing.add(new Chunk("Wie ging sie/er auf spezielle thematische Probleme ein?"));
@@ -187,7 +185,7 @@ public class AlsPDFSpeichern {
 					rEing.add(new Chunk(" "
 							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.EINGEHENAUFPROBLEME, j)) + " "));
 				}
-				rEing.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittEingehenAufProbleme)));
+				rEing.add(new Chunk(" " + String.valueOf(ar.get(i).durchschnittEingehenAufProbleme)));
 				rEing.add("\n");
 
 				rInh.add(new Chunk("Wie verständlich konnte sie/er die Inhalte vermitteln?"));
@@ -196,7 +194,7 @@ public class AlsPDFSpeichern {
 					rInh.add(new Chunk(" "
 							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.INHALTSVERMITTLUNG, j)) + " "));
 				}
-				rInh.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittInhaltsvermittlung)));
+				rInh.add(new Chunk(" " + String.valueOf(ar.get(i).durchschnittInhaltsvermittlung)));
 				rInh.add("\n");
 
 				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten zu?"));
@@ -205,7 +203,7 @@ public class AlsPDFSpeichern {
 					rVerh.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
 				}
-				rVerh.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittVerhalten)));
+				rVerh.add(new Chunk(" " + String.valueOf(ar.get(i).durchschnittVerhalten)));
 				rVerh.add("\n");
 
 				rBem.add(new Chunk("\nBermerkungen zu: " + ar.get(i).name + "\n"));
