@@ -74,7 +74,7 @@ public class AlsPDFSpeichern {
 			
 			Phrase title1 = new Phrase("1. Maßnahmenverlauf");
 			leerzeichenSetzen(title1);
-			title1.add(new Chunk("-2 -1  0  1  2\n"));
+			title1.add(new Chunk("-2 -1  0  1  2   Ø\n"));
 			
 			Phrase t1q1 = new Phrase("Wie empfinden die Teilnehmer die Organisation des Seminars?");
 			leerzeichenSetzen(t1q1);
@@ -107,7 +107,7 @@ public class AlsPDFSpeichern {
 			
 			Paragraph title2 = new Paragraph("2. Maßnahmebetreuung",font);
 			leerzeichenSetzen(title2);
-			title2.add(new Chunk("-2 -1  0  1  2"));
+			title2.add(new Chunk("-2 -1  0  1  2   Ø"));
 			
 			Paragraph t2q1 = new Paragraph("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",font);
 			leerzeichenSetzen(t2q1);
@@ -135,11 +135,11 @@ public class AlsPDFSpeichern {
 			
 			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:", font);
 			leerzeichenSetzen(title4);
-			title4.add(new Chunk("-2 -1  0  1  2"));
+			title4.add(new Chunk("-2 -1  0  1  2   Ø"));
 			
 			document.add(title4);
 			
-			Paragraph r = new Paragraph("", font);
+			Paragraph rAlle = new Paragraph("", font);
 			
 			Phrase rVorb = new Phrase();
 			Phrase rFach = new Phrase();
@@ -149,7 +149,7 @@ public class AlsPDFSpeichern {
 			Phrase rBem = new Phrase();
 			
 			for(int i = 0; i<ar.size(); i++) {
-				r.add(new Chunk(ar.get(i).name+"\n"));
+				rAlle.add(new Chunk(ar.get(i).name+"\n"));
 				
 				rVorb.add(new Chunk("Wie war ihr/sein Unterricht vorbereitet?"));
 				leerzeichenSetzen(rVorb);
@@ -179,7 +179,7 @@ public class AlsPDFSpeichern {
 				}	
 				rInh.add("\n");
 				
-				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu?"));
+				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten zu?"));
 				leerzeichenSetzen(rVerh);
 				for(int j=0; j<ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
 					rVerh.add(new Chunk(" "+String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j))+" "));	
@@ -192,27 +192,29 @@ public class AlsPDFSpeichern {
 				}
 				rBem.add("\n");
 				
-				r.add(rVorb);
+				rAlle.add(rVorb);
 				rVorb.clear();
 				
-				r.add(rFach);
+				rAlle.add(rFach);
 				rFach.clear();
 				
-				r.add(rEing);
+				rAlle.add(rEing);
 				rEing.clear();
 				
-				r.add(rInh);
+				rAlle.add(rInh);
 				rInh.clear();
 				
-				r.add(rVerh);
+				rAlle.add(rVerh);
 				rVerh.clear();
 				
-				r.add(rBem);
+				rAlle.add(rBem);
 				rBem.clear();
+				
+				
 			}
 			
 			
-			document.add(r);
+			document.add(rAlle);
 			
 			document.close();
 
@@ -222,13 +224,13 @@ public class AlsPDFSpeichern {
 	}
 	
 	void leerzeichenSetzen(Paragraph paragraph) {
-		while(paragraph.getContent().length()<71) {
+		while(paragraph.getContent().length()<69) {
 			paragraph.add(" ");
 		}
 	}
 	
 	void leerzeichenSetzen(Phrase phrase) {
-		while(phrase.getContent().length()<71) {
+		while(phrase.getContent().length()<69) {
 			phrase.add(" ");
 		}
 	}
