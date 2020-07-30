@@ -72,15 +72,17 @@ public class AlsPDFSpeichern {
 			Paragraph m1 = new Paragraph("", font);
 			m1.setSpacingAfter(50);
 
-			Phrase title1 = new Phrase("1. Maßnahmenverlauf");
-			leerzeichenSetzen(title1);
-			title1.add(new Chunk("-2 -1  0  1  2   Ø\n"));
+			Phrase title1 = new Phrase("1. Maßnahmenverlauf\n");
+			Phrase durchschnitt1 = new Phrase();
+			leerzeichenSetzen(durchschnitt1);
+			durchschnitt1.add(new Chunk("-2 -1  0  1  2   Ø\n"));
 
 			Phrase t1q1 = new Phrase("Wie empfinden die Teilnehmer die Organisation des Seminars?");
 			leerzeichenSetzen(t1q1);
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q1.add(new Chunk(" " + String.valueOf(am.pktvertOrg[i]) + " "));
 			}
+			t1q1.add(new Chunk(" "+String.valueOf(am.durchschnOrg)));
 			t1q1.add("\n");
 
 			Phrase t1q2 = new Phrase("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
@@ -88,38 +90,44 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q2.add(new Chunk(" " + String.valueOf(am.pktvertVerl[i]) + " "));
 			}
+			t1q2.add(new Chunk(" "+String.valueOf(am.durchschnVerl)));
 			t1q2.add("\n");
 
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
-				t1b.add(new Chunk(am.alleBemerkVerl.get(i) + "; "));
+				t1b.add(new Chunk(am.alleBemerkVerl.get(i) + ";\n"));
 			}
 
 			m1.add(title1);
+			m1.add(durchschnitt1);
 			m1.add(t1q1);
 			m1.add(t1q2);
 			m1.add(t1b);
 
 			document.add(m1);
 
-			Paragraph m2 = new Paragraph();
+			Paragraph m2 = new Paragraph("", font);
 			m2.setSpacingAfter(50);
 
 			Paragraph title2 = new Paragraph("2. Maßnahmebetreuung", font);
-			leerzeichenSetzen(title2);
-			title2.add(new Chunk("-2 -1  0  1  2   Ø"));
+			Phrase durchschnitt2 = new Phrase();
+			leerzeichenSetzen(durchschnitt2);
+			durchschnitt2.add(new Chunk("-2 -1  0  1  2   Ø\n"));
 
 			Paragraph t2q1 = new Paragraph("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", font);
 			leerzeichenSetzen(t2q1);
 			for (int i = 0; i < am.pktvertBetrng.length; i++) {
 				t2q1.add(new Chunk(" " + String.valueOf(am.pktvertBetrng[i]) + " "));
 			}
+			t2q1.add(new Chunk(" "+String.valueOf(am.durchschnBetrng)));
+			
 			Paragraph t2b1 = new Paragraph("Bermerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
-				t2b1.add(new Chunk(am.alleBemerkBetrng.get(i) + "; ", font));
+				t2b1.add(new Chunk(am.alleBemerkBetrng.get(i) + ";\n", font));
 			}
 
 			m2.add(title2);
+			m2.add(durchschnitt2);
 			m2.add(t2q1);
 			m2.add(t2b1);
 
@@ -127,17 +135,17 @@ public class AlsPDFSpeichern {
 
 			Paragraph title3 = new Paragraph("3. Bewertung der Referenten bzw. Referentinnen:\n", font);
 			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
-				title3.add(new Chunk(am.alleBemerkRefAllg.get(i) + "; ", font));
+				title3.add(new Chunk(am.alleBemerkRefAllg.get(i) + ";\n", font));
 			}
 			title3.setSpacingAfter(50);
 
 			document.add(title3);
 
-			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:", font);
-			leerzeichenSetzen(title4);
-			title4.add(new Chunk("-2 -1  0  1  2   Ø"));
+			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:\n", font);
+			
 
 			document.add(title4);
+			
 
 			Paragraph rAlle = new Paragraph("", font);
 
@@ -149,7 +157,11 @@ public class AlsPDFSpeichern {
 			Phrase rBem = new Phrase();
 
 			for (int i = 0; i < ar.size(); i++) {
-				rAlle.add(new Chunk(ar.get(i).name + "\n"));
+				rAlle.add(new Chunk("\nReferent / Referentin: "+ar.get(i).getName() + "\n"));
+				Phrase durchschnitt3 = new Phrase();
+				leerzeichenSetzen(durchschnitt3);
+				durchschnitt3.add(new Chunk("-2 -1  0  1  2   Ø\n"));
+				rAlle.add(durchschnitt3);
 
 				rVorb.add(new Chunk("Wie war ihr/sein Unterricht vorbereitet?"));
 				leerzeichenSetzen(rVorb);
@@ -157,6 +169,7 @@ public class AlsPDFSpeichern {
 					rVorb.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
 				}
+				rVorb.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittVorbereitung)));
 				rVorb.add("\n");
 
 				rFach.add(new Chunk("Wie umfangreich war ihr/sein Fachwissen?"));
@@ -165,6 +178,7 @@ public class AlsPDFSpeichern {
 					rFach.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.FACHWISSEN, j)) + " "));
 				}
+				rFach.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittFachwissen)));
 				rFach.add("\n");
 
 				rEing.add(new Chunk("Wie ging sie/er auf spezielle thematische Probleme ein?"));
@@ -173,6 +187,7 @@ public class AlsPDFSpeichern {
 					rEing.add(new Chunk(" "
 							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.EINGEHENAUFPROBLEME, j)) + " "));
 				}
+				rEing.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittEingehenAufProbleme)));
 				rEing.add("\n");
 
 				rInh.add(new Chunk("Wie verständlich konnte sie/er die Inhalte vermitteln?"));
@@ -181,6 +196,7 @@ public class AlsPDFSpeichern {
 					rInh.add(new Chunk(" "
 							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.INHALTSVERMITTLUNG, j)) + " "));
 				}
+				rInh.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittInhaltsvermittlung)));
 				rInh.add("\n");
 
 				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten zu?"));
@@ -189,13 +205,13 @@ public class AlsPDFSpeichern {
 					rVerh.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
 				}
+				rVerh.add(new Chunk(" "+String.valueOf(ar.get(i).durchschnittVerhalten)));
 				rVerh.add("\n");
 
-				rBem.add(new Chunk("Bermerkungen zu: " + ar.get(i).name + "\n"));
+				rBem.add(new Chunk("\nBermerkungen zu: " + ar.get(i).name + "\n"));
 				for (int j = 0; j < ar.get(i).bemerkungen.size(); j++) {
-					rBem.add(new Chunk(ar.get(i).bemerkungen.get(j) + "; "));
+					rBem.add(new Chunk(ar.get(i).bemerkungen.get(j) + ";\n"));
 				}
-				rBem.add("\n");
 
 				rAlle.add(rVorb);
 				rVorb.clear();
@@ -227,13 +243,13 @@ public class AlsPDFSpeichern {
 	}
 
 	void leerzeichenSetzen(Paragraph paragraph) {
-		while (paragraph.getContent().length() < 69) {
+		while (paragraph.getContent().length() < 65) {
 			paragraph.add(" ");
 		}
 	}
 
 	void leerzeichenSetzen(Phrase phrase) {
-		while (phrase.getContent().length() < 69) {
+		while (phrase.getContent().length() < 65) {
 			phrase.add(" ");
 		}
 	}
