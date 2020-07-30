@@ -18,11 +18,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 /* Ausgabe der Auswertung */
 
-public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss möglicherweise bei zeile>?? bei der Höhe +49 addieren
+public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
+	// addieren
 
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
 	List<AuswertungReferent> auswertungenReferenten;
@@ -52,7 +55,7 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 		this.eigenschaft = eigenschaft;
 	}
 
-	public void setMainApp (MainApp app){
+	public void setMainApp(MainApp app) {
 		mainapp = app;
 	}
 
@@ -65,20 +68,19 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 	}
 
 	public void setName(String name) {
-		this.ueberschrift.setText("Ergebnisse für den Fragebogen "+name);
+		this.ueberschrift.setText("Ergebnisse für den Fragebogen " + name);
 	}
 
 	public void init(MainApp app, FragebogenEigenschaften eigenschaft, List<AzubiAntwort> antwortListe) {
 
 		this.setMainApp(app);
 		setName(eigenschaft.fragebogen_name);
-		System.out.println("AuswertungAnzeigen: "+antwortListe.size());
+		System.out.println("AuswertungAnzeigen: " + antwortListe.size());
 		for (AzubiAntwort azubiAntwort : antwortListe) {
-			System.out.println("AuswertungAnzeigen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
+			System.out.println("AuswertungAnzeigen->AntwortListe>>> " + azubiAntwort); // <-- DEBUG
 		}
 
-		if (antwortListe.size()==0)
-		{
+		if (antwortListe.size() == 0) {
 			Logger log = Logger.getLogger();
 			log.logError("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			Label warning = new Label("     In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
@@ -102,386 +104,159 @@ public class ControllerAuswertungAnzeigen {		// was fehlt:  GridPane muss mögli
 
 		setName(eigenschaft.fragebogen_name);
 
-		zeile = 1; 
-
+		zeile = 1;
 
 	}
 
 	public ArrayList<String> filtereUndMischeArrayList(ArrayList<String> liste) {
 
-		for (int i=0; i<liste.size(); i++) {	// entfernen von leeren Einträgen
-			if (liste.get(i) == null || liste.get(i).isBlank())
-			{
+		for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
+			if (liste.get(i) == null || liste.get(i).isBlank()) {
 				liste.remove(i);
 			}
 		}
-		Collections.shuffle(liste);				// zufällige Reihenfolge
+		Collections.shuffle(liste); // zufällige Reihenfolge
 		return liste;
 	}
 
 	public ArrayList<String> filtereUndMischeList(List<String> eingabe) {
 
 		ArrayList<String> liste = (ArrayList<String>) eingabe;
-		for (int i=0; i<liste.size(); i++) {	// entfernen von leeren Einträgen
-			if (liste.get(i) == null || liste.get(i).isBlank())
-			{
+		for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
+			if (liste.get(i) == null || liste.get(i).isBlank()) {
 				liste.remove(i);
 			}
 		}
-		Collections.shuffle(liste);				// zufällige Reihenfolge
+		Collections.shuffle(liste); // zufällige Reihenfolge
 		return liste;
 	}
 
-
 	public void erzeugeDarstellung() {
 
-		anfang();
-		verlauf();
-		betreuung();
-		bemerkungen();
-		referenten();
+		addHeaderToGrid();
+		addBewertungVerlaufToGrid();
+		addBewertungBetreuungToGrid();
+		addBemerkungenReferentenAllgToGrid();
+		addReferentenbewertungenToGrid();
 		setze_alle_Fonts();
 
 	}
 
-	public void anfang() {
+	public void addHeaderToGrid() {
 
-		Label massnahme = new Label();
-		massnahme.setText("Maßnahme von "+eigenschaft.von_datum+" bis "+eigenschaft.bis_datum);
-		grid.add(massnahme, 0, zeile);
-		zeile++;
-
-		Label auftrnummer = new Label();
-		auftrnummer.setText("Auftragsnummer: "+eigenschaft.auftrags_nummer);
-		grid.add(auftrnummer, 0, zeile);
-		zeile++;
-
-		Label leitung = new Label();
-		leitung.setText("Seminarleitung: "+eigenschaft.seminarleiter_name);
-		grid.add(leitung, 0, zeile);
-		zeile++;
-
-		Label datum = new Label();
-		datum.setText("Datum: "+eigenschaft.ausstellungs_datum);
-		grid.add(datum, 0, zeile);
-		zeile++;
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile++;
-
+		addTextToGrid("Maßnahme von " + eigenschaft.von_datum + " bis " + eigenschaft.bis_datum, 0, true);
+		addTextToGrid("Auftragsnummer: " + eigenschaft.auftrags_nummer, 0, true);
+		addTextToGrid("Seminarleitung: " + eigenschaft.seminarleiter_name, 0, true);
+		addTextToGrid("Datum: " + eigenschaft.ausstellungs_datum, 0, true);
+		addTextToGrid("  ", 0, true);
 	}
 
-	public void verlauf() {
+	public void addBewertungVerlaufToGrid() {
+		addPunkteVerlaufToGrid();
+		addBemerkungenToGrid("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkVerl);
+	}
 
-		Label ueberschrift_verlauf = new Label("1. Maßnahmeverlauf:");
-		Label u__2 = new Label("-2");
-		Label u__1 = new Label("-1");
-		Label u_0 = new Label(" 0");
-		Label u_1 = new Label("+1");
-		Label u_2 = new Label("+2");
-		Label u_d = new Label("Ø");
+	private void addPunkteVerlaufToGrid() {
+		addTextToGrid("1. Maßnahmeverlauf:", 0, false);
+		addWertungsheaderToGrid();
+		addPunkteauswertungToGrid("Wie empfinden die Teilnehmer die Organisation des Seminars?",
+				auswertungMassnahme.pktvertOrg, auswertungMassnahme.durchschnOrg);
+		addPunkteauswertungToGrid("Wie empfinden die Teilnehmer den Verlauf des Seminars?",
+				auswertungMassnahme.pktvertVerl, auswertungMassnahme.durchschnVerl);
+	}
 
-		grid.add(ueberschrift_verlauf, 0, zeile);
-		grid.add(u__2, 1, zeile);
-		grid.add(u__1, 2, zeile);
-		grid.add(u_0, 3, zeile);
-		grid.add(u_1, 4, zeile);
-		grid.add(u_2, 5, zeile);
-		grid.add(u_d, 6, zeile);
-		zeile ++;
-
-		Label organisation_frage = new Label("Wie empfinden die Teilnehmer die Organisation des Seminars?");
-		Label o__2 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[0]));
-		Label o__1 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[1]));
-		Label o_0 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[2]));
-		Label o_1 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[3]));
-		Label o_2 = new Label(Integer.toString(auswertungMassnahme.pktvertOrg[4]));
-		Label o_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnOrg));
-
-		grid.add(organisation_frage, 0, zeile);
-		grid.add(o__2, 1, zeile);
-		grid.add(o__1, 2, zeile);
-		grid.add(o_0, 3, zeile);
-		grid.add(o_1, 4, zeile);
-		grid.add(o_2, 5, zeile);
-		grid.add(o_d, 6, zeile);
-		zeile ++;
-
-		Label verlauf_frage = new Label("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
-		Label v__2 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[0]));
-		Label v__1 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[1]));
-		Label v_0 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[2]));
-		Label v_1 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[3]));
-		Label v_2 = new Label(Integer.toString(auswertungMassnahme.pktvertVerl[4]));
-		Label v_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnVerl));
-
-		grid.add(verlauf_frage, 0, zeile);
-		grid.add(v__2, 1, zeile);
-		grid.add(v__1, 2, zeile);
-		grid.add(v_0, 3, zeile);
-		grid.add(v_1, 4, zeile);
-		grid.add(v_2, 5, zeile);
-		grid.add(v_d, 6, zeile);
-		zeile ++;
-
-		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
-		grid.add(ueberschrift_bemerkungen, 0, zeile);
+	private void addPunkteauswertungToGrid(String fragestellung, int[] punkteverteilung, double durchschnitt) {
+		addTextToGrid(fragestellung, 0, false);
+		addTextToGrid(Integer.toString(punkteverteilung[0]), 1, false);
+		addTextToGrid(Integer.toString(punkteverteilung[1]), 2, false);
+		addTextToGrid(Integer.toString(punkteverteilung[2]), 3, false);
+		addTextToGrid(Integer.toString(punkteverteilung[3]), 4, false);
+		addTextToGrid(Integer.toString(punkteverteilung[4]), 5, false);
+		addTextToGrid(zweiStellenNachKomma.format(durchschnitt), 6, false);
 		zeile++;
+	}
 
-		if (auswertungMassnahme.alleBemerkVerl.isEmpty())
-		{
-			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-			grid.add(leer_hinweiß, 0, zeile);
-			zeile++;
-		}
-		else
-		{
-			for (String bemerkung : auswertungMassnahme.alleBemerkVerl) {
+	private void addWertungsheaderToGrid() {
+		addTextToGrid("-2", 1, false);
+		addTextToGrid("-1", 2, false);
+		addTextToGrid(" 0", 3, false);
+		addTextToGrid("+1", 4, false);
+		addTextToGrid("+2", 5, false);
+		addTextToGrid("Ø", 6, false);
+		zeile++;
+	}
 
-				Label temp_bemerkung = new Label(bemerkung);
-				temp_bemerkung.setWrapText(true);
-				grid.add(temp_bemerkung, 0, zeile);
-				zeile++;
+	private void addBemerkungenToGrid(String ueberschrift, ArrayList<String> bemerkungenKategorie) {
+		addTextToGrid(ueberschrift, 0, true);
+
+		if (bemerkungenKategorie.isEmpty()) {
+			addTextToGrid("(Es gibt keine Bemerkungen.)", 0, true);
+		} else {
+			int anzBemerkungen = bemerkungenKategorie.size();
+
+			for (int i = 0; i < anzBemerkungen; i++) {
+				String bemerkung = bemerkungenKategorie.get(i);
+				addTextToGrid(bemerkung, 0, true);
+				if (i < anzBemerkungen - 1) { // Bemerkungen verschiedener Teilnehmer voneinander trennen
+					addTextToGrid("-------", 0, true);
+				}
 			}
 		}
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile ++;
+		addTextToGrid("  ", 0, true);
 	}
 
-	public void betreuung() {
-
-		Label ueberschrift_betreuung = new Label("2. Maßnahmebetreuung:");
-		Label u__2 = new Label("-2");
-		Label u__1 = new Label("-1");
-		Label u_0 = new Label(" 0");
-		Label u_1 = new Label("+1");
-		Label u_2 = new Label("+2");
-		Label u_d = new Label("Ø");
-
-		grid.add(ueberschrift_betreuung, 0, zeile);
-		grid.add(u__2, 1, zeile);
-		grid.add(u__1, 2, zeile);
-		grid.add(u_0, 3, zeile);
-		grid.add(u_1, 4, zeile);
-		grid.add(u_2, 5, zeile);
-		grid.add(u_d, 6, zeile);
-		zeile ++;
-
-		Label betreuung_frage = new Label("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?");
-		Label b__2 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[0]));
-		Label b__1 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[1]));
-		Label b_0 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[2]));
-		Label b_1 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[3]));
-		Label b_2 = new Label(Integer.toString(auswertungMassnahme.pktvertBetrng[4]));
-		Label b_d = new Label(zweiStellenNachKomma.format(auswertungMassnahme.durchschnBetrng));
-
-		grid.add(betreuung_frage, 0, zeile);
-		grid.add(b__2, 1, zeile);
-		grid.add(b__1, 2, zeile);
-		grid.add(b_0, 3, zeile);
-		grid.add(b_1, 4, zeile);
-		grid.add(b_2, 5, zeile);
-		grid.add(b_d, 6, zeile);
-		zeile ++;
-
-		Label ueberschrift_bemerkungen = new Label("Bemerkungen dazu:");
-		grid.add(ueberschrift_bemerkungen, 0, zeile);
-		zeile++;
-
-		if (auswertungMassnahme.alleBemerkBetrng.isEmpty())
-		{
-			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-			grid.add(leer_hinweiß, 0, zeile);
+	private void addTextToGrid(String textContent, int col, boolean linefeed) {
+		Text text = new Text(textContent);
+		grid.add(text, col, zeile);
+		if (linefeed) {
 			zeile++;
 		}
-		else
-		{
-			for (String bemerkung : auswertungMassnahme.alleBemerkBetrng) {
-
-				Label temp_bemerkung = new Label(bemerkung);
-				temp_bemerkung.setWrapText(true);
-				grid.add(temp_bemerkung, 0, zeile);
-				zeile++;
-			}
-		}
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile ++;
 	}
 
-	public void bemerkungen() {
+	public void addBewertungBetreuungToGrid() {
+		addTextToGrid("2. Maßnahmenbetreuung", 0, false);
 
-		Label ueberschrift_bemerkungen = new Label("3.Bewertung der Referenten bzw. Referentinnen:");
-		grid.add(ueberschrift_bemerkungen, 0, zeile);
-		zeile++;
-
-		if (auswertungMassnahme.alleBemerkRefAllg.isEmpty())
-		{
-			Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-			grid.add(leer_hinweiß, 0, zeile);
-			zeile++;
-		}
-		else
-		{
-			for (String bemerkung : auswertungMassnahme.alleBemerkRefAllg) {
-
-				Label temp_bemerkung = new Label(bemerkung);
-				temp_bemerkung.setWrapText(true);
-				grid.add(temp_bemerkung, 0, zeile);
-				zeile++;
-			}
-		}
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile ++;
+		addWertungsheaderToGrid();
+		addPunkteauswertungToGrid("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",
+				auswertungMassnahme.pktvertBetrng, auswertungMassnahme.durchschnBetrng);
+		addBemerkungenToGrid("Bemerkungen dazu: ", auswertungMassnahme.alleBemerkBetrng);
 	}
 
-	public void referenten() {
-		Label ueberschrift = new Label("4.Auswertung der Referenten:");
-		grid.add(ueberschrift, 0, zeile);
-		zeile++;
-		Label spacer = new Label("  ");
-		grid.add(spacer, 0, zeile);
-		zeile++;
+	public void addBemerkungenReferentenAllgToGrid() {
+		addBemerkungenToGrid("3.Bewertung der Referenten bzw. Referentinnen:", auswertungMassnahme.alleBemerkRefAllg);
+	}
+
+	public void addReferentenbewertungenToGrid() {
+		addTextToGrid("4.Auswertung der Referenten:", 0, true);
+		addTextToGrid("  ", 0, true);
 
 		for (AuswertungReferent auswertungReferent : auswertungenReferenten) {
+			addTextToGrid(auswertungReferent.getName(), 0, false);
+			addWertungsheaderToGrid();
 
-			Label ref_name = new Label(auswertungReferent.getName());
-			Label r__2 = new Label("-2");
-			Label r__1 = new Label("-1");
-			Label r_0 = new Label(" 0");
-			Label r_1 = new Label("+1");
-			Label r_2 = new Label("+2");
-			Label r_d = new Label("Ø");
-
-			grid.add(ref_name, 0, zeile);
-			grid.add(r__2, 1, zeile);
-			grid.add(r__1, 2, zeile);
-			grid.add(r_0, 3, zeile);
-			grid.add(r_1, 4, zeile);
-			grid.add(r_2, 5, zeile);
-			grid.add(r_d, 6, zeile);
-			zeile ++;
-
-			Label vorbereitung_frage = new Label("Wie war ihr/sein Unterricht vorbereitet ?");
-			Label vo__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[0]));
-			Label vo__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[1]));
-			Label vo_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[2]));
-			Label vo_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[3]));
-			Label vo_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVorbereitung[4]));
-			Label vo_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittVorbereitung));
-
-			grid.add(vorbereitung_frage, 0, zeile);
-			grid.add(vo__2, 1, zeile);
-			grid.add(vo__1, 2, zeile);
-			grid.add(vo_0, 3, zeile);
-			grid.add(vo_1, 4, zeile);
-			grid.add(vo_2, 5, zeile);
-			grid.add(vo_d, 6, zeile);
-			zeile ++;
-
-			Label fachwissen_frage = new Label("Wie umfangreich war ihr/sein Fachwissen ? ");
-			Label f__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[0]));
-			Label f__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[1]));
-			Label f_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[2]));
-			Label f_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[3]));
-			Label f_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnFachwissen[4]));
-			Label f_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittFachwissen));
-
-			grid.add(fachwissen_frage, 0, zeile);
-			grid.add(f__2, 1, zeile);
-			grid.add(f__1, 2, zeile);
-			grid.add(f_0, 3, zeile);
-			grid.add(f_1, 4, zeile);
-			grid.add(f_2, 5, zeile);
-			grid.add(f_d, 6, zeile);
-			zeile ++;
-
-			Label probleme_frage = new Label("Wie ging sie/er auf spezielle thematische Probleme ein ? ");
-			Label p__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[0]));
-			Label p__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[1]));
-			Label p_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[2]));
-			Label p_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[3]));
-			Label p_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnEingehenAufProbleme[4]));
-			Label p_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittEingehenAufProbleme));
-
-			grid.add(probleme_frage, 0, zeile);
-			grid.add(p__2, 1, zeile);
-			grid.add(p__1, 2, zeile);
-			grid.add(p_0, 3, zeile);
-			grid.add(p_1, 4, zeile);
-			grid.add(p_2, 5, zeile);
-			grid.add(p_d, 6, zeile);
-			zeile ++;
-
-			Label vermittlung_frage = new Label("Wie verständlich sie/er die Inhalte vermitteln ? ");
-			Label ve__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[0]));
-			Label ve__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[1]));
-			Label ve_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[2]));
-			Label ve_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[3]));
-			Label ve_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnInhaltsvermittlung[4]));
-			Label ve_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittInhaltsvermittlung));
-
-			grid.add(vermittlung_frage, 0, zeile);
-			grid.add(ve__2, 1, zeile);
-			grid.add(ve__1, 2, zeile);
-			grid.add(ve_0, 3, zeile);
-			grid.add(ve_1, 4, zeile);
-			grid.add(ve_2, 5, zeile);
-			grid.add(ve_d, 6, zeile);
-			zeile ++;
-
-			Label verhalten_frage = new Label("Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu ? ");
-			Label vr__2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[0]));
-			Label vr__1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[1]));
-			Label vr_0 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[2]));
-			Label vr_1 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[3]));
-			Label vr_2 = new Label(Integer.toString(auswertungReferent.stimmenProRadioBtnVerhalten[4]));
-			Label vr_d = new Label(zweiStellenNachKomma.format(auswertungReferent.durchschnittVerhalten));
-
-			grid.add(verhalten_frage, 0, zeile);
-			grid.add(vr__2, 1, zeile);
-			grid.add(vr__1, 2, zeile);
-			grid.add(vr_0, 3, zeile);
-			grid.add(vr_1, 4, zeile);
-			grid.add(vr_2, 5, zeile);
-			grid.add(vr_d, 6, zeile);
-			zeile ++;
+			addPunkteauswertungToGrid("Wie war ihr/sein Unterricht vorbereitet ?",
+					auswertungReferent.stimmenProRadioBtnVorbereitung, auswertungReferent.durchschnittVorbereitung);
+			addPunkteauswertungToGrid("Wie umfangreich war ihr/sein Fachwissen ? ",
+					auswertungReferent.stimmenProRadioBtnFachwissen, auswertungReferent.durchschnittFachwissen);
+			addPunkteauswertungToGrid("Wie ging sie/er auf spezielle thematische Probleme ein ? ",
+					auswertungReferent.stimmenProRadioBtnEingehenAufProbleme,
+					auswertungReferent.durchschnittEingehenAufProbleme);
+			addPunkteauswertungToGrid("Wie verständlich sie/er die Inhalte vermitteln ? ",
+					auswertungReferent.stimmenProRadioBtnInhaltsvermittlung,
+					auswertungReferent.durchschnittInhaltsvermittlung);
+			addPunkteauswertungToGrid("Wie sagte Ihnen ihr/sein Verhalten gegenüber den Seminarteilnehmern zu ? ",
+					auswertungReferent.stimmenProRadioBtnVerhalten, auswertungReferent.durchschnittVerhalten);
 
 			ArrayList<String> bemerkungen = filtereUndMischeList(auswertungReferent.getBemerkungen());
 
-			Label ueberschrift_bemerkungen = new Label("Bemerkungen zu: "+auswertungReferent.getName());
-			grid.add(ueberschrift_bemerkungen, 0, zeile);
-			zeile++;
-
-			if (bemerkungen.isEmpty())
-			{
-				Label leer_hinweiß = new Label("(Es gibt keine Bemerkungen.)");
-				grid.add(leer_hinweiß, 0, zeile);
-				zeile++;
-			}
-			else
-			{
-				for (String bemerkung : bemerkungen) {
-
-					Label temp_bemerkung = new Label(bemerkung);
-					temp_bemerkung.setWrapText(true);
-					grid.add(temp_bemerkung, 0, zeile);
-					zeile++;
-				}
-			}
-			Label spacer2 = new Label("  ");
-			grid.add(spacer2, 0, zeile);
-			zeile ++;
+			addBemerkungenToGrid("Bemerkungen zu: " + auswertungReferent.getName(), bemerkungen);
 		}
 	}
 	public void setze_alle_Fonts() {
 
-		for (Node node : grid.getChildrenUnmodifiable() ) {
-
-			Label label = (Label) node;
-			label.setFont(new Font(20));
+		for (Node node : grid.getChildrenUnmodifiable()) {
+			Text text = (Text) node;
+			text.setFont(new Font(20));
 		}
 	}
 }

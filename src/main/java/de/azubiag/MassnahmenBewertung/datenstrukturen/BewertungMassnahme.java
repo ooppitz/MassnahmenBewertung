@@ -1,10 +1,19 @@
 package de.azubiag.MassnahmenBewertung.datenstrukturen;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /** Seite 2 des Referenzdokuments *
  * 
  */
-public class BewertungMassnahme {
+public class BewertungMassnahme implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3089124079433422368L;
 	public int organisation;
 	public int verlauf;
 	public String bemerkungVerlauf;
@@ -33,4 +42,5 @@ public class BewertungMassnahme {
 				+ "bemerkungReferentenAllgemein = \"%s\"]",
 				organisation, verlauf, bemerkungVerlauf, betreuung, bemerkungBetreuung, bemerkungReferentenAllgemein);
 	}
+	
 }

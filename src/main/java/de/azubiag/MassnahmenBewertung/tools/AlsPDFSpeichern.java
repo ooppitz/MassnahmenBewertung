@@ -19,15 +19,17 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class AlsPDFSpeichern {
-	Testdaten td;
-	AzubiAntwort aa;
+	FragebogenEigenschaften fe;
 	AuswertungMassnahme am;
+	AuswertungReferent ar;
 	ArrayList<String> als = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -40,11 +42,9 @@ public class AlsPDFSpeichern {
 	}
 
 	public void beispielAuswertungMassnahmeErstellen() {
-		td = new Testdaten();
-		aa.konvertiereStringsInAzubiAntworten(td.getTestdaten());
-		am = am.getAuswertungMassnahme(aa.konvertiereStringsInAzubiAntworten(Testdaten.getTestdaten()));
-		
-		
+		fe = Testdaten.getFragebogenEigenschaften();
+		am = Testdaten.getAuswertungMassnahme();
+		ar = (AuswertungReferent) Testdaten.getAuswertungReferenten();
 	}
 
 	public void saveAsPDF() {

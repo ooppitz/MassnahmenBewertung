@@ -23,62 +23,65 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 /* Eingeben der Antworten */
 
 public class ControllerAntwortenErfassen implements Serializable {
 
+	private static final long serialVersionUID = -4954713836800270562L;
 
 	/**
-	 * 
+	 * Die folgenden Felder werden serilalisiert
 	 */
-	private static final long serialVersionUID = -4954713836800270562L;
+
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>(); // Serialisieren
-	FragebogenEigenschaften eigenschaft;
-	Tab tab;
 
-	int anzahl_antworten;    // Serialisieren 
+	FragebogenEigenschaften eigenschaften; // Serialisieren
 
-	@FXML
-	Label desc;
+	private int umfrageID; // Serialisieren
 
-	@FXML
-	Label antwort_name;
+	int anzahl_antworten; // Serialisieren
+
+	transient Tab tab;
 
 	@FXML
-	Label antwort_text;
+	transient Label desc;
 
 	@FXML
-	GridPane gridpane;
+	transient Label antwort_name;
 
 	@FXML
-	private Label fragebogenName;  // Serialisieren
+	transient Label antwort_text;
 
 	@FXML
-	private Label maintext;
+	transient GridPane gridpane;
 
 	@FXML
-	Button answ_del;
+	private transient Label fragebogenName;
 
 	@FXML
-	public Button add;
+	private transient Label maintext;
 
 	@FXML
-	public Button next;
+	transient Button answ_del;
 
 	@FXML
-	public Button delete;
+	public transient Button add;
 
-	private MainApp mainapp;
+	@FXML
+	public transient Button next;
 
+	@FXML
+	public transient Button delete;
 
-	private int umfrageID;   // Serialisieren
+	transient private MainApp mainapp;
 
 	public void init() {
 		setHandlerRemoveAnswer(answ_del);
@@ -88,18 +91,17 @@ public class ControllerAntwortenErfassen implements Serializable {
 		readdNode(antwort_name, 1, 1);
 		readdNode(antwort_text, 3, 1);
 	}
-	
+
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
-		this.eigenschaft = eigenschaft;
+		this.eigenschaften = eigenschaft;
 	}
 
-	public void readdNode(Node node, int col, int row)
-	{
+	public void readdNode(Node node, int col, int row) {
 		gridpane.getChildren().remove(node);
 		gridpane.add(node, col, row);
 	}
 
-	public void setMainApp (MainApp app){
+	public void setMainApp(MainApp app) {
 		mainapp = app;
 	}
 
@@ -120,7 +122,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	}
 
 	public void setMaintext(String maintext) {
-		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen "+maintext);
+		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen " + maintext);
 	}
 
 	public void setHandlerAnswerButton() {
@@ -128,140 +130,139 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 
-				Clipboard clipboard = Clipboard.getSystemClipboard();
-
-				String verschluesselteAntwort = clipboard.getString();
-				if (verschluesselteAntwort == null)
-				{
+				String verschluesselteAntwort = Clipboard.getSystemClipboard().getString();
+				if (verschluesselteAntwort == null) {
 					Logger.getLogger().logWarning("Zwischenablage leer beim Einkopieren der Antwortstrings");
-					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Ihre Zwischenablage ist leer!", "Ihre Zwischenablage ist leer!");
 					return;
 				}
 
-				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
-				if (entschluesselteAntwort == null) 
-				{	
-					Logger.getLogger().logError("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!");
-					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
-					return;
-
-				} else {
-
-					AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort);  
-
-					if (antwort.umfrageID == umfrageID) {
-
-						boolean flag = false;
-						for (AzubiAntwort azubiAntwort : antwortListe) {
-							if (azubiAntwort.antwortID == antwort.antwortID)
-							{
-								flag = true;
-							}
-						}
-						
-						if (flag == false)
-						{
-							antwortListe.add(antwort); // <-- ZUM DEBUGGEN AUSGESCHALTET
-
-							if (anzahl_antworten == 0) {
-								antwort_text.setText(clipboard.getString());
-								anzahl_antworten++;
-							} else if (anzahl_antworten > 0) {
-								if (anzahl_antworten > 9) {
-									gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
-									gridpane.addRow(anzahl_antworten + 1);
-									// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
-									// aussieht
-								}
-								Button deleteButton = new Button();
-								deleteButton.setText("x");
-								setHandlerRemoveAnswer(deleteButton);
-
-								Label tempLabel = new Label();
-								tempLabel.setText("  Verschlüsselte Antwort " + (anzahl_antworten + 1) + ":");
-								tempLabel.setFont(antwort_name.getFont());
-
-								Label tempLabel2 = new Label(clipboard.getString());
-								tempLabel2.setFont(antwort_text.getFont());
-								gridpane.add(deleteButton, 0, anzahl_antworten + 1, 1, 1);
-								gridpane.add(tempLabel, 1, anzahl_antworten + 1, 2, 1);
-								gridpane.add(tempLabel2, 3, anzahl_antworten + 1, 3, 1);
-
-								int letzteRow = anzahl_antworten+1;
-								for (int i = 1; i < letzteRow; i++) {
-									Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-									if (temp3!=null)
-									{
-										((Button)temp3).setDisable(false);
-									}
-								}
-								Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-								((Button)temp4).setDisable(true);
-
-								anzahl_antworten++;
-							}
-						}
-						else
-						{
-							Logger.getLogger().logWarning("Eingefügte Antwort ist bereits vorhanden!");
-							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügten Antwort ist bereits vorhanden!", "Die eingefügten Antwort ist bereits vorhanden!");
-							return;
-						}
-
-					}
-					else
-					{
-						Logger.getLogger().logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
-						AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Die eingefügte Antwort gehört nicht zu diesem Fragebogen!", "Die eingefügte Antwort gehört nicht zu diesem Fragebogen!");
-						return;
-					}
+				ArrayList<String> antworten = MultiAntwortParser.parse(verschluesselteAntwort);
+				
+				for(String a : antworten) {
+					hinzufuegenAntwort(a);
 				}
-				clipboard.clear();
 			}
+
+			private void hinzufuegenAntwort(String verschluesselteAntwort) {
+				
+				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
+				if (entschluesselteAntwort == null) {	
+					Logger.getLogger().logError("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!");
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
+					return;
+				} 
+
+				AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort);  
+
+				if (antwort.umfrageID != umfrageID) {
+					Logger.getLogger().logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eingefügte Antwort gehört nicht zu diesem Fragebogen!", "Eingefügte Antwort gehört nicht zu diesem Fragebogen!");
+					return;
+				}
+
+				for (AzubiAntwort azubiAntwort : antwortListe) {
+					if (azubiAntwort.antwortID == antwort.antwortID)	{	
+						Logger.getLogger().logWarning("Eingefügte Antwort ist bereits vorhanden!");
+						AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eingefügte Antwort ist bereits vorhanden!", "Eingefügte Antwort ist bereits vorhanden!");
+						return;			
+					}
+				}
+
+				antwortListe.add(antwort); // Antwort ist gültig und wird zur Liste hinzugefügt
+
+				// Hinzufügen der ersten Antwort (in ein bestehendes Control)
+				if (anzahl_antworten == 0) {		
+					
+					antwort_text.setText(verschluesselteAntwort);
+					anzahl_antworten++;
+
+				} else  {
+
+					if (anzahl_antworten > 9) {
+						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
+						gridpane.addRow(anzahl_antworten + 1);
+						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+						// aussieht
+					}
+
+					Button buttonDelete = new Button();
+					buttonDelete.setText("x");
+					setHandlerRemoveAnswer(buttonDelete);
+
+					Label labelAntwort = new Label();
+					labelAntwort.setText("  Verschlüsselte Antwort " + (anzahl_antworten + 1) + ":");
+					labelAntwort.setFont(antwort_name.getFont());
+
+					Label labelAntwortText = new Label(verschluesselteAntwort);
+					labelAntwortText.setFont(antwort_text.getFont());
+
+					int rowIndex = anzahl_antworten + 1;
+					int buttonDeleteIdx = 0;
+					int labelAntwortIdx = 1;
+					int labelAntwortTextIdx = 3;
+
+					//                  node,  ColIndex         RowIndex, colSpan RowSpan
+					gridpane.add(buttonDelete, buttonDeleteIdx, rowIndex, 1, 1);
+					gridpane.add(labelAntwort, labelAntwortIdx, rowIndex, 2, 1);
+					gridpane.add(labelAntwortText, labelAntwortTextIdx, rowIndex, 3, 1);
+
+					int letzteRow = anzahl_antworten + 1;
+					for (int i = 1; i < letzteRow; i++) {
+						Node deleteButtonNode  = GridPaneCustom.getElemByRowAndColumn(gridpane, i, buttonDeleteIdx);
+						if (deleteButtonNode!=null)	{
+							((Button)deleteButtonNode).setDisable(false);
+						}
+					}
+					Node letzterDeleteButton = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, buttonDeleteIdx);
+					((Button)letzterDeleteButton).setDisable(true);
+
+					anzahl_antworten++;
+				}
+			}
+
 		});
+
 	}
 
 	public void setHandlerRemoveAnswer(Button button) {
-		
+
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
 				logger.logInfo("Es soll eine Antwort entfernt werden.");
-				/*	Ablauf:
-				 * - letzter Button wird entfernt
-				 * - letzter Label wird entfernt
-				 * - TextField neben diesem Button wird entfernt
-				 * - alle Textfields darunter werden nach oben verschoben
-				 * - Antwort wird aus der Antwortliste gestrichen
-				 * - möglicherweise wird das Gridpane um 49 Höhe kleiner		
-				 * - anzahlAntworten wird dekrementiert
+				/*
+				 * Ablauf: - letzter Button wird entfernt - letzter Label wird entfernt -
+				 * TextField neben diesem Button wird entfernt - alle Textfields darunter werden
+				 * nach oben verschoben - Antwort wird aus der Antwortliste gestrichen -
+				 * möglicherweise wird das Gridpane um 49 Höhe kleiner - anzahlAntworten wird
+				 * dekrementiert
 				 */
 
-				int letzteRow = anzahl_antworten+1;
-				logger.logInfo("letzte Reihe: "+letzteRow);
+				int letzteRow = anzahl_antworten + 1;
+				logger.logInfo("letzte Reihe: " + letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
-				Label labelnebendiesembutton = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, GridPane.getRowIndex(button), 3);
+				Label labelnebendiesembutton = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane,
+						GridPane.getRowIndex(button), 3);
 
 				gridpane.getChildren().removeAll(letzterButton, letzterLabel, labelnebendiesembutton);
 
 				for (int i = 5; i < letzteRow; i++) {
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-					if (temp!=null)
-					{
-						((Button)temp).setDisable(false);
+					if (temp != null) {
+						((Button) temp).setDisable(false);
 					}
 				}
-				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow-1, 0);
-				((Button)temp2).setDisable(true);
+				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow - 1, 0);
+				((Button) temp2).setDisable(true);
 
-				for (int i = GridPane.getRowIndex(button)+1; i <= letzteRow; i++) {
+				for (int i = GridPane.getRowIndex(button) + 1; i <= letzteRow; i++) {
 
 					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
-					logger.logInfo("temp node: "+temp);
-					if (temp!=null)
-					{
+					logger.logInfo("temp node: " + temp);
+					if (temp != null) {
 						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
 					}
 				}
@@ -271,70 +272,128 @@ public class ControllerAntwortenErfassen implements Serializable {
 		});
 	}
 
-	public void addNext2ToButton() { // Auswertung
+	public void addNext2ToButton(ControllerAntwortenErfassen controller) { // Auswertung
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
-//				System.out.println("AntwortenErfassen: "+antwortListe.size());
-//				for (AzubiAntwort azubiAntwort : antwortListe) {
-//					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
-//				}
-
-				mainapp.showAuswertungAnzeigen(eigenschaft, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
-
+				int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
+						"Ein Fragebogen kann nur 1 mal ausgewertet werden. Jetzt auswerten?");
+				if(userAntwort == AlertMethoden.JA) {
+					MainApp.listeControllerAntwortenErfassen.remove(controller);
+					mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+				}
 			}
 		});
 	}
 
-	/* Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen der Ansicht nötig sind. */
+	public final void writeObject(ObjectOutputStream os) {
 
-	public void speichern() {
+		try {
+			//			os.defaultWriteObject();
+			os.writeObject(antwortListe);
+			os.writeObject(eigenschaften);
+			os.writeInt(umfrageID);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public final void readObject(ObjectInputStream is) {
+
+		try {
+			//			is.defaultReadObject();
+			antwortListe = (List<AzubiAntwort>) is.readObject(); // unchecked cast
+			eigenschaften = (FragebogenEigenschaften) is.readObject();
+			umfrageID = is.readInt();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void tab_wiederherstellen(ControllerAntwortenErfassen alter_controller) { // Labels wieder richtig einstellen
+		// usw
+
+		anzahl_antworten = alter_controller.antwortListe.size(); // kann michael nach seinem refactoring entfernen
+		setName(alter_controller.eigenschaften.fragebogen_name);
+		setMaintext(alter_controller.eigenschaften.fragebogen_name);
+		setUmfrageID(alter_controller.getUmfrageID());
+		eigenschaften = alter_controller.eigenschaften;
+		antwortListe = alter_controller.antwortListe;
+		// wahrscheinlich noch weiteres
+		init();
+
+		// Schleife, um Antworten hinzuzufügen
+		for (int bisherige_antworten = 0; bisherige_antworten < alter_controller.antwortListe
+				.size(); bisherige_antworten++) {
+			if (bisherige_antworten > 0) {
+				Button deleteButton = new Button();
+				deleteButton.setText("x");
+				setHandlerRemoveAnswer(deleteButton);
+
+				Label tempLabel = new Label();
+				tempLabel.setText("  Verschlüsselte Antwort " + (bisherige_antworten + 1) + ":");
+				tempLabel.setFont(antwort_name.getFont());
+
+				gridpane.add(deleteButton, 0, bisherige_antworten + 1, 1, 1);
+				gridpane.add(tempLabel, 1, bisherige_antworten + 1, 2, 1);
+			}
+
+			Label tempLabel2 = new Label(alter_controller.antwortListe.get(bisherige_antworten).verschlüsselterString);
+			tempLabel2.setFont(antwort_text.getFont());
+
+			gridpane.add(tempLabel2, 3, bisherige_antworten + 1, 3, 1);
+
+			int letzteRow = bisherige_antworten + 1;
+			for (int i = 1; i < letzteRow; i++) {
+				Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+				if (temp3 != null) {
+					((Button) temp3).setDisable(false);
+				}
+			}
+			Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+			((Button) temp4).setDisable(true);
+		}
+	}
+
+	/*
+	 * Löst die Serialisierung aus und speichert die Daten, die zum Wiederherstellen
+	 * der Ansicht nötig sind.
+	 */
+
+	public static void speichern() {
 
 		System.out.println("Speichern wurde aufgerufen!");
 
-		// ArrayList to store all objects
-		ArrayList<Object> data = new ArrayList<Object>();
-
-		// Add Objects here
-		data.add(antwortListe); // Object 0
-		data.add(anzahl_antworten); // Object 1
-		data.add(fragebogenName.getText()); // Object 2
-		data.add(umfrageID); // Object 3
-
 		try {
-			FileOutputStream fos = new FileOutputStream("data.ser");
+			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
+			FileOutputStream fos = new FileOutputStream(ordner + "_save");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(data);
+			oos.writeObject(MainApp.listeControllerAntwortenErfassen);
 			oos.close();
 			fos.close();
 
-		} catch (IOException e) {
+		} catch (IOException | GitAPIException e) {
 			Logger l = new Logger();
 			l.logError(e);
 		}
 	}
 
-	public void laden() {
-		// ArrayList to store all deserialized objects
-		ArrayList<Object> deserialized = new ArrayList<Object>();
+	public static ArrayList<ControllerAntwortenErfassen> laden() {
 
+		ArrayList<ControllerAntwortenErfassen> controllerListe = null;
 		try {
-			FileInputStream fis = new FileInputStream("data.ser");
+			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
+			FileInputStream fis = new FileInputStream(ordner + "_save");
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			deserialized = (ArrayList<Object>) ois.readObject();
+			controllerListe = (ArrayList<ControllerAntwortenErfassen>) ois.readObject(); // unchecked cast
 			ois.close();
 			fis.close();
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | GitAPIException e) {
 			Logger l = new Logger();
 			l.logError(e);
 		}
-
-		// Recieve loaded objects here
-		antwortListe = (List<AzubiAntwort>) deserialized.get(0); // Object 0
-		anzahl_antworten = (int) deserialized.get(1); // Object 1
-		fragebogenName.setText((String) deserialized.get(2)); // Object 2
-		umfrageID = (int) deserialized.get(3); // Object 3
+		return controllerListe;
 
 	}
 

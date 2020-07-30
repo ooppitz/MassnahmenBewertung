@@ -24,6 +24,7 @@ import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
 import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -125,9 +126,11 @@ public class ControllerFragebogenErstellen {
 		readdNode(maßnahme_von, 1, 1);
 		readdNode(von_Datum, 3, 1);
 		von_Datum.getEditor().setFont(maßnahme_von.getFont());
+		von_Datum.setValue(LocalDate.of(LocalDate.now().getYear(), 9, 1));
 		readdNode(maßnahme_bis, 4, 1);
 		readdNode(bis_Datum, 5, 1);
 		bis_Datum.getEditor().setFont(maßnahme_bis.getFont());
+		bis_Datum.setValue(LocalDate.of(LocalDate.now().getYear()+3, 8, 31));
 		readdNode(auftragsnummer_label, 1, 2);
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);
@@ -325,7 +328,7 @@ public void addVorschauButtonHandler() {
 							fragebogenHandling(logger);
 						}
 					} else {
-						AlertMethoden.zeigeEinfachenAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
@@ -336,9 +339,8 @@ public void addVorschauButtonHandler() {
 			private void fragebogenHandling(Logger logger) {
 				try {
 
-					Random random = new Random();
-					int umfrageID = random.nextInt();
-
+					int umfrageID = new Random().nextInt();
+				
 					// Erstellen des Fragebogen-Files
 					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
 					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(eigenschaftenX, umfrageID);
@@ -346,53 +348,53 @@ public void addVorschauButtonHandler() {
 					
 					String webpath = getFragebogenWebPath(fragebogenOutputPfad);
 
-					ButtonType buttonTypeYesVeroeffentlichen = new ButtonType("Ja");
-					ButtonType buttonTypeCancelVeroeffentlichen = new ButtonType("Nein", ButtonData.CANCEL_CLOSE);
-
-					/*hier wird nicht getEntscheidungÜberDialog genutzt, da das Fenster permanent über einem anderen angezeigt werden soll (Sonderfall)*/
-					Optional<ButtonType> resultVeroeffentlichen = getEntscheidungVeroeffentlichen(webpath,
-							buttonTypeYesVeroeffentlichen, buttonTypeCancelVeroeffentlichen);
-
-					if (resultVeroeffentlichen.get() == buttonTypeYesVeroeffentlichen) { 
-						// Fortschritt anzeigen? Link anzeigen?
-
-						Dialog<ButtonType> dialog = new Dialog<>();			
-						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
-						
-						UploadController upload_controller = initHochladenFenster(dialog, cancel);
-
-						
-						
+					boolean veroeffentlichen = AlertMethoden.entscheidungViaDialogAbfragenOnTop("Fragebogen veröffentlichen?", 
+							"Fragebogen auf " + webpath + " veröffentlichen?", true /* Fenster oben halten */);
+										
+					if (veroeffentlichen) {
+			
 						try {
+							boolean hochladen = true;
+							if (MainApp.testmodusAktiv) {   // ermöglicht Unterdrücken des Hochladens
+								hochladen = AlertMethoden.entscheidungViaDialogAbfragen("--Testmodus--", "Fragebogen hochladen?");
+							}
+							if (hochladen) {
+								// Alert alert = AlertMethoden.zeigeOKAlertWarten(AlertType.CONFIRMATION, "Hochladen des Fragebogens", "Der Fragebogen wird hochgeladen...", false);
+						
+								Platform.runLater(new Runnable() {
 
-							Upload repoHandle = Upload.getInstance(); // JGit lädt Datei hoch
-							if (!MainApp.testmodusAktiv) {
-								repoHandle.hochladen(fragebogenname.getText(), MainApp.getUserName());
+									@Override
+									public void run() {
+										try {
+											Upload.getInstance().hochladen(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
+										} catch (GitAPIException | IOException e) {
+											e.printStackTrace();
+										} 
+										
+									}});							
+								
 							} else {
-								int uploadConfirm = JOptionPane.showConfirmDialog(null, "Hochladen?", "Testmodus", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-								if (uploadConfirm == JOptionPane.YES_OPTION) {
-									repoHandle.hochladen();
-								} else {
-									logger.logWarning("Nicht Hochgeladen");
-								}
+								logger.logWarning("Der Fragebogen wurde nicht hochgeladen.");		
 							}
 
 						} catch (Exception exc) {
 							
-							logger.logError(exc);
-							// Hochladen hat nicht geklappt
-							
-							AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht geklappt. Probieren Sie es später nochmal.");
+							logger.logError(exc); // Hochladen hat nicht geklappt
+							AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht funktioniert. Probieren Sie es später nochmal.");
 							return;
 
 						}
 						// 8.8.8.8 pingen
-						// �berpr�fen, ob Datei existiert (Error Code 404 m�glicherweise nicht m�glich,
+						// Überprüfen, ob Datei existiert (Error Code 404 möglicherweise nicht möglich,
 						// da Github Pages trotzdem etwas anzeigt)
 						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
-
+						
+						Dialog<ButtonType> dialog = new Dialog<>();			
+						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+						
+						UploadController upload_controller = initHochladenFenster(dialog, cancel);
 						dialog.getDialogPane().getButtonTypes().remove(cancel);
 						upload_controller.setLink(webpath);
 						upload_controller.link.setOnAction(y -> {
@@ -410,16 +412,16 @@ public void addVorschauButtonHandler() {
 
 						zeigeStatusHochladen(dialog, cancel, upload_controller);
 
-						// Fenster f�r Klonen anzeigen
+						// Abfragen, ob Fragebogen kopiert werden soll
 						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
-								"Neuen Fragebogen mit denselben Referenten anlegen?",
+								"Fragebogen kopieren?",
 								"Neuen Fragebogen mit denselben Referenten anlegen?");
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
 						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
 						
 						// Auswertung-Tab erstellen
-						mainapp.showAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
+						mainapp.showTabAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
 
 						if (resultKlonen) {
 							// Fragebogen klonen
@@ -440,7 +442,7 @@ public void addVorschauButtonHandler() {
 									+ e1.getClass().getName() + " beim Preview-Alert. \n"
 									+ "Interne Fehlermeldung: " + e1.getMessage();
 					
-					AlertMethoden.zeigeEinfachenAlert(AlertType.ERROR, "Fehler", errorMessage);
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Fehler", errorMessage);
 				}
 			}
 
@@ -478,26 +480,6 @@ public void addVorschauButtonHandler() {
 				// w�re praktisch, den Link noch woanders anzuzeigen
 			}
 
-			private Optional<ButtonType> getEntscheidungVeroeffentlichen(String webpath,
-					ButtonType buttonTypeYesVeroeffentlichen, ButtonType buttonTypeCancelVeroeffentlichen) {
-				
-				/*Sonderfall: da dieser Alert durch die Methode setAlwaysOnTop() vor der Browservorschau geziegt werden osll, 
-				 * gibt es diese Methode*/
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle("Fragebogen veröffentlichen?");
-				alert.setHeaderText("Fragebogen auf " + webpath + " veröffentlichen?");
-
-				// Dialgofenster zum Hochladen soll über der Browservorschau angezeigt werden,
-				// um den Nutzer nicht
-				// zu verwirren:
-				Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-				alertStage.setAlwaysOnTop(true);
-
-				alert.getButtonTypes().setAll(buttonTypeYesVeroeffentlichen, buttonTypeCancelVeroeffentlichen);
-
-				Optional<ButtonType> result = alert.showAndWait();
-				return result;
-			}
 
 			private String getFragebogenWebPath(String fragebogenOutputPfad) {
 				// Entfernen von .html, weil es manchmal auf github.io zu Problemen führt
