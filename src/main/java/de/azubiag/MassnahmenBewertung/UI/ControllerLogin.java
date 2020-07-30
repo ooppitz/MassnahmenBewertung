@@ -1,8 +1,15 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -29,7 +36,7 @@ public class ControllerLogin {
 
 	@FXML
 	public Button next;
-	
+
 	@FXML
 	public GridPane grid;
 
@@ -40,6 +47,8 @@ public class ControllerLogin {
 	ArrayList<String> alle_Nutzer;
 	ArrayList<String> zutreffende_Nutzer;
 	private final int LIMIT = 10;
+	private Dictionary<String,String> nutzernamenUndOrdner;
+	static String nutzerfilename = "nutzer.txt";
 
 	public ArrayList<String> getZutreffende_Nutzer() {
 		if (zutreffende_Nutzer == null)
@@ -52,18 +61,7 @@ public class ControllerLogin {
 	public ArrayList<String> getAlle_Nutzer() {
 		if (alle_Nutzer == null)
 		{
-			try {
-				String pfad = Upload.getInstance().getRepositoryPfad();
-				pfad += "//Fragebogen";
-				File fragebogen_ordner = new File(pfad);
-				String[] array = fragebogen_ordner.list();
-				alle_Nutzer = new ArrayList<String>();
-				for (String string : array) {
-					alle_Nutzer.add(string);
-				}
-			} catch (GitAPIException | IOException e) {
-				e.printStackTrace();
-			}
+			alle_Nutzer = Collections.list(nutzernamenUndOrdner.keys());
 		}
 		return alle_Nutzer;
 	}
@@ -81,10 +79,71 @@ public class ControllerLogin {
 		grid.add(username, 0, 2);
 		username.setFont(next.getFont());
 		GridPane.setMargin((Node)username, new Insets(5, 5, 5, 5));
+		nutzernamenUndOrdner = laden();
+		System.out.println("nutzernamenUndOrdner-> "+nutzernamenUndOrdner);	// DEBUG
+		
 		getAlle_Nutzer();
 		getZutreffende_Nutzer();
 	}
-	
+
+	public void speichern() {
+
+		Logger log = Logger.getLogger();
+		log.logInfo("nutzer.txt wird gespeichert");
+
+		try {
+			String ordner = Upload.getInstance().getRepositoryPfad();
+			FileOutputStream fos = new FileOutputStream(ordner + nutzerfilename);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(nutzernamenUndOrdner);
+			oos.close();
+			fos.close();
+
+		} catch (IOException | GitAPIException e) {
+			Logger l = new Logger();
+			l.logError(e);
+		}
+	}
+
+	public Hashtable<String,String> laden() {
+
+		if(existiert_datei())
+		{
+			Logger log = Logger.getLogger();
+			log.logInfo("nutzer.txt wird geladen");
+			Hashtable<String,String> hashtable = null;
+			try {
+				String ordner = Upload.getInstance().getRepositoryPfad();
+				FileInputStream fis = new FileInputStream(ordner + nutzerfilename);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				hashtable = (Hashtable<String,String>) ois.readObject(); // unchecked cast
+				ois.close();
+				fis.close();
+			} catch (IOException | ClassNotFoundException | GitAPIException e) {
+				Logger l = new Logger();
+				l.logError(e);
+			}
+			return hashtable;
+		}
+		else
+		{
+			return new Hashtable<String,String>();
+		}
+	}
+
+	public static boolean existiert_datei() {
+
+		try {
+			String ordner = Upload.getInstance().getRepositoryPfad();
+			File datei = new File(ordner+nutzerfilename);
+//			System.out.println(datei+"-->" +datei.isFile());
+			return datei.isFile();
+		} catch (GitAPIException | IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	public void addUsernameNextToButton() {
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -92,7 +151,7 @@ public class ControllerLogin {
 
 				String clean_username = Tools.normalisiereString(username.getText());
 				mainapp.primaryStage.setTitle("SeminarLeiterApp " + username.getText());
-				
+
 				// schauen, ob das Feld nicht leer ist
 				// Auswahlliste von Namen davor anzeigen
 				boolean nutzer_vorhanden = isNutzerVorhanden(clean_username);
@@ -107,6 +166,9 @@ public class ControllerLogin {
 					boolean account_erstellt = neuen_Account_erstellen(clean_username);
 					if (account_erstellt)
 					{
+						nutzernamenUndOrdner.put(username.getText(),clean_username);
+						System.out.println("Neuer Account erstellt: Key-> "+username.getText()+"\tValue-> "+clean_username);
+						speichern();
 						MainApp.setUserName(username.getText());
 						mainapp.showTabPane();
 					}
@@ -118,13 +180,12 @@ public class ControllerLogin {
 
 	public void addListener_TextFieldSuggestion() {
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
+			zutreffende_Nutzer.clear();
 			if (!newValue.isBlank())
 			{
-				String spaces_vorne_entfernt = newValue.replaceFirst("^\\s*", "");
-				String clean_username = Tools.normalisiereString(spaces_vorne_entfernt).toLowerCase();
-				zutreffende_Nutzer.clear();
+
 				for (String string : getAlle_Nutzer()) {
-					if(string.matches(clean_username+"\\S*")  || string.matches("\\S*_"+clean_username+"\\S*"))
+					if(string.matches(newValue+"\\S*")  || string.matches("\\S* "+newValue+"\\S*"))
 					{
 						zutreffende_Nutzer.add(string);
 					}

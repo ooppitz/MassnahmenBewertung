@@ -1,6 +1,7 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
