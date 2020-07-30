@@ -8,6 +8,7 @@ module de.azubiag.MassnahmenBewertung {
 	requires javafx.base;
 	requires org.jsoup;
 	requires org.eclipse.jgit;
+	requires itextpdf;
 	requires pdfbox;
 
     opens de.azubiag.MassnahmenBewertung to javafx.fxml;

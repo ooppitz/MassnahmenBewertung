@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
-import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -252,7 +252,6 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 			addBemerkungenToGrid("Bemerkungen zu: " + auswertungReferent.getName(), bemerkungen);
 		}
 	}
-
 	public void setze_alle_Fonts() {
 
 		for (Node node : grid.getChildrenUnmodifiable()) {
