@@ -440,7 +440,7 @@ public class MainApp extends Application {
 		try {
 			Upload upload = Upload.getInstance();
 			String ordner = upload.getSeminarleiterDirectory(userName);
-			File speicherdatei = new File(ordner+"_save");
+			File speicherdatei = new File(ordner+ControllerAntwortenErfassen.saveFileName);
 			if (speicherdatei.isFile())
 			{
 				return true;
