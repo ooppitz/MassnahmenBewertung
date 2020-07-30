@@ -366,13 +366,15 @@ public class ControllerAntwortenErfassen implements Serializable {
 	 * der Ansicht nötig sind.
 	 */
 
+	
+	static String saveFileName = "_save.txt";
 	public static void speichern() {
 
 		System.out.println("Speichern wurde aufgerufen!");
 
 		try {
 			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
-			FileOutputStream fos = new FileOutputStream(ordner + "_save");
+			FileOutputStream fos = new FileOutputStream(ordner + saveFileName);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(MainApp.listeControllerAntwortenErfassen);
 			oos.close();
@@ -389,7 +391,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 		ArrayList<ControllerAntwortenErfassen> controllerListe = null;
 		try {
 			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
-			FileInputStream fis = new FileInputStream(ordner + "_save");
+			FileInputStream fis = new FileInputStream(ordner + saveFileName);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			controllerListe = (ArrayList<ControllerAntwortenErfassen>) ois.readObject(); // unchecked cast
 			ois.close();
