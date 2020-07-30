@@ -277,13 +277,12 @@ public class ControllerAntwortenErfassen implements Serializable {
 			@Override
 			public void handle(ActionEvent e) {
 				// Next
-				//				System.out.println("AntwortenErfassen: "+antwortListe.size());
-				//				for (AzubiAntwort azubiAntwort : antwortListe) {
-				//					System.out.println("AntwortenErfassen->AntwortListe>>> "+azubiAntwort);			// <-- DEBUG
-				//				}
-				MainApp.listeControllerAntwortenErfassen.remove(controller);
-				mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
-
+				int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
+						"Ein Fragebogen kann nur 1 mal ausgewertet werden. Jetzt auswerten?");
+				if(userAntwort == AlertMethoden.JA) {
+					MainApp.listeControllerAntwortenErfassen.remove(controller);
+					mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+				}
 			}
 		});
 	}
