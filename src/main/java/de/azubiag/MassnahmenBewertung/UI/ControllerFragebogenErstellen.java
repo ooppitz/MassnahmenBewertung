@@ -27,6 +27,7 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
@@ -360,7 +361,9 @@ public void addVorschauButtonHandler() {
 							}
 							if (hochladen) {
 								// Alert alert = AlertMethoden.zeigeOKAlertWarten(AlertType.CONFIRMATION, "Hochladen des Fragebogens", "Der Fragebogen wird hochgeladen...", false);
-						
+								
+// ===============================================================================						
+								/*
 								Platform.runLater(new Runnable() {
 
 									@Override
@@ -369,9 +372,28 @@ public void addVorschauButtonHandler() {
 											Upload.getInstance().hochladen(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
 										} catch (GitAPIException | IOException e) {
 											e.printStackTrace();
-										} 
+										}
 										
-									}});							
+									}});
+								*/							
+// ===============================================================================
+								Task task = new Task<Void>() {
+								    @Override protected Void call() throws Exception {
+								    	try {
+											Upload.getInstance().hochladen(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
+										} catch (GitAPIException | IOException e) {
+											e.printStackTrace();
+										}
+								    	updateMessage("fertig!");
+								    	return null;
+								    }
+								};
+								new Thread(task).start();
+								while (!task.getMessage().equals("fertig!")) {
+									System.out.println("nicht fertig!");
+								}
+								System.out.println("fertig!");
+// ===============================================================================
 								
 							} else {
 								logger.logWarning("Der Fragebogen wurde nicht hochgeladen.");		

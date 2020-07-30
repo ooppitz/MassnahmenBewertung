@@ -15,4 +15,6 @@ module de.azubiag.MassnahmenBewertung {
     exports de.azubiag.MassnahmenBewertung.UI;
     exports de.azubiag.MassnahmenBewertung.auswertung.test;
     opens de.azubiag.MassnahmenBewertung.UI;
+    
+    exports de.azubiag.MassnahmenBewertung.UI.test;
 }
