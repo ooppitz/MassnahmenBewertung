@@ -23,16 +23,16 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
-public class alsPDFSpeichern {
+public class AlsPDFSpeichern {
 	AzubiAntwort aa;
 	AuswertungMassnahme am;
 	ArrayList<String> als = new ArrayList<>();
 
 	public static void main(String[] args) {
-		new alsPDFSpeichern();
+		new AlsPDFSpeichern();
 	}
 
-	public alsPDFSpeichern() {
+	public AlsPDFSpeichern() {
 		beispielAuswertungMassnahmeErstellen();
 		saveAsPDF();
 	}
