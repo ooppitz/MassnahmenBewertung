@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -183,9 +185,11 @@ public class ControllerLogin {
 			zutreffende_Nutzer.clear();
 			if (!newValue.isBlank())
 			{
+				Pattern pattern = Pattern.compile(".*"+newValue+".*", Pattern.CASE_INSENSITIVE);
 
 				for (String string : getAlle_Nutzer()) {
-					if(string.matches(newValue+"\\S*")  || string.matches("\\S* "+newValue+"\\S*"))
+					Matcher matcher = pattern.matcher(string);
+					if(matcher.matches())
 					{
 						zutreffende_Nutzer.add(string);
 					}
