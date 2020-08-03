@@ -4,10 +4,18 @@ import java.time.LocalDate;
 
 public final class Datum implements Comparable<Datum> {
 
+	
+	public static final int GROESSER = 1;
+	public static final int GLEICH = 0;
+	public static final int KLEINER = -1;
+
+	private static final int MINIMUM_PLAUSIBLE_YEAR = 1900;
+	private static final int MAXIMUM_PLAUSIBLE_YEAR = 2110;
+	
 	public final int tag;
 	public final int monat;
 	public final int jahr;
-
+	
 	private Datum(int tag, int monat, int jahr) {
 		this.tag = tag;
 		this.monat = monat;
@@ -106,12 +114,4 @@ public final class Datum implements Comparable<Datum> {
 	public LocalDate toLocalDate() {
 		return LocalDate.of(jahr, monat, tag);
 	}
-	
-	public static final int GROESSER = 1;
-	public static final int GLEICH = 0;
-	public static final int KLEINER = -1;
-
-	private static final int MINIMUM_PLAUSIBLE_YEAR = 1900;
-	private static final int MAXIMUM_PLAUSIBLE_YEAR = 2110;
-
 }
