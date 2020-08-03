@@ -149,7 +149,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	}
 
 	public void setMaintext(String maintext) {
-		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen " + maintext);
+		this.maintext.setText("Eingeben der Ergebnisse für Umfrage " + maintext);
 	}
 	
 	public void setHandlerLinkCopyButton() {

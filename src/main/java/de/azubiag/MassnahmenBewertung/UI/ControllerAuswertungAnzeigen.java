@@ -43,8 +43,6 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 	@FXML
 	public Button save;
 
-	@FXML
-	public Button delete;
 
 	@FXML
 	GridPane grid;
@@ -68,7 +66,7 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 	}
 
 	public void setName(String name) {
-		this.ueberschrift.setText("Ergebnisse für den Fragebogen " + name);
+		this.ueberschrift.setText("Ergebnisse für die Umfrage " + name);
 	}
 
 	public void init(MainApp app, FragebogenEigenschaften eigenschaft, List<AzubiAntwort> antwortListe) {

@@ -258,8 +258,6 @@ public class MainApp extends Application {
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z3);
 
-			addDeleteToButton(controller.delete, rootLayout, tab_z3);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
