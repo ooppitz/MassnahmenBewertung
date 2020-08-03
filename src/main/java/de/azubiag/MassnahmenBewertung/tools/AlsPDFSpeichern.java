@@ -26,7 +26,7 @@ public class AlsPDFSpeichern {
 
 	public static void main(String[] args) {
 		new AlsPDFSpeichern();
-		
+
 		System.out.println("PDF wurde erzeugt!");
 	}
 
@@ -45,7 +45,8 @@ public class AlsPDFSpeichern {
 		Document document = new Document();
 		try {
 			try {
-				File file = new File(System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\gfigithubaccess.github.io\\iTextTable.pdf");
+				File file = new File(System.getenv("LOCALAPPDATA")
+						+ "\\MassnahmenBewertung\\gfigithubaccess.github.io\\iTextTable.pdf");
 				PdfWriter.getInstance(document, new FileOutputStream(file));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -67,12 +68,14 @@ public class AlsPDFSpeichern {
 			Paragraph massnahmenverlauf = paragraphSetzen();
 
 			Phrase titelMassnahmenverlauf = titelSetzen("1. Maßnahmenverlauf");
-			
-			Phrase spaltenMassnahmenverlauf = punkteSpaltenSetzen();
-			
-			Phrase zeilePktOrg = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?", am.pktvertOrg, am.durchschnOrg);
 
-			Phrase zeilePktVerl = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?", am.pktvertVerl, am.durchschnVerl);
+			Phrase spaltenMassnahmenverlauf = punkteSpaltenSetzen();
+
+			Phrase zeilePktOrg = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?",
+					am.pktvertOrg, am.durchschnOrg);
+
+			Phrase zeilePktVerl = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?",
+					am.pktvertVerl, am.durchschnVerl);
 
 			Phrase zeileAlleBemVerl = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
 
@@ -87,11 +90,13 @@ public class AlsPDFSpeichern {
 			Paragraph massnahmenbetreuung = paragraphSetzen();
 
 			Phrase titelMassnahmenbetreuung = titelSetzen("2. Maßnahmenbetreuung");
-			
+
 			Phrase spaltenMassnahmenbetreuung = punkteSpaltenSetzen();
 
-			Phrase zeilePktBetrng = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng, am.durchschnBetrng);
-			
+			Phrase zeilePktBetrng = druckeZeileMitPunkten(
+					"Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng,
+					am.durchschnBetrng);
+
 			Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkBetrng);
 
 			massnahmenbetreuung.add(titelMassnahmenbetreuung);
@@ -102,17 +107,18 @@ public class AlsPDFSpeichern {
 			document.add(massnahmenbetreuung);
 
 			Paragraph bewertungReferentenAllgemein = paragraphSetzen();
-			
-			Phrase titelBewertungReferentenAllgemein = druckeZeileMitBemerkungen("3. Bewertung der Referenten bzw. Referentinnen:", am.alleBemerkRefAllg);
-			
+
+			Phrase titelBewertungReferentenAllgemein = druckeZeileMitBemerkungen(
+					"3. Bewertung der Referenten bzw. Referentinnen:", am.alleBemerkRefAllg);
+
 			bewertungReferentenAllgemein.add(titelBewertungReferentenAllgemein);
 
 			document.add(bewertungReferentenAllgemein);
 
 			Paragraph bewertungReferentenIndividuell = paragraphSetzen();
-			
+
 			Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten:");
-			
+
 			bewertungReferentenIndividuell.add(titelBewertungReferentenIndividuell);
 
 			Phrase titelReferentName;
@@ -124,26 +130,32 @@ public class AlsPDFSpeichern {
 			Phrase referentBem;
 
 			for (int i = 0; i < ar.size(); i++) {
-				
+
 				titelReferentName = new Phrase("\nReferent / Referentin: " + ar.get(i).getName() + "\n");
-				
+
 				bewertungReferentenIndividuell.add(titelReferentName);
-				
+
 				Phrase durchschnitt3 = punkteSpaltenSetzen();
-				
+
 				bewertungReferentenIndividuell.add(durchschnitt3);
 
-				referentPktVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?", ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
-				
-				referentPktFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?", ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
-				
-				referentPktEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?", ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
-				
-				referentPktInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?", ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
+				referentPktVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?",
+						ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
 
-				referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?", ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
+				referentPktFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?",
+						ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
 
-				referentBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n", ar.get(i).getBemerkungen());
+				referentPktEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?",
+						ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
+
+				referentPktInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?",
+						ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
+
+				referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?",
+						ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
+
+				referentBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n",
+						ar.get(i).getBemerkungen());
 
 				bewertungReferentenIndividuell.add(referentPktVorb);
 				referentPktVorb.clear();
@@ -175,7 +187,7 @@ public class AlsPDFSpeichern {
 	}
 
 	private Phrase titelSetzen(String titel) {
-		Phrase phrase = new Phrase(titel+"\n");
+		Phrase phrase = new Phrase(titel + "\n");
 		return phrase;
 	}
 
@@ -193,7 +205,7 @@ public class AlsPDFSpeichern {
 	}
 
 	private Phrase druckeZeileMitBemerkungen(String titel, List<String> bemerkungen) {
-		Phrase paragraph = new Phrase(titel+"\n");
+		Phrase paragraph = new Phrase(titel + "\n");
 		for (int i = 0; i < bemerkungen.size(); i++) {
 			paragraph.add(new Chunk(bemerkungen.get(i) + ";\n"));
 		}
