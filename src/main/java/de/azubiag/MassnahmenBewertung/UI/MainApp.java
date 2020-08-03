@@ -228,13 +228,13 @@ public class MainApp extends Application {
 			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z2);
-			listeControllerAntwortenErfassen.add(controller);
-			ControllerAntwortenErfassen.speichern(); 	// speichern, nachdem der Tab erstellt worden ist
+			zuListeHinzufügen(controller); 	// speichern, nachdem der Tab erstellt worden ist
 		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 
 	public void showTabAuswertungAnzeigen(FragebogenEigenschaften eigenschaft, int index,List<AzubiAntwort> antwortListe) { // incomplete
 		try {
@@ -317,7 +317,7 @@ public class MainApp extends Application {
 		tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
 			public void handle(Event event) {
-				MainApp.listeControllerAntwortenErfassen.remove(controller);
+				vonListeEntfernen(controller);
 			}
 		});
 		
@@ -447,6 +447,16 @@ public class MainApp extends Application {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public void zuListeHinzufügen(ControllerAntwortenErfassen controller) {
+		listeControllerAntwortenErfassen.add(controller);
+		ControllerAntwortenErfassen.speichern();
+	}
+	
+	public static void vonListeEntfernen(ControllerAntwortenErfassen controller) {
+		MainApp.listeControllerAntwortenErfassen.remove(controller);
+		ControllerAntwortenErfassen.speichern();
 	}
 
 }
