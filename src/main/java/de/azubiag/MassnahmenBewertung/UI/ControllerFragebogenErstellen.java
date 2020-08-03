@@ -51,7 +51,7 @@ import javafx.stage.Stage;
 
 /* Erstellen des Fragebogens */
 
-public class ControllerFragebogenErstellen {
+public class ControllerFragebogenErstellen implements Controller {
 
 	Tab tab;
 	int anzahl_referenten;
