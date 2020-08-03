@@ -363,7 +363,7 @@ public void addVorschauButtonHandler() {
 								// Alert alert = AlertMethoden.zeigeOKAlertWarten(AlertType.CONFIRMATION, "Hochladen des Fragebogens", "Der Fragebogen wird hochgeladen...", false);
 								
 // ===============================================================================						
-								/*
+								
 								Platform.runLater(new Runnable() {
 
 									@Override
@@ -375,8 +375,9 @@ public void addVorschauButtonHandler() {
 										}
 										
 									}});
-								*/							
+														
 // ===============================================================================
+								/*
 								Task task = new Task<Void>() {
 								    @Override protected Void call() throws Exception {
 								    	try {
@@ -390,9 +391,10 @@ public void addVorschauButtonHandler() {
 								};
 								new Thread(task).start();
 								while (!task.getMessage().equals("fertig!")) {
-									System.out.println("nicht fertig!");
+									System.out.println("ControllerFragebogenErstellen) Hochladen des Fragebogens nicht fertig!");
 								}
 								System.out.println("fertig!");
+								*/
 // ===============================================================================
 								
 							} else {
