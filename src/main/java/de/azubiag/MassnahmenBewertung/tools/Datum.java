@@ -38,6 +38,11 @@ public final class Datum implements Comparable<Datum> {
 		}
 	}
 	
+	public static Datum newDatum(int tag, int monat, int jahr) {
+		Datum datum = new Datum(tag, monat, jahr);
+		return datum.notBullshit()? datum : null;
+	}
+	
 	private boolean notBullshit() {
 		return tag > 0 && tag <= tageImMonat(monat, jahr)
 				&& monat > 0 && monat <= 12
