@@ -187,14 +187,11 @@ public class MainApp extends Application {
 
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
-			BorderPane z1 = (BorderPane) loader.load(); // !!
-			Tab tab_z1 = new Tab();
-			tab_z1.setContent(z1);
-			tab_z1.setClosable(true);
+			BorderPane z1bp = (BorderPane) loader.load(); // !!
 			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z1.setText("Unbenannter Fragebogen");
-			rootLayout.getTabs().add(tab_z1);
 			ControllerFragebogenErstellen controller = loader.getController();	
+			Tab tab_z1 = erzeugeTab(z1bp, "Unbenannter Fragebogen", controller);
+					rootLayout.getTabs().add(tab_z1);
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
@@ -216,11 +213,11 @@ public class MainApp extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
-			BorderPane z2 = (BorderPane) loader.load(); // !!
+			BorderPane z2bp = (BorderPane) loader.load(); // !!
 		
 			ControllerAntwortenErfassen controller = loader.getController();
 			
-			Tab tab_z2 = erzeugeTab(z2, eigenschaft.fragebogen_name, controller);
+			Tab tab_z2 = erzeugeTab(z2bp, eigenschaft.fragebogen_name, controller);
 			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			
 			controller.setMainApp(this);
@@ -250,17 +247,14 @@ public class MainApp extends Application {
 			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
-			BorderPane z3 = (BorderPane) loader.load(); // !!
-			Tab tab_z3 = new Tab();
-			tab_z3.setContent(z3);
-			tab_z3.setClosable(true);
+			BorderPane z3bp = (BorderPane) loader.load(); // !!
 			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z3.setText(eigenschaft.fragebogen_name);
 			System.out.println(index);
+			ControllerAuswertungAnzeigen controller = loader.getController();
+			Tab tab_z3 = erzeugeTab(z3bp, eigenschaft.fragebogen_name, controller);
+			// System.out.println(controller);
 			rootLayout.getTabs().add(index +1, tab_z3);
 			rootLayout.getTabs().remove(index);
-			ControllerAuswertungAnzeigen controller = loader.getController();
-			// System.out.println(controller);
 			controller.setEigenschaft(eigenschaft);
 			controller.init(this, eigenschaft, antwortListe);
 			controller.erzeugeDarstellung();
