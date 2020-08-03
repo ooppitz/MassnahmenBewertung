@@ -76,13 +76,14 @@ public class MainApp extends Application {
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
+	
+	
 
 
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("SeminarLeiterApp");
-
 
 		showLogin();
 
@@ -177,19 +178,16 @@ public class MainApp extends Application {
 
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
-			BorderPane z1 = (BorderPane) loader.load(); // !!
-			Tab tab_z1 = new Tab();
-			tab_z1.setContent(z1);
-			tab_z1.setClosable(true);
+			BorderPane z1bp = (BorderPane) loader.load(); // !!
 			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z1.setText("Unbenannter Fragebogen");
-			rootLayout.getTabs().add(tab_z1);
 			ControllerFragebogenErstellen controller = loader.getController();	
+			Tab tab_z1 = erzeugeTab(z1bp, "Unbenannter Fragebogen", controller);
+					rootLayout.getTabs().add(tab_z1);
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
 			controller.init();
-			addDeleteToButton(controller.delete, rootLayout, tab_z1);
+			addHandlerToDeleteButton(controller.delete, tab_z1, controller);
 			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();
 
@@ -206,11 +204,11 @@ public class MainApp extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
-			BorderPane z2 = (BorderPane) loader.load(); // !!
+			BorderPane z2bp = (BorderPane) loader.load(); // !!
 		
 			ControllerAntwortenErfassen controller = loader.getController();
 			
-			Tab tab_z2 = erzeugeTab(z2, eigenschaft.fragebogen_name, controller);
+			Tab tab_z2 = erzeugeTab(z2bp, eigenschaft.fragebogen_name, controller);
 			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			
 			controller.setMainApp(this);
@@ -223,7 +221,7 @@ public class MainApp extends Application {
 			controller.setMaintext(eigenschaft.fragebogen_name);
 			controller.setUmfrageID(verifyID);
 			controller.init();
-			addDeleteToButton(controller.delete, rootLayout, tab_z2);
+			addHandlerToDeleteButton(controller.delete, tab_z2, controller);
 			controller.setHandlerAnswerButton();
 			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
@@ -241,25 +239,19 @@ public class MainApp extends Application {
 			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
-			BorderPane z3 = (BorderPane) loader.load(); // !!
-			Tab tab_z3 = new Tab();
-			tab_z3.setContent(z3);
-			tab_z3.setClosable(true);
+			BorderPane z3bp = (BorderPane) loader.load(); // !!
 			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			tab_z3.setText(eigenschaft.fragebogen_name);
 			System.out.println(index);
+			ControllerAuswertungAnzeigen controller = loader.getController();
+			Tab tab_z3 = erzeugeTab(z3bp, eigenschaft.fragebogen_name, controller);
+			// System.out.println(controller);
 			rootLayout.getTabs().add(index +1, tab_z3);
 			rootLayout.getTabs().remove(index);
-			ControllerAuswertungAnzeigen controller = loader.getController();
-			// System.out.println(controller);
 			controller.setEigenschaft(eigenschaft);
 			controller.init(this, eigenschaft, antwortListe);
 			controller.erzeugeDarstellung();
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z3);
-
-			addDeleteToButton(controller.delete, rootLayout, tab_z3);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -293,7 +285,7 @@ public class MainApp extends Application {
 			neuer_controller.tab_wiederherstellen(deserialisierterController);
 			
 			
-			addDeleteToButton(neuer_controller.delete, rootLayout, tab_z2);
+			addHandlerToDeleteButton(neuer_controller.delete, tab_z2, neuer_controller);
 			neuer_controller.setHandlerAnswerButton();
 			neuer_controller.addNext2ToButton(neuer_controller);
 	
@@ -307,21 +299,22 @@ public class MainApp extends Application {
 	}
 
 	
-	private Tab erzeugeTab(BorderPane z2, String tabName, ControllerAntwortenErfassen controller) {
+	private Tab erzeugeTab(BorderPane borderPane, String tabName, Controller controller) {
 	
-		Tab tab_z2 = new Tab();
-		tab_z2.setContent(z2);
-		tab_z2.setClosable(true);
-		tab_z2.setText(tabName);
+		Tab thisTab = new Tab();
+		thisTab.setContent(borderPane);
+		thisTab.setClosable(true);
+		thisTab.setText(tabName);
 		
-		tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
+		thisTab.setOnCloseRequest(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
 			public void handle(Event event) {
-				vonListeEntfernen(controller);
+
+				handleUmfrageSchliessen( thisTab, controller, event);
 			}
 		});
 		
-		return tab_z2;
+		return thisTab;
 	}
 	
 	/**
@@ -338,33 +331,49 @@ public class MainApp extends Application {
 			e.printStackTrace();
 			return false;
 		}
-		
 	}
 
-	public void addDeleteToButton(Button button, TabPane pane, Tab thistab) {
+	public void addHandlerToDeleteButton(Button button, Tab thistab, Controller controller) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				pane.getTabs().remove(thistab);
-				String seminarleiter = MainApp.getUserName();
-
-				try {
-					File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
-					if (f.delete()) // returns Boolean value
-
-					{
-						Upload.getInstance().hochladen();
-						System.out.println(f.getName() + " deleted"); // getting and printing the file name
-					} else {
-						System.out.println("failed");
-					}
-				} catch (GitAPIException | IOException exc) {
-					exc.printStackTrace();
-				}
+				handleUmfrageSchliessen( thistab, controller, e);
 			}
 		});
 	}
 
+	public void handleUmfrageSchliessen( Tab thistab, Controller controller, Event event) {
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Umfrage schließen", "Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ")==1)? true:false;
+		if (loeschen) {
+			deleteActions( thistab, controller);
+		}else {
+			event.consume(); //bei Tab: setOnCloseRequest Schließen stoppen
+		}
+	}
+
+	public void deleteActions( Tab thistab, Controller controller) {
+		rootLayout.getTabs().remove(thistab);
+		if (controller.getClass()== ControllerAntwortenErfassen.class) {
+			vonListeEntfernen(controller);
+		}
+		String seminarleiter = MainApp.getUserName();
+
+		try {
+			File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
+			
+			if (f!=null) {
+				if (f.delete()) // returns Boolean value
+				{
+					Upload.getInstance().hochladen();
+					System.out.println(f.getName() + " deleted"); // getting and printing the file name
+				} else {
+					System.out.println("failed");
+				} 
+			}
+		} catch (GitAPIException | IOException exc) {
+			exc.printStackTrace();
+		}
+	}
 	public void showTabPlus() {
 		Tab tab_plus = new Tab();
 		tab_plus.setText("+");
@@ -390,7 +399,6 @@ public class MainApp extends Application {
 					SingleSelectionModel<Tab> selectionModel = rootLayout.getSelectionModel();
 					selectionModel.select(size - 1);
 				}
-
 			}
 		});
 	}
@@ -405,27 +413,26 @@ public class MainApp extends Application {
 		for (int i=0; i<args.length; i++) {
 			if (args[i].equals("--test")) setTestmodusAktiv(true);
 		}
-
 		launch(args);
 	}
 
 	
 	public void warnfenster(WindowEvent event) {
-		if (!listeControllerAntwortenErfassen.isEmpty())
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Wenn Sie das Fenster schließen, geschieht Folgendes: \n"
+				+ "-Umfrageergebnisse, die noch nicht in einem PDF gespeichert wurden, gehen verloren\n"
+				+ "-Umfragen, die noch nicht hochgeladen wurden, werden gelöscht.\n" 
+				+ "Laufende Umfragen erscheinen beim Öffnen der App im jetzigen Zustand wieder.\n\n"
+				+ "Trotzdem schließen ? ")==1) ? true:false; 
+		
+		if (loeschen)
 		{
-			int resultFortschrittSpeichern = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Warnung", "Wollen Sie den Fortschritt speichern?");
-	
-			if(resultFortschrittSpeichern == 1) {
+			if(!listeControllerAntwortenErfassen.isEmpty()) {
 				ControllerAntwortenErfassen.speichern();
 				Platform.exit();
-			} else if(resultFortschrittSpeichern == 0) {
-				System.out.println("Fortschritt wird verworfen!");
-				Platform.exit();
-			} else {
-				System.out.println("Schließen wird abgebrochen");
-				event.consume();
 			}
-			System.out.println("Der Rest der Methode wird noch durchgeführt!");
+		} else {
+			System.out.println("Schließen wird abgebrochen");
+			event.consume();
 		}
 	}
 
@@ -448,13 +455,15 @@ public class MainApp extends Application {
 			return false;
 		}
 	}
+	
+	
 
 	public void zuListeHinzufügen(ControllerAntwortenErfassen controller) {
 		listeControllerAntwortenErfassen.add(controller);
 		ControllerAntwortenErfassen.speichern();
 	}
 	
-	public static void vonListeEntfernen(ControllerAntwortenErfassen controller) {
+	public static void vonListeEntfernen(Controller controller) {
 		MainApp.listeControllerAntwortenErfassen.remove(controller);
 		ControllerAntwortenErfassen.speichern();
 	}

@@ -20,7 +20,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="ueberschrift" text="Ergebnisse für den Fragebogen xxxxxyyyyyyzzzz" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label fx:id="ueberschrift" text="Ergebnisse für die Umfrage xxxxxyyyyyyzzzz" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
@@ -69,11 +69,6 @@
         </rowConstraints>
          <children>
             <Button fx:id="save" maxWidth="50000.0" mnemonicParsing="false" text="Ergebnis als PDF speichern" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="delete" maxWidth="50000.0" mnemonicParsing="false" text="Fragebogen löschen" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

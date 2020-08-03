@@ -32,7 +32,7 @@ import javafx.stage.FileChooser;
 
 /* Ausgabe der Auswertung */
 
-public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
+public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
 	// addieren
 
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();

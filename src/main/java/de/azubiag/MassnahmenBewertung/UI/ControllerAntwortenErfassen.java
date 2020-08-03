@@ -33,7 +33,7 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 /* Eingeben der Antworten */
 
-public class ControllerAntwortenErfassen implements Serializable {
+public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 	private static final long serialVersionUID = -4954713836800270562L;
 
