@@ -2,6 +2,13 @@ package de.azubiag.MassnahmenBewertung.tools;
 
 import java.time.LocalDate;
 
+/**
+ * Datumsimplementierung, da die Java-Standard-Implementierung für unsere Zwecke unzureichend ist
+ * (z. B. nimmt 31. Februar und wandelt ihn ohne Exception in 29. Januar um).
+ * <p>
+ * Datume vor 1900 oder nach 2110 werden nicht akzeptiert.
+ * @author Luna
+ */
 public final class Datum implements Comparable<Datum> {
 
 	
@@ -33,6 +40,11 @@ public final class Datum implements Comparable<Datum> {
 		} else return GLEICH;
 	}
 	
+	/**
+	 * Parst ein {@link Datum} aus einem String im Format dd.mm.yyyy
+	 * @param datumstring Der String
+	 * @return null, wenn der String nicht dem Format entspricht oder das Datum ungültig ist
+	 */
 	public static Datum parse(String datumstring) {
 		String[] teile = datumstring.split("\\.", -1);
 		try {
@@ -46,17 +58,34 @@ public final class Datum implements Comparable<Datum> {
 		}
 	}
 	
+	/**
+	 * Erzeugt ein gültiges {@link Datum} aus Tag, Monat und Jahr.
+	 * @param tag Der Tag
+	 * @param monat Der Monat
+	 * @param jahr Das Jahr
+	 * @return null, wenn ungültig
+	 */
 	public static Datum newDatum(int tag, int monat, int jahr) {
 		Datum datum = new Datum(tag, monat, jahr);
 		return datum.valid()? datum : null;
 	}
 	
+	/**
+	 * Prüft ein {@link Datum} auf Gültigkeit.
+	 * @return true, wenn gültig
+	 */
 	private boolean valid() {
 		return tag > 0 && tag <= tageImMonat(monat, jahr)
 				&& monat > 0 && monat <= 12
 				&& jahr >= MINIMUM_PLAUSIBLE_YEAR && jahr <= MAXIMUM_PLAUSIBLE_YEAR;
 	}
 
+	/**
+	 * Gibt die Anzahl der tatsächlichen Tage im Monat nach dem gregorianischen Kalender zurück
+	 * @param monat Der Monat
+	 * @param jahr Das Jahr (relevant wegen Schaltjahr)
+	 * @return Anzahl der Tage im Monat
+	 */
 	private static int tageImMonat(int monat, int jahr) {
 		switch (monat) {
 		case 4:
@@ -71,6 +100,11 @@ public final class Datum implements Comparable<Datum> {
 		}
 	}
 
+	/**
+	 * Prüft, ob ein Jahr ein gregorianisches Schaltjahr ist.
+	 * @param jahr Jahreszahl
+	 * @return true, wenn dasJahr ein greg. Schaltjahr ist.
+	 */
 	private static boolean schaltjahr(int jahr) {
 		if (jahr % 400 == 0) return true;
 		if (jahr % 100 == 0) return false;
