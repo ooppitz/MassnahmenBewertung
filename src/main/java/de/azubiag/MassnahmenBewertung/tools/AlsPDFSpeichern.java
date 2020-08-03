@@ -18,7 +18,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
-import de.azubiag.MassnahmenBewertung.auswertung.Frage;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 
 public class AlsPDFSpeichern {
@@ -54,138 +53,138 @@ public class AlsPDFSpeichern {
 			}
 			document.open();
 
-			Font font = FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK);
 			// Chunk chunk = new Chunk("Hello World", font);
 
 			// document.add(chunk);
 
-			Paragraph header = paragraphSetzen();
-			header.add(new Phrase("Maßnahme von " + fe.von_datum + " bis " + fe.bis_datum + "\n"));
-			header.add(new Phrase("Auftragsnummer: " + fe.auftrags_nummer + "\n"));
-			header.add(new Phrase("Seminarleitung: " + fe.seminarleiter_name + "\n"));
-			header.add(new Phrase("Datum: " + fe.ausstellungs_datum));
+			Paragraph kopf = paragraphSetzen();
+			kopf.add(new Phrase("Maßnahme von " + fe.von_datum + " bis " + fe.bis_datum + "\n"));
+			kopf.add(new Phrase("Auftragsnummer: " + fe.auftrags_nummer + "\n"));
+			kopf.add(new Phrase("Seminarleitung: " + fe.seminarleiter_name + "\n"));
+			kopf.add(new Phrase("Datum: " + fe.ausstellungs_datum));
 
-			document.add(header);
+			document.add(kopf);
 
-			Paragraph m1 = new Paragraph("", font);
-			m1.setSpacingAfter(50);
+			Paragraph massnahmenverlauf = paragraphSetzen();
 
-			Phrase title1 = new Phrase("1. Maßnahmenverlauf\n");
-			Phrase durchschnitt1 = new Phrase();
-			leerzeichenSetzen(durchschnitt1);
-			durchschnitt1.add(new Chunk("-2 -1  0  1  2    Ø\n"));
+			Phrase titelMassnahmenverlauf = titelSetzen("1. Maßnahmenverlauf");
 			
-			Phrase t1q1 = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?", am.pktvertOrg, am.durchschnOrg);
+			Phrase spaltenMassnahmenverlauf = punkteSpaltenSetzen();
 			
-			t1q1.add("\n");
+			Phrase zeilePktOrg = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?", am.pktvertOrg, am.durchschnOrg);
 
-			Phrase t1q2 = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?", am.pktvertVerl, am.durchschnVerl);
+			Phrase zeilePktVerl = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?", am.pktvertVerl, am.durchschnVerl);
 
-			t1q2.add("\n");
+			Phrase zeileAlleBemVerl = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
 
-			Phrase t1b = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
+			massnahmenverlauf.add(titelMassnahmenverlauf);
+			massnahmenverlauf.add(spaltenMassnahmenverlauf);
+			massnahmenverlauf.add(zeilePktOrg);
+			massnahmenverlauf.add(zeilePktVerl);
+			massnahmenverlauf.add(zeileAlleBemVerl);
 
-			m1.add(title1);
-			m1.add(durchschnitt1);
-			m1.add(t1q1);
-			m1.add(t1q2);
-			m1.add(t1b);
+			document.add(massnahmenverlauf);
 
-			document.add(m1);
+			Paragraph massnahmenbetreuung = paragraphSetzen();
 
-			Paragraph m2 = new Paragraph("", font);
-			m2.setSpacingAfter(50);
-
-			Phrase title2 = new Phrase("2. Maßnahmebetreuung\n");
-			Phrase durchschnitt2 = new Phrase();
-			leerzeichenSetzen(durchschnitt2);
-			durchschnitt2.add(new Chunk("-2 -1  0  1  2    Ø\n"));
-
-			Phrase t2q1 = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng, am.durchschnBetrng);
-
-			t2q1.add("\n");
+			Phrase titelMassnahmenbetreuung = titelSetzen("2. Maßnahmenbetreuung");
 			
-			Phrase t2b1 = druckeZeileMitBemerkungen("Bemerkungen dazu", am.alleBemerkBetrng);
+			Phrase spaltenMassnahmenbetreuung = punkteSpaltenSetzen();
 
-			m2.add(title2);
-			m2.add(durchschnitt2);
-			m2.add(t2q1);
-			m2.add(t2b1);
+			Phrase zeilePktBetrng = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng, am.durchschnBetrng);
+			
+			Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkBetrng);
 
-			document.add(m2);
+			massnahmenbetreuung.add(titelMassnahmenbetreuung);
+			massnahmenbetreuung.add(spaltenMassnahmenbetreuung);
+			massnahmenbetreuung.add(zeilePktBetrng);
+			massnahmenbetreuung.add(zeileAlleBemBetrng);
 
-			Paragraph title3 = new Paragraph("3. Bewertung der Referenten bzw. Referentinnen:\n", font);
-			for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
-				title3.add(new Chunk(am.alleBemerkRefAllg.get(i) + ";\n", font));
-			}
-			title3.setSpacingAfter(50);
+			document.add(massnahmenbetreuung);
 
-			document.add(title3);
+			Paragraph bewertungReferentenAllgemein = paragraphSetzen();
+			
+			Phrase titelBewertungReferentenAllgemein = druckeZeileMitBemerkungen("3. Bewertung der Referenten bzw. Referentinnen:", am.alleBemerkRefAllg);
+			
+			bewertungReferentenAllgemein.add(titelBewertungReferentenAllgemein);
 
-			Paragraph title4 = new Paragraph("4. Auswertung der Referenten:\n", font);
+			document.add(bewertungReferentenAllgemein);
 
-			document.add(title4);
+			Paragraph bewertungReferentenIndividuell = paragraphSetzen();
+			
+			Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten:");
+			
+			bewertungReferentenIndividuell.add(titelBewertungReferentenIndividuell);
 
-			Paragraph rAlle = new Paragraph("", font);
-
-			Phrase rVorb;
-			Phrase rFach;
-			Phrase rEing;
-			Phrase rInh;
-			Phrase rVerh;
-			Phrase rBem;
+			Phrase titelReferentName;
+			Phrase referentPktVorb;
+			Phrase referentPktFach;
+			Phrase referentPktEing;
+			Phrase referentPktInh;
+			Phrase referentPktVerh;
+			Phrase referentBem;
 
 			for (int i = 0; i < ar.size(); i++) {
-				rAlle.add(new Chunk("\nReferent / Referentin: " + ar.get(i).getName() + "\n"));
-				Phrase durchschnitt3 = new Phrase();
-				leerzeichenSetzen(durchschnitt3);
-				durchschnitt3.add(new Chunk("-2 -1  0  1  2    Ø\n"));
-				rAlle.add(durchschnitt3);
-
-				rVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?", ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
-				rVorb.add("\n");
 				
-				rFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?", ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
-				rFach.add("\n");
+				titelReferentName = new Phrase("\nReferent / Referentin: " + ar.get(i).getName() + "\n");
 				
-				rEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?", ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
-				rEing.add("\n");
+				bewertungReferentenIndividuell.add(titelReferentName);
 				
-				rInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?", ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
-				rInh.add("\n");
+				Phrase durchschnitt3 = punkteSpaltenSetzen();
+				
+				bewertungReferentenIndividuell.add(durchschnitt3);
 
-				rVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?", ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
-				rVerh.add("\n");
+				referentPktVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?", ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
+				
+				referentPktFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?", ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
+				
+				referentPktEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?", ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
+				
+				referentPktInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?", ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
 
-				rBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n", ar.get(i).getBemerkungen());
+				referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?", ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
 
-				rAlle.add(rVorb);
-				rVorb.clear();
+				referentBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n", ar.get(i).getBemerkungen());
 
-				rAlle.add(rFach);
-				rFach.clear();
+				bewertungReferentenIndividuell.add(referentPktVorb);
+				referentPktVorb.clear();
 
-				rAlle.add(rEing);
-				rEing.clear();
+				bewertungReferentenIndividuell.add(referentPktFach);
+				referentPktFach.clear();
 
-				rAlle.add(rInh);
-				rInh.clear();
+				bewertungReferentenIndividuell.add(referentPktEing);
+				referentPktEing.clear();
 
-				rAlle.add(rVerh);
-				rVerh.clear();
+				bewertungReferentenIndividuell.add(referentPktInh);
+				referentPktInh.clear();
 
-				rAlle.add(rBem);
-				rBem.clear();
+				bewertungReferentenIndividuell.add(referentPktVerh);
+				referentPktVerh.clear();
+
+				bewertungReferentenIndividuell.add(referentBem);
+				referentBem.clear();
 
 			}
 
-			document.add(rAlle);
+			document.add(bewertungReferentenIndividuell);
 
 			document.close();
 
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Phrase titelSetzen(String titel) {
+		Phrase phrase = new Phrase(titel+"\n");
+		return phrase;
+	}
+
+	private Phrase punkteSpaltenSetzen() {
+		Phrase phrase = new Phrase();
+		leerzeichenSetzen(phrase);
+		phrase.add(new Chunk("-2 -1  0  1  2    Ø\n"));
+		return phrase;
 	}
 
 	private Paragraph paragraphSetzen() {
@@ -211,7 +210,7 @@ public class AlsPDFSpeichern {
 		if (durchschnitt >= 0) {
 			phrase.add(" ");
 		}
-		phrase.add(new Chunk("  " + String.format("%1.2f", durchschnitt)));
+		phrase.add(new Chunk("  " + String.format("%1.2f\n", durchschnitt)));
 		return phrase;
 	}
 
