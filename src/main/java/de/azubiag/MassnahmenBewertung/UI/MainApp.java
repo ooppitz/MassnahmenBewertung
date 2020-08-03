@@ -252,9 +252,6 @@ public class MainApp extends Application {
 			controller.erzeugeDarstellung();
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z3);
-
-			addHandlerToDeleteButton(controller.delete, tab_z3, controller);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -334,7 +331,6 @@ public class MainApp extends Application {
 			e.printStackTrace();
 			return false;
 		}
-		
 	}
 
 	public void addHandlerToDeleteButton(Button button, Tab thistab, Controller controller) {
@@ -346,10 +342,8 @@ public class MainApp extends Application {
 		});
 	}
 
-	
 	public void handleUmfrageSchliessen( Tab thistab, Controller controller, Event event) {
 		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Umfrage schließen", "Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ")==1)? true:false;
-		
 		if (loeschen) {
 			deleteActions( thistab, controller);
 		}else {
@@ -360,9 +354,7 @@ public class MainApp extends Application {
 	public void deleteActions( Tab thistab, Controller controller) {
 		rootLayout.getTabs().remove(thistab);
 		if (controller.getClass()== ControllerAntwortenErfassen.class) {
-
 			vonListeEntfernen(controller);
-
 		}
 		String seminarleiter = MainApp.getUserName();
 
