@@ -25,32 +25,38 @@ import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class AlsPDFSpeichern {
-	FragebogenEigenschaften fe;
-	AuswertungMassnahme am;
-	List<AuswertungReferent> ar;
+	
+	static FragebogenEigenschaften feTest;
+	static AuswertungMassnahme amTest;
+	static List<AuswertungReferent> arTest;
 
 	public static void main(String[] args) {
-		new AlsPDFSpeichern();
+		
+		feTest = Testdaten.getFragebogenEigenschaften();
+		amTest = Testdaten.getAuswertungMassnahme();
+		arTest = Testdaten.getAuswertungReferenten();
+		
+		File outputFile;
+		try {
+			outputFile = new File( Upload.getInstance().getRepositoryPfad() + "output.pdf");
+			saveAsPDF(outputFile, feTest, amTest, arTest);
+			System.out.println("Datei " + outputFile + " wurde erzeugt.");
+		} catch (GitAPIException | IOException e) {
+			e.printStackTrace();
+		}	
 	}
 
-	public AlsPDFSpeichern() {
-		beispielAuswertungMassnahmeErstellen();
-		saveAsPDF();
-	}
-
-	public void beispielAuswertungMassnahmeErstellen() {
-		fe = Testdaten.getFragebogenEigenschaften();
-		am = Testdaten.getAuswertungMassnahme();
-		ar = Testdaten.getAuswertungReferenten();
-	}
-
-	public void saveAsPDF() {
+	/** Speichert die Ergebnisse (wovon???) in einem PDF File.
+	 * 
+	 * @param file Das File, in dem die Ergebnisse gesichert werden.
+	 */
+	public static void saveAsPDF(File file, FragebogenEigenschaften fe, AuswertungMassnahme am, List<AuswertungReferent> ar) {
+		
 		Document document = new Document();
 		try {
 			try {
-				File file = new File(Upload.getInstance().getRepositoryPfad() + "\\iTextTable.pdf");
 				PdfWriter.getInstance(document, new FileOutputStream(file));
-			} catch (GitAPIException | IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			document.open();
@@ -240,13 +246,13 @@ public class AlsPDFSpeichern {
 		}
 	}
 
-	void leerzeichenSetzen(Paragraph paragraph) {
+	static void leerzeichenSetzen(Paragraph paragraph) {
 		while (paragraph.getContent().length() < 65) {
 			paragraph.add(" ");
 		}
 	}
 
-	void leerzeichenSetzen(Phrase phrase) {
+	static void leerzeichenSetzen(Phrase phrase) {
 		while (phrase.getContent().length() < 65) {
 			phrase.add(" ");
 		}
