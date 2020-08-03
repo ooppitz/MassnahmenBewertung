@@ -325,7 +325,10 @@ public void addVorschauButtonHandler() {
 							fragebogenHandling(logger);
 						}
 					} else {
-						AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						if (IsDateWritten()) 
+							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte korrekt ausfüllen", "Bitte füllen Sie die Datumsfelder korrekt aus. ");
+						else
+							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
 					}
 				}
 
@@ -556,6 +559,16 @@ public void addVorschauButtonHandler() {
 				} else {
 					return false;
 				}
+			}
+			
+			private boolean IsDateWritten() {
+				
+				boolean von   =   !von_Datum.getEditor().getText().isBlank();
+				boolean bis   =   !bis_Datum.getEditor().getText().isBlank();
+				boolean heute = !heute_datum.getEditor().getText().isBlank();
+//				System.out.println("von->"+von+"\tbis->"+bis+"\theute->"+heute);
+				
+				return von && bis && heute;
 			}
 			
 			private String extractTextFromDatepicker(DatePicker picker) {
