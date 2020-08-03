@@ -7,21 +7,28 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 
+import java.awt.Desktop;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -68,6 +75,21 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 	@FXML
 	private transient Label maintext;
+	
+	@FXML
+	private transient Label link_label;
+	
+	@FXML
+	private transient Hyperlink link_hypertext;
+	
+	@FXML
+	private transient Button link_kopieren;
+	
+	@FXML
+	private transient Label auftragsnummer_label;
+	
+	@FXML
+	private transient Label auftragsnummer_wert;
 
 	@FXML
 	transient Button answ_del;
@@ -86,11 +108,20 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 	public void init() {
 		setHandlerRemoveAnswer(answ_del);
+		setHandlerLinkCopyButton();
+		setHandlerLinkAnklicken();
 		readdNode(desc, 1, 0);
 		readdNode(fragebogenName, 3, 0);
-		readdNode(answ_del, 0, 1);
-		readdNode(antwort_name, 1, 1);
-		readdNode(antwort_text, 3, 1);
+		readdNode(link_label, 1, 1);
+		readdNode(link_hypertext, 2, 1);
+		readdNode(link_kopieren, 5, 1);
+		readdNode(auftragsnummer_label, 1, 2);
+		readdNode(auftragsnummer_wert, 3, 2);
+		readdNode(answ_del, 0, 3);
+		readdNode(antwort_name, 1, 3);
+		readdNode(antwort_text, 3, 3);
+		link_hypertext.setText(eigenschaften.link);
+		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
 	}
 
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
@@ -123,7 +154,39 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 	}
 
 	public void setMaintext(String maintext) {
-		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen " + maintext);
+		this.maintext.setText("Eingeben der Ergebnisse für Umfrage " + maintext);
+	}
+
+	public void setHandlerLinkAnklicken() {
+		link_hypertext.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+
+				link_hypertext.setVisited(true);
+				if(Desktop.isDesktopSupported())
+				{
+					try {
+						Desktop.getDesktop().browse(new URI(link_hypertext.getText()));
+					} catch (IOException | URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+
+	public void setHandlerLinkCopyButton() {
+		link_kopieren.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				
+				Clipboard clippy = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putString(eigenschaften.link);
+				clippy.setContent(content);
+				link_kopieren.setStyle("-fx-graphic: url('http://files.softicons.com/download/toolbar-icons/funktional-icons-by-creative-freedom/png/24x24/Tick.png');");
+			}
+		});
 	}
 
 	public void setHandlerAnswerButton() {
@@ -198,7 +261,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					Label labelAntwortText = new Label(verschluesselteAntwort);
 					labelAntwortText.setFont(antwort_text.getFont());
 
-					int rowIndex = antwortListe.size();
+					int rowIndex = antwortListe.size()+2;
 					int buttonDeleteIdx = 0;
 					int labelAntwortIdx = 1;
 					int labelAntwortTextIdx = 3;
@@ -208,7 +271,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					gridpane.add(labelAntwort, labelAntwortIdx, rowIndex, 2, 1);
 					gridpane.add(labelAntwortText, labelAntwortTextIdx, rowIndex, 3, 1);
 
-					int letzteRow = antwortListe.size();
+					int letzteRow = antwortListe.size()+2;
 					for (int i = 1; i < letzteRow; i++) {
 						Node deleteButtonNode  = GridPaneCustom.getElemByRowAndColumn(gridpane, i, buttonDeleteIdx);
 						if (deleteButtonNode!=null)	{
@@ -239,7 +302,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				 * dekrementiert
 				 */
 
-				int letzteRow = antwortListe.size();
+				int letzteRow = antwortListe.size()+2;
 				logger.logInfo("letzte Reihe: " + letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
@@ -267,7 +330,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				}
 				
 				// entfernen der Antwort aus der Antwortliste
-				int index_dieser_antwort = GridPane.getRowIndex(button)-1;
+				int index_dieser_antwort = GridPane.getRowIndex(button)-3;
 				antwortListe.remove(index_dieser_antwort);
 			}
 		});

@@ -260,6 +260,10 @@ public class MainApp extends Application {
 	public void speicherdaten_laden() {
 
 		listeControllerAntwortenErfassen = ControllerAntwortenErfassen.laden();
+		if (listeControllerAntwortenErfassen.isEmpty())
+		{
+			showTabFragebogenErstellen();
+		}
 		for (int i = 0; i < listeControllerAntwortenErfassen.size(); i++) {
 			wiederherstellenTabAntwortenErfassen(i, listeControllerAntwortenErfassen.get(i));
 		}
