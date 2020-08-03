@@ -189,7 +189,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
 			controller.init();
-			addDeleteToButton(controller.delete, rootLayout, tab_z1);
+			addHandlerToDeleteButton(controller.delete, tab_z1, controller);
 			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();
 
@@ -223,7 +223,7 @@ public class MainApp extends Application {
 			controller.setMaintext(eigenschaft.fragebogen_name);
 			controller.setUmfrageID(verifyID);
 			controller.init();
-			addDeleteToButton(controller.delete, rootLayout, tab_z2);
+			addHandlerToDeleteButton(controller.delete, tab_z2, controller);
 			controller.setHandlerAnswerButton();
 			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
@@ -258,7 +258,7 @@ public class MainApp extends Application {
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z3);
 
-			addDeleteToButton(controller.delete, rootLayout, tab_z3);
+			addHandlerToDeleteButton(controller.delete, tab_z3, controller);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -293,7 +293,7 @@ public class MainApp extends Application {
 			neuer_controller.tab_wiederherstellen(deserialisierterController);
 			
 			
-			addDeleteToButton(neuer_controller.delete, rootLayout, tab_z2);
+			addHandlerToDeleteButton(neuer_controller.delete, tab_z2, neuer_controller);
 			neuer_controller.setHandlerAnswerButton();
 			neuer_controller.addNext2ToButton(neuer_controller);
 	
@@ -344,7 +344,7 @@ public class MainApp extends Application {
 		
 	}
 
-	public void addHandlerToDeleteButton(Button button, TabPane pane, Tab thistab, Controller controller) {
+	public void addHandlerToDeleteButton(Button button, Tab thistab, Controller controller) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
