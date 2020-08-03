@@ -313,7 +313,7 @@ public class MainApp extends Application {
 			@Override
 			public void handle(Event event) {
 
-				vonListeEntfernen(controller);
+				
 
 				handleUmfrageSchliessen( thisTab, controller, event);
 			}
@@ -362,7 +362,7 @@ public class MainApp extends Application {
 	public void deleteActions( Tab thistab, Controller controller) {
 		rootLayout.getTabs().remove(thistab);
 		if (controller.getClass()== ControllerAntwortenErfassen.class) {
-			MainApp.listeControllerAntwortenErfassen.remove(controller);
+			vonListeEntfernen(controller);
 		}
 		String seminarleiter = MainApp.getUserName();
 
@@ -471,7 +471,7 @@ public class MainApp extends Application {
 		ControllerAntwortenErfassen.speichern();
 	}
 	
-	public static void vonListeEntfernen(ControllerAntwortenErfassen controller) {
+	public static void vonListeEntfernen(Controller controller) {
 		MainApp.listeControllerAntwortenErfassen.remove(controller);
 		ControllerAntwortenErfassen.speichern();
 	}
