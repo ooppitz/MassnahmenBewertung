@@ -317,7 +317,7 @@ public class MainApp extends Application {
 		thisTab.setClosable(true);
 		thisTab.setText(tabName);
 		
-		thisTab.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
+		thisTab.setOnCloseRequest(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
 			public void handle(Event event) {
 				handleUmfrageSchliessen( thisTab, controller, event);
@@ -409,7 +409,6 @@ public class MainApp extends Application {
 					SingleSelectionModel<Tab> selectionModel = rootLayout.getSelectionModel();
 					selectionModel.select(size - 1);
 				}
-
 			}
 		});
 	}
@@ -424,7 +423,6 @@ public class MainApp extends Application {
 		for (int i=0; i<args.length; i++) {
 			if (args[i].equals("--test")) setTestmodusAktiv(true);
 		}
-
 		launch(args);
 	}
 
