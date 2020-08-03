@@ -32,7 +32,7 @@ public final class Datum implements Comparable<Datum> {
 			int monat = Integer.parseInt(teile[1]);
 			int jahr = Integer.parseInt(teile[2]);
 			Datum datum = new Datum(tag, monat, jahr);
-			return datum.notBullshit()? datum : null;
+			return datum.valid()? datum : null;
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException nf_aioobex) {
 			return null;
 		}
@@ -40,10 +40,10 @@ public final class Datum implements Comparable<Datum> {
 	
 	public static Datum newDatum(int tag, int monat, int jahr) {
 		Datum datum = new Datum(tag, monat, jahr);
-		return datum.notBullshit()? datum : null;
+		return datum.valid()? datum : null;
 	}
 	
-	private boolean notBullshit() {
+	private boolean valid() {
 		return tag > 0 && tag <= tageImMonat(monat, jahr)
 				&& monat > 0 && monat <= 12
 				&& jahr >= MINIMUM_PLAUSIBLE_YEAR && jahr <= MAXIMUM_PLAUSIBLE_YEAR;
