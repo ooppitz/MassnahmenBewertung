@@ -32,13 +32,11 @@ public class AlsPDFSpeichern {
 		arTest = Testdaten.getAuswertungReferenten();
 		
 		File outputFile;
-		try {
-			outputFile = new File( Upload.getInstance().getRepositoryPfad() + "output.pdf");
-			saveAsPDF(outputFile, feTest, amTest, arTest);
-			System.out.println("Datei " + outputFile + " wurde erzeugt.");
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-		}	
+
+		outputFile = new File(/* Upload.getInstance().getRepositoryPfad() + */ "output.pdf");
+		saveAsPDF(outputFile, feTest, amTest, arTest);
+		System.out.println("Datei " + outputFile + " wurde erzeugt.");
+
 	}
 
 	/** Speichert die Ergebnisse (wovon???) in einem PDF File.
