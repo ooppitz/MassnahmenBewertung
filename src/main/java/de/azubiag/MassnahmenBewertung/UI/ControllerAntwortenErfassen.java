@@ -184,6 +184,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				ClipboardContent content = new ClipboardContent();
 				content.putString(eigenschaften.link);
 				clippy.setContent(content);
+				link_kopieren.setStyle("-fx-graphic: url('http://files.softicons.com/download/toolbar-icons/funktional-icons-by-creative-freedom/png/24x24/Tick.png');");
 			}
 		});
 	}
