@@ -144,6 +144,10 @@ public final class Datum implements Comparable<Datum> {
 		return true;
 	}
 	
+	/**
+	 * Erzeugt ein entsprechendes {@link LocalDate}-Objekt.
+	 * @return das erzeugte {@link LocalDate}-Objekt
+	 */
 	public LocalDate toLocalDate() {
 		return LocalDate.of(jahr, monat, tag);
 	}
