@@ -22,6 +22,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
 import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
+import de.azubiag.MassnahmenBewertung.tools.Datum;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Platform;
@@ -519,12 +520,16 @@ public void addVorschauButtonHandler() {
 			private boolean allValuesEntered() {
 				boolean fragebogennameEntered = fragebogenname.getText().matches(".*\\S+.*");
 				boolean auftragsnummerEntered = auftragsnummer_textfield.getText().matches(".*\\S+.*");
-				boolean vonDatumEntered = datumIsNotBullshit(von_Datum.getEditor().getText());
-				boolean bisDatumEntered = datumIsNotBullshit(bis_Datum.getEditor().getText());
-				boolean heuteDatumEntered = datumIsNotBullshit(heute_datum.getEditor().getText());
 				int anzahl_referenten = getReferentenNamen().size();
+				
+				Datum vonDatum = Datum.parse(extractTextFromDatepicker(von_Datum));
+				Datum bisDatum = Datum.parse(extractTextFromDatepicker(bis_Datum));
+				Datum heuteDatum = Datum.parse(extractTextFromDatepicker(heute_datum));
+				
+				boolean datumsGueltig = vonDatum != null && bisDatum != null && heuteDatum != null
+						&& vonDatum.compareTo(bisDatum) == Datum.KLEINER;
 
-				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && heuteDatumEntered && auftragsnummerEntered
+				if (fragebogennameEntered && datumsGueltig && auftragsnummerEntered
 						&& anzahl_referenten > 0) {
 					return true;
 				} else {
@@ -532,42 +537,10 @@ public void addVorschauButtonHandler() {
 				}
 			}
 			
-			private boolean datumIsNotBullshit(String datum) {
-				String[] teile = datum.split("\\.", -1);
-				try {
-					int tag = Integer.parseInt(teile[0]);
-					int monat = Integer.parseInt(teile[1]);
-					int jahr = Integer.parseInt(teile[2]);
-					return tag > 0 && tag <= tageImMonat(monat, jahr)
-							&& monat > 0 && monat <= 12
-							&& jahr >= MINIMUM_PLAUSIBLE_YEAR && jahr <= MAXIMUM_PLAUSIBLE_YEAR;
-				} catch (NumberFormatException | ArrayIndexOutOfBoundsException nf_aioobex) {
-					return false;
-				}
-			}
-			
-			private int tageImMonat(int monat, int jahr) {
-				switch (monat) {
-				case 4:
-				case 6:
-				case 9:
-				case 11:
-					return 30;
-				case 2:
-					return schaltjahr(jahr)? 29 : 28;
-				default:
-					return 31;
-				}
-			}
-			
-			private boolean schaltjahr(int jahr) {
-				if (jahr % 400 == 0) return true;
-				if (jahr % 100 == 0) return false;
-				return jahr % 4 == 0;
+			private String extractTextFromDatepicker(DatePicker picker) {
+				return picker.getEditor().getText();
 			}
 		});
 	}
 
-	private static final int MINIMUM_PLAUSIBLE_YEAR = 1900;
-	private static final int MAXIMUM_PLAUSIBLE_YEAR = 2110;
 }
