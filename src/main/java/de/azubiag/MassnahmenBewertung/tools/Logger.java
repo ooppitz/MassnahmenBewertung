@@ -89,6 +89,15 @@ public class Logger {
 		logIt("INFO", info);
 	}
 	
+	public void logStackTrace() {
+		logIt("TRACE", new StackTrace());
+	}
+	
+	@SuppressWarnings("serial")
+	private static class StackTrace extends Throwable {
+		
+	}
+	
 	private synchronized void logIt(String category, Object logMe) {
 		logstream.println(category + "@" + timeString());
 		if (logMe instanceof Throwable) {
