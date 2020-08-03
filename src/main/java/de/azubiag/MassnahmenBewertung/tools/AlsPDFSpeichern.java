@@ -82,10 +82,10 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q1.add(new Chunk(" " + String.valueOf(am.pktvertOrg[i]) + " "));
 			}
-			if(am.durchschnOrg>=0) {
+			if (am.durchschnOrg >= 0) {
 				t1q1.add(" ");
 			}
-			t1q1.add(new Chunk("  " + String.format("%1.2f",am.durchschnOrg)));
+			t1q1.add(new Chunk("  " + String.format("%1.2f", am.durchschnOrg)));
 			t1q1.add("\n");
 
 			Phrase t1q2 = new Phrase("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
@@ -93,10 +93,10 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertOrg.length; i++) {
 				t1q2.add(new Chunk(" " + String.valueOf(am.pktvertVerl[i]) + " "));
 			}
-			if(am.durchschnVerl>=0) {
+			if (am.durchschnVerl >= 0) {
 				t1q2.add(" ");
 			}
-			t1q2.add(new Chunk("  " + String.format("%1.2f",am.durchschnVerl)));
+			t1q2.add(new Chunk("  " + String.format("%1.2f", am.durchschnVerl)));
 			t1q2.add("\n");
 
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
@@ -125,10 +125,10 @@ public class AlsPDFSpeichern {
 			for (int i = 0; i < am.pktvertBetrng.length; i++) {
 				t2q1.add(new Chunk(" " + String.valueOf(am.pktvertBetrng[i]) + " "));
 			}
-			if(am.durchschnBetrng>=0) {
+			if (am.durchschnBetrng >= 0) {
 				t2q1.add(" ");
 			}
-			t2q1.add(new Chunk("  " + String.format("%1.2f",am.durchschnBetrng)));
+			t2q1.add(new Chunk("  " + String.format("%1.2f", am.durchschnBetrng)));
 
 			Paragraph t2b1 = new Paragraph("Bermerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
@@ -176,10 +176,10 @@ public class AlsPDFSpeichern {
 					rVorb.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
 				}
-				if(ar.get(i).durchschnittVorbereitung>=0) {
+				if (ar.get(i).durchschnittVorbereitung >= 0) {
 					rVorb.add(" ");
 				}
-				rVorb.add(new Chunk("  " + String.format("%1.2f",ar.get(i).durchschnittVorbereitung)));
+				rVorb.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittVorbereitung)));
 				rVorb.add("\n");
 
 				rFach.add(new Chunk("Wie umfangreich war ihr/sein Fachwissen?"));
@@ -188,10 +188,10 @@ public class AlsPDFSpeichern {
 					rFach.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.FACHWISSEN, j)) + " "));
 				}
-				if(ar.get(i).durchschnittFachwissen>=0) {
+				if (ar.get(i).durchschnittFachwissen >= 0) {
 					rFach.add(" ");
 				}
-				rFach.add(new Chunk("  " + String.format("%1.2f",ar.get(i).durchschnittFachwissen)));
+				rFach.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittFachwissen)));
 				rFach.add("\n");
 
 				rEing.add(new Chunk("Wie ging sie/er auf spezielle thematische Probleme ein?"));
@@ -200,10 +200,10 @@ public class AlsPDFSpeichern {
 					rEing.add(new Chunk(" "
 							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.EINGEHENAUFPROBLEME, j)) + " "));
 				}
-				if(ar.get(i).durchschnittEingehenAufProbleme>=0) {
+				if (ar.get(i).durchschnittEingehenAufProbleme >= 0) {
 					rEing.add(" ");
 				}
-				rEing.add(new Chunk("  " + String.format("%1.2f",ar.get(i).durchschnittEingehenAufProbleme)));
+				rEing.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittEingehenAufProbleme)));
 				rEing.add("\n");
 
 				rInh.add(new Chunk("Wie verständlich konnte sie/er die Inhalte vermitteln?"));
@@ -212,10 +212,10 @@ public class AlsPDFSpeichern {
 					rInh.add(new Chunk(" "
 							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.INHALTSVERMITTLUNG, j)) + " "));
 				}
-				if(ar.get(i).durchschnittInhaltsvermittlung>=0) {
+				if (ar.get(i).durchschnittInhaltsvermittlung >= 0) {
 					rInh.add(" ");
 				}
-				rInh.add(new Chunk("  " + String.format("%1.2f",ar.get(i).durchschnittInhaltsvermittlung)));
+				rInh.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittInhaltsvermittlung)));
 				rInh.add("\n");
 
 				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten zu?"));
@@ -224,10 +224,10 @@ public class AlsPDFSpeichern {
 					rVerh.add(new Chunk(
 							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
 				}
-				if(ar.get(i).durchschnittVerhalten>=0) {
+				if (ar.get(i).durchschnittVerhalten >= 0) {
 					rVerh.add(" ");
 				}
-				rVerh.add(new Chunk("  " + String.format("%1.2f",ar.get(i).durchschnittVerhalten)));
+				rVerh.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittVerhalten)));
 				rVerh.add("\n");
 
 				rBem.add(new Chunk("\nBermerkungen zu: " + ar.get(i).name + "\n"));
