@@ -39,152 +39,143 @@ public class AlsPDFSpeichern {
 
 	}
 
-	/** Speichert die Ergebnisse (wovon???) in einem PDF File.
+	/** Speichert die Ergebnisse in einem PDF File.
 	 * 
 	 * @param file Das File, in dem die Ergebnisse gesichert werden.
 	 */
 	public static void saveAsPDF(File file, FragebogenEigenschaften fe, AuswertungMassnahme am, List<AuswertungReferent> ar) {
 		
-		Document document = new Document();
 		try {
-			try {
-				PdfWriter.getInstance(document, new FileOutputStream(file));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			
+			Document document = new Document();
+
+			PdfWriter.getInstance(document, new FileOutputStream(file));
+
 			document.open();
 
-			// Chunk chunk = new Chunk("Hello World", font);
+			druckeMassnahmenBewertung(document, fe, am);
 
-			// document.add(chunk);
-
-			Paragraph kopf = paragraphSetzen();
-			kopf.add(new Phrase("Maßnahme von " + fe.von_datum + " bis " + fe.bis_datum + "\n"));
-			kopf.add(new Phrase("Auftragsnummer: " + fe.auftrags_nummer + "\n"));
-			kopf.add(new Phrase("Seminarleitung: " + fe.seminarleiter_name + "\n"));
-			kopf.add(new Phrase("Datum: " + fe.ausstellungs_datum));
-
-			document.add(kopf);
-
-			Paragraph massnahmenverlauf = paragraphSetzen();
-
-			Phrase titelMassnahmenverlauf = titelSetzen("1. Maßnahmenverlauf");
-
-			Phrase spaltenMassnahmenverlauf = punkteSpaltenSetzen();
-
-			Phrase zeilePktOrg = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?",
-					am.pktvertOrg, am.durchschnOrg);
-
-			Phrase zeilePktVerl = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?",
-					am.pktvertVerl, am.durchschnVerl);
-
-			Phrase zeileAlleBemVerl = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
-
-			massnahmenverlauf.add(titelMassnahmenverlauf);
-			massnahmenverlauf.add(spaltenMassnahmenverlauf);
-			massnahmenverlauf.add(zeilePktOrg);
-			massnahmenverlauf.add(zeilePktVerl);
-			massnahmenverlauf.add(zeileAlleBemVerl);
-
-			document.add(massnahmenverlauf);
-
-			Paragraph massnahmenbetreuung = paragraphSetzen();
-
-			Phrase titelMassnahmenbetreuung = titelSetzen("2. Maßnahmenbetreuung");
-
-			Phrase spaltenMassnahmenbetreuung = punkteSpaltenSetzen();
-
-			Phrase zeilePktBetrng = druckeZeileMitPunkten(
-					"Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng,
-					am.durchschnBetrng);
-
-			Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkBetrng);
-
-			massnahmenbetreuung.add(titelMassnahmenbetreuung);
-			massnahmenbetreuung.add(spaltenMassnahmenbetreuung);
-			massnahmenbetreuung.add(zeilePktBetrng);
-			massnahmenbetreuung.add(zeileAlleBemBetrng);
-
-			document.add(massnahmenbetreuung);
-
-			Paragraph bewertungReferentenAllgemein = paragraphSetzen();
-
-			Phrase titelBewertungReferentenAllgemein = druckeZeileMitBemerkungen(
-					"3. Bewertung der Referenten bzw. Referentinnen:", am.alleBemerkRefAllg);
-
-			bewertungReferentenAllgemein.add(titelBewertungReferentenAllgemein);
-
-			document.add(bewertungReferentenAllgemein);
-
-			Paragraph bewertungReferentenIndividuell = paragraphSetzen();
-
-			Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten:");
-
-			bewertungReferentenIndividuell.add(titelBewertungReferentenIndividuell);
-
-			Phrase titelReferentName;
-			Phrase referentPktVorb;
-			Phrase referentPktFach;
-			Phrase referentPktEing;
-			Phrase referentPktInh;
-			Phrase referentPktVerh;
-			Phrase referentBem;
-
-			for (int i = 0; i < ar.size(); i++) {
-
-				titelReferentName = new Phrase("\nReferent / Referentin: " + ar.get(i).getName() + "\n");
-
-				bewertungReferentenIndividuell.add(titelReferentName);
-
-				Phrase durchschnitt3 = punkteSpaltenSetzen();
-
-				bewertungReferentenIndividuell.add(durchschnitt3);
-
-				referentPktVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?",
-						ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
-
-				referentPktFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?",
-						ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
-
-				referentPktEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?",
-						ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
-
-				referentPktInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?",
-						ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
-
-				referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?",
-						ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
-
-				referentBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n",
-						ar.get(i).getBemerkungen());
-
-				bewertungReferentenIndividuell.add(referentPktVorb);
-				referentPktVorb.clear();
-
-				bewertungReferentenIndividuell.add(referentPktFach);
-				referentPktFach.clear();
-
-				bewertungReferentenIndividuell.add(referentPktEing);
-				referentPktEing.clear();
-
-				bewertungReferentenIndividuell.add(referentPktInh);
-				referentPktInh.clear();
-
-				bewertungReferentenIndividuell.add(referentPktVerh);
-				referentPktVerh.clear();
-
-				bewertungReferentenIndividuell.add(referentBem);
-				referentBem.clear();
-
-			}
-
-			document.add(bewertungReferentenIndividuell);
+			druckeParagraphReferentenIndividuell(document, ar);
 
 			document.close();
 
 		} catch (DocumentException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	private static void druckeMassnahmenBewertung(Document document, FragebogenEigenschaften fe, AuswertungMassnahme am)
+			throws DocumentException {
+		
+		Paragraph kopf = paragraphSetzen();
+		kopf.add(new Phrase("Maßnahme von " + fe.von_datum + " bis " + fe.bis_datum + "\n"));
+		kopf.add(new Phrase("Auftragsnummer: " + fe.auftrags_nummer + "\n"));
+		kopf.add(new Phrase("Seminarleitung: " + fe.seminarleiter_name + "\n"));
+		kopf.add(new Phrase("Datum: " + fe.ausstellungs_datum));
+		document.add(kopf);
+
+		Paragraph massnahmenverlauf = paragraphSetzen();
+
+		Phrase titelMassnahmenverlauf = titelSetzen("1. Maßnahmenverlauf");
+
+		Phrase spaltenMassnahmenverlauf = punkteSpaltenSetzen();
+
+		Phrase zeilePktOrg = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?",
+				am.pktvertOrg, am.durchschnOrg);
+
+		Phrase zeilePktVerl = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?",
+				am.pktvertVerl, am.durchschnVerl);
+
+		Phrase zeileAlleBemVerl = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
+
+		massnahmenverlauf.add(titelMassnahmenverlauf);
+		massnahmenverlauf.add(spaltenMassnahmenverlauf);
+		massnahmenverlauf.add(zeilePktOrg);
+		massnahmenverlauf.add(zeilePktVerl);
+		massnahmenverlauf.add(zeileAlleBemVerl);
+
+		document.add(massnahmenverlauf);
+
+		Paragraph massnahmenbetreuung = paragraphSetzen();
+
+		Phrase titelMassnahmenbetreuung = titelSetzen("2. Maßnahmenbetreuung");
+
+		Phrase spaltenMassnahmenbetreuung = punkteSpaltenSetzen();
+
+		Phrase zeilePktBetrng = druckeZeileMitPunkten(
+				"Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng,
+				am.durchschnBetrng);
+
+		Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkBetrng);
+
+		massnahmenbetreuung.add(titelMassnahmenbetreuung);
+		massnahmenbetreuung.add(spaltenMassnahmenbetreuung);
+		massnahmenbetreuung.add(zeilePktBetrng);
+		massnahmenbetreuung.add(zeileAlleBemBetrng);
+
+		document.add(massnahmenbetreuung);
+
+		Paragraph bewertungReferentenAllgemein = paragraphSetzen();
+
+		Phrase titelBewertungReferentenAllgemein = druckeZeileMitBemerkungen(
+				"3. Bewertung der Referenten bzw. Referentinnen:", am.alleBemerkRefAllg);
+
+		bewertungReferentenAllgemein.add(titelBewertungReferentenAllgemein);
+
+		document.add(bewertungReferentenAllgemein);
+	}
+
+	private static void druckeParagraphReferentenIndividuell(Document document, List<AuswertungReferent> ar)
+			throws DocumentException {
+		
+		Paragraph bewertungReferentenIndividuell = paragraphSetzen();
+
+		Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten:");
+
+		bewertungReferentenIndividuell.add(titelBewertungReferentenIndividuell);
+
+		for (int i = 0; i < ar.size(); i++) {
+
+			Phrase titelReferentName, referentPktVorb, referentPktFach, referentPktEing, referentPktInh, referentPktVerh, referentBem;
+			
+			titelReferentName = new Phrase("\nReferent / Referentin: " + ar.get(i).getName() + "\n");
+
+			bewertungReferentenIndividuell.add(titelReferentName);
+
+			Phrase durchschnitt3 = punkteSpaltenSetzen();
+
+			bewertungReferentenIndividuell.add(durchschnitt3);
+
+			referentPktVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?",
+					ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
+
+			referentPktFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?",
+					ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
+
+			referentPktEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?",
+					ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
+
+			referentPktInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?",
+					ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
+
+			referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?",
+					ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
+
+			referentBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n",
+					ar.get(i).getBemerkungen());
+
+			bewertungReferentenIndividuell.add(referentPktVorb);
+			bewertungReferentenIndividuell.add(referentPktFach);
+			bewertungReferentenIndividuell.add(referentPktEing);
+			bewertungReferentenIndividuell.add(referentPktInh);
+			bewertungReferentenIndividuell.add(referentPktVerh);
+			bewertungReferentenIndividuell.add(referentBem);
+
+		}
+
+		document.add(bewertungReferentenIndividuell);
 	}
 
 	
