@@ -527,7 +527,7 @@ public void addVorschauButtonHandler() {
 				Datum heuteDatum = Datum.parse(extractTextFromDatepicker(heute_datum));
 				
 				boolean datumsGueltig = (vonDatum != null) && (bisDatum != null) && (heuteDatum != null)
-						&& vonDatum.compareTo(bisDatum) == Datum.KLEINER;
+						&& vonDatum.compareTo(bisDatum) < Datum.GROESSER;
 
 				if (fragebogennameEntered && datumsGueltig && auftragsnummerEntered
 						&& anzahl_referenten > 0) {
