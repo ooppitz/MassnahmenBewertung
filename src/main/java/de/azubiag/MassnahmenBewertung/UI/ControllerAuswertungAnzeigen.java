@@ -1,17 +1,23 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
+import de.azubiag.MassnahmenBewertung.tools.AlsPDFSpeichern;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -21,10 +27,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 /* Ausgabe der Auswertung */
 
-public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
+public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: Pane muss möglicherweise bei zeile>?? bei der Höhe +49
 	// addieren
 
 	List<AzubiAntwort> antwortListe = new ArrayList<AzubiAntwort>();
@@ -136,6 +144,7 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 		addBewertungBetreuungToGrid();
 		addBemerkungenReferentenAllgToGrid();
 		addReferentenbewertungenToGrid();
+		addSaveButtonHandler();
 		setze_alle_Fonts();
 
 	}
@@ -250,11 +259,41 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 			addBemerkungenToGrid("Bemerkungen zu: " + auswertungReferent.getName(), bemerkungen);
 		}
 	}
+
 	public void setze_alle_Fonts() {
 
 		for (Node node : grid.getChildrenUnmodifiable()) {
 			Text text = (Text) node;
 			text.setFont(new Font(20));
 		}
+	}
+
+	public void addSaveButtonHandler() {
+		save.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Logger logger = Logger.getLogger();
+				logger.logInfo("Speicherort für das PDF wird ausgewählt");
+				FileChooser fileChooser = new FileChooser();
+				File selectedFilePath = null;
+
+				try {
+					fileChooser.setInitialDirectory(new File(Upload.getInstance().getRepositoryPfad()));
+					fileChooser.setInitialFileName(eigenschaft.fragebogen_name + ".pdf");
+
+				} catch (Exception e) {
+
+					logger.logError(e);
+				}
+
+				selectedFilePath = fileChooser.showSaveDialog(((Node) event.getTarget()).getScene().getWindow());
+				if (selectedFilePath != null) {
+					logger.logInfo("Speicherort für das PDF ist : " + selectedFilePath);
+					AlsPDFSpeichern.saveAsPDF(selectedFilePath, eigenschaft, auswertungMassnahme,
+							auswertungenReferenten);
+				}
+			}
+		});
 	}
 }

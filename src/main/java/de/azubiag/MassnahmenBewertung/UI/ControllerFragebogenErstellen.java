@@ -22,6 +22,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
 import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
+import de.azubiag.MassnahmenBewertung.tools.Datum;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Platform;
@@ -51,7 +52,7 @@ import javafx.stage.Stage;
 
 /* Erstellen des Fragebogens */
 
-public class ControllerFragebogenErstellen {
+public class ControllerFragebogenErstellen implements Controller {
 
 	Tab tab;
 	int anzahl_referenten;
@@ -148,11 +149,6 @@ public class ControllerFragebogenErstellen {
 		readdNode(referent_label, 1, 5);
 		readdNode(referent_name, 3, 5);
 
-		// DIESER BUTTON WIRD WAHRSCHEINLICH SCHON IM FXML-FILE AUSGEGRAUT. WEGEN
-		// ÄNDERUNGEN SOLL ER DAS ABER NICHT MEHR SEIN
-		// WENN DER DISABLED-ZUSTAND IM FXML AUF FALSE GESETZT WIRD, KANN DIE NÄCHSTE
-		// ZEILE RAUSGELÖSCHT WERDEN
-		preview.setDisable(false);
 		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> {
 
 //			if (oldValue != "" || newValue != "")
@@ -545,17 +541,27 @@ public void addVorschauButtonHandler() {
 				// ist
 				boolean fragebogennameEntered = fragebogenname.getText().matches(".*\\S+.*");
 				boolean auftragsnummerEntered = auftragsnummer_textfield.getText().matches(".*\\S+.*");
-				boolean vonDatumEntered = !(von_Datum.getValue() == null);
-				boolean bisDatumEntered = !(bis_Datum.getValue() == null);
 				int anzahl_referenten = getReferentenNamen().size();
+				
+				Datum vonDatum = Datum.parse(extractTextFromDatepicker(von_Datum));
+				Datum bisDatum = Datum.parse(extractTextFromDatepicker(bis_Datum));
+				Datum heuteDatum = Datum.parse(extractTextFromDatepicker(heute_datum));
+				
+				boolean datumsGueltig = (vonDatum != null) && (bisDatum != null) && (heuteDatum != null)
+						&& vonDatum.compareTo(bisDatum) < Datum.GROESSER;
 
-				if (fragebogennameEntered && vonDatumEntered && bisDatumEntered && auftragsnummerEntered
+				if (fragebogennameEntered && datumsGueltig && auftragsnummerEntered
 						&& anzahl_referenten > 0) {
 					return true;
 				} else {
 					return false;
 				}
 			}
+			
+			private String extractTextFromDatepicker(DatePicker picker) {
+				return picker.getEditor().getText();
+			}
 		});
 	}
+
 }
