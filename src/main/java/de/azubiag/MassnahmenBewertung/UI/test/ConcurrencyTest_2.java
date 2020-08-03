@@ -28,9 +28,9 @@ public class ConcurrencyTest_2 extends Application {
 //		};
 		
 		
-		BooleanProperty dp = new SimpleBooleanProperty();
+		BooleanProperty bp = new SimpleBooleanProperty();
 		
-		dp.addListener(new ChangeListener(){
+		bp.addListener(new ChangeListener(){
 			@Override public void changed(ObservableValue o, Object oldVal, Object newVal){
 				System.out.println("change");
 			}
@@ -46,7 +46,7 @@ public class ConcurrencyTest_2 extends Application {
 				}
 				updateMessage("-> link <-");
 				
-				dp.set(true);
+				bp.set(true);
 				
 				return null ;
 			}
