@@ -219,7 +219,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 					Label labelAntwortText = new Label(verschluesselteAntwort);
 					labelAntwortText.setFont(antwort_text.getFont());
 
-					int rowIndex = antwortListe.size();
+					int rowIndex = antwortListe.size()+2;
 					int buttonDeleteIdx = 0;
 					int labelAntwortIdx = 1;
 					int labelAntwortTextIdx = 3;
@@ -229,7 +229,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 					gridpane.add(labelAntwort, labelAntwortIdx, rowIndex, 2, 1);
 					gridpane.add(labelAntwortText, labelAntwortTextIdx, rowIndex, 3, 1);
 
-					int letzteRow = antwortListe.size();
+					int letzteRow = antwortListe.size()+2;
 					for (int i = 1; i < letzteRow; i++) {
 						Node deleteButtonNode  = GridPaneCustom.getElemByRowAndColumn(gridpane, i, buttonDeleteIdx);
 						if (deleteButtonNode!=null)	{
@@ -260,7 +260,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				 * dekrementiert
 				 */
 
-				int letzteRow = antwortListe.size();
+				int letzteRow = antwortListe.size()+2;
 				logger.logInfo("letzte Reihe: " + letzteRow);
 				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
 				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
@@ -288,7 +288,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				}
 				
 				// entfernen der Antwort aus der Antwortliste
-				int index_dieser_antwort = GridPane.getRowIndex(button)-1;
+				int index_dieser_antwort = GridPane.getRowIndex(button)-3;
 				antwortListe.remove(index_dieser_antwort);
 			}
 		});
