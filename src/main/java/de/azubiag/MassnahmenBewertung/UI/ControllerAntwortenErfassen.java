@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
@@ -68,6 +69,21 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 	@FXML
 	private transient Label maintext;
+	
+	@FXML
+	private transient Label link_label;
+	
+	@FXML
+	private transient TextField link_textfield;
+	
+	@FXML
+	private transient Button link_kopieren;
+	
+	@FXML
+	private transient Label auftragsnummer_label;
+	
+	@FXML
+	private transient Label auftragsnummer_wert;
 
 	@FXML
 	transient Button answ_del;
@@ -88,9 +104,14 @@ public class ControllerAntwortenErfassen implements Serializable {
 		setHandlerRemoveAnswer(answ_del);
 		readdNode(desc, 1, 0);
 		readdNode(fragebogenName, 3, 0);
-		readdNode(answ_del, 0, 1);
-		readdNode(antwort_name, 1, 1);
-		readdNode(antwort_text, 3, 1);
+		readdNode(link_label, 1, 1);
+		readdNode(link_textfield, 2, 1);
+		readdNode(link_kopieren, 5, 1);
+		readdNode(auftragsnummer_label, 1, 2);
+		readdNode(auftragsnummer_wert, 3, 2);
+		readdNode(answ_del, 0, 3);
+		readdNode(antwort_name, 1, 3);
+		readdNode(antwort_text, 3, 3);
 	}
 
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
