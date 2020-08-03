@@ -13,6 +13,7 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
+import de.azubiag.MassnahmenBewertung.tools.AlsPDFSpeichern;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 /* Ausgabe der Auswertung */
 
@@ -259,6 +261,7 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 			addBemerkungenToGrid("Bemerkungen zu: " + auswertungReferent.getName(), bemerkungen);
 		}
 	}
+
 	public void setze_alle_Fonts() {
 
 		for (Node node : grid.getChildrenUnmodifiable()) {
@@ -266,26 +269,32 @@ public class ControllerAuswertungAnzeigen { // was fehlt: Pane muss möglicherwe
 			text.setFont(new Font(20));
 		}
 	}
-	
-	public void addSaveButtonHandler () {
+
+	public void addSaveButtonHandler() {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				Logger logger = Logger.getLogger();
 				logger.logInfo("Speicherort für das PDF wird ausgewählt");
-		        DirectoryChooser directoryChooser = new DirectoryChooser();
-		        File selectedDirectory = null;
+				FileChooser fileChooser = new FileChooser();
+				File selectedFilePath = null;
+
 				try {
-					selectedDirectory = new File(Upload.getInstance().getRepositoryPfad());
+					fileChooser.setInitialDirectory(new File(Upload.getInstance().getRepositoryPfad()));
+					fileChooser.setInitialFileName(eigenschaft.fragebogen_name + ".pdf");
+
 				} catch (Exception e) {
-					
+
 					logger.logError(e);
 				}
 
-		        directoryChooser.setInitialDirectory(selectedDirectory);
-	            selectedDirectory = directoryChooser.showDialog(((Node)event.getTarget()).getScene().getWindow());
-	            logger.logInfo("Speicherort für das PDF ist : " + selectedDirectory);
+				selectedFilePath = fileChooser.showSaveDialog(((Node) event.getTarget()).getScene().getWindow());
+				if (selectedFilePath != null) {
+					logger.logInfo("Speicherort für das PDF ist : " + selectedFilePath);
+					AlsPDFSpeichern.saveAsPDF(selectedFilePath, eigenschaft, auswertungMassnahme,
+							auswertungenReferenten);
+				}
 			}
 		});
 	}
