@@ -9,7 +9,6 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -46,7 +45,7 @@ public class AlsPDFSpeichern {
 		Document document = new Document();
 		try {
 			try {
-				File file = new File("C:\\Users\\denis\\AppData\\Local\\MassnahmenBewertung\\gfigithubaccess.github.io\\iTextTable.pdf");
+				File file = new File(System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\gfigithubaccess.github.io\\iTextTable.pdf");
 				PdfWriter.getInstance(document, new FileOutputStream(file));
 			} catch (IOException e) {
 				e.printStackTrace();
