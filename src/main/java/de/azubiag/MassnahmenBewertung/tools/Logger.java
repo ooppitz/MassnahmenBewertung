@@ -77,7 +77,7 @@ public class Logger {
 	private PrintStream logstream;
 	
 	
-	public void logError(Object error) {
+	public void logError(Throwable error) {
 		logIt("ERROR", error);
 	}
 	
@@ -87,6 +87,15 @@ public class Logger {
 	
 	public void logInfo(Object info) {
 		logIt("INFO", info);
+	}
+	
+	public void logStackTrace() {
+		logIt("TRACE", new StackTrace());
+	}
+	
+	@SuppressWarnings("serial")
+	private static class StackTrace extends Throwable {
+		
 	}
 	
 	private synchronized void logIt(String category, Object logMe) {

@@ -18,7 +18,7 @@ public class GridPaneCustom {
 			}
 		}
 		Logger log = Logger.getLogger();
-		log.logError("GridPaneCustom: Node nicht gefunden!\nEs wurde nach row="+row+" ,column="+column+" gesucht.");
+		log.logError(new RuntimeException("GridPaneCustom: Node nicht gefunden!\nEs wurde nach row="+row+" ,column="+column+" gesucht."));
 		return null;
 	}
 	

@@ -88,7 +88,7 @@ public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: P
 
 		if (antwortListe.size() == 0) {
 			Logger log = Logger.getLogger();
-			log.logError("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
+			log.logError(new RuntimeException("In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!"));
 			Label warning = new Label("     In ControllerAuswertungAnzeigen hat AntwortListe die Länge 0 !!!");
 			grid.add(warning, 0, zeile);
 			zeile = 2;
