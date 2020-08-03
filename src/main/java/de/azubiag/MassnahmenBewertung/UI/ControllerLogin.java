@@ -238,7 +238,7 @@ public class ControllerLogin {
 			{
 				AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eine Datei mit diesem Namen existiert leider schon!", "Eine Datei mit diesem Namen existiert leider schon!");
 				Logger log = Logger.getLogger();
-				log.logError("Eine Datei mit diesem Namen existiert leider schon!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
+				log.logError(new RuntimeException("Eine Datei mit diesem Namen existiert leider schon!"+"\tPath= "+path+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory()));
 			}
 			return false;
 		}
@@ -257,7 +257,7 @@ public class ControllerLogin {
 			{
 				System.out.println("Directory could not be created!!!");
 				Logger log = Logger.getLogger();
-				log.logError("Dieser Benutzername kann nicht verwendet werden!"+"\tPath= "+path_string+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory());
+				log.logError(new RuntimeException("Dieser Benutzername kann nicht verwendet werden!"+"\tPath= "+path_string+"\tExists: "+test_file.exists()+"\tIs Directory: "+test_file.isDirectory()));
 				AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Dieser Benutzername kann nicht verwendet werden!", "Dieser Benutzername kann nicht verwendet werden!");
 				return false;
 			}

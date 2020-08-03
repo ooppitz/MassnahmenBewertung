@@ -149,7 +149,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 				
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 				if (entschluesselteAntwort == null) {	
-					Logger.getLogger().logError("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!");
+					Logger.getLogger().logError(new RuntimeException("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!"));
 					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
 					return;
 				} 
