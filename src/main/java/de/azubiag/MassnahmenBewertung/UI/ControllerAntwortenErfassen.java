@@ -154,7 +154,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 	}
 
 	public void setMaintext(String maintext) {
-		this.maintext.setText("Eingeben der Ergebnisse für Umfrage " + maintext);
+		this.maintext.setText("Eingeben der Ergebnisse für Umfrage \"" + maintext + "\"");
 	}
 
 	public void setHandlerLinkAnklicken() {
