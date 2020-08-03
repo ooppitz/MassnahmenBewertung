@@ -77,7 +77,7 @@ public class Logger {
 	private PrintStream logstream;
 	
 	
-	public void logError(Object error) {
+	public void logError(Throwable error) {
 		logIt("ERROR", error);
 	}
 	
