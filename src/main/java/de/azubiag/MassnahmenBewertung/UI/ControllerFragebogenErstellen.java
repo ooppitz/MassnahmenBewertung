@@ -325,10 +325,11 @@ public void addVorschauButtonHandler() {
 							fragebogenHandling(logger);
 						}
 					} else {
-						if (IsDateWritten()) 
+						if (isDateWritten())  {
 							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte korrekt ausfüllen", "Bitte füllen Sie die Datumsfelder korrekt aus. ");
-						else
+						} else {
 							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						}
 					}
 				}
 
@@ -561,7 +562,7 @@ public void addVorschauButtonHandler() {
 				}
 			}
 			
-			private boolean IsDateWritten() {
+			private boolean isDateWritten() {
 				
 				boolean von   =   !von_Datum.getEditor().getText().isBlank();
 				boolean bis   =   !bis_Datum.getEditor().getText().isBlank();
