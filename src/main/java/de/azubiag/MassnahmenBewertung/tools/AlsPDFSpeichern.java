@@ -31,6 +31,8 @@ public class AlsPDFSpeichern {
 
 	public static void main(String[] args) {
 		new AlsPDFSpeichern();
+		
+		System.out.println("PDF wurde erzeugt!");
 	}
 
 	public AlsPDFSpeichern() {
@@ -76,27 +78,13 @@ public class AlsPDFSpeichern {
 			Phrase durchschnitt1 = new Phrase();
 			leerzeichenSetzen(durchschnitt1);
 			durchschnitt1.add(new Chunk("-2 -1  0  1  2    Ø\n"));
-
-			Phrase t1q1 = new Phrase("Wie empfinden die Teilnehmer die Organisation des Seminars?");
-			leerzeichenSetzen(t1q1);
-			for (int i = 0; i < am.pktvertOrg.length; i++) {
-				t1q1.add(new Chunk(" " + String.valueOf(am.pktvertOrg[i]) + " "));
-			}
-			if (am.durchschnOrg >= 0) {
-				t1q1.add(" ");
-			}
-			t1q1.add(new Chunk("  " + String.format("%1.2f", am.durchschnOrg)));
+			
+			Phrase t1q1 = druckeZeileMitPunkten("Wie empfinden die Teilnehmer die Organisation des Seminars?", am.pktvertOrg, am.durchschnOrg);
+			
 			t1q1.add("\n");
 
-			Phrase t1q2 = new Phrase("Wie empfinden die Teilnehmer den Verlauf des Seminars?");
-			leerzeichenSetzen(t1q2);
-			for (int i = 0; i < am.pktvertOrg.length; i++) {
-				t1q2.add(new Chunk(" " + String.valueOf(am.pktvertVerl[i]) + " "));
-			}
-			if (am.durchschnVerl >= 0) {
-				t1q2.add(" ");
-			}
-			t1q2.add(new Chunk("  " + String.format("%1.2f", am.durchschnVerl)));
+			Phrase t1q2 = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?", am.pktvertVerl, am.durchschnVerl);
+
 			t1q2.add("\n");
 
 			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
@@ -120,15 +108,7 @@ public class AlsPDFSpeichern {
 			leerzeichenSetzen(durchschnitt2);
 			durchschnitt2.add(new Chunk("-2 -1  0  1  2    Ø\n"));
 
-			Phrase t2q1 = new Phrase("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?");
-			leerzeichenSetzen(t2q1);
-			for (int i = 0; i < am.pktvertBetrng.length; i++) {
-				t2q1.add(new Chunk(" " + String.valueOf(am.pktvertBetrng[i]) + " "));
-			}
-			if (am.durchschnBetrng >= 0) {
-				t2q1.add(" ");
-			}
-			t2q1.add(new Chunk("  " + String.format("%1.2f", am.durchschnBetrng)));
+			Phrase t2q1 = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng, am.durchschnBetrng);
 
 			Paragraph t2b1 = new Paragraph("Bermerkungen dazu:\n", font);
 			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
@@ -262,6 +242,19 @@ public class AlsPDFSpeichern {
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Phrase druckeZeileMitPunkten(String frageString, int[] pktvertArray, double durchschnitt) {
+		Phrase phrase = new Phrase(frageString);
+		leerzeichenSetzen(phrase);
+		for (int i = 0; i < pktvertArray.length; i++) {
+			phrase.add(new Chunk(" " + String.valueOf(pktvertArray[i]) + " "));
+		}
+		if (durchschnitt >= 0) {
+			phrase.add(" ");
+		}
+		phrase.add(new Chunk("  " + String.format("%1.2f", durchschnitt)));
+		return phrase;
 	}
 
 	void leerzeichenSetzen(Paragraph paragraph) {
