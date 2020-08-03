@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
@@ -16,12 +17,15 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 
+import java.awt.Desktop;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +80,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 	private transient Label link_label;
 	
 	@FXML
-	private transient TextField link_textfield;
+	private transient Hyperlink link_hypertext;
 	
 	@FXML
 	private transient Button link_kopieren;
@@ -105,17 +109,18 @@ public class ControllerAntwortenErfassen implements Serializable {
 	public void init() {
 		setHandlerRemoveAnswer(answ_del);
 		setHandlerLinkCopyButton();
+		setHandlerLinkAnklicken();
 		readdNode(desc, 1, 0);
 		readdNode(fragebogenName, 3, 0);
 		readdNode(link_label, 1, 1);
-		readdNode(link_textfield, 2, 1);
+		readdNode(link_hypertext, 2, 1);
 		readdNode(link_kopieren, 5, 1);
 		readdNode(auftragsnummer_label, 1, 2);
 		readdNode(auftragsnummer_wert, 3, 2);
 		readdNode(answ_del, 0, 3);
 		readdNode(antwort_name, 1, 3);
 		readdNode(antwort_text, 3, 3);
-		link_textfield.setText(eigenschaften.link);
+		link_hypertext.setText(eigenschaften.link);
 		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
 	}
 
@@ -151,7 +156,25 @@ public class ControllerAntwortenErfassen implements Serializable {
 	public void setMaintext(String maintext) {
 		this.maintext.setText("Eingeben der Ergebnisse für Umfrage " + maintext);
 	}
-	
+
+	public void setHandlerLinkAnklicken() {
+		link_hypertext.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+
+				link_hypertext.setVisited(true);
+				if(Desktop.isDesktopSupported())
+				{
+					try {
+						Desktop.getDesktop().browse(new URI(link_hypertext.getText()));
+					} catch (IOException | URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+
 	public void setHandlerLinkCopyButton() {
 		link_kopieren.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

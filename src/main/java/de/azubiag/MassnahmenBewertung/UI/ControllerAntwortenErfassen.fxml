@@ -2,9 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -96,14 +96,6 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="link_textfield" editable="false" prefWidth="508.0" promptText="Link sollte hier angezeigt werden" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </TextField>
                   <Label fx:id="auftragsnummer_label" text="Auftragsnummer:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
@@ -122,6 +114,11 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <Hyperlink fx:id="link_hypertext" text="Hyperlink" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" underline="true" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Hyperlink>
                </children>
                <opaqueInsets>
                   <Insets />
