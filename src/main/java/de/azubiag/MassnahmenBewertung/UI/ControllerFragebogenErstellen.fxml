@@ -22,7 +22,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Erstellen eines Fragebogens" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label text="Erstellen einer Umfrage" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
@@ -62,7 +62,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="description" text="Name des Fragebogens :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                  <Label fx:id="description" text="Name der Umfrage :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -86,7 +86,7 @@
                         <Insets left="30.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="fragebogenname" promptText="Unbenannter Fragebogen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <TextField fx:id="fragebogenname" promptText="Unbenannte Umfrage" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -163,7 +163,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="preview" disable="true" maxWidth="50000.0" mnemonicParsing="false" text="Fragebogen anzeigen" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
+            <Button fx:id="preview" disable="false" maxWidth="50000.0" mnemonicParsing="false" text="Weiter" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

@@ -20,7 +20,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="maintext" text="Eingeben der Ergebnisse für Fragebogen xxxxxyyyyyyzzzz" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label fx:id="maintext" text="Eingeben der Ergebnisse für Umfrage xxxxxyyyyyyzzzz" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
@@ -60,7 +60,7 @@
                   <RowConstraints maxHeight="49.0" minHeight="49.0" prefHeight="49.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="desc" text="Name des Fragebogens :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label fx:id="desc" text="Name der Umfrage :" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -100,12 +100,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="next" maxWidth="50000.0" mnemonicParsing="false" text="Fragebogen auswerten" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="next" maxWidth="50000.0" mnemonicParsing="false" text="Umfrage beenden undauswerten" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="delete" maxWidth="50000.0" mnemonicParsing="false" text="Fragebogen löschen" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="delete" maxWidth="50000.0" mnemonicParsing="false" text="Umfrage löschen" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

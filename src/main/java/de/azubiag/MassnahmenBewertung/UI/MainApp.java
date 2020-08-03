@@ -76,13 +76,14 @@ public class MainApp extends Application {
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
+	
+	
 
 
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("SeminarLeiterApp");
-
 
 		showLogin();
 
@@ -425,21 +426,21 @@ public class MainApp extends Application {
 
 	
 	public void warnfenster(WindowEvent event) {
-		if (!listeControllerAntwortenErfassen.isEmpty())
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Wenn Sie das Fenster schließen, geschieht Folgendes: \n"
+				+ "-Umfrageergebnisse, die noch nicht in einem PDF gespeichert wurden, gehen verloren\n"
+				+ "-Umfragen, die noch nicht hochgeladen wurden, werden gelöscht.\n" 
+				+ "Laufende Umfragen erscheinen beim Öffnen der App im jeztigen Zustand wieder.\n\n"
+				+ "Trotzdem schließen ? ")==1) ? true:false; 
+		
+		if (loeschen)
 		{
-			int resultFortschrittSpeichern = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Warnung", "Wollen Sie den Fortschritt speichern?");
-	
-			if(resultFortschrittSpeichern == 1) {
+			if(!listeControllerAntwortenErfassen.isEmpty()) {
 				ControllerAntwortenErfassen.speichern();
 				Platform.exit();
-			} else if(resultFortschrittSpeichern == 0) {
-				System.out.println("Fortschritt wird verworfen!");
-				Platform.exit();
-			} else {
-				System.out.println("Schließen wird abgebrochen");
-				event.consume();
 			}
-			System.out.println("Der Rest der Methode wird noch durchgeführt!");
+		} else {
+			System.out.println("Schließen wird abgebrochen");
+			event.consume();
 		}
 	}
 
@@ -462,6 +463,8 @@ public class MainApp extends Application {
 			return false;
 		}
 	}
+	
+	
 
 	public void zuListeHinzufügen(ControllerAntwortenErfassen controller) {
 		listeControllerAntwortenErfassen.add(controller);
