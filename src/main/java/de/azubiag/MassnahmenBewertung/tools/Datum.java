@@ -113,8 +113,7 @@ public final class Datum implements Comparable<Datum> {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "Datum[tag=" +tag+ ", monat=" +monat+ ", jahr=" +jahr+ "]";
 	}
 
 	@Override
