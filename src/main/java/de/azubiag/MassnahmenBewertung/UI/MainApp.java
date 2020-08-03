@@ -181,7 +181,7 @@ public class MainApp extends Application {
 			BorderPane z1bp = (BorderPane) loader.load(); // !!
 			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			ControllerFragebogenErstellen controller = loader.getController();	
-			Tab tab_z1 = erzeugeTab(z1bp, "Unbenannter Fragebogen", controller);
+			Tab tab_z1 = erzeugeTab(z1bp, "Unbenannte Umfrage", controller);
 					rootLayout.getTabs().add(tab_z1);
 			// System.out.println(controller);
 			controller.setMainApp(this);
