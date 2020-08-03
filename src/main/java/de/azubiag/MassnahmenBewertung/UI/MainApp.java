@@ -156,16 +156,6 @@ public class MainApp extends Application {
 
 			if (existieren_speicherdaten()) {
 				speicherdaten_laden();
-				boolean erfolg = speicherdaten_löschen();
-				if (erfolg)
-				{
-				Logger.getLogger().logInfo("Alte Speicherdatei konnte gelöscht werden!");
-				}
-				else
-				{
-					Logger.getLogger().logWarning("Alte Speicherdatei konnte  NICHT  gelöscht werden!");
-					// TODO: Fehlermeldung, dann schließen des Programms?
-				}
 			}
 			else
 			{
@@ -238,12 +228,13 @@ public class MainApp extends Application {
 			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z2);
-			listeControllerAntwortenErfassen.add(controller);
+			zuListeHinzufügen(controller); 	// speichern, nachdem der Tab erstellt worden ist
 		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 
 	public void showTabAuswertungAnzeigen(FragebogenEigenschaften eigenschaft, int index,List<AzubiAntwort> antwortListe) { // incomplete
 		try {
@@ -326,13 +317,16 @@ public class MainApp extends Application {
 		tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
 			public void handle(Event event) {
-				MainApp.listeControllerAntwortenErfassen.remove(controller);
+				vonListeEntfernen(controller);
 			}
 		});
 		
 		return tab_z2;
 	}
 	
+	/**
+	 * @deprecated
+	 */
 	public boolean speicherdaten_löschen() {
 		
 		try {
@@ -453,6 +447,16 @@ public class MainApp extends Application {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public void zuListeHinzufügen(ControllerAntwortenErfassen controller) {
+		listeControllerAntwortenErfassen.add(controller);
+		ControllerAntwortenErfassen.speichern();
+	}
+	
+	public static void vonListeEntfernen(ControllerAntwortenErfassen controller) {
+		MainApp.listeControllerAntwortenErfassen.remove(controller);
+		ControllerAntwortenErfassen.speichern();
 	}
 
 }
