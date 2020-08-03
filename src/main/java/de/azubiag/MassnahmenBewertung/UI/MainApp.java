@@ -429,7 +429,7 @@ public class MainApp extends Application {
 		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Wenn Sie das Fenster schließen, geschieht Folgendes: \n"
 				+ "-Umfrageergebnisse, die noch nicht in einem PDF gespeichert wurden, gehen verloren\n"
 				+ "-Umfragen, die noch nicht hochgeladen wurden, werden gelöscht.\n" 
-				+ "Laufende Umfragen erscheinen beim Öffnen der App im jeztigen Zustand wieder.\n\n"
+				+ "Laufende Umfragen erscheinen beim Öffnen der App im jetzigen Zustand wieder.\n\n"
 				+ "Trotzdem schließen ? ")==1) ? true:false; 
 		
 		if (loeschen)
