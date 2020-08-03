@@ -316,21 +316,21 @@ public class MainApp extends Application {
 	}
 
 	
-	private Tab erzeugeTab(BorderPane z2, String tabName, ControllerAntwortenErfassen controller) {
+	private Tab erzeugeTab(BorderPane borderPane, String tabName, Controller controller) {
 	
-		Tab tab_z2 = new Tab();
-		tab_z2.setContent(z2);
-		tab_z2.setClosable(true);
-		tab_z2.setText(tabName);
+		Tab thisTab = new Tab();
+		thisTab.setContent(borderPane);
+		thisTab.setClosable(true);
+		thisTab.setText(tabName);
 		
-		tab_z2.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
+		thisTab.setOnClosed(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
 			public void handle(Event event) {
-				MainApp.listeControllerAntwortenErfassen.remove(controller);
+				handleUmfrageSchliessen( thisTab, controller, event);
 			}
 		});
 		
-		return tab_z2;
+		return thisTab;
 	}
 	
 	public boolean speicherdaten_löschen() {
@@ -347,30 +347,49 @@ public class MainApp extends Application {
 		
 	}
 
-	public void addDeleteToButton(Button button, TabPane pane, Tab thistab) {
+	public void addHandlerToDeleteButton(Button button, TabPane pane, Tab thistab, Controller controller) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				pane.getTabs().remove(thistab);
-				String seminarleiter = MainApp.getUserName();
-
-				try {
-					File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
-					if (f.delete()) // returns Boolean value
-
-					{
-						Upload.getInstance().hochladen();
-						System.out.println(f.getName() + " deleted"); // getting and printing the file name
-					} else {
-						System.out.println("failed");
-					}
-				} catch (GitAPIException | IOException exc) {
-					exc.printStackTrace();
-				}
+				handleUmfrageSchliessen( thistab, controller, e);
 			}
 		});
 	}
 
+	
+	public void handleUmfrageSchliessen( Tab thistab, Controller controller, Event event) {
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Umfrage schließen", "Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ")==1)? true:false;
+		
+		if (loeschen) {
+			deleteActions( thistab, controller);
+		}else {
+			event.consume(); //bei Tab: setOnCloseRequest Schließen stoppen
+		}
+	}
+
+	public void deleteActions( Tab thistab, Controller controller) {
+		rootLayout.getTabs().remove(thistab);
+		if (controller.getClass()== ControllerAntwortenErfassen.class) {
+			MainApp.listeControllerAntwortenErfassen.remove(controller);
+		}
+		String seminarleiter = MainApp.getUserName();
+
+		try {
+			File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
+			
+			if (f!=null) {
+				if (f.delete()) // returns Boolean value
+				{
+					Upload.getInstance().hochladen();
+					System.out.println(f.getName() + " deleted"); // getting and printing the file name
+				} else {
+					System.out.println("failed");
+				} 
+			}
+		} catch (GitAPIException | IOException exc) {
+			exc.printStackTrace();
+		}
+	}
 	public void showTabPlus() {
 		Tab tab_plus = new Tab();
 		tab_plus.setText("+");
