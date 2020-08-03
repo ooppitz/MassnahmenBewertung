@@ -313,8 +313,6 @@ public class MainApp extends Application {
 			@Override
 			public void handle(Event event) {
 
-				
-
 				handleUmfrageSchliessen( thisTab, controller, event);
 			}
 		});
@@ -362,7 +360,9 @@ public class MainApp extends Application {
 	public void deleteActions( Tab thistab, Controller controller) {
 		rootLayout.getTabs().remove(thistab);
 		if (controller.getClass()== ControllerAntwortenErfassen.class) {
+
 			vonListeEntfernen(controller);
+
 		}
 		String seminarleiter = MainApp.getUserName();
 
