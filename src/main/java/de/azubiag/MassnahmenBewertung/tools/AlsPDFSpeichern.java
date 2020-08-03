@@ -248,8 +248,7 @@ public class AlsPDFSpeichern {
 		}
 	}
 
-<<<<<<< HEAD
-	private Phrase druckeZeileMitPunkten(String frageString, int[] pktvertArray, double durchschnitt) {
+	private static Phrase druckeZeileMitPunkten(String frageString, int[] pktvertArray, double durchschnitt) {
 		Phrase phrase = new Phrase(frageString);
 		leerzeichenSetzen(phrase);
 		for (int i = 0; i < pktvertArray.length; i++) {
@@ -262,10 +261,8 @@ public class AlsPDFSpeichern {
 		return phrase;
 	}
 
-	void leerzeichenSetzen(Paragraph paragraph) {
-=======
+
 	static void leerzeichenSetzen(Paragraph paragraph) {
->>>>>>> Manuel_addFileLocationPickerPDF
 		while (paragraph.getContent().length() < 65) {
 			paragraph.add(" ");
 		}
