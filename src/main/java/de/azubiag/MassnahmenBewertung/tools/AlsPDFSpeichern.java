@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.jgit.api.errors.GitAPIException;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -22,7 +20,6 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.auswertung.Frage;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
-import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class AlsPDFSpeichern {
 	FragebogenEigenschaften fe;
@@ -50,9 +47,9 @@ public class AlsPDFSpeichern {
 		Document document = new Document();
 		try {
 			try {
-				File file = new File(Upload.getInstance().getRepositoryPfad() + "\\iTextTable.pdf");
+				File file = new File("C:\\Users\\denis\\AppData\\Local\\MassnahmenBewertung\\gfigithubaccess.github.io\\iTextTable.pdf");
 				PdfWriter.getInstance(document, new FileOutputStream(file));
-			} catch (GitAPIException | IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			document.open();
@@ -62,8 +59,7 @@ public class AlsPDFSpeichern {
 
 			// document.add(chunk);
 
-			Paragraph header = new Paragraph("", font);
-			header.setSpacingAfter(50);
+			Paragraph header = paragraphSetzen();
 			header.add(new Phrase("Maßnahme von " + fe.von_datum + " bis " + fe.bis_datum + "\n"));
 			header.add(new Phrase("Auftragsnummer: " + fe.auftrags_nummer + "\n"));
 			header.add(new Phrase("Seminarleitung: " + fe.seminarleiter_name + "\n"));
@@ -87,10 +83,7 @@ public class AlsPDFSpeichern {
 
 			t1q2.add("\n");
 
-			Paragraph t1b = new Paragraph("Bemerkungen dazu:\n", font);
-			for (int i = 0; i < am.alleBemerkVerl.size(); i++) {
-				t1b.add(new Chunk(am.alleBemerkVerl.get(i) + ";\n"));
-			}
+			Phrase t1b = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
 
 			m1.add(title1);
 			m1.add(durchschnitt1);
@@ -110,10 +103,9 @@ public class AlsPDFSpeichern {
 
 			Phrase t2q1 = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng, am.durchschnBetrng);
 
-			Paragraph t2b1 = new Paragraph("Bermerkungen dazu:\n", font);
-			for (int i = 0; i < am.alleBemerkBetrng.size(); i++) {
-				t2b1.add(new Chunk(am.alleBemerkBetrng.get(i) + ";\n", font));
-			}
+			t2q1.add("\n");
+			
+			Phrase t2b1 = druckeZeileMitBemerkungen("Bemerkungen dazu", am.alleBemerkBetrng);
 
 			m2.add(title2);
 			m2.add(durchschnitt2);
@@ -136,12 +128,12 @@ public class AlsPDFSpeichern {
 
 			Paragraph rAlle = new Paragraph("", font);
 
-			Phrase rVorb = new Phrase();
-			Phrase rFach = new Phrase();
-			Phrase rEing = new Phrase();
-			Phrase rInh = new Phrase();
-			Phrase rVerh = new Phrase();
-			Phrase rBem = new Phrase();
+			Phrase rVorb;
+			Phrase rFach;
+			Phrase rEing;
+			Phrase rInh;
+			Phrase rVerh;
+			Phrase rBem;
 
 			for (int i = 0; i < ar.size(); i++) {
 				rAlle.add(new Chunk("\nReferent / Referentin: " + ar.get(i).getName() + "\n"));
@@ -150,70 +142,22 @@ public class AlsPDFSpeichern {
 				durchschnitt3.add(new Chunk("-2 -1  0  1  2    Ø\n"));
 				rAlle.add(durchschnitt3);
 
-				rVorb.add(new Chunk("Wie war ihr/sein Unterricht vorbereitet?"));
-				leerzeichenSetzen(rVorb);
-				for (int j = 0; j < ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
-					rVorb.add(new Chunk(
-							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
-				}
-				if (ar.get(i).durchschnittVorbereitung >= 0) {
-					rVorb.add(" ");
-				}
-				rVorb.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittVorbereitung)));
+				rVorb = druckeZeileMitPunkten("Wie war ihr/sein Unterricht vorbereitet?", ar.get(i).stimmenProRadioBtnVorbereitung, ar.get(i).durchschnittVorbereitung);
 				rVorb.add("\n");
-
-				rFach.add(new Chunk("Wie umfangreich war ihr/sein Fachwissen?"));
-				leerzeichenSetzen(rFach);
-				for (int j = 0; j < ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
-					rFach.add(new Chunk(
-							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.FACHWISSEN, j)) + " "));
-				}
-				if (ar.get(i).durchschnittFachwissen >= 0) {
-					rFach.add(" ");
-				}
-				rFach.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittFachwissen)));
+				
+				rFach = druckeZeileMitPunkten("Wie umfangreich war ihr/sein Fachwissen?", ar.get(i).stimmenProRadioBtnFachwissen, ar.get(i).durchschnittFachwissen);
 				rFach.add("\n");
-
-				rEing.add(new Chunk("Wie ging sie/er auf spezielle thematische Probleme ein?"));
-				leerzeichenSetzen(rEing);
-				for (int j = 0; j < ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
-					rEing.add(new Chunk(" "
-							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.EINGEHENAUFPROBLEME, j)) + " "));
-				}
-				if (ar.get(i).durchschnittEingehenAufProbleme >= 0) {
-					rEing.add(" ");
-				}
-				rEing.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittEingehenAufProbleme)));
+				
+				rEing = druckeZeileMitPunkten("Wie ging sie/er auf spezielle thematische Probleme ein?", ar.get(i).stimmenProRadioBtnEingehenAufProbleme, ar.get(i).durchschnittEingehenAufProbleme);
 				rEing.add("\n");
-
-				rInh.add(new Chunk("Wie verständlich konnte sie/er die Inhalte vermitteln?"));
-				leerzeichenSetzen(rInh);
-				for (int j = 0; j < ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
-					rInh.add(new Chunk(" "
-							+ String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.INHALTSVERMITTLUNG, j)) + " "));
-				}
-				if (ar.get(i).durchschnittInhaltsvermittlung >= 0) {
-					rInh.add(" ");
-				}
-				rInh.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittInhaltsvermittlung)));
+				
+				rInh = druckeZeileMitPunkten("Wie verständlich konnte sie/er die Inhalte vermitteln?", ar.get(i).stimmenProRadioBtnInhaltsvermittlung, ar.get(i).durchschnittInhaltsvermittlung);
 				rInh.add("\n");
 
-				rVerh.add(new Chunk("Wie sagte Ihnen ihr/sein Verhalten zu?"));
-				leerzeichenSetzen(rVerh);
-				for (int j = 0; j < ar.get(i).stimmenProRadioBtnVorbereitung.length; j++) {
-					rVerh.add(new Chunk(
-							" " + String.valueOf(ar.get(i).getStimmenProRadioButton(Frage.VORBEREITUNG, j)) + " "));
-				}
-				if (ar.get(i).durchschnittVerhalten >= 0) {
-					rVerh.add(" ");
-				}
-				rVerh.add(new Chunk("  " + String.format("%1.2f", ar.get(i).durchschnittVerhalten)));
+				rVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?", ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
 				rVerh.add("\n");
 
-				rBem.add(new Chunk("\nBermerkungen zu: " + ar.get(i).name + "\n"));
-				for (int j = 0; j < ar.get(i).bemerkungen.size(); j++) {
-					rBem.add(new Chunk(ar.get(i).bemerkungen.get(j) + ";\n"));
-				}
+				rBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n", ar.get(i).getBemerkungen());
 
 				rAlle.add(rVorb);
 				rVorb.clear();
@@ -242,6 +186,20 @@ public class AlsPDFSpeichern {
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Paragraph paragraphSetzen() {
+		Paragraph paragraph = new Paragraph("", FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK));
+		paragraph.setSpacingAfter(50);
+		return paragraph;
+	}
+
+	private Phrase druckeZeileMitBemerkungen(String titel, List<String> bemerkungen) {
+		Phrase paragraph = new Phrase(titel+"\n");
+		for (int i = 0; i < bemerkungen.size(); i++) {
+			paragraph.add(new Chunk(bemerkungen.get(i) + ";\n"));
+		}
+		return paragraph;
 	}
 
 	private Phrase druckeZeileMitPunkten(String frageString, int[] pktvertArray, double durchschnitt) {
