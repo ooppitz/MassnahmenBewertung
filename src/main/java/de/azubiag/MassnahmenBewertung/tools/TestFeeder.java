@@ -34,8 +34,8 @@ public class TestFeeder {
 			
 			br.close();
 			
-			@SuppressWarnings("unused")
-			AuswertungMassnahme am = new AuswertungMassnahme(extractArray(buffer));
+			//@SuppressWarnings("unused")
+			//AuswertungMassnahme am = new AuswertungMassnahme((buffer);
 			
 			nop();
 			nop();
