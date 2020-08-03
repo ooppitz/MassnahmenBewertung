@@ -45,6 +45,7 @@ public class FragebogenEigenschaften implements Serializable {
 	this.bis_datum = (bis_Datum == null) ? "" : bis_Datum.format(formatddmmyyyy);
 	this.ausstellungs_datum = (ausstellungs_Datum == null) ? "" : ausstellungs_Datum.format(formatddmmyyyy);
 	
+	this.link = link;
     }
 
 }

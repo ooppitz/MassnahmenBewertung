@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -102,6 +104,7 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 	public void init() {
 		setHandlerRemoveAnswer(answ_del);
+		setHandlerLinkCopyButton();
 		readdNode(desc, 1, 0);
 		readdNode(fragebogenName, 3, 0);
 		readdNode(link_label, 1, 1);
@@ -112,6 +115,8 @@ public class ControllerAntwortenErfassen implements Serializable {
 		readdNode(answ_del, 0, 3);
 		readdNode(antwort_name, 1, 3);
 		readdNode(antwort_text, 3, 3);
+		link_textfield.setText(eigenschaften.link);
+		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
 	}
 
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
@@ -145,6 +150,19 @@ public class ControllerAntwortenErfassen implements Serializable {
 
 	public void setMaintext(String maintext) {
 		this.maintext.setText("Eingeben der Ergebnisse für Fragebogen " + maintext);
+	}
+	
+	public void setHandlerLinkCopyButton() {
+		link_kopieren.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				
+				Clipboard clippy = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putString(eigenschaften.link);
+				clippy.setContent(content);
+			}
+		});
 	}
 
 	public void setHandlerAnswerButton() {
