@@ -1,5 +1,6 @@
 package de.azubiag.MassnahmenBewertung.tools;
 
+/*
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,12 +17,15 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 
 // TODO: Die Junit-Tests zum Laufen zu bringen
 
+*/
+
 /**
  * 
  * @author Louisa
  *
  */
 
+/*
 class AuswertungReferentTest {
 
 	static AuswertungReferent auswertungRef;
@@ -189,3 +193,5 @@ class AuswertungReferentTest {
 	}
 
 }
+
+*/
