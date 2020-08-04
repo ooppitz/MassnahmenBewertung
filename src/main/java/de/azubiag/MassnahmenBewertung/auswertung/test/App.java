@@ -1,6 +1,7 @@
 package de.azubiag.MassnahmenBewertung.auswertung.test;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
@@ -14,6 +15,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import de.azubiag.MassnahmenBewertung.UI.ControllerAuswertungAnzeigen;
+import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.UI.MainApp;
 
 /**
@@ -43,10 +45,10 @@ public class App extends MainApp {
 			ControllerAuswertungAnzeigen controller = loader.getController();
 			// System.out.println(controller);
 
-			controller.init(this, name, antwortListe);
+			//controller.init(this, new FragebogenEigenschaften("test", "Max Mustermann", "auftragsnummer", new LocalDate(1,1,1), new LocalDate(1, 2, 3), new LocalDate(), "link"), antwortListe);
 			controller.erzeugeDarstellung();
 
-			addDeleteToButton(controller.delete, rootLayout, tab_z3);
+			//addDeleteToButton(controller.delete, rootLayout, tab_z3);
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -278,7 +278,7 @@ public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: P
 				File selectedFilePath = null;
 
 				try {
-					fileChooser.setInitialDirectory(new File(Upload.getInstance().getRepositoryPfad()));
+					fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 					fileChooser.setInitialFileName(eigenschaft.fragebogen_name + ".pdf");
 
 				} catch (Exception e) {
