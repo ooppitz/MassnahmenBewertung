@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -42,8 +43,8 @@ public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: P
 	private static DecimalFormat zweiStellenNachKomma = new DecimalFormat("#.##");
 
 	int zeile;
-
-	Tab tab;
+	
+	TabPane tabpane;
 
 	@FXML
 	public Label ueberschrift;
@@ -56,7 +57,7 @@ public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: P
 	GridPane grid;
 
 	private MainApp mainapp;
-
+	
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
 		this.eigenschaft = eigenschaft;
 	}
@@ -65,9 +66,6 @@ public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: P
 		mainapp = app;
 	}
 
-	public void setTab(Tab tab) {
-		this.tab = tab;
-	}
 
 	public String getName() {
 		return ueberschrift.getText();
@@ -214,6 +212,7 @@ public class ControllerAuswertungAnzeigen implements Controller{ // was fehlt: P
 
 	private void addTextToGrid(String textContent, int col, boolean linefeed) {
 		Text text = new Text(textContent);
+		text.wrappingWidthProperty().bind(grid.widthProperty());
 		grid.add(text, col, zeile);
 		if (linefeed) {
 			zeile++;
