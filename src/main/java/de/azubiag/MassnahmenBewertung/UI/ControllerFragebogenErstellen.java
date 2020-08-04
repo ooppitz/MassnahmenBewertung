@@ -25,6 +25,8 @@ import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -335,6 +337,7 @@ public void addVorschauButtonHandler() {
 
 			/* Erstellen, Hochladen usw. eines Fragebogens */
 			
+			@SuppressWarnings("unchecked")
 			private void fragebogenHandling(Logger logger) {
 				try {
 
@@ -352,6 +355,16 @@ public void addVorschauButtonHandler() {
 										
 					if (veroeffentlichen) {
 			
+						
+						Dialog<ButtonType> dialog = new Dialog<>();			
+						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
+						
+						UploadController upload_controller = initHochladenFenster(dialog, cancel);
+						upload_controller.link.setDisable(true);
+						
+						dialog.getDialogPane().getButtonTypes().remove(cancel);
+						
+						
 						try {
 							boolean hochladen = true;
 							if (MainApp.testmodusAktiv) {   // ermöglicht Unterdrücken des Hochladens
@@ -359,22 +372,30 @@ public void addVorschauButtonHandler() {
 							}
 							if (hochladen) {
 								// Alert alert = AlertMethoden.zeigeOKAlertWarten(AlertType.CONFIRMATION, "Hochladen des Fragebogens", "Der Fragebogen wird hochgeladen...", false);
-								
-// ===============================================================================						
-								/*
-								Platform.runLater(new Runnable() {
 
-									@Override
-									public void run() {
-										try {
-											Upload.getInstance().hochladen(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
-										} catch (GitAPIException | IOException e) {
-											e.printStackTrace();
-										}
+								BooleanProperty uploadCompleted = new SimpleBooleanProperty();
+								
+								uploadCompleted.addListener(new ChangeListener(){
+									@Override public void changed(ObservableValue o, Object oldVal, Object newVal){
 										
-									}});
-								*/							
-// ===============================================================================
+										upload_controller.upload_pending.setText("Fertig!");
+										upload_controller.setLink(webpath);
+										upload_controller.link.setDisable(false);
+										upload_controller.link.setOnAction(y -> {
+										    if(Desktop.isDesktopSupported()) {
+										        try {
+										            Desktop.getDesktop().browse(new URI(webpath));
+										        } catch (IOException e) {
+										            e.printStackTrace();
+										        } catch (URISyntaxException e) {
+										            e.printStackTrace();
+										        }
+										    }
+										});
+										
+									}
+								});
+								
 								Task task = new Task<Void>() {
 								    @Override protected Void call() throws Exception {
 								    	try {
@@ -382,16 +403,17 @@ public void addVorschauButtonHandler() {
 										} catch (GitAPIException | IOException e) {
 											e.printStackTrace();
 										}
-								    	updateMessage("fertig!");
+								    	updateMessage("upload fertig!");
+								    	
+								    	uploadCompleted.set(true);
+								    	
 								    	return null;
 								    }
 								};
-								new Thread(task).start();
-								while (!task.getMessage().equals("fertig!")) {
-									System.out.println("nicht fertig!");
-								}
-								System.out.println("fertig!");
-// ===============================================================================
+								
+								Thread t = new Thread(task);
+								t.setDaemon(true);
+								t.start();
 								
 							} else {
 								logger.logWarning("Der Fragebogen wurde nicht hochgeladen.");		
@@ -411,24 +433,8 @@ public void addVorschauButtonHandler() {
 						// fx-thread nicht blockieren !!!
 						// Abbrechen erlauben ?
 						
-						Dialog<ButtonType> dialog = new Dialog<>();			
-						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
 						
-						UploadController upload_controller = initHochladenFenster(dialog, cancel);
-						dialog.getDialogPane().getButtonTypes().remove(cancel);
-						upload_controller.setLink(webpath);
-						upload_controller.link.setOnAction(y -> {
-						    if(Desktop.isDesktopSupported())
-						    {
-						        try {
-						            Desktop.getDesktop().browse(new URI(webpath));
-						        } catch (IOException e1) {
-						            e1.printStackTrace();
-						        } catch (URISyntaxException e1) {
-						            e1.printStackTrace();
-						        }
-						    }
-						});
+						
 
 						zeigeStatusHochladen(dialog, cancel, upload_controller);
 
@@ -492,7 +498,7 @@ public void addVorschauButtonHandler() {
 				ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
 				dialog.getDialogPane().getButtonTypes().add(next);
 
-				upload_controller.upload_pending.setText("Hochladen erfolgreich!");
+				upload_controller.upload_pending.setText("Fragebogen wird hochgeladen");
 				upload_controller.progress.setProgress(1);
 				Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
 				
