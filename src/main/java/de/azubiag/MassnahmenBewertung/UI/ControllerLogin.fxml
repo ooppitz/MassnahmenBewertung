@@ -19,7 +19,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Willkommen Seminaleiter/-in im Referentenbewertungsprogramm für die GFI!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Label text="Willkommen im Maßnahmenbewertungsprogramm für Seminarleiter*innen der GFI!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -27,7 +27,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Bitte geben Sie ihren vollen Namen ein: (z.B:  Martina Musterfrau)" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Label text="Bitte geben Sie Ihren vollen Namen ein (z.B:  Martina Musterfrau):" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
