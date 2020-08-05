@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -18,6 +20,7 @@ import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
+import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class AlsPDFSpeichern {
 
@@ -31,9 +34,14 @@ public class AlsPDFSpeichern {
 		amTest = Testdaten.getAuswertungMassnahme();
 		arTest = Testdaten.getAuswertungReferenten();
 
-		File outputFile;
+		File outputFile = null;
 
-		outputFile = new File(/* Upload.getInstance().getRepositoryPfad() + */ "output.pdf");
+		try {
+			outputFile = new File(Upload.getInstance().getProgrammDatenOrdner() + "\\output.pdf");
+		} catch (GitAPIException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		saveAsPDF(outputFile, feTest, amTest, arTest);
 		System.out.println("Datei " + outputFile + " wurde erzeugt.");
 
@@ -193,7 +201,7 @@ public class AlsPDFSpeichern {
 	private static Phrase punkteSpaltenSetzen() {
 		Phrase phrase = new Phrase();
 		leerzeichenSetzen(phrase);
-		phrase.add(new Chunk("-2 -1  0  1  2    Ø\n"));
+		phrase.add(new Chunk("-2 -1  0 +1 +2    Ø\n"));
 		return phrase;
 	}
 
@@ -217,7 +225,10 @@ public class AlsPDFSpeichern {
 		Phrase phrase = new Phrase(frageString);
 		leerzeichenSetzen(phrase);
 		for (int i = 0; i < pktvertArray.length; i++) {
-			phrase.add(new Chunk(" " + String.valueOf(pktvertArray[i]) + " "));
+			if (pktvertArray[i] < 10) {
+				phrase.add(" ");
+			}
+			phrase.add(new Chunk(String.valueOf(pktvertArray[i]) + " "));
 		}
 		if (durchschnitt >= 0) {
 			phrase.add(" ");
