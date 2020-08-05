@@ -3,11 +3,8 @@ package de.azubiag.MassnahmenBewertung.UI;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
@@ -15,20 +12,16 @@ import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 import de.azubiag.MassnahmenBewertung.tools.AlsPDFSpeichern;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
-import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 /* Ausgabe der Auswertung */

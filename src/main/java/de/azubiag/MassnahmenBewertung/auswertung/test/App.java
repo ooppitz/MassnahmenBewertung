@@ -1,7 +1,6 @@
 package de.azubiag.MassnahmenBewertung.auswertung.test;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
@@ -15,7 +14,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import de.azubiag.MassnahmenBewertung.UI.ControllerAuswertungAnzeigen;
-import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.UI.MainApp;
 
 /**

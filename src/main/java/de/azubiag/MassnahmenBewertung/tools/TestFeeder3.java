@@ -3,13 +3,9 @@ package de.azubiag.MassnahmenBewertung.tools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
-import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
-import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
-
 /**
  * 
  * @author Denis Bode
