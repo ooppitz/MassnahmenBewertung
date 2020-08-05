@@ -201,15 +201,20 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					return;
 				}
 
-				ArrayList<String> antworten = MultiAntwortParser.parse(verschluesselteAntwort);
-				
-				for(String a : antworten) {
-					hinzufuegenAntwort(a);
+				if (MainApp.isTestmodusAktiv()) {
+					ArrayList<String> antworten = MultiAntwortParser.parse(verschluesselteAntwort);
+					
+					for(String a : antworten) {
+						hinzufuegenAntwort(a);
+					}
 				}
+				
+				hinzufuegenAntwort(verschluesselteAntwort);
+				
 			}
 
 			private void hinzufuegenAntwort(String verschluesselteAntwort) {
-				
+
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 				if (entschluesselteAntwort == null) {	
 					Logger.getLogger().logError(new RuntimeException("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!"));
@@ -233,12 +238,11 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					}
 				}
 
-
 				antwortListe.add(antwort); // Antwort ist gültig und wird zur Liste hinzugefügt
 
 				// Hinzufügen der ersten Antwort (in ein bestehendes Control)
 				if (antwortListe.size() == 1) {		
-					
+
 					antwort_text.setText(verschluesselteAntwort);
 
 				} else  {
