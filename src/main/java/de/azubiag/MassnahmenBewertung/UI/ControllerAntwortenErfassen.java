@@ -354,36 +354,38 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					if(userAntwort == AlertMethoden.JA) {
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 //						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
-						
 						String pdfOutputPfad = System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\UmfragenergebnissePDFs\\"+ eigenschaften.fragebogen_name+".pdf"; 
-						
 						File ergebnisPDFFile = new File(pdfOutputPfad);
-						final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
-						for (AzubiAntwort azubiAntwort : antwortListe) {
-							bewertungListe.add(azubiAntwort.massnahme);
-						}
-						AuswertungMassnahme auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
-						
 						List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
-
-						auswertungMassnahme.alleBemerkBetrng = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkBetrng);
-						auswertungMassnahme.alleBemerkRefAllg = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkRefAllg);
-						auswertungMassnahme.alleBemerkVerl = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkVerl);
+						AuswertungMassnahme auswertungMassnahme = getAuswertungMassnahme();
 						
 						AlsPDFSpeichern.saveAsPDF(ergebnisPDFFile, eigenschaften, auswertungMassnahme,
 								auswertungenReferenten);
-						
 					    if(Desktop.isDesktopSupported())
 					    {
 					        try {
 					            Desktop.getDesktop().browse(ergebnisPDFFile.toURI());
-					        
 					        } catch (IOException e1) {
 					            e1.printStackTrace();
 					        } 
 					    }
 					}
 				}
+			}
+
+			private AuswertungMassnahme getAuswertungMassnahme() {
+				AuswertungMassnahme auswertungMassnahme;
+				final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
+				for (AzubiAntwort azubiAntwort : antwortListe) {
+					bewertungListe.add(azubiAntwort.massnahme);
+				}
+				 auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
+				
+
+				auswertungMassnahme.alleBemerkBetrng = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkBetrng);
+				auswertungMassnahme.alleBemerkRefAllg = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkRefAllg);
+				auswertungMassnahme.alleBemerkVerl = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkVerl);
+				return auswertungMassnahme;
 			}
 		});
 	}
