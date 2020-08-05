@@ -386,39 +386,32 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		gridpane.setPrefHeight(prevHeight + 49*(antwortListe.size()-8));	// Magische Zahl 8, weil nach 8 Antworten die GridPane vergrößert werden muss, damit Abstände gleich bleiben
 		
 		for (int i = 0; i <= antwortListe.size(); i++) {
-
-			int rowIndex = i+3;
-			int buttonDeleteIdx = 0;
-			int labelAntwortIdx = 1;
-			int labelAntwortTextIdx = 3;
 			
-			if (i==antwortListe.size())		// Ausgabe für die letzte Zeile
+			int rowIndex = i + 3;
+			
+			final int IDX_BUTTON_DELETE = 0;
+			final int IDX_LABEL_ANTWORT = 1;
+			final int IDX_LABEL_ANTWORT_TEXT = 3;
+			
+			Label labelAntwort = new Label();
+			labelAntwort.setText("  Verschlüsselte Antwort " + (i+1) + ":");
+			labelAntwort.setFont(antwort_name.getFont());
+			gridpane.add(labelAntwort, IDX_LABEL_ANTWORT, rowIndex, 2, 1);
+		
+			if (i==antwortListe.size())		// Button in letzter Zeile
 			{
-				Label labelAntwort = new Label();
-				labelAntwort.setText("  Verschlüsselte Antwort " + (i) + ":");
-				labelAntwort.setFont(antwort_name.getFont());
-				
-				//              node,  ColIndex         RowIndex, colSpan RowSpan
-				gridpane.add(labelAntwort, labelAntwortIdx, rowIndex, 2, 1);
-				gridpane.add(add, labelAntwortTextIdx, rowIndex, 3, 1);
+				gridpane.add(add /* BUTTON*/ , IDX_LABEL_ANTWORT_TEXT, rowIndex, 3, 1);
 			}
 			else							// Ausgabe für alle anderen Zeilen
 			{
 				Button buttonDelete = new Button();
 				buttonDelete.setText("x");
 				setHandlerRemoveAnswer(buttonDelete);
+				gridpane.add(buttonDelete, IDX_BUTTON_DELETE, rowIndex, 1, 1);
 
-				Label labelAntwort = new Label();
-				labelAntwort.setText("  Verschlüsselte Antwort " + (i+1) + ":");
-				labelAntwort.setFont(antwort_name.getFont());
-
-				Label labelAntwortText = new Label(antwortListe.get(i+1).verschlüsselterString);
+				Label labelAntwortText = new Label(antwortListe.get(i).verschlüsselterString);
 				labelAntwortText.setFont(antwort_text.getFont());
-				
-				//              node,  ColIndex         RowIndex, colSpan RowSpan
-				gridpane.add(buttonDelete, buttonDeleteIdx, rowIndex, 1, 1);
-				gridpane.add(labelAntwort, labelAntwortIdx, rowIndex, 2, 1);
-				gridpane.add(labelAntwortText, labelAntwortTextIdx, rowIndex, 3, 1);
+				gridpane.add(labelAntwortText, IDX_LABEL_ANTWORT_TEXT, rowIndex, 3, 1);
 			}
 		}
 	}
