@@ -20,17 +20,17 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 
 public class AlsPDFSpeichern {
-	
+
 	static FragebogenEigenschaften feTest;
 	static AuswertungMassnahme amTest;
 	static List<AuswertungReferent> arTest;
 
 	public static void main(String[] args) {
-		
+
 		feTest = Testdaten.getFragebogenEigenschaften();
 		amTest = Testdaten.getAuswertungMassnahme();
 		arTest = Testdaten.getAuswertungReferenten();
-		
+
 		File outputFile;
 
 		outputFile = new File(/* Upload.getInstance().getRepositoryPfad() + */ "output.pdf");
@@ -39,15 +39,16 @@ public class AlsPDFSpeichern {
 
 	}
 
-	/** Speichert die Ergebnisse in einem PDF File.
+	/**
+	 * Speichert die Ergebnisse in einem PDF File.
 	 * 
 	 * @param file Das File, in dem die Ergebnisse gesichert werden.
 	 */
-	public static void saveAsPDF(File file, FragebogenEigenschaften fe, AuswertungMassnahme am, 
+	public static void saveAsPDF(File file, FragebogenEigenschaften fe, AuswertungMassnahme am,
 			List<AuswertungReferent> ar) {
-		
+
 		try {
-			
+
 			Document document = new Document();
 
 			PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -69,7 +70,7 @@ public class AlsPDFSpeichern {
 
 	private static void druckeMassnahmenBewertung(Document document, FragebogenEigenschaften fe, AuswertungMassnahme am)
 			throws DocumentException {
-		
+
 		Paragraph kopf = paragraphSetzen();
 		kopf.add(new Phrase("Maßnahme von " + fe.von_datum + " bis " + fe.bis_datum + "\n"));
 		kopf.add(new Phrase("Auftragsnummer: " + fe.auftrags_nummer + "\n"));
@@ -105,9 +106,8 @@ public class AlsPDFSpeichern {
 
 		Phrase spaltenMassnahmenbetreuung = punkteSpaltenSetzen();
 
-		Phrase zeilePktBetrng = druckeZeileMitPunkten(
-				"Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?", am.pktvertBetrng,
-				am.durchschnBetrng);
+		Phrase zeilePktBetrng = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",
+				am.pktvertBetrng, am.durchschnBetrng);
 
 		Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkBetrng);
 
@@ -120,10 +120,10 @@ public class AlsPDFSpeichern {
 
 		Paragraph bewertungReferentenAllgemein = paragraphSetzen();
 
-		Phrase titelBewertungReferentenAllgemein = new Phrase("3. Bewertung der Referenten bzw. Referentinnen:\n\n", 
+		Phrase titelBewertungReferentenAllgemein = new Phrase("3. Bewertung der Referenten bzw. Referentinnen:\n\n",
 				FontFactory.getFont(FontFactory.COURIER_BOLD, 12, BaseColor.BLACK));
 		for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
-			titelBewertungReferentenAllgemein.add(new Chunk(am.alleBemerkRefAllg.get(i) + ";\n", 
+			titelBewertungReferentenAllgemein.add(new Chunk(am.alleBemerkRefAllg.get(i) + ";\n",
 					FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK)));
 		}
 
@@ -134,7 +134,7 @@ public class AlsPDFSpeichern {
 
 	private static void druckeParagraphReferentenIndividuell(Document document, List<AuswertungReferent> ar)
 			throws DocumentException {
-		
+
 		Paragraph bewertungReferentenIndividuell = paragraphSetzen();
 
 		Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten:");
@@ -143,13 +143,13 @@ public class AlsPDFSpeichern {
 
 		for (int i = 0; i < ar.size(); i++) {
 
-			Phrase titelReferentName, referentPktVorb, referentPktFach, referentPktEing, referentPktInh, 
-			referentPktVerh, referentBem;
-			
+			Phrase titelReferentName, referentPktVorb, referentPktFach, referentPktEing, referentPktInh,
+					referentPktVerh, referentBem;
+
 			bewertungReferentenIndividuell.add("\n");
-			
-			titelReferentName = new Phrase(new Chunk("Referent / Referentin: " + ar.get(i).getName() +
-					"\n").setUnderline(1, -3));
+
+			titelReferentName = new Phrase(
+					new Chunk("Referent / Referentin: " + ar.get(i).getName() + "\n").setUnderline(1, -3));
 
 			bewertungReferentenIndividuell.add(titelReferentName);
 
@@ -187,7 +187,6 @@ public class AlsPDFSpeichern {
 		document.add(bewertungReferentenIndividuell);
 	}
 
-	
 	private static Phrase titelSetzen(String titel) {
 		Phrase phrase = new Phrase(titel + "\n", FontFactory.getFont(FontFactory.COURIER_BOLD, 12, BaseColor.BLACK));
 		return phrase;
@@ -226,7 +225,6 @@ public class AlsPDFSpeichern {
 		phrase.add(new Chunk("  " + String.format("%1.2f\n", durchschnitt)));
 		return phrase;
 	}
-
 
 	static void leerzeichenSetzen(Paragraph paragraph) {
 		while (paragraph.getContent().length() < 65) {
