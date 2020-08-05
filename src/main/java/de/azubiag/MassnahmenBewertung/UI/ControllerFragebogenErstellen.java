@@ -532,10 +532,7 @@ public void addVorschauButtonHandler() {
 				
 				new HtmlCreator(getReferentenNamen(), fragebogenTemplateDirectory,
 						fragebogenOutputPfad,  umfrageID, 
-						eigenschaften.von_datum,
-					 eigenschaften.bis_datum, eigenschaften.auftrags_nummer, 
-					 eigenschaften.seminarleiter_name,
-    				 eigenschaften.ausstellungs_datum).createHtml();
+						eigenschaften).createHtml();
 				
 				return fragebogenOutputPfad;
 			}

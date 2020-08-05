@@ -16,6 +16,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
+
 /**
  *
  * @author manuel.unverdorben
@@ -34,26 +36,26 @@ public class HtmlCreator {
 	String auftragsnummer = "F-XX-YY";
 	String seminarleitername = "Frau ABCDEFGH";
 	String datum = "9.9.1999";
+	String frageBogenNamen;
 
 	@Deprecated
 	public HtmlCreator(ArrayList<String> referenten, String templatePath, String outputPath) {
 		// this(referenten, templatePath, outputPath, 0);
 	}
 	
-	public HtmlCreator(ArrayList<String> referentenList, String templateFile, 
-			String fragebogenOutputFile, int umfrageID, 
-			String startdatum, String enddatum, String auftragsnummer, 
-			String seminarleitername, String datum) {
+	public HtmlCreator(ArrayList<String> referentenList, String templateFile, String fragebogenOutputFile ,int umfrageID, FragebogenEigenschaften fe) {
 		this.refListe = referentenList;
 		this.saveFile = fragebogenOutputFile;
 		this.inputFile = templateFile;
 		this.umfrageID = umfrageID;
 		
-		this.startdatum = startdatum;
-		this.enddatum = enddatum;
-		this.auftragsnummer = auftragsnummer;
-		this.seminarleitername = seminarleitername;
-		this.datum = datum;
+		this.startdatum = fe.von_datum;
+		this.enddatum = fe.bis_datum;
+		this.auftragsnummer = fe.auftrags_nummer;
+		this.seminarleitername = fe.seminarleiter_name;
+		this.datum = fe.ausstellungs_datum;
+		this.frageBogenNamen = fe.fragebogen_name;
+		
 	}
 
 	public void createHtml() throws IOException {
@@ -64,6 +66,8 @@ public class HtmlCreator {
 
 		Element bodyElement = doc.getElementsByTag("body").first();
 
+		changeTitle(frageBogenNamen);
+		
 		// Header (A)
 		changeHeaderinformation(bodyElement); // Benedikt
 		
@@ -177,6 +181,12 @@ public class HtmlCreator {
 		for (Element e : elementListe) {
 			elementAtBottomOfPage.before(e);
 		}
+	}
+	
+	public void changeTitle (String _frageBogenNamen) {
+		Element element = doc.getElementsByTag("title").first();
+		String umfrageName = "Umfrage " +  _frageBogenNamen;
+		element.text(umfrageName);
 	}
 
 	public void saveHtml(String fileName) throws IOException {
