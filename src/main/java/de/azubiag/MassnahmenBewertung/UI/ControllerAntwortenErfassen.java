@@ -344,7 +344,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				if ( ! antwortListe.isEmpty()) {
 
 					int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
-							"Eine Umfrage kann nur 1 mal ausgewertet werden. Jetzt auswerten?");
+							"Eine Umfrage kann nur einmal ausgewertet werden. Jetzt auswerten?");
 					if(userAntwort == AlertMethoden.JA) {
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
