@@ -19,7 +19,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Willkommen im Maßnahmenbewertungsprogramm für Seminarleiter*innen der GFI!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Label text="Willkommen im Maßnahmenbewertungsprogramm für Seminarleiterinnen und Seminarleiter der GFI!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
