@@ -1,6 +1,7 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -451,7 +452,8 @@ public void addVorschauButtonHandler() {
 							mainapp.rootLayout.getTabs().remove(tab.getTabPane().getTabs().indexOf(tab));
 						}
 					} else {
-						// nichts tun
+						File deleteFile = new File (fragebogenOutputPfad);
+						deleteFile.delete();
 					}
 
 				} catch (IOException | URISyntaxException | GitAPIException e1) {
