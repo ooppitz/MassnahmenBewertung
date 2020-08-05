@@ -18,6 +18,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,14 +28,19 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
+import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
+import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungMassnahme;
 import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
+import de.azubiag.MassnahmenBewertung.tools.AlsPDFSpeichern;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
@@ -347,7 +353,25 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 							"Eine Umfrage kann nur einmal ausgewertet werden. Jetzt auswerten?");
 					if(userAntwort == AlertMethoden.JA) {
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
-						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+//						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
+						
+						File ergebnisPDFFile = new File(System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\UmfragenergebnissePDFs\\"+ eigenschaften.fragebogen_name);
+						
+						final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
+
+						for (AzubiAntwort azubiAntwort : antwortListe) {
+							bewertungListe.add(azubiAntwort.massnahme);
+						}
+						AuswertungMassnahme auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
+						
+						List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
+
+						auswertungMassnahme.alleBemerkBetrng = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkBetrng);
+						auswertungMassnahme.alleBemerkRefAllg = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkRefAllg);
+						auswertungMassnahme.alleBemerkVerl = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkVerl);
+						
+						AlsPDFSpeichern.saveAsPDF(ergebnisPDFFile, eigenschaften, auswertungMassnahme,
+								auswertungenReferenten);
 					}
 				}
 			}
@@ -476,5 +500,28 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 	public int getUmfrageID() {
 		return umfrageID;
 	}
+	public ArrayList<String> filtereUndMischeArrayList(ArrayList<String> liste) {
+
+		for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
+			if (liste.get(i) == null || liste.get(i).isBlank()) {
+				liste.remove(i);
+			}
+		}
+		Collections.shuffle(liste); // zufällige Reihenfolge
+		return liste;
+	}
+
+	public ArrayList<String> filtereUndMischeList(List<String> eingabe) {
+
+		ArrayList<String> liste = (ArrayList<String>) eingabe;
+		for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
+			if (liste.get(i) == null || liste.get(i).isBlank()) {
+				liste.remove(i);
+			}
+		}
+		Collections.shuffle(liste); // zufällige Reihenfolge
+		return liste;
+	}
+	
 
 }
