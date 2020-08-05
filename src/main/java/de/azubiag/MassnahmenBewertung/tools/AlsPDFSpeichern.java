@@ -120,14 +120,12 @@ public class AlsPDFSpeichern {
 
 		Paragraph bewertungReferentenAllgemein = paragraphSetzen();
 
-		Phrase titelBewertungReferentenAllgemein = new Phrase("3. Bewertung der Referenten bzw. Referentinnen:\n\n",
-				FontFactory.getFont(FontFactory.COURIER_BOLD, 12, BaseColor.BLACK));
-		for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
-			titelBewertungReferentenAllgemein.add(new Chunk(am.alleBemerkRefAllg.get(i) + ";\n",
-					FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK)));
-		}
+		Phrase titelBewertungReferentenAllgemein = titelSetzen("3. Bewertung der Referenten bzw. Referentinnen:");
+
+		Phrase zeileAlleBemRefAllg = druckeZeileMitBemerkungen("", am.alleBemerkRefAllg);
 
 		bewertungReferentenAllgemein.add(titelBewertungReferentenAllgemein);
+		bewertungReferentenAllgemein.add(zeileAlleBemRefAllg);
 
 		document.add(bewertungReferentenAllgemein);
 	}
