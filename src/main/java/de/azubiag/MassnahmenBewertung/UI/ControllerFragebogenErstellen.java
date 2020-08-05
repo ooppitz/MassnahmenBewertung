@@ -127,7 +127,7 @@ public class ControllerFragebogenErstellen implements Controller {
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);
 		readdNode(leiter_label2, 3, 3, 3, 1);
-		leiter_label2.setText(mainapp.getUserName());
+		leiter_label2.setText(MainApp.getUserName());
 		readdNode(heute_datum, 5, 3);
 		heute_datum.setValue(LocalDate.now());
 		heute_datum.getEditor().setFont(maßnahme_bis.getFont());
@@ -305,13 +305,13 @@ public void addVorschauButtonHandler() {
 			public void handle(ActionEvent e) {
 				Logger logger = Logger.getLogger();
 
-				if (allValuesEntered() ) {
+				if (allValuesEntered() && isDateCorrect()) {
 					fragebogenHandling(logger);
 				} else {
 					// Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber
 					// diese Daten alle in der Auswertung wünschen
 
-					if (mainapp.isTestmodusAktiv()) {
+					if (MainApp.isTestmodusAktiv()) {
 						// im Testmodus die Möglichkeit hinzufügen, die Warnung zu ignorieren
 						
 						boolean resultIgnorieren = AlertMethoden.entscheidungViaDialogAbfragen(" --TESTMODUS-- Eingaben unvollständig",
@@ -321,10 +321,10 @@ public void addVorschauButtonHandler() {
 							fragebogenHandling(logger);
 						}
 					} else {
-						if (isDateWritten())  {
-							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte korrekt ausfüllen", "Bitte füllen Sie die Datumsfelder korrekt aus. ");
-						} else {
+						if (isDateCorrect())  {
 							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte alles ausfüllen", "Bitte füllen Sie alle Felder aus und legen Sie mindestens einen Referenten an. ");
+						} else {
+							AlertMethoden.zeigeOKAlert(AlertType.WARNING, "Bitte korrekt ausfüllen", "Bitte füllen Sie die Datumsfelder korrekt aus. ");
 						}
 					}
 				}
@@ -540,27 +540,26 @@ public void addVorschauButtonHandler() {
 				boolean auftragsnummerEntered = auftragsnummer_textfield.getText().matches(".*\\S+.*");
 				int anzahl_referenten = getReferentenNamen().size();
 				
-				Datum vonDatum = Datum.parse(extractTextFromDatepicker(von_Datum));
-				Datum bisDatum = Datum.parse(extractTextFromDatepicker(bis_Datum));
+				boolean vonEntered   =   !von_Datum.getEditor().getText().isBlank();
+				boolean bisEntered   =   !bis_Datum.getEditor().getText().isBlank();
 				
-				boolean datumsGueltig = (vonDatum != null) && (bisDatum != null)
-						&& vonDatum.compareTo(bisDatum) < Datum.GROESSER;
-
-				if (fragebogennameEntered && datumsGueltig && auftragsnummerEntered
-						&& anzahl_referenten > 0) {
+				if (fragebogennameEntered && auftragsnummerEntered
+						&& anzahl_referenten > 0 && vonEntered && bisEntered) {
 					return true;
 				} else {
 					return false;
 				}
 			}
 			
-			private boolean isDateWritten() {
+			private boolean isDateCorrect() {
 				
-				boolean von   =   !von_Datum.getEditor().getText().isBlank();
-				boolean bis   =   !bis_Datum.getEditor().getText().isBlank();
-//				System.out.println("von->"+von+"\tbis->"+bis+"\theute->"+heute);
+				Datum vonDatum = Datum.parse(extractTextFromDatepicker(von_Datum));
+				Datum bisDatum = Datum.parse(extractTextFromDatepicker(bis_Datum));
 				
-				return von && bis;
+				boolean datumsGueltig = (vonDatum != null) && (bisDatum != null)
+						&& vonDatum.compareTo(bisDatum) < Datum.GROESSER;
+				
+				return datumsGueltig;
 			}
 			
 			private String extractTextFromDatepicker(DatePicker picker) {
