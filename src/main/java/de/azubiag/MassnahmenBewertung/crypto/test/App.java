@@ -10,7 +10,7 @@ public class App {
 
 		// For testing
 		String original_text = "Hello World!";
-		String cipherText = "AU2FsdGVkX1+QxJ8iz8tvKO/u0niD3ozgxdmt1EXO2LI=";
+		String cipherText = "AU2FsdGVkX18uWzEdDvZ41IB4pfO8UvmVyO0AciP93e67w/tzAbB7l0GpDzadKAcRDsnM7LAR5G+x5F/3w3mMpOERbhReKQN8w6RLNeOIltjoXCUSg8/jKGRDRlc09T2g";
 		// !
 		
 		// cipherText manipulation

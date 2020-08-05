@@ -199,11 +199,21 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					return;
 				}
 
-				ArrayList<String> antworten = MultiAntwortParser.parse(verschluesselteAntwort);
+				if (MainApp.isTestmodusAktiv()) {
 
-				for(String a : antworten) {
-					hinzufuegenAntwort(a);
+					// Hinzufügen mehrere Antworten über einen String ist nur im Testmodus unterstützt,
+					// denn es führt zu Fehlermeldungen, wenn die Strings keine --- Marker haben
+					ArrayList<String> antworten = MultiAntwortParser.parse(verschluesselteAntwort);
+					
+					for(String a : antworten) {
+						hinzufuegenAntwort(a);
+					}
+				} else {
+					hinzufuegenAntwort(verschluesselteAntwort);
 				}
+				
+				
+				
 			}
 
 			private void hinzufuegenAntwort(String verschluesselteAntwort) {
@@ -230,7 +240,6 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						return;			
 					}
 				}
-
 
 				antwortListe.add(antwort); // Antwort ist gültig und wird zur Liste hinzugefügt
 
