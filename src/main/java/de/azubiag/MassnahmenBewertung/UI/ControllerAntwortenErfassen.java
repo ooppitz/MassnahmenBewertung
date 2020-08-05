@@ -361,6 +361,8 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						
 						AlsPDFSpeichern.saveAsPDF(ergebnisPDFFile, eigenschaften, auswertungMassnahme,
 								auswertungenReferenten);
+						
+						
 					    if(Desktop.isDesktopSupported())
 					    {
 					        try {
@@ -369,6 +371,9 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					            e1.printStackTrace();
 					        } 
 					    }
+					    AlertMethoden.zeigeOKAlertTextCopyAlwaysOnTop(AlertType.INFORMATION, "PDF-Datei Ergebnisse", 
+								"Die Ergebnisse der Umfrage wurden als PDF unter "+ pdfOutputPfad+ " gespeichert." );
+					    
 					}
 				}
 			}
