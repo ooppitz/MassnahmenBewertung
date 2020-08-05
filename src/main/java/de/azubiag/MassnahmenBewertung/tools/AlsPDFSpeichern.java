@@ -206,7 +206,7 @@ public class AlsPDFSpeichern {
 	private static Phrase druckeZeileMitBemerkungen(String titel, List<String> bemerkungen) {
 		Phrase paragraph = new Phrase(titel + "\n");
 		for (int i = 0; i < bemerkungen.size(); i++) {
-			if (bemerkungen.get(i) != "") {
+			if (!bemerkungen.get(i).equals("")) {
 				paragraph.add(new Chunk(bemerkungen.get(i) + ";\n"));
 			}
 		}
