@@ -37,7 +37,7 @@ public class AlsPDFSpeichern {
 		File outputFile = null;
 
 		try {
-			outputFile = new File(Upload.getInstance().getRepositoryPfad() + "output.pdf");
+			outputFile = new File(Upload.getInstance().getRepositoryPfad() + "..\\output.pdf");
 		} catch (GitAPIException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
