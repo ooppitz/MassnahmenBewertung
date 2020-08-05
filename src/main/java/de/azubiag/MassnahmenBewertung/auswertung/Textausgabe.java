@@ -2,7 +2,6 @@ package de.azubiag.MassnahmenBewertung.auswertung;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -14,7 +13,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
-import javafx.scene.text.Text;
 
 public class Textausgabe {
 

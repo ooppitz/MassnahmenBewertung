@@ -16,7 +16,6 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
-import de.azubiag.MassnahmenBewertung.datenstrukturen.BewertungReferent;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 /**

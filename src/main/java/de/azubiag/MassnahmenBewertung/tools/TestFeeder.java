@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 
 /**
  * 
