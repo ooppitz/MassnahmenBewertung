@@ -136,11 +136,12 @@ public class ControllerFragebogenErstellen implements Controller {
 		readdNode(auftragsnummer_label, 1, 2);
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);
-		readdNode(leiter_label2, 3, 3);
+		readdNode(leiter_label2, 3, 3, 3, 1);
 		leiter_label2.setText(mainapp.getUserName());
 		readdNode(heute_datum, 5, 3);
 		heute_datum.setValue(LocalDate.now());
 		heute_datum.getEditor().setFont(maßnahme_bis.getFont());
+		gridpane.getChildren().remove(heute_datum);					// Das Datum ist zwar nicht in der UI zu sehen, aber immer noch vorhanden !!
 
 		readdNode(ref1_x, 0, 4);
 		readdNode(referent_label_first, 1, 4);
@@ -161,6 +162,11 @@ public class ControllerFragebogenErstellen implements Controller {
 	public void readdNode(Node node, int col, int row) {
 		gridpane.getChildren().remove(node);
 		gridpane.add(node, col, row);
+	}
+	
+	public void readdNode(Node node, int col, int row, int colspan, int rowspan) {
+		gridpane.getChildren().remove(node);
+		gridpane.add(node, col, row, colspan, rowspan);
 	}
 
 	public void setMainApp(MainApp app) {
@@ -549,9 +555,8 @@ public void addVorschauButtonHandler() {
 				
 				Datum vonDatum = Datum.parse(extractTextFromDatepicker(von_Datum));
 				Datum bisDatum = Datum.parse(extractTextFromDatepicker(bis_Datum));
-				Datum heuteDatum = Datum.parse(extractTextFromDatepicker(heute_datum));
 				
-				boolean datumsGueltig = (vonDatum != null) && (bisDatum != null) && (heuteDatum != null)
+				boolean datumsGueltig = (vonDatum != null) && (bisDatum != null)
 						&& vonDatum.compareTo(bisDatum) < Datum.GROESSER;
 
 				if (fragebogennameEntered && datumsGueltig && auftragsnummerEntered
@@ -566,10 +571,9 @@ public void addVorschauButtonHandler() {
 				
 				boolean von   =   !von_Datum.getEditor().getText().isBlank();
 				boolean bis   =   !bis_Datum.getEditor().getText().isBlank();
-				boolean heute = !heute_datum.getEditor().getText().isBlank();
 //				System.out.println("von->"+von+"\tbis->"+bis+"\theute->"+heute);
 				
-				return von && bis && heute;
+				return von && bis;
 			}
 			
 			private String extractTextFromDatepicker(DatePicker picker) {
