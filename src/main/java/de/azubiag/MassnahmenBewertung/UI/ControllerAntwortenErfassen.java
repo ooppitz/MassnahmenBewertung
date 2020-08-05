@@ -360,11 +360,10 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						String pdfOutputPfad = System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\UmfragenergebnissePDFs\\"+ eigenschaften.fragebogen_name+".pdf"; 
 						File ergebnisPDFFile = new File(pdfOutputPfad);
 						List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
-						AuswertungMassnahme auswertungMassnahme = getAuswertungMassnahme();
+						AuswertungMassnahme auswertungMassnahme = AuswertungMassnahme.getGefilterteUndGemischteAuswertungenMassnahme(antwortListe);
 						
 						AlsPDFSpeichern.saveAsPDF(ergebnisPDFFile, eigenschaften, auswertungMassnahme,
 								auswertungenReferenten);
-						
 						
 					    if(Desktop.isDesktopSupported())
 					    {
@@ -379,21 +378,6 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					    
 					}
 				}
-			}
-
-			private AuswertungMassnahme getAuswertungMassnahme() {
-				AuswertungMassnahme auswertungMassnahme;
-				final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
-				for (AzubiAntwort azubiAntwort : antwortListe) {
-					bewertungListe.add(azubiAntwort.massnahme);
-				}
-				 auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
-				
-
-				auswertungMassnahme.alleBemerkBetrng = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkBetrng);
-				auswertungMassnahme.alleBemerkRefAllg = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkRefAllg);
-				auswertungMassnahme.alleBemerkVerl = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkVerl);
-				return auswertungMassnahme;
 			}
 		});
 	}
@@ -519,28 +503,6 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 	public int getUmfrageID() {
 		return umfrageID;
-	}
-	public ArrayList<String> filtereUndMischeArrayList(ArrayList<String> liste) {
-
-		for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
-			if (liste.get(i) == null || liste.get(i).isBlank()) {
-				liste.remove(i);
-			}
-		}
-		Collections.shuffle(liste); // zufällige Reihenfolge
-		return liste;
-	}
-
-	public ArrayList<String> filtereUndMischeList(List<String> eingabe) {
-
-		ArrayList<String> liste = (ArrayList<String>) eingabe;
-		for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
-			if (liste.get(i) == null || liste.get(i).isBlank()) {
-				liste.remove(i);
-			}
-		}
-		Collections.shuffle(liste); // zufällige Reihenfolge
-		return liste;
 	}
 	
 
