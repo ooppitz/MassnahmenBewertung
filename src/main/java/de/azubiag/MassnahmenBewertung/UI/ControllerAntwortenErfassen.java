@@ -288,7 +288,9 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 //						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
-						String pdfOutputPfad = System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\UmfragenergebnissePDFs\\"+ eigenschaften.fragebogen_name+".pdf"; 
+			
+						String pdfOutputPfad = Upload.getProgrammDatenOrdner() + "\\"+ eigenschaften.fragebogen_name + ".pdf";
+						
 						File ergebnisPDFFile = new File(pdfOutputPfad);
 						List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
 						AuswertungMassnahme auswertungMassnahme = AuswertungMassnahme.getGefilterteUndGemischteAuswertungenMassnahme(antwortListe);
@@ -305,7 +307,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					        } 
 					    }
 					    AlertMethoden.zeigeOKAlertTextCopyAlwaysOnTop(AlertType.INFORMATION, "PDF-Datei Ergebnisse", 
-								"Die Ergebnisse der Umfrage wurden als PDF unter "+ pdfOutputPfad+ " gespeichert." );
+								"Die Ergebnisse der Umfrage wurden als PDF gespeichert:\n"+ pdfOutputPfad );
 					    
 					}
 				}
