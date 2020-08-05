@@ -47,8 +47,7 @@ public class AlertMethoden {
 		alert.setHeaderText(frageText);
 
 		if (onTop) {
-			Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-			alertStage.setAlwaysOnTop(true);
+			setAlertAlwaysOnTop(alert);
 		}
 		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 		Optional<ButtonType> buttonType = alert.showAndWait();
@@ -134,14 +133,17 @@ public class AlertMethoden {
 
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
-		alert.getDialogPane().setContent(gridPane);
-		alert.showAndWait();
-
-		Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-		alertStage.setAlwaysOnTop(true);
 		ButtonType buttonTypeOK = new ButtonType("OK");
 		alert.getButtonTypes().setAll(buttonTypeOK);
+		alert.getDialogPane().setContent(gridPane);
+		setAlertAlwaysOnTop(alert);
 		alert.showAndWait();
+	}
+
+	private static void setAlertAlwaysOnTop(Alert alert) {
+		Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+		alertStage.setAlwaysOnTop(true);
+		
 	}
 
 	private static GridPane initTextArea(String text) {
