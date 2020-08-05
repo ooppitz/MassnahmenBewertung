@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+/**
+ *
+ * @author manuel.unverdorben
+ */
+/*
 package de.azubiag.MassnahmenBewertung.htmlcreator.test;
 
 import de.azubiag.MassnahmenBewertung.htmlcreator.HtmlCreator;
@@ -13,10 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-/**
- *
- * @author manuel.unverdorben
- */
+
 public class App {
 
 	public static void main(String[] args) throws IOException {
@@ -47,7 +48,7 @@ public class App {
 			String datum = "5.8.2020";
 
 			// Beispiel Aufruf für die den HtmlCreator
-			new HtmlCreator(referentenListe, fragebogenTemplatePfad, fragebogenOutputPfad, umfrageID, startdatum,
+			//new HtmlCreator(referentenListe, fragebogenTemplatePfad, fragebogenOutputPfad, umfrageID, startdatum,
 					enddatum, auftragsnummer, seminarleitername, datum).createHtml();
 
 		} catch (GitAPIException | IOException e) {
@@ -60,3 +61,4 @@ public class App {
 	}
 
 }
+*/
