@@ -382,6 +382,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		});
 	}
 
+
 	public final void writeObject(ObjectOutputStream os) {
 
 		try {
@@ -507,3 +508,5 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 	
 
 }
+	
+		
