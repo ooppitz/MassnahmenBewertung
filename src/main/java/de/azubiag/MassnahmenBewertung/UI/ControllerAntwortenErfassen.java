@@ -355,10 +355,10 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 //						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 						
-						File ergebnisPDFFile = new File(System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\UmfragenergebnissePDFs\\"+ eigenschaften.fragebogen_name);
+						String pdfOutputPfad = System.getenv("LOCALAPPDATA")+"\\MassnahmenBewertung\\UmfragenergebnissePDFs\\"+ eigenschaften.fragebogen_name+".pdf"; 
 						
+						File ergebnisPDFFile = new File(pdfOutputPfad);
 						final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
-
 						for (AzubiAntwort azubiAntwort : antwortListe) {
 							bewertungListe.add(azubiAntwort.massnahme);
 						}
@@ -372,6 +372,16 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						
 						AlsPDFSpeichern.saveAsPDF(ergebnisPDFFile, eigenschaften, auswertungMassnahme,
 								auswertungenReferenten);
+						
+					    if(Desktop.isDesktopSupported())
+					    {
+					        try {
+					            Desktop.getDesktop().browse(ergebnisPDFFile.toURI());
+					        
+					        } catch (IOException e1) {
+					            e1.printStackTrace();
+					        } 
+					    }
 					}
 				}
 			}
