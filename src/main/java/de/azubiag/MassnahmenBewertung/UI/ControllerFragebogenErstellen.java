@@ -1,20 +1,15 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
@@ -28,14 +23,11 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventDispatchChain;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
@@ -48,7 +40,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /* Erstellen des Fragebogens */
 
@@ -137,7 +128,7 @@ public class ControllerFragebogenErstellen implements Controller {
 		readdNode(auftragsnummer_textfield, 3, 2);
 		readdNode(leiter_label1, 1, 3);
 		readdNode(leiter_label2, 3, 3, 3, 1);
-		leiter_label2.setText(mainapp.getUserName());
+		leiter_label2.setText(MainApp.getUserName());
 		readdNode(heute_datum, 5, 3);
 		heute_datum.setValue(LocalDate.now());
 		heute_datum.getEditor().setFont(maßnahme_bis.getFont());
@@ -321,7 +312,7 @@ public void addVorschauButtonHandler() {
 					// Warnung anzeigen, wenn nicht alle Felder ausgefüllt wurden, da Auftraggeber
 					// diese Daten alle in der Auswertung wünschen
 
-					if (mainapp.isTestmodusAktiv()) {
+					if (MainApp.isTestmodusAktiv()) {
 						// im Testmodus die Möglichkeit hinzufügen, die Warnung zu ignorieren
 						
 						boolean resultIgnorieren = AlertMethoden.entscheidungViaDialogAbfragen(" --TESTMODUS-- Eingaben unvollständig",
