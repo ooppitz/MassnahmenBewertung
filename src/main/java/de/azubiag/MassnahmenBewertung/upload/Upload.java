@@ -169,14 +169,15 @@ public class Upload {
 
 	public File getProgrammDatenOrdner() {
 		String appData = System.getenv("LOCALAPPDATA");
-		File saveDirectory = new File(appData+"\\"+repositoryName);
+		File saveDirectory = new File(appData+"\\"+appName);
 
 		if(saveDirectory.exists()==true) {
 			System.out.println("Ordner existiert!");
 			return saveDirectory;
 		} else {
 			System.out.println("Kein derartiger Ordner vorhanden");
-			return null;
+			saveDirectory.mkdirs();
+			return saveDirectory;
 		}
 	}
 
