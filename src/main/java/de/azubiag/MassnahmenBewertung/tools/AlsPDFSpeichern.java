@@ -43,7 +43,8 @@ public class AlsPDFSpeichern {
 	 * 
 	 * @param file Das File, in dem die Ergebnisse gesichert werden.
 	 */
-	public static void saveAsPDF(File file, FragebogenEigenschaften fe, AuswertungMassnahme am, List<AuswertungReferent> ar) {
+	public static void saveAsPDF(File file, FragebogenEigenschaften fe, AuswertungMassnahme am, 
+			List<AuswertungReferent> ar) {
 		
 		try {
 			
@@ -119,8 +120,12 @@ public class AlsPDFSpeichern {
 
 		Paragraph bewertungReferentenAllgemein = paragraphSetzen();
 
-		Phrase titelBewertungReferentenAllgemein = druckeZeileMitBemerkungen(
-				"3. Bewertung der Referenten bzw. Referentinnen:", am.alleBemerkRefAllg);
+		Phrase titelBewertungReferentenAllgemein = new Phrase("3. Bewertung der Referenten bzw. Referentinnen:\n\n", 
+				FontFactory.getFont(FontFactory.COURIER_BOLD, 12, BaseColor.BLACK));
+		for (int i = 0; i < am.alleBemerkRefAllg.size(); i++) {
+			titelBewertungReferentenAllgemein.add(new Chunk(am.alleBemerkRefAllg.get(i) + ";\n", 
+					FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK)));
+		}
 
 		bewertungReferentenAllgemein.add(titelBewertungReferentenAllgemein);
 
@@ -138,9 +143,13 @@ public class AlsPDFSpeichern {
 
 		for (int i = 0; i < ar.size(); i++) {
 
-			Phrase titelReferentName, referentPktVorb, referentPktFach, referentPktEing, referentPktInh, referentPktVerh, referentBem;
+			Phrase titelReferentName, referentPktVorb, referentPktFach, referentPktEing, referentPktInh, 
+			referentPktVerh, referentBem;
 			
-			titelReferentName = new Phrase("\nReferent / Referentin: " + ar.get(i).getName() + "\n");
+			bewertungReferentenIndividuell.add("\n");
+			
+			titelReferentName = new Phrase(new Chunk("Referent / Referentin: " + ar.get(i).getName() +
+					"\n").setUnderline(1, -3));
 
 			bewertungReferentenIndividuell.add(titelReferentName);
 
@@ -180,7 +189,7 @@ public class AlsPDFSpeichern {
 
 	
 	private static Phrase titelSetzen(String titel) {
-		Phrase phrase = new Phrase(titel + "\n");
+		Phrase phrase = new Phrase(titel + "\n", FontFactory.getFont(FontFactory.COURIER_BOLD, 12, BaseColor.BLACK));
 		return phrase;
 	}
 
