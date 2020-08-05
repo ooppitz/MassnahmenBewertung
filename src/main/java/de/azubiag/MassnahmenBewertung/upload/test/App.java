@@ -1,5 +1,6 @@
 package de.azubiag.MassnahmenBewertung.upload.test;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -17,6 +18,12 @@ public class App {
 	public static void main(String[] args)
 			throws IOException, InvalidRemoteException, TransportException, GitAPIException {
 
+		
+		File f = Upload.getProgrammDatenOrdner();
+		
+		
+		/*
+		
 		Upload upl = Upload.getInstance();
 		
 		System.out.println(upl.getRepositoryPfad());
@@ -26,7 +33,7 @@ public class App {
 		} else {
 			System.out.println("Hochladen gescheitert");
 		}
-
+*/
 	}
 
 }

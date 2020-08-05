@@ -37,7 +37,7 @@ public class Upload {
 	static String gitHubBenutzernamen = "gfigithubaccess"; // Nutzername für den GitHub-Account
 	static String gitHubPasswort = "GfiGitHubAccess2020!"; // Passwort für den GitHub-Account
 	static String remoteRepoPath = "https://github.com/gfigithubaccess/gfigithubaccess.github.io.git";
-	static String appName = "MassnahmenBewertung";
+	final static String appName = "MassnahmenBewertung";
 
 	static Upload instance = null;
 
@@ -164,17 +164,19 @@ public class Upload {
 
 	}
 
-	public File getProgrammDatenOrdner() {
+	/** Liefert den Ordner für Programmdaten zurück.
+	 *  Falls er nicht existiert, wird er erzeugt.
+	 *   */
+	
+	public static File getProgrammDatenOrdner() {
+		
 		String appData = System.getenv("LOCALAPPDATA");
-		File saveDirectory = new File(appData+"\\"+appName);
+		File programmDatenOrdner = new File(appData+"\\"+appName);
 
-		if(programmDatenOrdner.exists()==true) {
-			return programmDatenOrdner;
-		} else {
-			System.out.println("Kein derartiger Ordner vorhanden");
-			saveDirectory.mkdirs();
-			return saveDirectory;
+		if(programmDatenOrdner.exists() == false) {
+			programmDatenOrdner.mkdirs();
 		}
+		return programmDatenOrdner;
 	}
 
 	/**
