@@ -2,6 +2,7 @@ package de.azubiag.MassnahmenBewertung.auswertung;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
@@ -285,4 +286,43 @@ public class AuswertungMassnahme {
 				getBemerkungen(BEW_VERLAUF), Arrays.toString(getPunkteverteilung(BEW_BETREUUNG)),
 				getDurchschnitt(BEW_BETREUUNG), getBemerkungen(BEW_BETREUUNG), getBemerkungen(BEW_REFERENT));
 	}
+
+		public static AuswertungMassnahme getGefilterteUndGemischteAuswertungenMassnahme(List<AzubiAntwort> antwortListe) {
+				AuswertungMassnahme auswertungMassnahme;
+				final List<BewertungMassnahme> bewertungListe = new ArrayList<BewertungMassnahme>();
+				for (AzubiAntwort azubiAntwort : antwortListe) {
+					bewertungListe.add(azubiAntwort.massnahme);
+				}
+				 auswertungMassnahme = new AuswertungMassnahme(bewertungListe);
+				
+
+				auswertungMassnahme.alleBemerkBetrng = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkBetrng);
+				auswertungMassnahme.alleBemerkRefAllg = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkRefAllg);
+				auswertungMassnahme.alleBemerkVerl = filtereUndMischeArrayList(auswertungMassnahme.alleBemerkVerl);
+				return auswertungMassnahme;
+			}
+		
+		public static ArrayList<String> filtereUndMischeArrayList(ArrayList<String> liste) {
+
+			for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
+				if (liste.get(i) == null || liste.get(i).isBlank()) {
+					liste.remove(i);
+				}
+			}
+			Collections.shuffle(liste); // zufällige Reihenfolge
+			return liste;
+		}
+
+		public static ArrayList<String> filtereUndMischeList(List<String> eingabe) {
+
+			ArrayList<String> liste = (ArrayList<String>) eingabe;
+			for (int i = 0; i < liste.size(); i++) { // entfernen von leeren Einträgen
+				if (liste.get(i) == null || liste.get(i).isBlank()) {
+					liste.remove(i);
+				}
+			}
+			Collections.shuffle(liste); // zufällige Reihenfolge
+			return liste;
+		}
+		
 }
