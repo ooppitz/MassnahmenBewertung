@@ -88,8 +88,6 @@ public class HtmlCreator {
 		addElementsToHtml(elementListe);
 		
 		saveHtml(saveFile);
-
-		System.out.println("doc = " + doc.outerHtml());
 	}
 
 	/* Erzeugen der Paragraphen für die Warnmeldungen 
