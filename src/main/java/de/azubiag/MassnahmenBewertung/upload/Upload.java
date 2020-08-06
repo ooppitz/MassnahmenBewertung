@@ -2,6 +2,7 @@ package de.azubiag.MassnahmenBewertung.upload;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -11,7 +12,10 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.tools.Tools;
 
 /* Um Github zu verwenden, um die Fragebogen zu hosten, braucht man einen Account. 
@@ -209,6 +213,60 @@ public class Upload {
 			return false;
 		}
 
+	}
+	
+	public static boolean istFragebogenOnline(long millis, String uri, int umfrageId) {
+		
+		long timeStart = System.currentTimeMillis();
+		boolean connected = false;
+		Document doc = null;
+		int umfrageID_document;
+		
+		while(!connected && ((System.currentTimeMillis()-timeStart-millis)*-1) >= 0 )
+		{
+			try {
+				doc = Jsoup.connect(uri).get();
+			} catch (IOException e) {
+				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Versuche in 1000ms neu. ms übrig: "+((System.currentTimeMillis()-timeStart-millis)*-1));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+			if (doc!=null)
+			{
+				connected = true;
+				Logger.getLogger().logInfo("UPLOAD: Ein Dokument wurde online gefunden.");
+			}
+		}
+		
+		while (true)
+		{
+			if ( ((System.currentTimeMillis()-timeStart-millis)*-1) < 0 )
+			{
+				Logger.getLogger().logInfo("UPLOAD: Timeout von "+millis+"ms überschritten.");
+				return false;
+			}
+//			Logger.getLogger().logInfo(doc.body());
+			String temp_string = doc.body().attr("umfrageid");
+			umfrageID_document = Integer.parseInt(temp_string);
+
+			if ( umfrageId == umfrageID_document)
+			{
+				Logger.getLogger().logInfo("UPLOAD: Das Dokument wurde online gefunden und die umfrageID stimmt überein.");
+				return true;
+			}
+			else
+			{
+				Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+" Versuche in 1000ms neu. ms übrig: "+((System.currentTimeMillis()-timeStart-millis)*-1));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

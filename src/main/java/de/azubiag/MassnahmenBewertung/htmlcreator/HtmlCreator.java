@@ -89,7 +89,7 @@ public class HtmlCreator {
 		
 		saveHtml(saveFile);
 
-		System.out.println("doc = " + doc.outerHtml());
+//		System.out.println("doc = " + doc.outerHtml());			// auskommentiert, weil nicht mehr nötig	
 	}
 
 	/* Erzeugen der Paragraphen für die Warnmeldungen 
