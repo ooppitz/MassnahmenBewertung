@@ -307,7 +307,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					        } 
 					    }
 					    AlertMethoden.zeigeOKAlertTextCopyAlwaysOnTop(AlertType.INFORMATION, "PDF-Datei Ergebnisse", 
-								"Die Ergebnisse der Umfrage wurden als PDF gespeichert:\n"+ pdfOutputPfad );
+								"Die Ergebnisse der Umfrage wurden als PDF gespeichert:\n",  pdfOutputPfad );
 					    
 					}
 				}
