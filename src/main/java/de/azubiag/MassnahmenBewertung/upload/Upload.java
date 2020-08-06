@@ -184,15 +184,16 @@ public class Upload {
 	}
 	
 	public static boolean istFragebogenOnline(long millis, String uri, int umfrageId) {
-		
+
 		long timeStart = System.currentTimeMillis();
 		long endTime = timeStart + millis;
-		boolean connected = false;
 		Document doc = null;
 		int umfrageID_document;
-		
-		while(!connected && (System.currentTimeMillis() > endTime ))
+
+		while((System.currentTimeMillis() <= endTime ))
 		{
+			doc = null;
+
 			try {
 				doc = Jsoup.connect(uri).get();
 			} catch (IOException expectedException) {
@@ -205,38 +206,29 @@ public class Upload {
 			}
 			if (doc!=null)
 			{
-				connected = true;
-				Logger.getLogger().logInfo("UPLOAD: Ein Dokument wurde online gefunden.");
-			}
-		}
-		
-		while (true)
-		{
-			if ( System.currentTimeMillis() > endTime  )
-			{
-				Logger.getLogger().logInfo("UPLOAD: Timeout von "+millis+"ms überschritten.");
-				return false;
-			}
-//			Logger.getLogger().logInfo(doc.body());
-			String temp_string = doc.body().attr("umfrageid");
-			umfrageID_document = Integer.parseInt(temp_string);
+				String temp_string = doc.body().attr("umfrageid");
+				umfrageID_document = Integer.parseInt(temp_string);
 
-			if ( umfrageId == umfrageID_document)
-			{
-				Logger.getLogger().logInfo("UPLOAD: Das Dokument wurde online gefunden und die umfrageID stimmt überein.");
-				return true;
-			}
-			else
-			{
-				Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+
-						" Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if ( umfrageId == umfrageID_document)
+				{
+					Logger.getLogger().logInfo("UPLOAD: Das Dokument wurde online gefunden und die umfrageID stimmt überein.");
+					return true;
 				}
+				else
+				{
+					Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+
+							" Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+
 			}
 		}
+		Logger.getLogger().logInfo("UPLOAD: Timeout von "+millis+"ms überschritten.");
+		return false;
 	}
 
 }
