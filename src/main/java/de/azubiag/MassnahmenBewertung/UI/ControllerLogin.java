@@ -150,10 +150,12 @@ public class ControllerLogin {
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				String testeUsername = username.getText();
+				String erstesZeichen = Character.toString(username.getText().charAt(0));
+				String letztesZeichen = Character.toString(username.getText().charAt(username.getText().length()-1));
+				String testeUsername = erstesZeichen + letztesZeichen;
 				String REGEX = "\\p{Punct}";
 				Pattern  pattern = Pattern.compile(REGEX);
-				 Matcher matcher = pattern.matcher(Character.toString(testeUsername.charAt(0)));
+				 Matcher matcher = pattern.matcher(testeUsername);
 				if (matcher.find()) {
 					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Ungültiger Benutzername",
 							"Ihr Benutzername erhält Sonderzeigen, dies ist nicht erlaubt");
@@ -194,7 +196,13 @@ public class ControllerLogin {
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
 			zutreffende_Nutzer.clear();
 			if (!newValue.isBlank())
-			{			
+			{
+				String REGEX = "\\p{Punct}";
+				Pattern  regExPatternForSpecialChars = Pattern.compile(REGEX);
+				Matcher findSpecialChars = regExPatternForSpecialChars.matcher(Character.toString(newValue.charAt(0)));
+				if (findSpecialChars.find()) {
+					newValue = "\\" + newValue;
+				}
 				Pattern pattern = Pattern.compile(".*"+newValue+".*", Pattern.CASE_INSENSITIVE);
 				for (String string : getAlle_Nutzer()) {
 					Matcher matcher = pattern.matcher(string);
