@@ -8,11 +8,16 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.crypto.Decrypt;
 import de.azubiag.MassnahmenBewertung.datenstrukturen.AzubiAntwort;
 
+
+/* Erlaubt einzelne Antworten zu dekodieren und Auswertungen zu erstellen.
+ * Eingabe der Daten über die Console. 
+ */
 public class QuickTest1 {
 
 	private static final String VERSION = "1.0";
 
 	public static void main(String[] args) {
+		
 		QuickTest1 qt = new QuickTest1();
 		qt.start();
 	}

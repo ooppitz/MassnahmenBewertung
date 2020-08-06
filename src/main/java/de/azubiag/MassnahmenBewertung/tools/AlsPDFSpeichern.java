@@ -39,10 +39,10 @@ public class AlsPDFSpeichern {
 		try {
 			outputFile = new File(Upload.getInstance().getProgrammDatenOrdner() + "\\output.pdf");
 		} catch (GitAPIException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		saveAsPDF(outputFile, feTest, amTest, arTest);
+		
 		System.out.println("Datei " + outputFile + " wurde erzeugt.");
 
 	}

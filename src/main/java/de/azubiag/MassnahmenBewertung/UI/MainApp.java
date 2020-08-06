@@ -227,30 +227,6 @@ public class MainApp extends Application {
 		}
 	}
 
-
-	public void showTabAuswertungAnzeigen(FragebogenEigenschaften eigenschaft, int index,List<AzubiAntwort> antwortListe) { // incomplete
-		try {
-			
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("ControllerAuswertungAnzeigen.fxml"));
-			BorderPane z3bp = (BorderPane) loader.load(); // !!
-			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			System.out.println(index);
-			ControllerAuswertungAnzeigen controller = loader.getController();
-			Tab tab_z3 = erzeugeTab(z3bp, eigenschaft.fragebogen_name, controller);
-			// System.out.println(controller);
-			rootLayout.getTabs().add(index +1, tab_z3);
-			rootLayout.getTabs().remove(index);
-			controller.setEigenschaft(eigenschaft);
-			controller.init(this, eigenschaft, antwortListe);
-			controller.erzeugeDarstellung();
-			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
-			single_model.select(tab_z3);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void speicherdaten_laden() {
 
 		listeControllerAntwortenErfassen = ControllerAntwortenErfassen.laden();
