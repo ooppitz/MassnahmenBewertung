@@ -432,7 +432,7 @@ public void addVorschauButtonHandler() {
 
 						zeigeStatusHochladen(dialog, cancel, upload_controller);
 
-						boolean fragebogenOnline = Upload.istFragebogenOnline(90000, webpath, umfrageID);
+						// TEST boolean fragebogenOnline = Upload.istFragebogenOnline(90000, webpath, umfrageID);
 						
 						// Abfragen, ob Fragebogen kopiert werden soll
 						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(

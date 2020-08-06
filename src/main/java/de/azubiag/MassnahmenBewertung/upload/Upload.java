@@ -186,16 +186,17 @@ public class Upload {
 	public static boolean istFragebogenOnline(long millis, String uri, int umfrageId) {
 		
 		long timeStart = System.currentTimeMillis();
+		long endTime = timeStart + millis;
 		boolean connected = false;
 		Document doc = null;
 		int umfrageID_document;
 		
-		while(!connected && ((System.currentTimeMillis()-timeStart-millis)*-1) >= 0 )
+		while(!connected && (System.currentTimeMillis() > endTime ))
 		{
 			try {
 				doc = Jsoup.connect(uri).get();
-			} catch (IOException e) {
-				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Versuche in 1000ms neu. ms übrig: "+((System.currentTimeMillis()-timeStart-millis)*-1));
+			} catch (IOException expectedException) {
+				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
@@ -211,7 +212,7 @@ public class Upload {
 		
 		while (true)
 		{
-			if ( ((System.currentTimeMillis()-timeStart-millis)*-1) < 0 )
+			if ( System.currentTimeMillis() > endTime  )
 			{
 				Logger.getLogger().logInfo("UPLOAD: Timeout von "+millis+"ms überschritten.");
 				return false;
@@ -227,7 +228,8 @@ public class Upload {
 			}
 			else
 			{
-				Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+" Versuche in 1000ms neu. ms übrig: "+((System.currentTimeMillis()-timeStart-millis)*-1));
+				Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+
+						" Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
