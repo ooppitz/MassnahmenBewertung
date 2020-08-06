@@ -143,7 +143,7 @@ public class ControllerFragebogenErstellen implements Controller {
 		fragebogenname.textProperty().addListener((observable, oldValue, newValue) -> {
 
 //			if (oldValue != "" || newValue != "")
-			tab.setText(newValue);
+			tab.setText(MainApp.tabNameLimit(newValue));
 //			else
 //				tab.setText("Unbenannter Fragebogen");
 		});

@@ -202,7 +202,7 @@ public class MainApp extends Application {
 		
 			ControllerAntwortenErfassen controller = loader.getController();
 			
-			Tab tab_z2 = erzeugeTab(z2bp, eigenschaft.fragebogen_name, controller);
+			Tab tab_z2 = erzeugeTab(z2bp, tabNameLimit(eigenschaft.fragebogen_name), controller);
 			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
 			
 			controller.setMainApp(this);
@@ -226,6 +226,17 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	static String tabNameLimit(String oldTabName) {
+		String newTabName = "";
+
+		if (oldTabName.length() < 30) {
+			newTabName = oldTabName;
+		} else {
+			newTabName = oldTabName.substring(0, 29) + "...";
+		}
+		return newTabName;
+	}
 
 
 	public void showTabAuswertungAnzeigen(FragebogenEigenschaften eigenschaft, int index,List<AzubiAntwort> antwortListe) { // incomplete
@@ -237,7 +248,7 @@ public class MainApp extends Application {
 			// tab_z3.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
 			System.out.println(index);
 			ControllerAuswertungAnzeigen controller = loader.getController();
-			Tab tab_z3 = erzeugeTab(z3bp, eigenschaft.fragebogen_name, controller);
+			Tab tab_z3 = erzeugeTab(z3bp, tabNameLimit(eigenschaft.fragebogen_name), controller);
 			// System.out.println(controller);
 			rootLayout.getTabs().add(index +1, tab_z3);
 			rootLayout.getTabs().remove(index);
@@ -275,7 +286,7 @@ public class MainApp extends Application {
 			
 			ControllerAntwortenErfassen neuer_controller = loader.getController();
 		
-			Tab tab_z2 = erzeugeTab(z2, tabName, neuer_controller);
+			Tab tab_z2 = erzeugeTab(z2, tabNameLimit(tabName), neuer_controller);
 			rootLayout.getTabs().add(indexInTabPane, tab_z2);
 			
 			neuer_controller.setMainApp(this);
