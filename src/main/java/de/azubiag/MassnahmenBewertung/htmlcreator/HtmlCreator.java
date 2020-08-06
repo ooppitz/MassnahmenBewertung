@@ -99,8 +99,6 @@ public class HtmlCreator {
 		}
 		
 		saveHtml(saveFile);
-
-		System.out.println("doc = " + doc.outerHtml());
 	}
 
 

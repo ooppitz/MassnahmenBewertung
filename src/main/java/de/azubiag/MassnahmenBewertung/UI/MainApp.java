@@ -226,6 +226,17 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	static String tabNameLimit(String oldTabName) {
+		String newTabName = "";
+
+		if (oldTabName.length() < 30) {
+			newTabName = oldTabName;
+		} else {
+			newTabName = oldTabName.substring(0, 29) + "...";
+		}
+		return newTabName;
+	}
 
 	public void speicherdaten_laden() {
 
@@ -278,7 +289,7 @@ public class MainApp extends Application {
 		Tab thisTab = new Tab();
 		thisTab.setContent(borderPane);
 		thisTab.setClosable(true);
-		thisTab.setText(tabName);
+		thisTab.setText(tabNameLimit(tabName));
 		
 		thisTab.setOnCloseRequest(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
@@ -392,11 +403,8 @@ public class MainApp extends Application {
 
 	
 	public void warnfenster(WindowEvent event) {
-		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Wenn Sie das Fenster schließen, geschieht Folgendes: \n"
-				+ "-Umfrageergebnisse, die noch nicht in einem PDF gespeichert wurden, gehen verloren\n"
-				+ "-Umfragen, die noch nicht hochgeladen wurden, werden gelöscht.\n" 
-				+ "Laufende Umfragen erscheinen beim Öffnen der App im jetzigen Zustand wieder.\n\n"
-				+ "Trotzdem schließen ? ")==1) ? true:false; 
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
+				+ "Anwendung jetzt schließen ? ")==1) ? true:false; 
 		
 		if (loeschen)
 		{
