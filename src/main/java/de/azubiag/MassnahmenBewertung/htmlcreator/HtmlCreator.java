@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.UI.MainApp;
+import de.azubiag.MassnahmenBewertung.tools.DemoTextGenerator;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 
 /**
@@ -98,6 +99,7 @@ public class HtmlCreator {
 		if(MainApp.isTestmodusAktiv()) {
 			Logger.getLogger().logInfo("HtmlCreator: Prefilling the fragebogen");
 			precheckRadiobuttons();
+			prefillTextareas();
 		}
 		
 		saveHtml(saveFile);
@@ -234,5 +236,17 @@ public class HtmlCreator {
 			radiobutton.attr("checked", true);
 		}
 	}
-
+	
+	/**
+	 * Fills all textareas with random texts from a {@link DemoTextGenerator}.
+	 * 
+	 * @author Luna
+	 */
+	private void prefillTextareas() {
+		DemoTextGenerator dtg = new DemoTextGenerator();
+		Elements textareas = doc.getElementsByTag("textarea");
+		for (Element textarea : textareas) {
+			textarea.text(dtg.generate());
+		}
+	}
 }
