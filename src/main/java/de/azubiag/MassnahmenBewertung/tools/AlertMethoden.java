@@ -128,11 +128,11 @@ public class AlertMethoden {
 	public static final int NEIN = 0;
 	public static final int CANCEL = -1;
 
-	public static void zeigeOKAlertTextCopyAlwaysOnTop(AlertType alertType, String title, String text) {
-		GridPane gridPane = initTextArea(text);
-
+	public static void zeigeOKAlertTextCopyAlwaysOnTop(AlertType alertType, String title, String headerText, String copyText) {
+		GridPane gridPane = initTextArea(copyText);
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
+		alert.setHeaderText(headerText);
 		ButtonType buttonTypeOK = new ButtonType("OK");
 		alert.getButtonTypes().setAll(buttonTypeOK);
 		alert.getDialogPane().setContent(gridPane);

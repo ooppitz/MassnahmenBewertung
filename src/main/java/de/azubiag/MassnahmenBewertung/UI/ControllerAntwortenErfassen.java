@@ -281,7 +281,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				if ( ! antwortListe.isEmpty()) {
 
 					int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
-							"Eine Umfrage kann nur einmal ausgewertet werden. Jetzt auswerten?");
+							"Eine Umfrage kann aus Gründen der Anonymität nur einmal ausgewertet werden. Jetzt auswerten?");
 					
 					if(userAntwort == AlertMethoden.JA) {
 						mainapp.deleteActions(tab, controller);
@@ -297,7 +297,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						
 						AlsPDFSpeichern.saveAsPDF(ergebnisPDFFile, eigenschaften, auswertungMassnahme,
 								auswertungenReferenten);
-						
+					
 					    if(Desktop.isDesktopSupported())
 					    {
 					        try {
@@ -307,7 +307,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					        } 
 					    }
 					    AlertMethoden.zeigeOKAlertTextCopyAlwaysOnTop(AlertType.INFORMATION, "PDF-Datei Ergebnisse", 
-								"Die Ergebnisse der Umfrage wurden als PDF gespeichert:\n"+ pdfOutputPfad );
+								"Die Ergebnisse der Umfrage wurden als PDF gespeichert:\n",  pdfOutputPfad );
 					    
 					}
 				}
