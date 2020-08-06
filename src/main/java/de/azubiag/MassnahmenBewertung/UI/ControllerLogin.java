@@ -150,7 +150,16 @@ public class ControllerLogin {
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
+				String testeUsername = username.getText();
+				String REGEX = "\\p{Punct}";
+				Pattern  pattern = Pattern.compile(REGEX);
+				 Matcher matcher = pattern.matcher(Character.toString(testeUsername.charAt(0)));
+				if (matcher.find()) {
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Ungültiger Benutzername",
+							"Ihr Benutzername erhält Sonderzeigen, dies ist nicht erlaubt");
+					username.setText("");
+				}
+				else {
 				String clean_username = Tools.normalisiereString(username.getText());
 				mainapp.primaryStage.setTitle("SeminarLeiterApp " + username.getText());
 
@@ -175,6 +184,7 @@ public class ControllerLogin {
 						mainapp.showTabPane();
 					}
 				}
+				}
 			}
 
 		});
@@ -184,9 +194,8 @@ public class ControllerLogin {
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
 			zutreffende_Nutzer.clear();
 			if (!newValue.isBlank())
-			{
+			{			
 				Pattern pattern = Pattern.compile(".*"+newValue+".*", Pattern.CASE_INSENSITIVE);
-
 				for (String string : getAlle_Nutzer()) {
 					Matcher matcher = pattern.matcher(string);
 					if(matcher.matches())
@@ -250,6 +259,7 @@ public class ControllerLogin {
 		boolean neuer_Account = AlertMethoden.entscheidungViaDialogAbfragen("Neuen Account erstellen?", "Es wurde ein neuer Nutzername eingegeben.\nWollen Sie einen neuen Account erstellen?");
 		if (neuer_Account)
 		{
+			
 			String path_string = getPath_String(clean_username);
 			File test_file = getPath(clean_username);
 			boolean success = test_file.mkdir();
