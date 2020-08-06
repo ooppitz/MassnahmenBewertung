@@ -226,6 +226,17 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	static String tabNameLimit(String oldTabName) {
+		String newTabName = "";
+
+		if (oldTabName.length() < 30) {
+			newTabName = oldTabName;
+		} else {
+			newTabName = oldTabName.substring(0, 29) + "...";
+		}
+		return newTabName;
+	}
 
 	public void speicherdaten_laden() {
 
@@ -278,7 +289,7 @@ public class MainApp extends Application {
 		Tab thisTab = new Tab();
 		thisTab.setContent(borderPane);
 		thisTab.setClosable(true);
-		thisTab.setText(tabName);
+		thisTab.setText(tabNameLimit(tabName));
 		
 		thisTab.setOnCloseRequest(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
 			@Override
