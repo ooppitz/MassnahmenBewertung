@@ -114,7 +114,7 @@ public class AlsPDFSpeichern {
 
 		Phrase spaltenMassnahmenbetreuung = punkteSpaltenSetzen();
 
-		Phrase zeilePktBetrng = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung vom BFZ?",
+		Phrase zeilePktBetrng = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",
 				am.pktvertBetrng, am.durchschnBetrng);
 
 		Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("\nBemerkungen dazu:", am.alleBemerkBetrng);
