@@ -19,17 +19,18 @@ public final class DemoTextGenerator {
 			"Zu langer Arbeitstag",
 			"miau",
 			"Bin überfordert",
-			"Der Referent stinkt",
 			"Ich würde gerne meine Katze mitbringen",
-			"ich hasse die gfi",
+			"ich mag die gfi",
 			"pika pikachu",
 			"Straight Outta Compton",
 			"All Of The Lights",
 			"In 200 Metern links abbiegen",
 			"Fluxkatzen sind besser als Menschen",
-			"Menschen stinken",
 			"unedfined",
 			"Arbeit nervt",
+			"Karotten mit Curryketchup sind lecker",
+			"Ich habe Hunger",
+			"Keine Hektik mit dem Backtick"
 			
 	};
 	
