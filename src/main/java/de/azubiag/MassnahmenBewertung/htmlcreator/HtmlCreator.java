@@ -15,14 +15,21 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
+import de.azubiag.MassnahmenBewertung.UI.MainApp;
 
 /**
  *
  * @author manuel.unverdorben
  */
 public class HtmlCreator {
+
+	/**
+	 * Radiobuttons with this value will be auto-checked in test mode.
+	 */
+	private static final String RADIOBUTTON_DEFAULT = "0";
 
 	ArrayList<String> refListe;
 	
@@ -87,10 +94,15 @@ public class HtmlCreator {
 		}
 		addElementsToHtml(elementListe);
 		
+		if(MainApp.isTestmodusAktiv()) {
+			precheckRadiobuttons();
+		}
+		
 		saveHtml(saveFile);
 
 		System.out.println("doc = " + doc.outerHtml());
 	}
+
 
 	/* Erzeugen der Paragraphen für die Warnmeldungen 
 	 */
@@ -193,6 +205,33 @@ public class HtmlCreator {
 		File file = new File(fileName);
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 			bw.write(doc.outerHtml());
+		}
+	}
+	
+	/**
+	 * Picks radiobuttons with the default value and sets them to checked.
+	 * 
+	 * @author Luna
+	 */
+	private void precheckRadiobuttons() {
+		/**
+		 * all input elements
+		 */
+		Elements inputs = doc.getElementsByTag("input");
+		
+		/**
+		 * all elements that are radiobuttons and should be checked
+		 */
+		ArrayList<Element> radiobuttonsToCheck = new ArrayList<>();
+		for (Element inputElement : inputs) {
+			if(inputElement.attr("type").equals("radio") && inputElement.attr("value").equals(RADIOBUTTON_DEFAULT)) {
+				radiobuttonsToCheck.add(inputElement);
+			}
+		}
+		
+		// set the selected radiobuttons to "checked"
+		for(Element radiobutton : radiobuttonsToCheck) {
+			radiobutton.attr("checked", true);
 		}
 	}
 
