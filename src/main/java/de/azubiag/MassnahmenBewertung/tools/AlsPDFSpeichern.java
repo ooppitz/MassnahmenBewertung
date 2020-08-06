@@ -98,7 +98,7 @@ public class AlsPDFSpeichern {
 		Phrase zeilePktVerl = druckeZeileMitPunkten("Wie empfinden die Teilnehmer den Verlauf des Seminars?",
 				am.pktvertVerl, am.durchschnVerl);
 
-		Phrase zeileAlleBemVerl = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkVerl);
+		Phrase zeileAlleBemVerl = druckeZeileMitBemerkungen("\nBemerkungen dazu:", am.alleBemerkVerl);
 
 		massnahmenverlauf.add(titelMassnahmenverlauf);
 		massnahmenverlauf.add(spaltenMassnahmenverlauf);
@@ -117,7 +117,7 @@ public class AlsPDFSpeichern {
 		Phrase zeilePktBetrng = druckeZeileMitPunkten("Wie zufrieden sind die Teilnehmer mit der Betreuung des BFZ?",
 				am.pktvertBetrng, am.durchschnBetrng);
 
-		Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("Bemerkungen dazu:", am.alleBemerkBetrng);
+		Phrase zeileAlleBemBetrng = druckeZeileMitBemerkungen("\nBemerkungen dazu:", am.alleBemerkBetrng);
 
 		massnahmenbetreuung.add(titelMassnahmenbetreuung);
 		massnahmenbetreuung.add(spaltenMassnahmenbetreuung);
@@ -178,7 +178,7 @@ public class AlsPDFSpeichern {
 			referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?",
 					ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
 
-			referentBem = druckeZeileMitBemerkungen("\nBermerkungen zu: " + ar.get(i).name + "\n",
+			referentBem = druckeZeileMitBemerkungen("\nBemerkungen zu " + ar.get(i).name + ":\n",
 					ar.get(i).getBemerkungen());
 
 			bewertungReferentenIndividuell.add(referentPktVorb);
@@ -207,7 +207,7 @@ public class AlsPDFSpeichern {
 
 	private static Paragraph paragraphSetzen() {
 		Paragraph paragraph = new Paragraph("", FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK));
-		paragraph.setSpacingAfter(50);
+		paragraph.setSpacingAfter(25);
 		return paragraph;
 	}
 
