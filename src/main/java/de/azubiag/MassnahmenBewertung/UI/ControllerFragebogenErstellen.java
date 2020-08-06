@@ -110,8 +110,8 @@ public class ControllerFragebogenErstellen implements Controller {
 	private MainApp mainapp;
 
 	public void init() {
-		entferneReferent(ref1_x);
-		entferneReferent(ref2_x);
+		setListenerEntferneReferent(ref1_x);
+		setListenerEntferneReferent(ref2_x);
 		readdNode(description, 1, 0);
 		readdNode(fragebogenname, 3, 0);
 
@@ -200,7 +200,7 @@ public class ControllerFragebogenErstellen implements Controller {
 
 					Button x_button = new Button();
 					x_button.setText("x");
-					entferneReferent(x_button);
+					setListenerEntferneReferent(x_button);
 
 					gridpane.getChildren().remove(referent_name);
 					gridpane.add(referent_name, 3, anzahl_referenten + 6, 3, 1);
@@ -226,7 +226,7 @@ public class ControllerFragebogenErstellen implements Controller {
 		});
 	}
 
-	public void entferneReferent(Button button) {
+	public void setListenerEntferneReferent(Button button) {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
