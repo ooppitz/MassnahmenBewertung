@@ -132,20 +132,6 @@ public class Upload {
 
 	}
 
-	/*
-	 * Lädt einen Fragebogen hoch. Die Methode kümmert sich um alle Details: git
-	 * pull, git add, git commit, git push Setzt voraus, dass der Fragebogen in
-	 * einem Folder des Repos abgelegt wurde.
-	 * 
-	 * @return boolean : Zeigt Erfolg oder Misserfolg an
-	 */
-
-	public boolean hochladen() {
-
-		return hochladen("Ein Fragebogen", "einem Nutzer wurde gelöscht");
-
-	}
-
 	/** Liefert den Ordner für Programmdaten zurück.
 	 *  Falls er nicht existiert, wird er erzeugt.
 	 *   */
