@@ -195,17 +195,9 @@ public class Upload {
 			doc = null;
 
 			try {
+				
 				doc = Jsoup.connect(uri).get();
-			} catch (IOException expectedException) {
-				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-			}
-			if (doc!=null)
-			{
+				
 				String temp_string = doc.body().attr("umfrageid");
 				umfrageID_document = Integer.parseInt(temp_string);
 
@@ -224,8 +216,15 @@ public class Upload {
 						e.printStackTrace();
 					}
 				}
-
+			} catch (IOException expectedException) {
+				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
+			
 		}
 		Logger.getLogger().logInfo("UPLOAD: Timeout von "+millis+"ms überschritten.");
 		return false;
