@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
 import de.azubiag.MassnahmenBewertung.UI.MainApp;
+import de.azubiag.MassnahmenBewertung.tools.Logger;
 
 /**
  *
@@ -29,7 +30,7 @@ public class HtmlCreator {
 	/**
 	 * Radiobuttons with this value will be auto-checked in test mode.
 	 */
-	private static final String RADIOBUTTON_DEFAULT = "0";
+	private static final String RADIOBUTTON_DEFAULT = "2"; // Entspricht Feld "0"
 
 	ArrayList<String> refListe;
 	
@@ -95,6 +96,7 @@ public class HtmlCreator {
 		addElementsToHtml(elementListe);
 		
 		if(MainApp.isTestmodusAktiv()) {
+			Logger.getLogger().logInfo("HtmlCreator: Prefilling the fragebogen");
 			precheckRadiobuttons();
 		}
 		
