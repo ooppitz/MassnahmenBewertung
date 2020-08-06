@@ -349,7 +349,7 @@ public class MainApp extends Application {
 			if (f!=null) {
 				if (f.delete()) // returns Boolean value
 				{
-					Upload.getInstance().hochladen(f.getName()+" wurde gelöscht", userName);
+					Upload.getInstance().synchronisieren(f.getName()+" wurde gelöscht", userName);
 					System.out.println(f.getName() + " deleted"); // getting and printing the file name
 				} else {
 					System.out.println("failed");

@@ -365,7 +365,7 @@ public void addVorschauButtonHandler() {
 									@Override
 									public void run() {
 										try {
-											Upload.getInstance().hochladen(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
+											Upload.getInstance().synchronisieren(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
 										} catch (GitAPIException | IOException e) {
 											e.printStackTrace();
 										}

@@ -155,7 +155,7 @@ public class Upload {
 	 * @return boolean : Zeigt Erfolg oder Misserfolg an
 	 */
 
-	public boolean hochladen(String fragebogenname, String nutzername) {
+	public boolean synchronisieren(String fragebogenname, String nutzername) {
 
 		try {
 			// git pull
