@@ -142,25 +142,7 @@ public class Upload {
 
 	public boolean hochladen() {
 
-		try {
-			// git pull
-			gitController.pull().setCredentialsProvider(cp).call();
-
-			// git add . --> Fügt Fragebogen im Staging Area hinzu
-			gitController.add().addFilepattern(".").call();
-
-			// git commit
-			gitController.commit().setAll(true).setMessage("Test").call();
-
-			// git push --> Schreibt die Änderungen in das remote Repo
-			// $ git push --all
-			gitController.push().setCredentialsProvider(cp).setPushAll().call();
-
-			return true;
-
-		} catch (GitAPIException e) {
-			return false;
-		}
+		return hochladen("Ein Fragebogen", "einem Nutzer wurde gelöscht");
 
 	}
 
