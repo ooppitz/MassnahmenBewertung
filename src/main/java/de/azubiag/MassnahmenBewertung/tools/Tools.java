@@ -16,7 +16,7 @@ public class Tools {
 		s = s.replace("ü", "ue");
 		s = s.replaceAll("[^a-zA-Z0-9]", "_"); 
 		if(s.length()>30) {
-			s = s.substring(0, s.length()-1);
+			s = s.substring(0, 29);
 		}
 		return s;
 	}
