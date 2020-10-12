@@ -6,6 +6,7 @@ import java.net.URI;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -72,9 +73,48 @@ public class Upload {
 		
 		String lokalBranch = gitController.getRepository().getBranch();
 		if (!lokalBranch.equals("master")) {
-			System.out.println("### Achtung ###\nlokaler Branch ist nicht \"master\" (" + lokalBranch + ")\n");
+			System.out.println("### Achtung ###\nlokaler Branch ist nicht \"master\" (\"" + lokalBranch + "\")\n");
 			// TODO direkt auf master wechseln?
 			// gitController.checkout().setName("master").call();
+		}
+		
+		Status status = gitController.status().call();
+		
+		if (!status.getAdded().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Added: " + status.getAdded());
+		}
+		if (!status.getChanged().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Changed: " + status.getChanged());
+		}
+		if (!status.getConflicting().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Conflicting: " + status.getConflicting());
+		}
+		if (!status.getConflictingStageState().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("ConflictingStageState: " + status.getConflictingStageState());
+		}
+		if (!status.getIgnoredNotInIndex().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("IgnoredNotInIndex: " + status.getIgnoredNotInIndex());
+		}
+		if (!status.getMissing().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Missing: " + status.getMissing());
+		}
+		if (!status.getModified().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Modified: " + status.getModified());
+		}
+		if (!status.getRemoved().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Removed: " + status.getRemoved());
+		}
+		if (!status.getUntracked().isEmpty()) {
+			System.out.println("### Git Status Warnung ###");
+			System.out.println("Untracked: " + status.getUntracked());
 		}
 		
 		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
