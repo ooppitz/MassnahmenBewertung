@@ -2,7 +2,9 @@ package de.azubiag.MassnahmenBewertung.tools;
 
 public class Tools {
 
-	/** Die Methode erzeugt einen String, der als File- oder Ordnername benutzt werden kann 
+	/** Die Methode erzeugt einen String, der als Teil eines 
+	 *  File- oder Ordnername benutzt werden kann 
+	 *  - die Länge wird auf 30 Zeichen begrenzt
 	 *  - Leerzeichen werden durch _ ersetzt
 	 *  - Umlaute werden durch ue, ae, ... ersetzt
 	 *  - Punkte "." werden entfernt
