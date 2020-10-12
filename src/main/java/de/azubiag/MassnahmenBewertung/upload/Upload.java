@@ -73,6 +73,8 @@ public class Upload {
 		String lokalBranch = gitController.getRepository().getBranch();
 		if (!lokalBranch.equals("master")) {
 			System.out.println("### Achtung ###\nlokaler Branch ist nicht \"master\" (" + lokalBranch + ")\n");
+			// TODO direkt auf master wechseln?
+			// gitController.checkout().setName("master").call();
 		}
 		
 		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
