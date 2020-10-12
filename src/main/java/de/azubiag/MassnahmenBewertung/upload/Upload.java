@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -68,6 +69,9 @@ public class Upload {
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
 		gitController = new Git(lokalRepo);
 
+		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
+		gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
+		
 		gitController.pull().setCredentialsProvider(cp).call();
 	}
 
