@@ -69,6 +69,12 @@ public class Upload {
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
 		gitController = new Git(lokalRepo);
 
+		
+		String lokalBranch = gitController.getRepository().getBranch();
+		if (!lokalBranch.equals("master")) {
+			System.out.println("### Achtung ###\nlokaler Branch ist nicht \"master\" (" + lokalBranch + ")\n");
+		}
+		
 		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
 		gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
 		
