@@ -152,14 +152,14 @@ public class Upload {
 	}
 
 	/**
-	 * Lädt einen Fragebogen hoch. Die Methode kümmert sich um alle Details: git
-	 * pull, git add, git commit, git push Setzt voraus, dass der Fragebogen in
-	 * einem Folder des Repos abgelegt wurde.
+	 * Committed alle Änderungen im Repo. 
+	 * Wird verwendet, um Fragebögen und den Zustand der Tabs zu sichern.
+	 * Die Methode kümmert sich um alle Details: 
+	 * git pull, git add, git commit, git push 
 	 * @param
 	 * @return boolean : Zeigt Erfolg oder Misserfolg an
 	 */
-
-	public boolean synchronisieren(String fragebogenname, String nutzername) {
+	public boolean synchronisieren(String commitMessage) {
 
 		try {
 			// git pull
@@ -169,7 +169,7 @@ public class Upload {
 			gitController.add().addFilepattern(".").call();
 
 			// git commit
-			gitController.commit().setAll(true).setMessage(fragebogenname+" von "+nutzername).call();
+			gitController.commit().setAll(true).setMessage(commitMessage).call();
 
 			// git push --> Schreibt die Änderungen in das remote Repo
 			// $ git push --all
@@ -180,9 +180,14 @@ public class Upload {
 		} catch (GitAPIException e) {
 			return false;
 		}
-
 	}
-	
+
+	public boolean synchronisieren(String fragebogenname, String nutzername) {
+
+		return synchronisieren(fragebogenname + " von " + nutzername);
+		
+	}
+
 	public static boolean istFragebogenOnline(long millis, String uri, int umfrageId) {
 
 		long timeStart = System.currentTimeMillis();

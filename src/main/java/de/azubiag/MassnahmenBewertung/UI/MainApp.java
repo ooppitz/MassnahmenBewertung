@@ -403,13 +403,22 @@ public class MainApp extends Application {
 
 	
 	public void warnfenster(WindowEvent event) {
-		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
+		boolean schliessen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,
+				"Anwendung schließen", 
+				"Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
 				+ "Anwendung jetzt schließen ? ")==1) ? true:false; 
 		
-		if (loeschen)
+		if (schliessen)
 		{
 			if(!listeControllerAntwortenErfassen.isEmpty()) {
 				ControllerAntwortenErfassen.speichern();
+				
+				try {
+					Upload.getInstance().synchronisieren("Speichern der offenen Tabs");
+				} catch (GitAPIException | IOException e) {
+					e.printStackTrace();
+				}
+				
 				Platform.exit();
 			}
 		} else {
