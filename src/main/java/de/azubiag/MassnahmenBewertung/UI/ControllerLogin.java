@@ -50,7 +50,7 @@ public class ControllerLogin {
 	ArrayList<String> zutreffende_Nutzer;
 	private final int LIMIT = 10;
 	private Dictionary<String,String> nutzernamenUndOrdner;
-	static String nutzerfilename = "nutzer.txt";
+	static String nutzerfilename = "nutzer.ser";
 
 	public ArrayList<String> getZutreffende_Nutzer() {
 		if (zutreffende_Nutzer == null)
@@ -91,7 +91,7 @@ public class ControllerLogin {
 	public void speichern() {
 
 		Logger log = Logger.getLogger();
-		log.logInfo("nutzer.txt wird gespeichert");
+		log.logInfo("nutzer.ser wird gespeichert");
 
 		try {
 			String ordner = Upload.getInstance().getRepositoryPfad();
@@ -112,7 +112,7 @@ public class ControllerLogin {
 		if(existiert_datei())
 		{
 			Logger log = Logger.getLogger();
-			log.logInfo("nutzer.txt wird geladen");
+			log.logInfo("nutzer.ser wird geladen");
 			Hashtable<String,String> hashtable = null;
 			try {
 				String ordner = Upload.getInstance().getRepositoryPfad();
