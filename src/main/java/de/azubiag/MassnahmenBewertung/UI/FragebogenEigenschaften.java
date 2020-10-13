@@ -19,6 +19,7 @@ public class FragebogenEigenschaften implements Serializable {
     public String bis_datum;
     public String ausstellungs_datum;
     public String link;
+	public int umfrageID;
 
     /* Der Konstruktor liest die Werte aus den Feldern des Controllers aus */
     public FragebogenEigenschaften(ControllerFragebogenErstellen controller, String webpath) {

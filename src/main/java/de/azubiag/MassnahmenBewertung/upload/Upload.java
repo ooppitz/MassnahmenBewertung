@@ -301,17 +301,17 @@ public class Upload {
 				else
 				{
 					Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+
-							" Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
+							" Erneuter Versuch in 10000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(10000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
 			} catch (IOException expectedException) {
-				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 1000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
+				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 10000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(10000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}

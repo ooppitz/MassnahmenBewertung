@@ -384,6 +384,7 @@ public void addVorschauButtonHandler() {
 				
 					// Erstellen des Fragebogen-Files
 					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
+					eigenschaftenX.umfrageID = umfrageID;
 					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(eigenschaftenX, umfrageID);
 					zeigeVorschauFragebogen(fragebogenOutputPfad); // Zeigt den Fragebogen im Browser
 					
@@ -476,7 +477,7 @@ public void addVorschauButtonHandler() {
 
 						zeigeStatusHochladen(dialog, cancel, upload_controller);
 
-						/* TEST boolean fragebogenOnline = Upload.istFragebogenOnline(120000, webpath, umfrageID); */
+//						 boolean fragebogenOnline = Upload.istFragebogenOnline(600000, webpath, umfrageID);
 						
 						// Abfragen, ob Fragebogen kopiert werden soll
 						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
@@ -484,8 +485,8 @@ public void addVorschauButtonHandler() {
 								"Neuen Fragebogen mit denselben Referenten anlegen?");
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
-						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
-						
+						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);	
+						eigenschaften.umfrageID = umfrageID;
 						// Auswertung-Tab erstellen
 						mainapp.showTabAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
 

@@ -1,5 +1,8 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,6 +29,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -123,9 +128,46 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		readdNode(answ_del, 0, 3);
 		readdNode(antwort_name, 1, 3);
 		readdNode(antwort_text, 3, 3);
-		link_hypertext.setText(eigenschaften.link);
+		link_hypertext.setText("Bitte warten sie 3 Minuten.");
+		link_hypertext.setDisable(true);
+		link_kopieren.setDisable(true);
 		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
 		prevHeight = gridpane.getPrefHeight();
+		
+		Task<Void> text_andern = new Task<Void>() {
+
+			@Override
+			protected Void call() throws Exception {
+				link_hypertext.setText(eigenschaften.link);
+				link_hypertext.setDisable(false);
+				link_kopieren.setDisable(false);
+				return null;
+			}
+			
+		};
+		
+		TimerTask timertask = new TimerTask() {
+			@Override
+			public void run() {
+//				System.out.println("Task is running on"+Thread.currentThread().getName());
+				Upload.istFragebogenOnline(1300000, eigenschaften.link, eigenschaften.umfrageID);
+				Platform.runLater(text_andern);
+			}
+			
+		};
+		
+		
+		
+		Timer timer = new Timer();
+		if (MainApp.isTestmodusAktiv())
+		{
+			Platform.runLater(text_andern);
+		}
+		else
+		{
+			timer.schedule(timertask, 50000L);
+		}
+		
 	}
 
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
