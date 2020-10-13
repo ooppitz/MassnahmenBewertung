@@ -165,11 +165,11 @@ public class ControllerLogin {
 				}
 				else
 				{
-					boolean account_erstellt = neuen_Account_erstellen(clean_username);
-					if (account_erstellt)
+					boolean benutzer_erstellt = neuen_Benutzer_erstellen(clean_username);
+					if (benutzer_erstellt)
 					{
 						nutzernamenUndOrdner.put(username.getText(),clean_username);
-						System.out.println("Neuer Account erstellt: Key-> "+username.getText()+"\tValue-> "+clean_username);
+						System.out.println("Neuer Benutzer erstellt: Key-> "+username.getText()+"\tValue-> "+clean_username);
 						speichern();
 						MainApp.setUserName(username.getText());
 						mainapp.showTabPane();
@@ -245,10 +245,10 @@ public class ControllerLogin {
 		return true;	// alles OK!
 	}
 
-	public boolean neuen_Account_erstellen(String clean_username) {
+	public boolean neuen_Benutzer_erstellen(String clean_username) {
 
-		boolean neuer_Account = AlertMethoden.entscheidungViaDialogAbfragen("Neuen Account erstellen?", "Es wurde ein neuer Nutzername eingegeben.\nWollen Sie einen neuen Account erstellen?");
-		if (neuer_Account)
+		boolean neuer_Benutzer = AlertMethoden.entscheidungViaDialogAbfragen("Neuen Benutzer erstellen?", "Es wurde ein neuer Nutzername eingegeben.\nWollen Sie einen neuen Benutzer erstellen?");
+		if (neuer_Benutzer)
 		{
 			String path_string = getPath_String(clean_username);
 			File test_file = getPath(clean_username);
