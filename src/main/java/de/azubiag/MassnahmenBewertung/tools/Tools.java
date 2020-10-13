@@ -11,6 +11,7 @@ public class Tools {
 	 *  - der Filename wird in Kleinbuchstaben umgewandelt
 	 * */
 	public static String normalisiereString(String s) {
+		s = s.strip();
 		s = s.toLowerCase();
 		s = s.replace("ß", "sz");
 		s = s.replace("ä", "ae");
