@@ -142,18 +142,11 @@ public class MainApp extends Application {
 				}
 			});
 			
-			// TODO: Alle weiteren Tabs für Fragebögen öffnen, deren Antworten eingegeben werden sollen 
-			// Aufrufen von showAntwortenErfassen()
-			if (existieren_speicherdaten())
-				Logger.getLogger().logInfo("Speicherdatei existiert!");
-			else
-				Logger.getLogger().logInfo("Speicherdatei existiert nicht!");
-
-			if (existieren_speicherdaten()) {
+			if (existierenSerialisierteTabs()) {
+				Logger.getLogger().logInfo("Tabs.ser existiert!");
 				speicherdaten_laden();
-			}
-			else
-			{
+			} else {
+				Logger.getLogger().logInfo("Tabs.ser existiert nicht!");
 				showTabFragebogenErstellen();
 			}
 
@@ -427,20 +420,14 @@ public class MainApp extends Application {
 		}
 	}
 
-	public boolean existieren_speicherdaten() {
+	public boolean existierenSerialisierteTabs() {
 
 		try {
 			Upload upload = Upload.getInstance();
 			String ordner = upload.getSeminarleiterDirectory(userName);
-			File speicherdatei = new File(ordner+ControllerAntwortenErfassen.saveFileName);
-			if (speicherdatei.isFile())
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			File serialisierteTabsFile = new File(ordner+ControllerAntwortenErfassen.saveFileName);
+			return serialisierteTabsFile.isFile();
+			
 		} catch (GitAPIException | IOException e) {
 			e.printStackTrace();
 			return false;
