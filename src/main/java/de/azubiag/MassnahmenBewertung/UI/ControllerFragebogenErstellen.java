@@ -46,6 +46,7 @@ public class ControllerFragebogenErstellen implements Controller {
 
 	Tab tab;
 	int anzahl_referenten;
+	ArrayList<String> referentenliste;
 
 	@FXML
 	GridPane gridpane;
@@ -110,6 +111,8 @@ public class ControllerFragebogenErstellen implements Controller {
 	private MainApp mainapp;
 
 	public void init() {
+		referentenliste = new ArrayList<String>();
+		referentenliste.add("");
 		setListenerEntferneReferent(ref1_x);
 		setListenerEntferneReferent(ref2_x);
 		readdNode(description, 1, 0);
@@ -133,6 +136,8 @@ public class ControllerFragebogenErstellen implements Controller {
 		heute_datum.getEditor().setFont(maßnahme_bis.getFont());
 		gridpane.getChildren().remove(heute_datum);					// Das Datum ist zwar nicht in der UI zu sehen, aber immer noch vorhanden !!
 
+		ref1_x.setDisable(false);
+		updateListeVonUI(referent_name_first, 0);
 		readdNode(ref1_x, 0, 4);
 		readdNode(referent_label_first, 1, 4);
 		readdNode(referent_name_first, 3, 4);
@@ -149,6 +154,59 @@ public class ControllerFragebogenErstellen implements Controller {
 		});
 	}
 
+	public void updateUI() {								// update am Dienstag
+		gridpane.getChildren().clear();
+		
+		gridpane.add(description, 1, 0);
+		gridpane.add(fragebogenname, 3, 0);
+		gridpane.add(maßnahme_von, 1, 1);
+		gridpane.add(von_Datum, 3, 1);
+		gridpane.add(maßnahme_bis, 4, 1);
+		gridpane.add(bis_Datum, 5, 1);
+		gridpane.add(auftragsnummer_label, 1, 2);
+		gridpane.add(auftragsnummer_textfield, 3, 2);
+		gridpane.add(leiter_label1, 1, 3);
+		gridpane.add(leiter_label2, 3, 3, 3, 1);
+		gridpane.add(heute_datum, 5, 3);
+		
+		for (int zeile=4; zeile<referentenliste.size()+4;zeile++)
+		{
+			if(zeile==4)
+			{
+				gridpane.add(ref1_x, 0, zeile);
+				gridpane.add(referent_label_first, 1, zeile);
+				gridpane.add(referent_name_first, 3, zeile);
+			}
+			else {
+				Button x_button = new Button();
+				x_button.setText("x");
+				setListenerEntferneReferent(x_button);
+
+				Label temp = new Label();
+				temp.setText("     Name von Referent ");
+				temp.setText(temp.getText() + (zeile-3) + ":");
+				temp.setFont(referent_label.getFont());
+
+				TextField temp2 = new TextField();
+				temp2.setText(referentenliste.get(zeile-4));
+				temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
+				temp2.setFont(referent_name.getFont());
+				updateListeVonUI(temp2,zeile-4);
+
+				gridpane.add(x_button, 0, zeile, 1, 1);
+				gridpane.add(temp, 1, zeile, 2, 1);
+				gridpane.add(temp2, 3, zeile, 3, 1);
+			}
+		}
+		
+		ref2_x.setDisable(true);
+		referent_label.setText("Name von Referent ");
+		referent_label.setText(referent_label.getText() + (referentenliste.size()+1) + ":");
+		gridpane.add(ref2_x, 0, referentenliste.size()+4);
+		gridpane.add(referent_label, 1, referentenliste.size()+4);
+		gridpane.add(referent_name, 3, referentenliste.size()+4);
+	}
+	
 	public void readdNode(Node node, int col, int row) {
 		gridpane.getChildren().remove(node);
 		gridpane.add(node, col, row);
@@ -174,6 +232,21 @@ public class ControllerFragebogenErstellen implements Controller {
 	public void setName(String name) {
 		this.fragebogenname.setText(name);
 	}
+	
+	public void updateListeVonUI(TextField textfeld, int index) {
+		textfeld.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+				if (oldValue == true && newValue == false) {
+					referentenliste.set(index, textfeld.getText());
+					Logger log = Logger.getLogger();
+					log.logInfo("Referentenliste aktualisiert: "+referentenliste);
+				}
+			}
+		});
+	}
 
 	public void addneuerReferent() {
 		referent_name.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -182,45 +255,50 @@ public class ControllerFragebogenErstellen implements Controller {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
 				if (oldValue == false && newValue == true) {
-					if (anzahl_referenten > 3) {
+					if (referentenliste.size() > 3) {
 						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
-						gridpane.addRow(anzahl_referenten + 6);
+						gridpane.addRow(referentenliste.size() + 6);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
 						// aussieht
 					}
-
-					Label temp = new Label();
-					temp.setText("     Name von Referent ");
-					temp.setText(temp.getText() + (anzahl_referenten + 3) + ":");
-					temp.setFont(referent_label.getFont());
-
-					TextField temp2 = new TextField();
-					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
-					temp2.setFont(referent_name.getFont());
-
-					Button x_button = new Button();
-					x_button.setText("x");
-					setListenerEntferneReferent(x_button);
-
-					gridpane.getChildren().remove(referent_name);
-					gridpane.add(referent_name, 3, anzahl_referenten + 6, 3, 1);
-
-					gridpane.add(x_button, 0, anzahl_referenten + 6, 1, 1);
-					gridpane.add(temp, 1, anzahl_referenten + 6, 2, 1);
-					gridpane.add(temp2, 3, anzahl_referenten + 5, 3, 1);
-					anzahl_referenten++;
-
-					int letzteRow = anzahl_referenten + 5;
-					for (int i = 5; i < letzteRow; i++) {
-						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-						if (temp3 != null) {
-							((Button) temp3).setDisable(false);
-						}
-					}
-					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-					((Button) temp4).setDisable(true);
-
-					temp2.requestFocus();
+//
+//					Label temp = new Label();
+//					temp.setText("     Name von Referent ");
+//					temp.setText(temp.getText() + (anzahl_referenten + 3) + ":");
+//					temp.setFont(referent_label.getFont());
+//
+//					TextField temp2 = new TextField();
+//					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
+//					temp2.setFont(referent_name.getFont());
+//
+//					Button x_button = new Button();
+//					x_button.setText("x");
+//					setListenerEntferneReferent(x_button);
+//
+//					gridpane.getChildren().remove(referent_name);
+//					gridpane.add(referent_name, 3, anzahl_referenten + 6, 3, 1);
+//
+//					gridpane.add(x_button, 0, anzahl_referenten + 6, 1, 1);
+//					gridpane.add(temp, 1, anzahl_referenten + 6, 2, 1);
+//					gridpane.add(temp2, 3, anzahl_referenten + 5, 3, 1);
+//					anzahl_referenten++;
+//
+//					int letzteRow = anzahl_referenten + 5;
+//					for (int i = 5; i < letzteRow; i++) {
+//						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
+//						if (temp3 != null) {
+//							((Button) temp3).setDisable(false);
+//						}
+//					}
+//					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
+//					((Button) temp4).setDisable(true);
+//
+//					temp2.requestFocus();
+					
+					referentenliste.add("");
+					updateUI();
+					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, referentenliste.size()+3, 3);
+					temp.requestFocus();
 				}
 			}
 		});
