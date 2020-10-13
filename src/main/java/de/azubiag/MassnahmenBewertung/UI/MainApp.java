@@ -403,7 +403,7 @@ public class MainApp extends Application {
 
 	
 	public void warnfenster(WindowEvent event) {
-		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen", "Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,"Anwendung schließen?", "Es werden nur Ihre laufenden Umfragen und die schon eingegebenen Antworten gespeichert. "
 				+ "Anwendung jetzt schließen ? ")==1) ? true:false; 
 		
 		if (loeschen)
