@@ -394,13 +394,13 @@ public void addVorschauButtonHandler() {
 // ===============================================================================
 								
 							} else {
-								logger.logWarning("Der Fragebogen wurde nicht hochgeladen.");		
+								logger.logWarning("Der Umfrage wurde nicht hochgeladen.");		
 							}
 
 						} catch (Exception exc) {
 							
 							logger.logError(exc); // Hochladen hat nicht geklappt
-							AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen des Fragebogens hat nicht funktioniert. Probieren Sie es später nochmal.");
+							AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Probleme beim Hochladen", "Das Hochladen der Umfrage hat nicht funktioniert. Probieren Sie es später nochmal.");
 							return;
 
 						}
