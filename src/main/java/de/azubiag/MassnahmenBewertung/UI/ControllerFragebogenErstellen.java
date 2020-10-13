@@ -345,8 +345,8 @@ public void addVorschauButtonHandler() {
 					
 					String webpath = getFragebogenWebPath(fragebogenOutputPfad);
 
-					boolean veroeffentlichen = AlertMethoden.entscheidungViaDialogAbfragenOnTop("Fragebogen veröffentlichen?", 
-							"Fragebogen auf " + webpath + " veröffentlichen?", true /* Fenster oben halten */);
+					boolean veroeffentlichen = AlertMethoden.entscheidungViaDialogAbfragenOnTop("Umfrage veröffentlichen?", 
+							"Umfrage auf " + webpath + " veröffentlichen?", true /* Fenster oben halten */);
 										
 					if (veroeffentlichen) {
 			
@@ -436,8 +436,8 @@ public void addVorschauButtonHandler() {
 						
 						// Abfragen, ob Fragebogen kopiert werden soll
 						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
-								"Fragebogen kopieren?",
-								"Neuen Fragebogen mit denselben Referenten anlegen?");
+								"Umfrage kopieren?",
+								"Neue Umfrage mit denselben Referenten anlegen?");
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
 						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
