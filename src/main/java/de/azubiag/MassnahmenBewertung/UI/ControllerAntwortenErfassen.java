@@ -363,7 +363,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 
 	static String saveFileName = "_save.txt";
-	public static void speichern() {
+	public static void serializeTabs() {
 
 		System.out.println("Speichern wurde aufgerufen!");
 

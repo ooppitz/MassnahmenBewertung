@@ -408,19 +408,19 @@ public class MainApp extends Application {
 				"Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
 				+ "Anwendung jetzt schließen ? ")==1) ? true:false; 
 		
-		if (schliessen)
-		{
-			if(!listeControllerAntwortenErfassen.isEmpty()) {
-				ControllerAntwortenErfassen.speichern();
-				
-				try {
-					Upload.getInstance().synchronisieren("Speichern der offenen Tabs");
-				} catch (GitAPIException | IOException e) {
-					e.printStackTrace();
-				}
-				
-				Platform.exit();
+		if (schliessen) {
+			if (!listeControllerAntwortenErfassen.isEmpty()) {
+				ControllerAntwortenErfassen.serializeTabs();
 			}
+			
+			try {
+				Upload.getInstance().synchronisieren("Speichern der offenen Tabs");
+			} catch (GitAPIException | IOException e) {
+				e.printStackTrace();
+			}
+
+			Platform.exit();
+
 		} else {
 			System.out.println("Schließen wird abgebrochen");
 			event.consume();
@@ -451,12 +451,12 @@ public class MainApp extends Application {
 
 	public void zuListeHinzufügen(ControllerAntwortenErfassen controller) {
 		listeControllerAntwortenErfassen.add(controller);
-		ControllerAntwortenErfassen.speichern();
+		ControllerAntwortenErfassen.serializeTabs();
 	}
 	
 	public static void vonListeEntfernen(Controller controller) {
 		MainApp.listeControllerAntwortenErfassen.remove(controller);
-		ControllerAntwortenErfassen.speichern();
+		ControllerAntwortenErfassen.serializeTabs();
 	}
 
 }
