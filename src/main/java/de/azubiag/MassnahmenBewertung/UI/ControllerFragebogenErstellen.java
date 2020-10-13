@@ -154,8 +154,30 @@ public class ControllerFragebogenErstellen implements Controller {
 		});
 	}
 
-	public void updateUI() {								// update am Dienstag
+	public void updateUI() {
 		gridpane.getChildren().clear();
+//		int OFFSET = 3;
+//		System.out.println(gridpane.getRowCount());
+//		if (referentenliste.size()>6 && gridpane.getRowCount() != referentenliste.size()+OFFSET)
+//		{
+//			// größe der Gridpane ändern
+//			int differenz = (referentenliste.size()+OFFSET) - gridpane.getRowCount();
+//			gridpane.setPrefHeight(gridpane.getHeight()+differenz*49);
+//			System.out.println("Differenz: "+differenz);
+//			// rows hinzufügen/abziehen
+//			if(gridpane.getRowCount() < referentenliste.size()+OFFSET) {
+//				for(int i=differenz;i<0;i--) {
+//					gridpane.addRow(gridpane.getRowCount());
+//					System.out.println("Reihe hinzugefügt");
+//				}
+//			}
+//			if(gridpane.getRowCount() < referentenliste.size()+OFFSET) {
+//				for(int i=differenz;i<0;i--) {
+//					gridpane.getChildren().removeIf(node -> GridPane.getRowIndex(node) == gridpane.getRowCount());
+//				}
+//			}
+//			
+//		}
 		
 		gridpane.add(description, 1, 0);
 		gridpane.add(fragebogenname, 3, 0);
