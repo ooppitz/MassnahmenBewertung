@@ -150,9 +150,11 @@ public class ControllerLogin {
 		next.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
-				String clean_username = Tools.normalisiereString(username.getText());
-				mainapp.primaryStage.setTitle("SeminarLeiterApp " + username.getText());
+				// Eingegebener Username ohne äußeren Whitespace
+				String theUsername = username.getText().strip();
+				// Normalisierter Username für Addressierung
+				String clean_username = Tools.normalisiereString(theUsername);
+				mainapp.primaryStage.setTitle("SeminarLeiterApp " + theUsername);
 
 				// schauen, ob das Feld nicht leer ist
 				// Auswahlliste von Namen davor anzeigen
@@ -160,7 +162,7 @@ public class ControllerLogin {
 
 				if(nutzer_vorhanden)
 				{
-					MainApp.setUserName(username.getText());
+					MainApp.setUserName(theUsername);
 					mainapp.showTabPane();
 				}
 				else
@@ -168,10 +170,10 @@ public class ControllerLogin {
 					boolean account_erstellt = neuen_Account_erstellen(clean_username);
 					if (account_erstellt)
 					{
-						nutzernamenUndOrdner.put(username.getText(),clean_username);
-						System.out.println("Neuer Account erstellt: Key-> "+username.getText()+"\tValue-> "+clean_username);
+						nutzernamenUndOrdner.put(theUsername, clean_username);
+						System.out.println("Neuer Account erstellt: Key-> "+ theUsername +"\tValue-> "+clean_username);
 						speichern();
-						MainApp.setUserName(username.getText());
+						MainApp.setUserName(theUsername);
 						mainapp.showTabPane();
 					}
 				}
