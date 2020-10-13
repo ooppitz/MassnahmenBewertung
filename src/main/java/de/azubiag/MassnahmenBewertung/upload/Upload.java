@@ -4,10 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ResetCommand.ResetType;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -17,6 +23,7 @@ import org.jsoup.nodes.Document;
 
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.tools.Tools;
+import javafx.application.Platform;
 
 /* Um Github zu verwenden, um die Fragebogen zu hosten, braucht man einen Account. 
  * 
@@ -62,12 +69,25 @@ public class Upload {
 		this.remotePfad = remotePfad;
 		this.repositoryName = repositoryName;
 
-		repoUeberpruefen();
+		repoKlonenFallsNichtVorhanden();
 
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
 		gitController = new Git(lokalRepo);
 
+		// Überprüfe ob sich repository im master Branch befindet
+		String lokalBranch = gitController.getRepository().getBranch();
+		if (!lokalBranch.equals("master")) {			
+			String errorMessage = "lokaler Branch ist nicht \"master\" (aktueller Branch: \"" + lokalBranch + "\")";
+			popupAndExit(errorMessage, "Achtung", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		gitStatusPruefen();
+		
+		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
+		// wodurch es zu einem merge-conflict kommen kann
+		gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
+		
 		gitController.pull().setCredentialsProvider(cp).call();
 	}
 
@@ -79,6 +99,73 @@ public class Upload {
 		}
 		return instance;
 	}
+	/*
+	 * Überprüfe git status auf ausstehende änderungen
+	 */
+	void gitStatusPruefen() throws NoWorkTreeException, GitAPIException {
+		
+		Status status = gitController.status().call();
+		
+		if (!status.getAdded().isEmpty()) {
+			String statusMessage = "Added: " + status.getAdded();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getChanged().isEmpty()) {
+			String statusMessage = "Changed: " + status.getChanged();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getConflicting().isEmpty()) {
+			String statusMessage = "Conflicting: " + status.getConflicting();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getConflictingStageState().isEmpty()) {
+			String statusMessage = "ConflictingStageState: " + status.getConflictingStageState();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getIgnoredNotInIndex().isEmpty()) {
+			String statusMessage = "IgnoredNotInIndex: " + status.getIgnoredNotInIndex();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getMissing().isEmpty()) {
+			String statusMessage = "Missing: " + status.getMissing();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getModified().isEmpty()) {
+			String statusMessage = "Modified: " + status.getModified();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getRemoved().isEmpty()) {
+			String statusMessage = "Removed: " + status.getRemoved();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+		if (!status.getUntracked().isEmpty()) {
+			String statusMessage = "Untracked: " + status.getUntracked();
+			popupAndExit(statusMessage, "Git Status Warnung", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	
+	void popupAndExit(String message, String header, int type) {
+		Logger.getLogger().logWarning(header + "\t\t" + message);
+		
+		Object[] options = {"Exit", "Ignorieren"};
+		int decision = JOptionPane.showOptionDialog(
+				new JFrame(),
+				message,
+				header,
+				JOptionPane.YES_NO_OPTION,
+				type,
+				null,
+				options,
+				options[0]);
+		if (decision == 1) {
+			Logger.getLogger().logInfo("Ignorieren wurde ausgewählt, you have been warned");
+		} else {
+			// TODO merkwürdiges verhalten von Platform.exit(); klären
+			Platform.exit();
+		}
+		
+	}
+	
 
 	/*
 	 * Wird genutzt, um den Fragebogen beim Erzeugen an der richtigen Stelle
@@ -123,7 +210,7 @@ public class Upload {
 	 * Falls das Repo lokal schon existiert, kehrt die Methode zurück. Falls kein
 	 * ein lokales Repo existiert, wird es angelegt durch clonen des remote Repo.
 	 */
-	public void repoUeberpruefen() throws InvalidRemoteException, TransportException, GitAPIException {
+	public void repoKlonenFallsNichtVorhanden() throws InvalidRemoteException, TransportException, GitAPIException {
 
 		// Überprüfen, ob ein lokales Repo existiert
 		try {
