@@ -146,9 +146,24 @@ public class Upload {
 	
 	void popupAndExit(String message, String header, int type) {
 		Logger.getLogger().logWarning(header + "\t\t" + message);
-		JOptionPane.showMessageDialog(new JFrame(), message, header, type);
-		// TODO merkwürdiges verhalten von Platform.exit(); klären
-		Platform.exit();
+		
+		Object[] options = {"Exit", "Ignorieren"};
+		int decision = JOptionPane.showOptionDialog(
+				new JFrame(),
+				message,
+				header,
+				JOptionPane.YES_NO_OPTION,
+				type,
+				null,
+				options,
+				options[0]);
+		if (decision == 1) {
+			Logger.getLogger().logInfo("Ignorieren wurde ausgewählt, you have been warned");
+		} else {
+			// TODO merkwürdiges verhalten von Platform.exit(); klären
+			Platform.exit();
+		}
+		
 	}
 	
 
