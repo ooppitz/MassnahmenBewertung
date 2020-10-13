@@ -156,6 +156,8 @@ public class ControllerFragebogenErstellen implements Controller {
 
 	public void updateUI() {
 		gridpane.getChildren().clear();
+						// sollte zum erstellen von neuen Rows genutzt werden, funktioniert aber nicht
+						// Funktion wird von addneuerReferent() übernommen
 //		int OFFSET = 3;
 //		System.out.println(gridpane.getRowCount());
 //		if (referentenliste.size()>6 && gridpane.getRowCount() != referentenliste.size()+OFFSET)
@@ -189,7 +191,7 @@ public class ControllerFragebogenErstellen implements Controller {
 		gridpane.add(auftragsnummer_textfield, 3, 2);
 		gridpane.add(leiter_label1, 1, 3);
 		gridpane.add(leiter_label2, 3, 3, 3, 1);
-		gridpane.add(heute_datum, 5, 3);
+//		gridpane.add(heute_datum, 5, 3);
 		
 		for (int zeile=4; zeile<referentenliste.size()+4;zeile++)
 		{
@@ -211,7 +213,7 @@ public class ControllerFragebogenErstellen implements Controller {
 
 				TextField temp2 = new TextField();
 				temp2.setText(referentenliste.get(zeile-4));
-				temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
+				temp2.setPromptText("Referent angeben");
 				temp2.setFont(referent_name.getFont());
 				updateListeVonUI(temp2,zeile-4);
 
@@ -277,45 +279,12 @@ public class ControllerFragebogenErstellen implements Controller {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
 				if (oldValue == false && newValue == true) {
-					if (referentenliste.size() > 3) {
+					if (referentenliste.size() > 4) {
 						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
 						gridpane.addRow(referentenliste.size() + 6);
 						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
 						// aussieht
 					}
-//
-//					Label temp = new Label();
-//					temp.setText("     Name von Referent ");
-//					temp.setText(temp.getText() + (anzahl_referenten + 3) + ":");
-//					temp.setFont(referent_label.getFont());
-//
-//					TextField temp2 = new TextField();
-//					temp2.setPromptText("Klicken, um einen weiteren Referenten hinzuzufügen");
-//					temp2.setFont(referent_name.getFont());
-//
-//					Button x_button = new Button();
-//					x_button.setText("x");
-//					setListenerEntferneReferent(x_button);
-//
-//					gridpane.getChildren().remove(referent_name);
-//					gridpane.add(referent_name, 3, anzahl_referenten + 6, 3, 1);
-//
-//					gridpane.add(x_button, 0, anzahl_referenten + 6, 1, 1);
-//					gridpane.add(temp, 1, anzahl_referenten + 6, 2, 1);
-//					gridpane.add(temp2, 3, anzahl_referenten + 5, 3, 1);
-//					anzahl_referenten++;
-//
-//					int letzteRow = anzahl_referenten + 5;
-//					for (int i = 5; i < letzteRow; i++) {
-//						Node temp3 = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-//						if (temp3 != null) {
-//							((Button) temp3).setDisable(false);
-//						}
-//					}
-//					Node temp4 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-//					((Button) temp4).setDisable(true);
-//
-//					temp2.requestFocus();
 					
 					referentenliste.add("");
 					updateUI();
@@ -333,41 +302,15 @@ public class ControllerFragebogenErstellen implements Controller {
 
 				Logger logger = Logger.getLogger();
 				logger.logInfo("Aktion: Referent soll gelöscht werden");
-				/*
-				 * Ablauf: - letzter Button wird entfernt - letzter Label wird entfernt -
-				 * TextField neben diesem Button wird entfernt - alle Textfields darunter werden
-				 * nach oben verschoben - möglicherweise wird das Gridpane um 49 Höhe kleiner
-				 * <-- fehlt noch - anzahlReferenten wird dekrementiert
-				 */
-
-				int letzteRow = anzahl_referenten + 5;
-				logger.logInfo("ControllerFragebogenErstellen.entferneReferent\nletzte Reihe: " + letzteRow);
-				Button letzterButton = (Button) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 0);
-				Label letzterLabel = (Label) GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow, 1);
-				TextField textfieldnebendiesembutton = (TextField) GridPaneCustom.getElemByRowAndColumn(gridpane,
-						GridPane.getRowIndex(button), 3);
-
-				gridpane.getChildren().removeAll(letzterButton, letzterLabel, textfieldnebendiesembutton);
-
-				for (int i = 5; i < letzteRow; i++) {
-					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 0);
-					if (temp != null) {
-						((Button) temp).setDisable(false);
-					}
+				
+				int index = GridPane.getRowIndex(button)-4;
+				System.out.println("index: "+index);
+				if (referentenliste.size() > 4) {
+					gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
 				}
-				Node temp2 = GridPaneCustom.getElemByRowAndColumn(gridpane, letzteRow - 1, 0);
-				((Button) temp2).setDisable(true);
-
-				for (int i = GridPane.getRowIndex(button) + 1; i <= letzteRow; i++) {
-
-					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, i, 3);
-//					System.out.println("temp node:\t"+temp);
-					if (temp != null) {
-						GridPaneCustom.moveElemByRowAndColumn(temp, gridpane, -1, 0);
-					}
-				}
-
-				anzahl_referenten--;
+				referentenliste.remove(index);
+				
+				updateUI();
 			}
 		});
 	}
