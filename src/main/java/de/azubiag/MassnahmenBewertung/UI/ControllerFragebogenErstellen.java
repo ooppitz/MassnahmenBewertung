@@ -45,7 +45,6 @@ import javafx.stage.Modality;
 public class ControllerFragebogenErstellen implements Controller {
 
 	Tab tab;
-	int anzahl_referenten;
 	ArrayList<String> referentenliste;
 
 	@FXML
@@ -306,11 +305,13 @@ public class ControllerFragebogenErstellen implements Controller {
 				int index = GridPane.getRowIndex(button)-4;
 				System.out.println("index: "+index);
 				if (referentenliste.size() > 4) {
-					gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
+					gridpane.setPrefHeight(gridpane.getPrefHeight() - 49);
 				}
 				referentenliste.remove(index);
 				
 				updateUI();
+				Node new_button = GridPaneCustom.getElemByRowAndColumn(gridpane, index+4, 0);
+				new_button.requestFocus();
 			}
 		});
 	}
