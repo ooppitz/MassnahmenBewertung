@@ -183,6 +183,7 @@ public class ControllerLogin {
 	public void addListener_TextFieldSuggestion() {
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
 			zutreffende_Nutzer.clear();
+			username.fill_context_menu(zutreffende_Nutzer);
 			if (!newValue.isBlank()) {
 				Pattern pattern = Pattern.compile(".*" + newValue + ".*", Pattern.CASE_INSENSITIVE);
 
