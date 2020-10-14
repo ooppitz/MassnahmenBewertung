@@ -1,5 +1,8 @@
 package de.azubiag.MassnahmenBewertung.UI;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,6 +29,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -53,7 +58,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 	FragebogenEigenschaften eigenschaften; // Serialisieren
 
-	private int umfrageID; // Serialisieren
+	int umfrageID; // Serialisieren
 
 	//	int anzahl_antworten; // Serialisieren
 
@@ -123,9 +128,46 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		readdNode(answ_del, 0, 3);
 		readdNode(antwort_name, 1, 3);
 		readdNode(antwort_text, 3, 3);
-		link_hypertext.setText(eigenschaften.link);
+		link_hypertext.setText("Der Fragebogen wird vom Server verarbeitet. Der Link erscheint anschließend.");
+		link_hypertext.setDisable(true);
+		link_kopieren.setDisable(true);
 		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
 		prevHeight = gridpane.getPrefHeight();
+		
+		Task<Void> text_andern = new Task<Void>() {
+
+			@Override
+			protected Void call() throws Exception {
+				link_hypertext.setText(eigenschaften.link);
+				link_hypertext.setDisable(false);
+				link_kopieren.setDisable(false);
+				return null;
+			}
+			
+		};
+		
+		TimerTask timertask = new TimerTask() {
+			@Override
+			public void run() {
+				Upload.istFragebogenOnline(6000000, eigenschaften.link, eigenschaften.umfrageID);
+				eigenschaften.hochgeladen = true;
+				Platform.runLater(text_andern);
+			}
+			
+		};
+		
+		
+		
+		Timer timer = new Timer();
+		if (eigenschaften.hochgeladen)
+		{
+			Platform.runLater(text_andern);
+		}
+		else
+		{
+			timer.schedule(timertask, 1L);
+		}
+		
 	}
 
 	public void setEigenschaft(FragebogenEigenschaften eigenschaft) {
@@ -280,16 +322,19 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				// Next
 				if ( ! antwortListe.isEmpty()) {
 
-					int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
+					boolean umfrageAuswerten = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Auswerten",
 							"Eine Umfrage kann aus Gründen der Anonymität nur einmal ausgewertet werden. Jetzt auswerten?");
 					
-					if(userAntwort == AlertMethoden.JA) {
+					if(umfrageAuswerten) {
 						mainapp.deleteActions(tab, controller);
 						
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 //						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 			
-						String pdfOutputPfad = Upload.getProgrammDatenOrdner() + "\\"+ eigenschaften.fragebogen_name + ".pdf";
+						String pdfOutputPfad = Upload.getProgrammDatenOrdner()
+								+ "\\"+ eigenschaften.fragebogen_name
+								+ "_" + controller.umfrageID
+								+ ".pdf";
 						
 						File ergebnisPDFFile = new File(pdfOutputPfad);
 						List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
@@ -365,7 +410,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 	static String saveFileName = "_tabs.ser";
 	public static void serializeTabs() {
 
-		System.out.println("Speichern wurde aufgerufen!");
+		Logger.getLogger().logInfo("ControllerAntwortenErfassen.serializeTabs() wurde aufgerufen");
 
 		try {
 			String ordner = MainApp.upload.getSeminarleiterDirectory(MainApp.getUserName());

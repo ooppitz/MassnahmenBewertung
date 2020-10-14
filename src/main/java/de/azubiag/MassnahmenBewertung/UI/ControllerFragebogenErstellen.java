@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
@@ -22,6 +24,7 @@ import de.azubiag.MassnahmenBewertung.upload.Upload;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -33,6 +36,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -108,6 +112,9 @@ public class ControllerFragebogenErstellen implements Controller {
 	public Button delete;
 
 	private MainApp mainapp;
+	
+	transient boolean hochladen = true;
+	transient FragebogenEigenschaften eigenschaften;
 
 	public void init() {
 		referentenliste = new ArrayList<String>();
@@ -380,10 +387,11 @@ public void addVorschauButtonHandler() {
 			private void fragebogenHandling(Logger logger) {
 				try {
 
-					int umfrageID = new Random().nextInt();
+					int umfrageID = new Random().nextInt(Integer.MAX_VALUE); // Positive Zufallszahl erzeugen
 				
 					// Erstellen des Fragebogen-Files
 					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
+					eigenschaftenX.umfrageID = umfrageID;
 					String fragebogenOutputPfad = erstelleFragebogenImLokalenRepo(eigenschaftenX, umfrageID);
 					zeigeVorschauFragebogen(fragebogenOutputPfad); // Zeigt den Fragebogen im Browser
 					
@@ -395,44 +403,11 @@ public void addVorschauButtonHandler() {
 					if (veroeffentlichen) {
 			
 						try {
-							boolean hochladen = true;
 							if (MainApp.testmodusAktiv) {   // ermöglicht Unterdrücken des Hochladens
 								hochladen = AlertMethoden.entscheidungViaDialogAbfragen("--Testmodus--", "Fragebogen hochladen?");
 							}
 							if (hochladen) {
-								// Alert alert = AlertMethoden.zeigeOKAlertWarten(AlertType.CONFIRMATION, "Hochladen des Fragebogens", "Der Fragebogen wird hochgeladen...", false);
-								
-// ===============================================================================						
-								
-								Platform.runLater(new Runnable() {
-
-									@Override
-									public void run() {
-										MainApp.upload.synchronisieren(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
-										
-									}});
-														
-// ===============================================================================
-								/*
-								Task task = new Task<Void>() {
-								    @Override protected Void call() throws Exception {
-								    	try {
-											Upload.getInstance().hochladen(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
-										} catch (GitAPIException | IOException e) {
-											e.printStackTrace();
-										}
-								    	updateMessage("fertig!");
-								    	return null;
-								    }
-								};
-								new Thread(task).start();
-								while (!task.getMessage().equals("fertig!")) {
-									System.out.println("ControllerFragebogenErstellen) Hochladen des Fragebogens nicht fertig!");
-								}
-								System.out.println("fertig!");
-								*/
-// ===============================================================================
-								
+								// das hochladen wird nun in zeigeStatusHochladen aufgerufen
 							} else {
 								logger.logWarning("Der Fragebogen wurde nicht hochgeladen.");		
 							}
@@ -444,35 +419,70 @@ public void addVorschauButtonHandler() {
 							return;
 
 						}
-						// 8.8.8.8 pingen
-						// Überprüfen, ob Datei existiert (Error Code 404 möglicherweise nicht möglich,
-						// da Github Pages trotzdem etwas anzeigt)
-						// sehen, ob das erste div-element eine bestimmte komplizierte ID hat?
-						// fx-thread nicht blockieren !!!
-						// Abbrechen erlauben ?
 						
 						Dialog<ButtonType> dialog = new Dialog<>();			
 						ButtonType cancel = new ButtonType("Abbrechen", ButtonData.CANCEL_CLOSE);
 						
 						UploadController upload_controller = initHochladenFenster(dialog, cancel);
+						
+						Task<Boolean> synchro = new Task<Boolean>() {
+
+							Runnable success = new Runnable() {
+
+								@Override
+								public void run() {
+									upload_controller.upload_pending.setText("Hochladen erfolgreich!");
+									upload_controller.progress.setProgress(1);
+									ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
+									dialog.getDialogPane().getButtonTypes().add(next);
+								}
+							};
+							
+							Runnable failure = new Runnable() {
+
+								@Override
+								public void run() {
+									upload_controller.upload_pending.setText("Hochladen fehlgeschlagen!");
+									upload_controller.progress.setProgress(0);
+								}
+							};
+		
+							@Override
+							protected Boolean call() throws Exception {
+								try {
+									if(hochladen)
+									{
+										Boolean completed = Upload.getInstance().synchronisieren(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch
+										if(completed)
+										{
+											Logger.getLogger().logInfo("Hochladen des Fragebogens erfolgreich");
+											Platform.runLater(success);
+
+										}
+										else
+										{
+											Logger.getLogger().logInfo("Hochladen des Fragebogens fehlgeschlagen");
+											Platform.runLater(failure);
+										}
+										return completed;
+									}
+									else {
+										Logger.getLogger().logInfo("Hochladen des Fragebogens übersprungen");
+										eigenschaften.hochgeladen = true;
+										Platform.runLater(success);
+										return true;
+									}
+
+								} catch (GitAPIException | IOException e) {
+									e.printStackTrace();
+								}
+								return false;
+							}
+
+						};
+
 						dialog.getDialogPane().getButtonTypes().remove(cancel);
-						upload_controller.setLink(webpath);
-						upload_controller.link.setOnAction(y -> {
-						    if(Desktop.isDesktopSupported())
-						    {
-						        try {
-						            Desktop.getDesktop().browse(new URI(webpath));
-						        } catch (IOException e1) {
-						            e1.printStackTrace();
-						        } catch (URISyntaxException e1) {
-						            e1.printStackTrace();
-						        }
-						    }
-						});
-
-						zeigeStatusHochladen(dialog, cancel, upload_controller);
-
-						/* TEST boolean fragebogenOnline = Upload.istFragebogenOnline(120000, webpath, umfrageID); */
+						zeigeStatusHochladen(dialog, cancel, upload_controller,synchro);
 						
 						// Abfragen, ob Fragebogen kopiert werden soll
 						boolean resultKlonen = AlertMethoden.entscheidungViaDialogAbfragen(
@@ -480,8 +490,8 @@ public void addVorschauButtonHandler() {
 								"Neuen Fragebogen mit denselben Referenten anlegen?");
 						
 						// Fragebogen-Eigenschaften-Objekt erstellen
-						FragebogenEigenschaften eigenschaften = new FragebogenEigenschaften(controller, webpath);
-						
+						eigenschaften = new FragebogenEigenschaften(controller, webpath);	
+						eigenschaften.umfrageID = umfrageID;
 						// Auswertung-Tab erstellen
 						mainapp.showTabAntwortenErfassen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), umfrageID);
 
@@ -525,21 +535,16 @@ public void addVorschauButtonHandler() {
 			}
 
 			private void zeigeStatusHochladen(Dialog<ButtonType> dialog, ButtonType cancel,
-					UploadController upload_controller) {
+					UploadController upload_controller, Task<Boolean> synchro) {
+				upload_controller.progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
 				
-				
-				// Entfernen des Cancel Buttons
-				dialog.getDialogPane().getButtonTypes().remove(cancel);
-				
-				ButtonType next = new ButtonType("Weiter", ButtonData.NEXT_FORWARD);
-				dialog.getDialogPane().getButtonTypes().add(next);
+				ExecutorService executor = Executors.newFixedThreadPool(2);
+				executor.execute(synchro);
 
-				upload_controller.upload_pending.setText("Hochladen erfolgreich!");
-				upload_controller.progress.setProgress(1);
 				Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
 				
-				Logger.getLogger().logInfo("result2 = " + result2.toString());
-				// w�re praktisch, den Link noch woanders anzuzeigen
+				Logger.getLogger().logInfo("Nutzer hat nach Upload auf Weiter geklickt.");
+				
 			}
 
 
@@ -563,8 +568,8 @@ public void addVorschauButtonHandler() {
 				String seminarleiterName = MainApp.getUserName();
 				String fragebogenTemplateDirectory = MainApp.upload.getTemplateDirectory()
 						+ "template_fragebogen.html";
-				String fragebogenOutputPfad = MainApp.upload.getFragebogenPfad(seminarleiterName,
-						fragebogenname.getText());
+				String fragebogenOutputPfad = MainApp.upload.getFragebogenPfadWithID(seminarleiterName,
+						fragebogenname.getText(), umfrageID);
 
 				// Schreibt den Fragebogen in das Repository
 				
