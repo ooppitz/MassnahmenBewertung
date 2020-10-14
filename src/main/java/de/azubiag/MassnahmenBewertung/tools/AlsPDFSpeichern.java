@@ -143,7 +143,7 @@ public class AlsPDFSpeichern {
 
 		Paragraph bewertungReferentenIndividuell = paragraphSetzen();
 
-		Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten:");
+		Phrase titelBewertungReferentenIndividuell = titelSetzen("4. Auswertung der Referenten bzw. Referentinnen:");
 
 		bewertungReferentenIndividuell.add(titelBewertungReferentenIndividuell);
 
