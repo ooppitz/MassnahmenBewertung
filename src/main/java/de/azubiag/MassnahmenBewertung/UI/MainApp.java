@@ -40,7 +40,8 @@ import javafx.stage.WindowEvent;
  */
 
 /**
- *The User Interface
+ * The User Interface
+ * 
  * @author Filip Golanski
  */
 public class MainApp extends Application {
@@ -56,8 +57,11 @@ public class MainApp extends Application {
 		MainApp.userName = userName;
 	}
 
-	/* Zeigt an, ob die App im Testmodus läuft. Kann über KOmmandozeilenparameter gesteuert werden, */
-	static boolean testmodusAktiv = false; 
+	/*
+	 * Zeigt an, ob die App im Testmodus läuft. Kann über KOmmandozeilenparameter
+	 * gesteuert werden,
+	 */
+	static boolean testmodusAktiv = false;
 
 	public static boolean isTestmodusAktiv() {
 		return testmodusAktiv;
@@ -65,14 +69,11 @@ public class MainApp extends Application {
 
 	public static void setTestmodusAktiv(boolean _testmodusAktiv) {
 		testmodusAktiv = _testmodusAktiv;
-		Logger.getLogger().logInfo(testmodusAktiv? "Testmodus aktiviert" : "Testmodus deaktiviert");
+		Logger.getLogger().logInfo(testmodusAktiv ? "Testmodus aktiviert" : "Testmodus deaktiviert");
 	}
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
-	
-	
-
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -84,12 +85,13 @@ public class MainApp extends Application {
 		// showcreate();
 	}
 
-
 	/**
 	 *
 	 * The login-window appears.<br>
-	 * Related: {@link de.azubiag.MassnahmenBewertung.UI.ControllerLogin ControllerLogin}
-	 *  @author Filip Golanski <br>
+	 * Related: {@link de.azubiag.MassnahmenBewertung.UI.ControllerLogin
+	 * ControllerLogin}
+	 * 
+	 * @author Filip Golanski <br>
 	 */
 	public void showLogin() {
 		try {
@@ -109,11 +111,11 @@ public class MainApp extends Application {
 			controller.addUsernameNextToButton();
 			controller.init();
 			controller.addListener_TextFieldSuggestion();
-			controller.username.textProperty().addListener((observable, oldValue, newValue) -> { 
+			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {
 
 				// Knopf wird aktiviert, wenn non-whitespace Zeichen vorhanden sind
-				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false); 
-				
+				controller.next.setDisable(!(newValue.matches(".*\\S+.*")) ? true : false);
+
 			});
 
 			primaryStage.show();
@@ -141,7 +143,7 @@ public class MainApp extends Application {
 					warnfenster(event);
 				}
 			});
-			
+
 			if (existierenSerialisierteTabs()) {
 				Logger.getLogger().logInfo("Tabs.ser existiert!");
 				speicherdaten_laden();
@@ -159,7 +161,8 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showTabFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich ändern +
+	public void showTabFragebogenErstellen() { // Tab Text muss sich ändern + Anzahl der Referentenfelder müssen sich
+												// ändern +
 		// Button sperren, wenn Name leer ist
 		try {
 
@@ -167,9 +170,9 @@ public class MainApp extends Application {
 			loader.setLocation(MainApp.class.getResource("ControllerFragebogenErstellen.fxml"));
 			BorderPane z1bp = (BorderPane) loader.load(); // !!
 			// tab_z1.setStyle("-fx-background-color:#DFD; -fx-border-color:#444");
-			ControllerFragebogenErstellen controller = loader.getController();	
+			ControllerFragebogenErstellen controller = loader.getController();
 			Tab tab_z1 = erzeugeTab(z1bp, "Unbenannte Umfrage", controller);
-					rootLayout.getTabs().add(tab_z1);
+			rootLayout.getTabs().add(tab_z1);
 			// System.out.println(controller);
 			controller.setMainApp(this);
 			controller.setTab(tab_z1);
@@ -177,7 +180,6 @@ public class MainApp extends Application {
 			addHandlerToDeleteButton(controller.delete, tab_z1, controller);
 			controller.addVorschauButtonHandler();
 			controller.addneuerReferent();
-
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -192,18 +194,17 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
 			BorderPane z2bp = (BorderPane) loader.load(); // !!
-		
+
 			ControllerAntwortenErfassen controller = loader.getController();
-			
+
 			Tab tab_z2 = erzeugeTab(z2bp, eigenschaft.fragebogen_name, controller);
 			rootLayout.getTabs().add(indexInTabPane + 1, tab_z2);
-			
+
 			controller.setMainApp(this);
 			controller.setTab(tab_z2);
-			
+
 			controller.setEigenschaft(eigenschaft);
-			
-			
+
 			controller.setName(eigenschaft.fragebogen_name);
 			controller.setMaintext(eigenschaft.fragebogen_name);
 			controller.setUmfrageID(verifyID);
@@ -213,13 +214,13 @@ public class MainApp extends Application {
 			controller.addNext2ToButton(controller);
 			SingleSelectionModel<Tab> single_model = rootLayout.getSelectionModel();
 			single_model.select(tab_z2);
-			zuListeHinzufügen(controller); 	// speichern, nachdem der Tab erstellt worden ist
-		
+			zuListeHinzufügen(controller); // speichern, nachdem der Tab erstellt worden ist
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static String tabNameLimit(String oldTabName) {
 		String newTabName = "";
 
@@ -234,72 +235,70 @@ public class MainApp extends Application {
 	public void speicherdaten_laden() {
 
 		listeControllerAntwortenErfassen = ControllerAntwortenErfassen.laden();
-		if (listeControllerAntwortenErfassen.isEmpty())
-		{
+		if (listeControllerAntwortenErfassen.isEmpty()) {
 			showTabFragebogenErstellen();
 		}
 		for (int i = 0; i < listeControllerAntwortenErfassen.size(); i++) {
 			wiederherstellenTabAntwortenErfassen(i, listeControllerAntwortenErfassen.get(i));
 		}
 	}
-	
-	public void wiederherstellenTabAntwortenErfassen(int indexInTabPane, ControllerAntwortenErfassen deserialisierterController) {
-		
+
+	public void wiederherstellenTabAntwortenErfassen(int indexInTabPane,
+			ControllerAntwortenErfassen deserialisierterController) {
+
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			
+
 			loader.setLocation(MainApp.class.getResource("ControllerAntwortenErfassen.fxml"));
 			BorderPane z2 = (BorderPane) loader.load(); // !!
-			
+
 			String tabName = deserialisierterController.eigenschaften.fragebogen_name;
-			
+
 			ControllerAntwortenErfassen neuer_controller = loader.getController();
-		
+
 			Tab tab_z2 = erzeugeTab(z2, tabName, neuer_controller);
 			rootLayout.getTabs().add(indexInTabPane, tab_z2);
-			
+
 			neuer_controller.setMainApp(this);
 			neuer_controller.setTab(tab_z2);
 			neuer_controller.tab_wiederherstellen(deserialisierterController);
-			
-			
+
 			addHandlerToDeleteButton(neuer_controller.delete, tab_z2, neuer_controller);
 			neuer_controller.setHandlerAnswerButton();
 			neuer_controller.addNext2ToButton(neuer_controller);
-	
+
 			listeControllerAntwortenErfassen.remove(indexInTabPane);
 			listeControllerAntwortenErfassen.add(indexInTabPane, neuer_controller);
-			
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
 	private Tab erzeugeTab(BorderPane borderPane, String tabName, Controller controller) {
-	
+
 		Tab thisTab = new Tab();
 		thisTab.setContent(borderPane);
 		thisTab.setClosable(true);
 		thisTab.setText(tabNameLimit(tabName));
-		
-		thisTab.setOnCloseRequest(new EventHandler<Event>() {		// beim schließen des Tabs wird der Controller aus der Liste entfernt
+
+		thisTab.setOnCloseRequest(new EventHandler<Event>() { // beim schließen des Tabs wird der Controller aus der
+																// Liste entfernt
 			@Override
 			public void handle(Event event) {
 
-				handleUmfrageSchliessen( thisTab, controller, event);
+				handleUmfrageSchliessen(thisTab, controller, event);
 			}
 		});
-		
+
 		return thisTab;
 	}
-	
+
 	/**
 	 * @deprecated
 	 */
 	public boolean speicherdaten_löschen() {
-		
+
 		try {
 			Upload upload = Upload.getInstance();
 			String ordner = upload.getSeminarleiterDirectory(userName);
@@ -315,43 +314,46 @@ public class MainApp extends Application {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				handleUmfrageSchliessen( thistab, controller, e);
+				handleUmfrageSchliessen(thistab, controller, e);
 			}
 		});
 	}
 
-	public void handleUmfrageSchliessen( Tab thistab, Controller controller, Event event) {
-		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Umfrage schließen?", "Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ")==1)? true:false;
+	public void handleUmfrageSchliessen(Tab thistab, Controller controller, Event event) {
+		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Umfrage schließen?",
+				"Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ") == 1) ? true
+						: false;
 		if (loeschen) {
-			deleteActions( thistab, controller);
-		}else {
-			event.consume(); //bei Tab: setOnCloseRequest Schließen stoppen
+			deleteActions(thistab, controller);
+		} else {
+			event.consume(); // bei Tab: setOnCloseRequest Schließen stoppen
 		}
 	}
 
-	public void deleteActions( Tab thistab, Controller controller) {
+	public void deleteActions(Tab thistab, Controller controller) {
 		rootLayout.getTabs().remove(thistab);
-		if (controller.getClass()== ControllerAntwortenErfassen.class) {
+		if (controller.getClass() == ControllerAntwortenErfassen.class) {
 			vonListeEntfernen(controller);
 		}
 		String seminarleiter = MainApp.getUserName();
 
 		try {
 			File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
-			
-			if (f!=null) {
+
+			if (f != null) {
 				if (f.delete()) // returns Boolean value
 				{
-					Upload.getInstance().synchronisieren(f.getName()+" wurde gelöscht", userName);
+					Upload.getInstance().synchronisieren(f.getName() + " wurde gelöscht", userName);
 					System.out.println(f.getName() + " deleted"); // getting and printing the file name
 				} else {
 					System.out.println("failed");
-				} 
+				}
 			}
 		} catch (GitAPIException | IOException exc) {
 			exc.printStackTrace();
 		}
 	}
+
 	public void showTabPlus() {
 		Tab tab_plus = new Tab();
 		tab_plus.setText("+");
@@ -381,31 +383,29 @@ public class MainApp extends Application {
 		});
 	}
 
-
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
 	public static void main(String[] args) {
 
-		for (int i=0; i<args.length; i++) {
-			if (args[i].equals("--test")) setTestmodusAktiv(true);
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals("--test"))
+				setTestmodusAktiv(true);
 		}
 		launch(args);
 	}
 
-	
 	public void warnfenster(WindowEvent event) {
-		boolean schliessen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING,
-				"Anwendung schließen", 
+		boolean schliessen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Anwendung schließen",
 				"Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
-				+ "Anwendung jetzt schließen ? ")==1) ? true:false; 
-		
+						+ "Anwendung jetzt schließen ? ") == 1) ? true : false;
+
 		if (schliessen) {
 			if (!listeControllerAntwortenErfassen.isEmpty()) {
 				ControllerAntwortenErfassen.serializeTabs();
 			}
-			
+
 			try {
 				Upload.getInstance().synchronisieren("Speichern der offenen Tabs");
 			} catch (GitAPIException | IOException e) {
@@ -425,22 +425,20 @@ public class MainApp extends Application {
 		try {
 			Upload upload = Upload.getInstance();
 			String ordner = upload.getSeminarleiterDirectory(userName);
-			File serialisierteTabsFile = new File(ordner+ControllerAntwortenErfassen.saveFileName);
+			File serialisierteTabsFile = new File(ordner + ControllerAntwortenErfassen.saveFileName);
 			return serialisierteTabsFile.isFile();
-			
+
 		} catch (GitAPIException | IOException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	
-	
 
 	public void zuListeHinzufügen(ControllerAntwortenErfassen controller) {
 		listeControllerAntwortenErfassen.add(controller);
 		ControllerAntwortenErfassen.serializeTabs();
 	}
-	
+
 	public static void vonListeEntfernen(Controller controller) {
 		MainApp.listeControllerAntwortenErfassen.remove(controller);
 		ControllerAntwortenErfassen.serializeTabs();
