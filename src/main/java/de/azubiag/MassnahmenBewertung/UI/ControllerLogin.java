@@ -48,7 +48,7 @@ public class ControllerLogin {
 	ArrayList<String> alle_Nutzer;
 	ArrayList<String> zutreffende_Nutzer;
 
-	private final int LIMIT = 25;
+	private static final int MAX_ANZAHL_NAMENSLISTE = 25;
 	private Dictionary<String, String> nutzernamenUndOrdner;
 	static String nutzerfilename = "nutzer.ser";
 
@@ -162,8 +162,8 @@ public class ControllerLogin {
 				}
 
 				ArrayList<String> temp_Arraylist = new ArrayList<>();
-				if (zutreffende_Nutzer.size() > LIMIT) {
-					for (int i = 0; i <= LIMIT; i++) {
+				if (zutreffende_Nutzer.size() > MAX_ANZAHL_NAMENSLISTE) {
+					for (int i = 0; i <= MAX_ANZAHL_NAMENSLISTE; i++) {
 						temp_Arraylist.add(zutreffende_Nutzer.get(i));
 					}
 					zutreffende_Nutzer = temp_Arraylist;
