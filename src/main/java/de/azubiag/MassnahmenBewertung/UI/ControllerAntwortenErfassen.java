@@ -165,7 +165,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		}
 		else
 		{
-			timer.schedule(timertask, 50000L);
+			timer.schedule(timertask, 1L);
 		}
 		
 	}
