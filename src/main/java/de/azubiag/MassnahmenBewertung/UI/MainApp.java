@@ -383,11 +383,12 @@ public class MainApp extends Application {
 		}
 		try {
 			upload = Upload.getInstance();
+			launch(args);
 		} catch (GitAPIException | IOException e) {
 			//TODO: Fehlermeldung und Programmabbruch?
 			e.printStackTrace();
 		}
-		launch(args);
+		
 	}
 
 	
