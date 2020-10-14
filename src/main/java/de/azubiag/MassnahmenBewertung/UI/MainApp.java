@@ -106,9 +106,14 @@ public class MainApp extends Application {
 			primaryStage.setMinWidth(900);
 
 			ControllerLogin controller = loader.getController();
-			// System.out.println(controller);
 			controller.setMainapp(this);
-			controller.addUsernameNextToButton();
+			controller.next.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						controller.handleGewaehltenUser();
+					}
+				});
+		
 			controller.init();
 			controller.addListener_TextFieldSuggestion();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -140,7 +145,7 @@ public class MainApp extends Application {
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent event) {
-					warnfenster(event);
+					warnfensterAnwendungSchliessen(event);
 				}
 			});
 
@@ -396,28 +401,49 @@ public class MainApp extends Application {
 		launch(args);
 	}
 
-	public void warnfenster(WindowEvent event) {
+	public void warnfensterAnwendungSchliessen(WindowEvent event) {
+
 		boolean schliessen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Anwendung schließen",
 				"Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
 						+ "Anwendung jetzt schließen ? ") == 1) ? true : false;
 
 		if (schliessen) {
-			if (!listeControllerAntwortenErfassen.isEmpty()) {
-				ControllerAntwortenErfassen.serializeTabs();
-			}
 
-			try {
-				Upload.getInstance().synchronisieren("Speichern der offenen Tabs");
-			} catch (GitAPIException | IOException e) {
-				e.printStackTrace();
-			}
-
-			Platform.exit();
+			programmShutdown();
 
 		} else {
 			System.out.println("Schließen wird abgebrochen");
 			event.consume();
 		}
+	}
+
+	/**
+	 * Diese Methode wird (soll) immer aufgerufen werden, wenn das Program
+	 * ordnungsgemäß heruntergefahren wird.
+	 * 
+	 * TODO: Berücksichtigen: Auch wenn das Hauptfenster geschlossen ist, 
+	 *       können in anderen Threads noch Aktionen wie Synch durchgeführt
+	 *       werden, was zu einem besseren Usererlebnis führen kann.
+	 */
+	private void programmShutdown() {
+
+		// TODO: Die Alertbox wird nur teilweise angezeigt
+		AlertMethoden.zeigeOKAlertWarten(AlertType.INFORMATION, "Programm wird beendet", 
+				"Das Programm wird beendet. Bitte warten.", false);
+		
+		if (!listeControllerAntwortenErfassen.isEmpty()) {
+			ControllerAntwortenErfassen.serializeTabs();
+		}
+
+		try {
+			/* Synchronisieren von tabs.ser und nutzer.ser
+			   Fragebogen sollten schon längst synchronisiert sein. */
+			Upload.getInstance().synchronisieren("Synchronisieren beim Shutdown");
+		} catch (GitAPIException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		Platform.exit();
 	}
 
 	public boolean existierenSerialisierteTabs() {

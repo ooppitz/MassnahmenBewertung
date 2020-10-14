@@ -91,7 +91,7 @@ public class Upload {
 		gitController.pull().setCredentialsProvider(cp).call();
 	}
 
-
+	// TODO: Cleanup des Exception handlings
 	public static Upload getInstance() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 
 		if ( instance == null ) {
@@ -99,6 +99,16 @@ public class Upload {
 		}
 		return instance;
 	}
+	
+	public static Upload getInstanceSafe() {	
+		try {
+			return getInstance();
+		} catch (GitAPIException | IOException e) {
+			System.exit(0);
+			return null;
+		}
+	}
+	
 	/*
 	 * Überprüfe git status auf ausstehende änderungen
 	 */
