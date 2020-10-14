@@ -99,7 +99,7 @@ public class Upload {
 		}
 		return instance;
 	}
-	/*
+	/**
 	 * Überprüfe git status auf ausstehende änderungen
 	 */
 	void gitStatusPruefen() throws NoWorkTreeException, GitAPIException {
@@ -167,7 +167,7 @@ public class Upload {
 	}
 	
 
-	/*
+	/**
 	 * Wird genutzt, um den Fragebogen beim Erzeugen an der richtigen Stelle
 	 * abzulegen.
 	 */
@@ -179,12 +179,12 @@ public class Upload {
 		return repositoryPfad;
 	}
 
-	/* Liefert den Pfad auf das Template Directory */
+	/** Liefert den Pfad auf das Template Directory */
 	public String getTemplateDirectory() {
 		return getRepositoryPfad() + "template\\";
 	}
 
-	/* Pfad zum Ordner des Seminarleiters mit seinen Fragebögen. 
+	/** Pfad zum Ordner des Seminarleiters mit seinen Fragebögen. 
 	   @param seminarleiterName wird normalisiert.
 	 */
 	public String getSeminarleiterDirectory(String seminarleiterName) {
@@ -193,7 +193,7 @@ public class Upload {
 		return getRepositoryPfad() + "fragebogen\\" + seminarleiterName + "\\"; 
 	}
 
-	/* Liefert den Pfad auf die Fragebogendatei.
+	/** Liefert den Pfad auf die Fragebogendatei.
 	 * @param seminarleiterName wird normalisiert 
 	 * @param fragebogenName wird normalisiert */
 	public String getFragebogenPfad(String seminarleiterName, String fragebogenName) {
@@ -201,12 +201,28 @@ public class Upload {
 		fragebogenName = Tools.normalisiereString(fragebogenName);		
 		return getSeminarleiterDirectory(seminarleiterName) + fragebogenName + ".html"; 
 	}
+	
+	/**
+	 * Der Pfad auf den Fragebogen - jetzt mit UmfrageID!
+	 * <p>
+	 * Normalisierung bedeutet {@link Tools#normalisiereString(String)}.
+	 * @param seminarleiterName Name der Seminarleitung (wird normalisiert)
+	 * @param umfrageName Name der Umfrage (wird normalisiert)
+	 * @param umfrageID Umfrage-ID (wird hintenhingehängt)
+	 * @return Den fertigen Pfad
+	 */
+	public String getFragebogenPfadWithID(String seminarleiterName, String umfrageName, int umfrageID) {
+		return getSeminarleiterDirectory(seminarleiterName)
+				+ Tools.normalisiereString(umfrageName)
+				+ umfrageID
+				+ ".html";
+	}
 
 
 
 
 
-	/*
+	/**
 	 * Falls das Repo lokal schon existiert, kehrt die Methode zurück. Falls kein
 	 * ein lokales Repo existiert, wird es angelegt durch clonen des remote Repo.
 	 */
