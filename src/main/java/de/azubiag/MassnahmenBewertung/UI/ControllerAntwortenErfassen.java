@@ -365,7 +365,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 	static String saveFileName = "_tabs.ser";
 	public static void serializeTabs() {
 
-		System.out.println("Speichern wurde aufgerufen!");
+		Logger.getLogger().logInfo("ControllerAntwortenErfassen.serializeTabs() wurde aufgerufen");
 
 		try {
 			String ordner = Upload.getInstance().getSeminarleiterDirectory(MainApp.getUserName());
