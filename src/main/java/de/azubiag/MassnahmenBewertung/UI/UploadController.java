@@ -12,8 +12,6 @@ public class UploadController {
 	@FXML
 	public Label upload_pending;
 	
-	@FXML 
-	public Hyperlink link;
 	
 	@FXML
 	public ProgressIndicator progress;
@@ -36,12 +34,4 @@ public class UploadController {
 		this.upload_pending.setText(upload_pending);
 	}
 
-	public String getLink() {
-		return link.getText();
-	}
-
-	public void setLink(String link) {
-		this.link.setText(link);
-	}
-	
 }

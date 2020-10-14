@@ -6,13 +6,13 @@ import java.time.format.DateTimeFormatter;
 
 public class FragebogenEigenschaften implements Serializable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1246909262064781758L;
-    // public static int zoom;
 
-    public String fragebogen_name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4414817748897905137L;
+	
+	public String fragebogen_name;
     public String seminarleiter_name;
     public String auftrags_nummer;
     public String von_datum;
@@ -20,6 +20,7 @@ public class FragebogenEigenschaften implements Serializable {
     public String ausstellungs_datum;
     public String link;
 	public int umfrageID;
+	public boolean hochgeladen;
 
     /* Der Konstruktor liest die Werte aus den Feldern des Controllers aus */
     public FragebogenEigenschaften(ControllerFragebogenErstellen controller, String webpath) {
@@ -44,6 +45,7 @@ public class FragebogenEigenschaften implements Serializable {
 	this.ausstellungs_datum = (ausstellungs_Datum == null) ? "" : ausstellungs_Datum.format(formatddmmyyyy);
 	
 	this.link = link;
+	hochgeladen = false;
     }
 
 }

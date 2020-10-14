@@ -295,13 +295,13 @@ public class Upload {
 
 				if ( umfrageId == umfrageID_document)
 				{
-					Logger.getLogger().logInfo("UPLOAD: Das Dokument wurde online gefunden und die umfrageID stimmt überein.");
+					Logger.getLogger().logInfo("UPLOAD: Das Dokument wurde online gefunden und die umfrageID stimmt überein. Gesamtzeit: "+(millis-(endTime - System.currentTimeMillis()))+" ms");
 					return true;
 				}
 				else
 				{
 					Logger.getLogger().logInfo("UPLOAD: umfrageID in Datei stimmt nicht überein."+umfrageID_document+" ≠ "+umfrageId+
-							" Erneuter Versuch in 10000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
+							" Erneuter Versuch in 10000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis())+" ms");
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
@@ -309,7 +309,7 @@ public class Upload {
 					}
 				}
 			} catch (IOException expectedException) {
-				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 10000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis()));
+				Logger.getLogger().logInfo("UPLOAD: Datei "+uri+" nicht gefunden. Erneuter Versuch in 10000ms. Zeit bis zum Timeout: " + (endTime - System.currentTimeMillis())+" ms");
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e1) {

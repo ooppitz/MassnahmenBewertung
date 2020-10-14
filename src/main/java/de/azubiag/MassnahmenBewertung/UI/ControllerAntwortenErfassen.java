@@ -149,8 +149,8 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		TimerTask timertask = new TimerTask() {
 			@Override
 			public void run() {
-//				System.out.println("Task is running on"+Thread.currentThread().getName());
-				Upload.istFragebogenOnline(1300000, eigenschaften.link, eigenschaften.umfrageID);
+				Upload.istFragebogenOnline(6000000, eigenschaften.link, eigenschaften.umfrageID);
+				eigenschaften.hochgeladen = true;
 				Platform.runLater(text_andern);
 			}
 			
@@ -159,7 +159,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		
 		
 		Timer timer = new Timer();
-		if (MainApp.isTestmodusAktiv())
+		if (eigenschaften.hochgeladen)
 		{
 			Platform.runLater(text_andern);
 		}
