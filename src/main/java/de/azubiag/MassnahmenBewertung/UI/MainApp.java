@@ -345,9 +345,15 @@ public class MainApp extends Application {
 
 		try {
 			
-			var controllerAE = (ControllerAntwortenErfassen) controller;
 			
-			File f = new File(Upload.getInstance().getFragebogenPfadWithID(seminarleiter, thistab.getText(), controllerAE.umfrageID));
+			File f = null;
+			
+			if (controller instanceof ControllerAntwortenErfassen) {
+				var controllerAE = (ControllerAntwortenErfassen) controller;
+				f = new File(Upload.getInstance().getFragebogenPfadWithID(seminarleiter, thistab.getText(), controllerAE.umfrageID));
+			}
+			
+			
 			
 			if (f!=null) {
 				if (f.delete()) // returns Boolean value
