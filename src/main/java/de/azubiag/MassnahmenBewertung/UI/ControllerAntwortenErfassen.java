@@ -128,7 +128,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		readdNode(answ_del, 0, 3);
 		readdNode(antwort_name, 1, 3);
 		readdNode(antwort_text, 3, 3);
-		link_hypertext.setText("Der Fragebogen wird gerade von dem Server bearbeitet. Bitte warten Sie.");
+		link_hypertext.setText("Der Fragebogen wird vom Server verarbeitet. Der Link erscheint anschließend.");
 		link_hypertext.setDisable(true);
 		link_kopieren.setDisable(true);
 		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
