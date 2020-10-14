@@ -17,6 +17,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import de.azubiag.MassnahmenBewertung.UI.FragebogenEigenschaften;
+import de.azubiag.MassnahmenBewertung.UI.MainApp;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
@@ -36,11 +37,7 @@ public class AlsPDFSpeichern {
 
 		File outputFile = null;
 
-		try {
-			outputFile = new File(Upload.getInstance().getProgrammDatenOrdner() + "\\output.pdf");
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-		}
+		outputFile = new File(MainApp.upload.getProgrammDatenOrdner() + "\\output.pdf");
 		saveAsPDF(outputFile, feTest, amTest, arTest);
 		
 		System.out.println("Datei " + outputFile + " wurde erzeugt.");
