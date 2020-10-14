@@ -247,9 +247,10 @@ public class AlsPDFSpeichern {
 	private static Phrase druckeZeileMitGesamtdurchschnitt(double gesamtdurchschnitt) {
 		Phrase phrase = new Phrase();
 		leerzeichenSetzen(phrase);
-		for(int i = 0; i<17; i++) {
+		for(int i = 0; i<15; i++) {
 			phrase.add(" ");
 		}
+		phrase.add("ØØ");
 		if (gesamtdurchschnitt >= 0) {
 			phrase.add(new Chunk(" ").setUnderline(1, 10).setUnderline(1, -3).setUnderline(1, -5));
 		}
