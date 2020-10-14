@@ -29,15 +29,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-/* Status:	- Contextmenu muss zur Textbox in Zustand0 hinzugef�gt werden -> autocomplete für Nutzernamen
- * 			- Button in Zustand0 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
- *			- Button in Zustand1 wird nicht gesperrt, wenn all der Text aus dem TextField entfernt wird
- *			- Upload wird noch nicht überprüft
- * 			- Buttons in upload.fxml machen noch beide dasselbe -> darf man den Upload überhaupt abbrechen ???
- * 			- Antwort hinzufügen in Zustand2 muss implementiert werden --> Dekodierung 
- * 			- Eigenschaften der neuen Row in Zustand2 ändern, sodass sie genau so wie die vorherigen aussieht
- *      	- Anwendung muss an den Rest angebunden werden (Dekodierung von Strings, Weitergabe danach     +   Auswertung in Zustand 3)
- */
 
 /**
  *The User Interface
@@ -70,6 +61,7 @@ public class MainApp extends Application {
 
 	protected Stage primaryStage;
 	protected TabPane rootLayout;
+	static public Upload upload;
 	
 	
 
@@ -307,15 +299,10 @@ public class MainApp extends Application {
 	 */
 	public boolean speicherdaten_löschen() {
 		
-		try {
-			Upload upload = Upload.getInstance();
-			String ordner = upload.getSeminarleiterDirectory(userName);
-			File speicherdatei = new File(ordner + ControllerAntwortenErfassen.saveFileName);
-			return speicherdatei.delete();
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		Upload upload = MainApp.upload;
+		String ordner = upload.getSeminarleiterDirectory(userName);
+		File speicherdatei = new File(ordner + ControllerAntwortenErfassen.saveFileName);
+		return speicherdatei.delete();
 	}
 
 	public void addHandlerToDeleteButton(Button button, Tab thistab, Controller controller) {
@@ -343,20 +330,16 @@ public class MainApp extends Application {
 		}
 		String seminarleiter = MainApp.getUserName();
 
-		try {
-			File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
-			
-			if (f!=null) {
-				if (f.delete()) // returns Boolean value
-				{
-					Upload.getInstance().synchronisieren(f.getName()+" wurde gelöscht", userName);
-					System.out.println(f.getName() + " deleted"); // getting and printing the file name
-				} else {
-					System.out.println("failed");
-				} 
-			}
-		} catch (GitAPIException | IOException exc) {
-			exc.printStackTrace();
+		File f = new File(MainApp.upload.getFragebogenPfad(seminarleiter, thistab.getText()));
+		
+		if (f!=null) {
+			if (f.delete()) // returns Boolean value
+			{
+				MainApp.upload.synchronisieren(f.getName()+" wurde gelöscht", userName);
+				System.out.println(f.getName() + " deleted"); // getting and printing the file name
+			} else {
+				System.out.println("failed");
+			} 
 		}
 	}
 	public void showTabPlus() {
@@ -398,6 +381,12 @@ public class MainApp extends Application {
 		for (int i=0; i<args.length; i++) {
 			if (args[i].equals("--test")) setTestmodusAktiv(true);
 		}
+		try {
+			upload = Upload.getInstance();
+		} catch (GitAPIException | IOException e) {
+			//TODO: Fehlermeldung und Programmabbruch?
+			e.printStackTrace();
+		}
 		launch(args);
 	}
 
@@ -413,11 +402,7 @@ public class MainApp extends Application {
 				ControllerAntwortenErfassen.serializeTabs();
 			}
 			
-			try {
-				Upload.getInstance().synchronisieren("Speichern der offenen Tabs");
-			} catch (GitAPIException | IOException e) {
-				e.printStackTrace();
-			}
+			MainApp.upload.synchronisieren("Speichern der offenen Tabs");
 
 			Platform.exit();
 
@@ -429,20 +414,15 @@ public class MainApp extends Application {
 
 	public boolean existieren_speicherdaten() {
 
-		try {
-			Upload upload = Upload.getInstance();
-			String ordner = upload.getSeminarleiterDirectory(userName);
-			File speicherdatei = new File(ordner+ControllerAntwortenErfassen.saveFileName);
-			if (speicherdatei.isFile())
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
+		Upload upload = MainApp.upload;
+		String ordner = upload.getSeminarleiterDirectory(userName);
+		File speicherdatei = new File(ordner+ControllerAntwortenErfassen.saveFileName);
+		if (speicherdatei.isFile())
+		{
+			return true;
+		}
+		else
+		{
 			return false;
 		}
 	}

@@ -3,18 +3,15 @@ package de.azubiag.MassnahmenBewertung.upload.test;
 import java.io.IOException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
+import de.azubiag.MassnahmenBewertung.UI.MainApp;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
 
 public class PfadfindungTest {
 
 	public static void main(String[] args) {
 		
-		try {
-			Upload.getInstance().getProgrammDatenOrdner();
+		MainApp.upload.getProgrammDatenOrdner();
 //			Files.list(new File("C:\\Users\\"+username+"\\AppData\\Local\\Packages").toPath()).forEach(path -> System.out.println(path));;
-		} catch (GitAPIException|IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -94,14 +94,14 @@ public class ControllerLogin {
 		log.logInfo("nutzer.ser wird gespeichert");
 
 		try {
-			String ordner = Upload.getInstance().getRepositoryPfad();
+			String ordner = MainApp.upload.getRepositoryPfad();
 			FileOutputStream fos = new FileOutputStream(ordner + nutzerfilename);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(nutzernamenUndOrdner);
 			oos.close();
 			fos.close();
 
-		} catch (IOException | GitAPIException e) {
+		} catch (IOException e) {
 			Logger l = new Logger();
 			l.logError(e);
 		}
@@ -115,13 +115,13 @@ public class ControllerLogin {
 			log.logInfo("nutzer.ser wird geladen");
 			Hashtable<String,String> hashtable = null;
 			try {
-				String ordner = Upload.getInstance().getRepositoryPfad();
+				String ordner = MainApp.upload.getRepositoryPfad();
 				FileInputStream fis = new FileInputStream(ordner + nutzerfilename);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				hashtable = (Hashtable<String,String>) ois.readObject(); // unchecked cast
 				ois.close();
 				fis.close();
-			} catch (IOException | ClassNotFoundException | GitAPIException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				Logger l = new Logger();
 				l.logError(e);
 			}
@@ -135,15 +135,10 @@ public class ControllerLogin {
 
 	public static boolean existiert_datei() {
 
-		try {
-			String ordner = Upload.getInstance().getRepositoryPfad();
-			File datei = new File(ordner+nutzerfilename);
+		String ordner = MainApp.upload.getRepositoryPfad();
+		File datei = new File(ordner+nutzerfilename);
 //			System.out.println(datei+"-->" +datei.isFile());
-			return datei.isFile();
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-		}
-		return false;
+		return datei.isFile();
 	}
 
 	public void addUsernameNextToButton() {
@@ -204,25 +199,15 @@ public class ControllerLogin {
 
 	public File getPath(String clean_username)
 	{
-		try {
-			String path_string = Upload.getInstance().getSeminarleiterDirectory(clean_username);
-			File test_file = new File(path_string);
-			return test_file;
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		String path_string = MainApp.upload.getSeminarleiterDirectory(clean_username);
+		File test_file = new File(path_string);
+		return test_file;
 	}
 
 	public String getPath_String(String clean_username)
 	{
-		try {
-			String path_string = Upload.getInstance().getSeminarleiterDirectory(clean_username);
-			return path_string;
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		String path_string = MainApp.upload.getSeminarleiterDirectory(clean_username);
+		return path_string;
 	}
 
 	private boolean isNutzerVorhanden(String clean_username) {

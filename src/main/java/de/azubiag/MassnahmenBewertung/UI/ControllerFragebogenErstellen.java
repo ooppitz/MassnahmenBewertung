@@ -408,11 +408,7 @@ public void addVorschauButtonHandler() {
 
 									@Override
 									public void run() {
-										try {
-											Upload.getInstance().synchronisieren(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
-										} catch (GitAPIException | IOException e) {
-											e.printStackTrace();
-										}
+										MainApp.upload.synchronisieren(fragebogenname.getText(), MainApp.getUserName()); // JGit lädt Datei hoch	
 										
 									}});
 														
@@ -565,9 +561,9 @@ public void addVorschauButtonHandler() {
 			private String erstelleFragebogenImLokalenRepo(FragebogenEigenschaften eigenschaften, int umfrageID)
 					throws InvalidRemoteException, TransportException, GitAPIException, IOException {
 				String seminarleiterName = MainApp.getUserName();
-				String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory()
+				String fragebogenTemplateDirectory = MainApp.upload.getTemplateDirectory()
 						+ "template_fragebogen.html";
-				String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName,
+				String fragebogenOutputPfad = MainApp.upload.getFragebogenPfad(seminarleiterName,
 						fragebogenname.getText());
 
 				// Schreibt den Fragebogen in das Repository
