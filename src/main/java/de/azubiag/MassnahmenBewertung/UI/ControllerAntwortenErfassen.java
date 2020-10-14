@@ -280,10 +280,10 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				// Next
 				if ( ! antwortListe.isEmpty()) {
 
-					int userAntwort = AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Auswerten",
+					boolean umfrageAuswerten = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Auswerten",
 							"Eine Umfrage kann aus Gründen der Anonymität nur einmal ausgewertet werden. Jetzt auswerten?");
 					
-					if(userAntwort == AlertMethoden.JA) {
+					if(umfrageAuswerten) {
 						mainapp.deleteActions(tab, controller);
 						
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde

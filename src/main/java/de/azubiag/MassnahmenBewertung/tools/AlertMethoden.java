@@ -98,30 +98,27 @@ public class AlertMethoden {
 	}
 
 	/**
-	 * Zeige einen Alert mit Ja/Nein/Abbrechen-Buttons
+	 * Zeige einen Alert mit Ja/Nein-Buttons
 	 * 
 	 * @param alertType beeinflusst den Icon, der angezeigt wird
 	 * @param title     Titel des Alert-Fensters
 	 * @param frage     Frage, die dem User im Confirmation-Alert gestellt werden
 	 *                  soll
-	 * @return 1 bei "Ja", 0 bei "Nein", -1 bei "Abbrechen"
+	 * @return 1 bei "Ja", 0 bei "Nein"
 	 */
-	public static int zeigeAlertJaNeinAbbrechen(AlertType alertType, String titel, String frage) {
+	public static boolean zeigeAlertJaNein(AlertType alertType, String titel, String frage) {
 		Alert al = new Alert(alertType);
 		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
 		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
-		ButtonType abbruchButton = new ButtonType("abbruch", ButtonData.CANCEL_CLOSE);
-		al.getButtonTypes().setAll(jaButton, neinButton, abbruchButton);
+		al.getButtonTypes().setAll(jaButton, neinButton);
 		al.setTitle(titel);
 		al.setHeaderText(frage);
-		al.getDialogPane().lookupButton(abbruchButton).setVisible(false);
 		Optional<ButtonType> opbt = al.showAndWait();
 		if (opbt.get() == jaButton) {
-			return JA;
-		} else if (opbt.get() == neinButton) {
-			return NEIN;
-		} else // AbbruchButton{
-			return CANCEL;
+			return true;
+		} else  {
+			return false;
+		} 
 	}
 
 	public static final int JA = 1;
