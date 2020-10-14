@@ -36,11 +36,7 @@ public class AlsPDFSpeichern {
 
 		File outputFile = null;
 
-		try {
-			outputFile = new File(Upload.getInstance().getProgrammDatenOrdner() + "\\output.pdf");
-		} catch (GitAPIException | IOException e) {
-			e.printStackTrace();
-		}
+		outputFile = new File(System.getProperty("user.home") + "\\output.pdf");
 		saveAsPDF(outputFile, feTest, amTest, arTest);
 		
 		System.out.println("Datei " + outputFile + " wurde erzeugt.");
