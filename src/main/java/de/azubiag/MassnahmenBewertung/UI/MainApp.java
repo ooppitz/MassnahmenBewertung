@@ -344,7 +344,10 @@ public class MainApp extends Application {
 		String seminarleiter = MainApp.getUserName();
 
 		try {
-			File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
+			
+			var controllerAE = (ControllerAntwortenErfassen) controller;
+			
+			File f = new File(Upload.getInstance().getFragebogenPfadWithID(seminarleiter, thistab.getText(), controllerAE.umfrageID));
 			
 			if (f!=null) {
 				if (f.delete()) // returns Boolean value

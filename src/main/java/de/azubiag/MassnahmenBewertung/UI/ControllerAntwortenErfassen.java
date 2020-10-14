@@ -53,7 +53,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 	FragebogenEigenschaften eigenschaften; // Serialisieren
 
-	private int umfrageID; // Serialisieren
+	int umfrageID; // Serialisieren
 
 	//	int anzahl_antworten; // Serialisieren
 

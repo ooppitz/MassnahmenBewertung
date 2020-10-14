@@ -567,8 +567,8 @@ public void addVorschauButtonHandler() {
 				String seminarleiterName = MainApp.getUserName();
 				String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory()
 						+ "template_fragebogen.html";
-				String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName,
-						fragebogenname.getText());
+				String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfadWithID(seminarleiterName,
+						fragebogenname.getText(), umfrageID);
 
 				// Schreibt den Fragebogen in das Repository
 				
