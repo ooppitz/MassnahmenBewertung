@@ -325,10 +325,9 @@ public class MainApp extends Application {
 	}
 
 	public void handleUmfrageSchliessen(Tab thistab, Controller controller, Event event) {
-		boolean loeschen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Umfrage schließen?",
-				"Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ") == 1) ? true
-						: false;
-		if (loeschen) {
+		boolean umfrageLoeschen = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Umfrage schließen?",
+				"Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ");
+		if (umfrageLoeschen) {
 			deleteActions(thistab, controller);
 		} else {
 			event.consume(); // bei Tab: setOnCloseRequest Schließen stoppen
@@ -412,11 +411,11 @@ public class MainApp extends Application {
 
 	public void warnfensterAnwendungSchliessen(WindowEvent event) {
 
-		boolean schliessen = (AlertMethoden.zeigeAlertJaNeinAbbrechen(AlertType.WARNING, "Anwendung schließen",
+		boolean anwendungSchließen = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Anwendung schließen",
 				"Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
-						+ "Anwendung jetzt schließen ? ") == 1) ? true : false;
+						+ "Anwendung jetzt schließen ? ") ;
 
-		if (schliessen) {
+		if (anwendungSchließen) {
 
 			programmShutdown();
 
