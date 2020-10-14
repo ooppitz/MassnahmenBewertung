@@ -150,7 +150,11 @@ public class AlsPDFSpeichern {
 		for (int i = 0; i < ar.size(); i++) {
 
 			Phrase titelReferentName, referentPktVorb, referentPktFach, referentPktEing, referentPktInh,
-					referentPktVerh, referentBem;
+					referentPktVerh, referentGesDurchschn, referentBem;
+			
+			double gesamtdurchschnitt = (ar.get(i).durchschnittVorbereitung+ar.get(i).durchschnittFachwissen
+					+ar.get(i).durchschnittEingehenAufProbleme+ar.get(i).durchschnittInhaltsvermittlung+ar.get(i).durchschnittVerhalten)
+					/5;
 
 			bewertungReferentenIndividuell.add("\n");
 
@@ -178,7 +182,9 @@ public class AlsPDFSpeichern {
 			referentPktVerh = druckeZeileMitPunkten("Wie sagte Ihnen ihr/sein Verhalten zu?",
 					ar.get(i).stimmenProRadioBtnVerhalten, ar.get(i).durchschnittVerhalten);
 
-			referentBem = druckeZeileMitBemerkungen("\nBemerkungen zu " + ar.get(i).name + ":\n",
+			referentGesDurchschn = druckeZeileMitGesamtdurchschnitt(gesamtdurchschnitt);
+					
+			referentBem = druckeZeileMitBemerkungen("Bemerkungen zu " + ar.get(i).name + ":\n",
 					ar.get(i).getBemerkungen());
 
 			bewertungReferentenIndividuell.add(referentPktVorb);
@@ -186,6 +192,7 @@ public class AlsPDFSpeichern {
 			bewertungReferentenIndividuell.add(referentPktEing);
 			bewertungReferentenIndividuell.add(referentPktInh);
 			bewertungReferentenIndividuell.add(referentPktVerh);
+			bewertungReferentenIndividuell.add(referentGesDurchschn);
 			bewertungReferentenIndividuell.add(referentBem);
 
 		}
@@ -237,6 +244,21 @@ public class AlsPDFSpeichern {
 		return phrase;
 	}
 
+	private static Phrase druckeZeileMitGesamtdurchschnitt(double gesamtdurchschnitt) {
+		Phrase phrase = new Phrase();
+		leerzeichenSetzen(phrase);
+		for(int i = 0; i<17; i++) {
+			phrase.add(" ");
+		}
+		if (gesamtdurchschnitt >= 0) {
+			phrase.add(new Chunk(" ").setUnderline(1, 10).setUnderline(1, -3).setUnderline(1, -5));
+		}
+		phrase.add(new Chunk(String.format("%1.2f\n", gesamtdurchschnitt)).setUnderline(1, 10).setUnderline(1, -3)
+				.setUnderline(1, -5));
+		return phrase;
+		
+	}
+	
 	static void leerzeichenSetzen(Paragraph paragraph) {
 		while (paragraph.getContent().length() < 65) {
 			paragraph.add(" ");
