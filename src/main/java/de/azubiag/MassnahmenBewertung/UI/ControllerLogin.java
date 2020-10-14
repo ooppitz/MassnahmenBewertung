@@ -202,19 +202,12 @@ public class ControllerLogin {
 					if(matcher.matches())
 					{
 						zutreffende_Nutzer.add(string);
-					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.println(string);
-					System.out.println(zutreffende_Nutzer);
 					}
 				if (zutreffende_Nutzer.size()>LIMIT) {
-					System.out.println("zutreffende_Nutzer.size()>LIMIT " +zutreffende_Nutzer.size());
 					return;			
 					}
 				}
-			System.out.println("bin bei Zutreffenden Nutzer");	
-			System.out.println("Zutreffende Nutzer: "+zutreffende_Nutzer);
 			}
-			System.out.println("username.fill_context_menu(zutreffende_Nutzer);");
 			username.fill_context_menu(zutreffende_Nutzer);
 		});
 	}
