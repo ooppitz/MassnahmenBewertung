@@ -380,7 +380,7 @@ public void addVorschauButtonHandler() {
 			private void fragebogenHandling(Logger logger) {
 				try {
 
-					int umfrageID = new Random().nextInt();
+					int umfrageID = new Random().nextInt(Integer.MAX_VALUE);
 				
 					// Erstellen des Fragebogen-Files
 					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
