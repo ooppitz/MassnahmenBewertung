@@ -343,9 +343,18 @@ public class MainApp extends Application {
 		String seminarleiter = MainApp.getUserName();
 
 		try {
-			File f = new File(Upload.getInstance().getFragebogenPfad(seminarleiter, thistab.getText()));
-
-			if (f != null) {
+			
+			
+			File f = null;
+			
+			if (controller instanceof ControllerAntwortenErfassen) {
+				var controllerAE = (ControllerAntwortenErfassen) controller;
+				f = new File(Upload.getInstance().getFragebogenPfadWithID(seminarleiter, thistab.getText(), controllerAE.umfrageID));
+			}
+			
+			
+			
+			if (f!=null) {
 				if (f.delete()) // returns Boolean value
 				{
 					Upload.getInstance().synchronisieren(f.getName() + " wurde gelöscht", userName);

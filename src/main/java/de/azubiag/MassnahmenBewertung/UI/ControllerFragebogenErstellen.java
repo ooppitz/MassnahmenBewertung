@@ -380,7 +380,7 @@ public void addVorschauButtonHandler() {
 			private void fragebogenHandling(Logger logger) {
 				try {
 
-					int umfrageID = new Random().nextInt();
+					int umfrageID = new Random().nextInt(Integer.MAX_VALUE); // Positive Zufallszahl erzeugen
 				
 					// Erstellen des Fragebogen-Files
 					FragebogenEigenschaften eigenschaftenX = new FragebogenEigenschaften(controller, "Ungültiger Webpath");
@@ -567,8 +567,8 @@ public void addVorschauButtonHandler() {
 				String seminarleiterName = MainApp.getUserName();
 				String fragebogenTemplateDirectory = Upload.getInstance().getTemplateDirectory()
 						+ "template_fragebogen.html";
-				String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfad(seminarleiterName,
-						fragebogenname.getText());
+				String fragebogenOutputPfad = Upload.getInstance().getFragebogenPfadWithID(seminarleiterName,
+						fragebogenname.getText(), umfrageID);
 
 				// Schreibt den Fragebogen in das Repository
 				
