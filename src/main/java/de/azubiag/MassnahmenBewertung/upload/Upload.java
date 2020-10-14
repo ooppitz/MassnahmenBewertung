@@ -214,6 +214,7 @@ public class Upload {
 	public String getFragebogenPfadWithID(String seminarleiterName, String umfrageName, int umfrageID) {
 		return getSeminarleiterDirectory(seminarleiterName)
 				+ Tools.normalisiereString(umfrageName)
+				+ "_"
 				+ umfrageID
 				+ ".html";
 	}
