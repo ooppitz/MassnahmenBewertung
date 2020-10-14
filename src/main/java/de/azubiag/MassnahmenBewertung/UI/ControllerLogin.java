@@ -48,7 +48,7 @@ public class ControllerLogin {
 
 	ArrayList<String> alle_Nutzer;
 	ArrayList<String> zutreffende_Nutzer;
-	private final int LIMIT = 10;
+	private final int LIMIT = 100;
 	private Dictionary<String,String> nutzernamenUndOrdner;
 	static String nutzerfilename = "nutzer.ser";
 
@@ -61,10 +61,17 @@ public class ControllerLogin {
 	}
 
 	public ArrayList<String> getAlle_Nutzer() {
+		ArrayList<String>  tempArrayList= new ArrayList<>();
 		if (alle_Nutzer == null)
 		{
-			alle_Nutzer = Collections.list(nutzernamenUndOrdner.keys());
+			alle_Nutzer = Collections.list(nutzernamenUndOrdner.keys());		
 		}
+		for (String s: alle_Nutzer) {
+			if (s.charAt(0) > 31 && s.charAt(0) <123 ) {
+				tempArrayList.add(s);
+				}
+		}
+		alle_Nutzer = tempArrayList;
 		return alle_Nutzer;
 	}
 
@@ -189,17 +196,25 @@ public class ControllerLogin {
 			{
 				Pattern pattern = Pattern.compile(".*"+newValue+".*", Pattern.CASE_INSENSITIVE);
 
+				
 				for (String string : getAlle_Nutzer()) {
 					Matcher matcher = pattern.matcher(string);
 					if(matcher.matches())
 					{
 						zutreffende_Nutzer.add(string);
+					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
+					System.out.println(string);
+					System.out.println(zutreffende_Nutzer);
 					}
-					if (zutreffende_Nutzer.size()>LIMIT)
-						return;
+				if (zutreffende_Nutzer.size()>LIMIT) {
+					System.out.println("zutreffende_Nutzer.size()>LIMIT " +zutreffende_Nutzer.size());
+					return;			
+					}
 				}
-//				System.out.println("Zutreffende Nutzer: "+zutreffende_Nutzer);
+			System.out.println("bin bei Zutreffenden Nutzer");	
+			System.out.println("Zutreffende Nutzer: "+zutreffende_Nutzer);
 			}
+			System.out.println("username.fill_context_menu(zutreffende_Nutzer);");
 			username.fill_context_menu(zutreffende_Nutzer);
 		});
 	}
