@@ -47,7 +47,11 @@ public class ControllerLogin {
 
 	ArrayList<String> alle_Nutzer;
 	ArrayList<String> zutreffende_Nutzer;
+<<<<<<< HEAD
 	private final int LIMIT = 10;
+=======
+	private final int LIMIT = 25;
+>>>>>>> Manuel_LoginTextFieldSuggestion
 	private Dictionary<String, String> nutzernamenUndOrdner;
 	static String nutzerfilename = "nutzer.ser";
 
@@ -59,9 +63,19 @@ public class ControllerLogin {
 	}
 
 	public ArrayList<String> getAlle_Nutzer() {
+<<<<<<< HEAD
+=======
+		ArrayList<String> tempArrayList = new ArrayList<>();
+>>>>>>> Manuel_LoginTextFieldSuggestion
 		if (alle_Nutzer == null) {
 			alle_Nutzer = Collections.list(nutzernamenUndOrdner.keys());
 		}
+		for (String s : alle_Nutzer) {
+			if (s.charAt(0) > 31 && s.charAt(0) < 123) {
+				tempArrayList.add(s);
+			}
+		}
+		alle_Nutzer = tempArrayList;
 		return alle_Nutzer;
 	}
 
@@ -139,11 +153,50 @@ public class ControllerLogin {
 		return false;
 	}
 
+<<<<<<< HEAD
 	
+=======
+	public void addUsernameNextToButton() {
+		next.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				// Eingegebener Username ohne äußeren Whitespace
+				String theUsername = username.getText().strip();
+				// Normalisierter Username für Addressierung
+				String clean_username = Tools.normalisiereString(theUsername);
+				mainapp.primaryStage.setTitle("SeminarLeiterApp " + theUsername);
+
+				// schauen, ob das Feld nicht leer ist
+				// Auswahlliste von Namen davor anzeigen
+				boolean nutzer_vorhanden = isNutzerVorhanden(clean_username);
+
+				if (nutzer_vorhanden) {
+					MainApp.setUserName(theUsername);
+					mainapp.showTabPane();
+				} else {
+					boolean account_erstellt = neuen_Account_erstellen(clean_username);
+					if (account_erstellt) {
+						nutzernamenUndOrdner.put(theUsername, clean_username);
+						System.out.println(
+								"Neuer Account erstellt: Key-> " + theUsername + "\tValue-> " + clean_username);
+						speichern();
+						MainApp.setUserName(theUsername);
+						mainapp.showTabPane();
+					}
+				}
+			}
+
+		});
+	}
+>>>>>>> Manuel_LoginTextFieldSuggestion
 
 	public void addListener_TextFieldSuggestion() {
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
 			zutreffende_Nutzer.clear();
+<<<<<<< HEAD
+=======
+			username.fill_context_menu(zutreffende_Nutzer);
+>>>>>>> Manuel_LoginTextFieldSuggestion
 			if (!newValue.isBlank()) {
 				Pattern pattern = Pattern.compile(".*" + newValue + ".*", Pattern.CASE_INSENSITIVE);
 
@@ -152,10 +205,20 @@ public class ControllerLogin {
 					if (matcher.matches()) {
 						zutreffende_Nutzer.add(string);
 					}
+<<<<<<< HEAD
 					if (zutreffende_Nutzer.size() > LIMIT)
 						return;
+=======
+>>>>>>> Manuel_LoginTextFieldSuggestion
 				}
-//				System.out.println("Zutreffende Nutzer: "+zutreffende_Nutzer);
+
+				ArrayList<String> temp_Arraylist = new ArrayList<>();
+				if (zutreffende_Nutzer.size() > LIMIT) {
+					for (int i = 0; i <= LIMIT; i++) {
+						temp_Arraylist.add(zutreffende_Nutzer.get(i));
+					}
+					zutreffende_Nutzer = temp_Arraylist;
+				}
 			}
 			username.fill_context_menu(zutreffende_Nutzer);
 		});
@@ -183,6 +246,7 @@ public class ControllerLogin {
 				nutzernamenUndOrdner.put(theUsername, clean_username);
 				nutzerSerSpeichern();
 
+<<<<<<< HEAD
 				Upload.getInstanceSafe().synchronisieren("Anlegen des Benutzers " + clean_username);
 				
 				Logger.getLogger().logInfo(
@@ -193,6 +257,8 @@ public class ControllerLogin {
 		mainapp.showTabPane();
 	}
 
+=======
+>>>>>>> Manuel_LoginTextFieldSuggestion
 	public File getPath(String clean_username) {
 		try {
 			String path_string = Upload.getInstance().getSeminarleiterDirectory(clean_username);
@@ -234,6 +300,7 @@ public class ControllerLogin {
 		return true; // alles OK!
 	}
 
+<<<<<<< HEAD
 	public boolean fragenObNeuerUserAngelegtWerdenSoll(String clean_username) {
 
 		boolean accountAnlegen = AlertMethoden.entscheidungViaDialogAbfragen("Neuen Account erstellen?",
@@ -257,6 +324,31 @@ public class ControllerLogin {
 		if (!success) {
 			Logger.getLogger()
 					.logError(new RuntimeException("Fehler beim Anlegen des UserOrdners für " + clean_username));
+=======
+	public boolean neuen_Account_erstellen(String clean_username) {
+
+		boolean neuer_Account = AlertMethoden.entscheidungViaDialogAbfragen("Neuen Account erstellen?",
+				"Es wurde ein neuer Nutzername eingegeben.\nWollen Sie einen neuen Account erstellen?");
+		if (neuer_Account) {
+			String path_string = getPath_String(clean_username);
+			File test_file = getPath(clean_username);
+			boolean success = test_file.mkdir();
+			if (!success) {
+				System.out.println("Directory could not be created!!!");
+				Logger log = Logger.getLogger();
+				log.logError(new RuntimeException(
+						"Dieser Benutzername kann nicht verwendet werden!" + "\tPath= " + path_string + "\tExists: "
+								+ test_file.exists() + "\tIs Directory: " + test_file.isDirectory()));
+				AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Dieser Benutzername kann nicht verwendet werden!",
+						"Dieser Benutzername kann nicht verwendet werden!");
+				return false;
+			} else {
+				Logger log = Logger.getLogger();
+				log.logInfo("Ordner erstellt!" + "\tPath= " + path_string + "\tExists: " + test_file.exists()
+						+ "\tIs Directory: " + test_file.isDirectory());
+				return true;
+			}
+>>>>>>> Manuel_LoginTextFieldSuggestion
 		}
 		return success;
 
