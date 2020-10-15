@@ -229,7 +229,7 @@ public class Upload {
 	
 	public static File getProgrammDatenOrdner() {
 		
-		String appData = System.getenv("LOCALAPPDATA");
+		String appData = System.getProperty("user.home");
 		File programmDatenOrdner = new File(appData+"\\"+appName);
 
 		if(programmDatenOrdner.exists() == false) {
