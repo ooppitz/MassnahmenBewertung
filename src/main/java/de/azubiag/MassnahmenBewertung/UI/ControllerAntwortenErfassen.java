@@ -138,7 +138,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 
 			@Override
 			protected Void call() throws Exception {
-				link_hypertext.setText(eigenschaften.link);
+				link_hypertext.setText(eigenschaften.link+".html");
 				link_hypertext.setDisable(false);
 				link_kopieren.setDisable(false);
 				return null;
@@ -169,7 +169,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					Platform.runLater(text_andern);
 				}
 				else {
-					timer.schedule(timertask_verzoegerung, 50000L);
+					timer.schedule(timertask_verzoegerung, 110000L);
 				}
 			}
 		};
