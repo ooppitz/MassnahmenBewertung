@@ -134,7 +134,7 @@ public class MainApp extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("tabpane.fxml"));
 			rootLayout = (TabPane) loader.load();
-			rootLayout.setPrefSize(1280, 720);
+			rootLayout.setPrefSize(1278, 688);
 			rootLayout.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
 
 			Scene scene = new Scene(rootLayout);
