@@ -21,6 +21,7 @@ import de.azubiag.MassnahmenBewertung.auswertung.AuswertungMassnahme;
 import de.azubiag.MassnahmenBewertung.auswertung.AuswertungReferent;
 import de.azubiag.MassnahmenBewertung.testdaten.Testdaten;
 import de.azubiag.MassnahmenBewertung.upload.Upload;
+import javafx.scene.control.Alert.AlertType;
 
 public class AlsPDFSpeichern {
 
@@ -36,11 +37,13 @@ public class AlsPDFSpeichern {
 
 		File outputFile = null;
 
-		outputFile = new File(System.getProperty("user.home") + "\\output.pdf");
+		String outputFilePath = Upload.getProgrammDatenOrdner() + "\\output.pdf";
+		
+		outputFile = new File(outputFilePath);
 		saveAsPDF(outputFile, feTest, amTest, arTest);
 		
 		System.out.println("Datei " + outputFile + " wurde erzeugt.");
-
+		
 	}
 
 	/**
