@@ -398,7 +398,7 @@ public void addVorschauButtonHandler() {
 					String webpath = getFragebogenWebPath(fragebogenOutputPfad);
 
 					boolean veroeffentlichen = AlertMethoden.entscheidungViaDialogAbfragenOnTop("Fragebogen veröffentlichen?", 
-							"Fragebogen auf " + webpath + " veröffentlichen?", true /* Fenster oben halten */);
+							"Fragebogen für Umfrage \"" +getName()+"\" veröffentlichen?", true /* Fenster oben halten */);
 										
 					if (veroeffentlichen) {
 			

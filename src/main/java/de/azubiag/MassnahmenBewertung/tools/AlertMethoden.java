@@ -108,8 +108,8 @@ public class AlertMethoden {
 	 */
 	public static boolean zeigeAlertJaNein(AlertType alertType, String titel, String frage) {
 		Alert al = new Alert(alertType);
-		ButtonType jaButton = new ButtonType("ja", ButtonData.YES);
-		ButtonType neinButton = new ButtonType("nein", ButtonData.NO);
+		ButtonType jaButton = new ButtonType("Ja", ButtonData.YES);
+		ButtonType neinButton = new ButtonType("Nein", ButtonData.NO);
 		al.getButtonTypes().setAll(jaButton, neinButton);
 		al.setTitle(titel);
 		al.setHeaderText(frage);
@@ -121,9 +121,6 @@ public class AlertMethoden {
 		} 
 	}
 
-	public static final int JA = 1;
-	public static final int NEIN = 0;
-	public static final int CANCEL = -1;
 
 	public static void zeigeOKAlertTextCopyAlwaysOnTop(AlertType alertType, String title, String headerText, String copyText) {
 		GridPane gridPane = initTextArea(copyText);

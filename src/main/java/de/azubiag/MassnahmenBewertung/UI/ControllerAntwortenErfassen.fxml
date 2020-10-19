@@ -119,7 +119,7 @@
                         <Font size="20.0" />
                      </font>
                   </Hyperlink>
-                  <Button fx:id="add" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Antwort hinzufügen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="3">
+                  <Button fx:id="add" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Antwort aus der Zwischenablage einfügen" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="3">
                      <font>
                         <Font size="20.0" />
                      </font>
