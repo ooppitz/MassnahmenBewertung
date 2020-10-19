@@ -133,39 +133,54 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		link_kopieren.setDisable(true);
 		auftragsnummer_wert.setText(eigenschaften.auftrags_nummer);
 		prevHeight = gridpane.getPrefHeight();
-		
+		// Der Task, der den Text in der UI ändert
 		Task<Void> text_andern = new Task<Void>() {
 
 			@Override
 			protected Void call() throws Exception {
-				link_hypertext.setText(eigenschaften.link);
+				link_hypertext.setText(eigenschaften.link+".html");
 				link_hypertext.setDisable(false);
 				link_kopieren.setDisable(false);
 				return null;
 			}
 			
 		};
-		
-		TimerTask timertask = new TimerTask() {
+		// Der Timer, der Timertasks als Daemon startet
+		Timer timer = new Timer(true);
+		/*  Der Timertask, der 10 Minuten lang nach dem link fragt		 
+		 *  -!!!- Server cached seine Antworten, sodass vor dem abfragen gewartet werden muss,
+		 *  weil sonst immer nur dieselbe Antwort zurück kommt
+		 */
+		TimerTask timertask_verzoegerung = new TimerTask() {
 			@Override
 			public void run() {
 				Upload.istFragebogenOnline(6000000, eigenschaften.link, eigenschaften.umfrageID);
 				eigenschaften.hochgeladen = true;
 				Platform.runLater(text_andern);
 			}
-			
+		};
+		// Der Timertask, der 15 Sekunden lang nach dem link mit html-Endung fragt
+		TimerTask timertask_sofort = new TimerTask() {
+			@Override
+			public void run() {
+				boolean ist_fertig = Upload.istFragebogenOnline(15000, eigenschaften.link+".html", eigenschaften.umfrageID);
+				if (ist_fertig) {
+					eigenschaften.hochgeladen = true;
+					Platform.runLater(text_andern);
+				}
+				else {
+					timer.schedule(timertask_verzoegerung, 110000L);
+				}
+			}
 		};
 		
-		
-		
-		Timer timer = new Timer();
 		if (eigenschaften.hochgeladen)
 		{
 			Platform.runLater(text_andern);
 		}
 		else
 		{
-			timer.schedule(timertask, 1L);
+			timer.schedule(timertask_sofort, 1L);
 		}
 		
 	}
