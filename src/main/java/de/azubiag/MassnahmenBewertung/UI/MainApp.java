@@ -443,6 +443,9 @@ public class MainApp extends Application {
 			ControllerAntwortenErfassen.serializeTabs();
 		}
 
+		// TODO: Möglicherweise den Polling-Thread für Fragebögen abschießen
+		// Polling-Thread als demon-thread markieren???
+		
 		try {
 			/* Synchronisieren von tabs.ser und nutzer.ser
 			   Fragebogen sollten schon längst synchronisiert sein. */
