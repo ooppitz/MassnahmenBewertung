@@ -269,7 +269,9 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				String entschluesselteAntwort = Decrypt.decrypt_any_type(verschluesselteAntwort);
 				if (entschluesselteAntwort == null) {	
 					Logger.getLogger().logError(new RuntimeException("Beim Eingeben eines Antwortstrings: Fehlerhafter String eingegeben!"));
-					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Die eingefügten Daten waren fehlerhaft!", "Die eingefügten Daten waren fehlerhaft!");
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Die Daten aus der Zwischenablage konnten nicht eingefügt werden.", "Die Daten aus der Zwischenablage konnten nicht eingefügt werden. \r\n"
+																		+ "Stellen Sie sicher, dass die gesamte verschlüsselte Nachricht\r\n"
+																		+"mit \"---\" beginnend und endend in der Zwischenablage ist!");
 					return;
 				} 
 
