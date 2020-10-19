@@ -439,6 +439,8 @@ public class MainApp extends Application {
 		AlertMethoden.zeigeOKAlertWarten(AlertType.INFORMATION, "Programm wird beendet", 
 				"Das Programm wird beendet. Bitte warten.", false);
 		
+		primaryStage.hide();
+		
 		if (!listeControllerAntwortenErfassen.isEmpty()) {
 			ControllerAntwortenErfassen.serializeTabs();
 		}
