@@ -412,7 +412,7 @@ public class MainApp extends Application {
 	public void warnfensterAnwendungSchliessen(WindowEvent event) {
 
 		boolean anwendungSchließen = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Anwendung schließen",
-				"Ihre laufenden Umfragen und die schon eingegebenen Antworten werden gespeichert. "
+				"Ihre veröffentlichten Umfragen und die schon eingegebenen Antworten werden gespeichert. "
 						+ "Anwendung jetzt schließen ? ") ;
 
 		if (anwendungSchließen) {
