@@ -10,8 +10,10 @@ import javax.swing.JOptionPane;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -21,9 +23,11 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import de.azubiag.MassnahmenBewertung.tools.AlertMethoden;
 import de.azubiag.MassnahmenBewertung.tools.Logger;
 import de.azubiag.MassnahmenBewertung.tools.Tools;
 import javafx.application.Platform;
+import javafx.scene.control.Alert.AlertType;
 
 /* Um Github zu verwenden, um die Fragebogen zu hosten, braucht man einen Account. 
  * 
@@ -69,7 +73,11 @@ public class Upload {
 		this.remotePfad = remotePfad;
 		this.repositoryName = repositoryName;
 
-		repoKlonenFallsNichtVorhanden();
+		try {
+			repoKlonenFallsNichtVorhanden();
+		} catch (JGitInternalException e) {
+			beiFehlenderInternetverbindungSchliessen();
+		}
 
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
@@ -86,9 +94,19 @@ public class Upload {
 		
 		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
 		// wodurch es zu einem merge-conflict kommen kann
-		gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
+		try {
+			gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
+		} catch (JGitInternalException e) {
+			beiFehlenderInternetverbindungSchliessen();
+		}
 		
 		gitController.pull().setCredentialsProvider(cp).call();
+	}
+
+	private void beiFehlenderInternetverbindungSchliessen() {
+		AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Keine Internetverbindung!", "Es konnte keine Internetverbindung hergestellt "
+				+ "werden. Das Programm wird geschlossen");
+		Runtime.getRuntime().exit(0);
 	}
 
 	// TODO: Cleanup des Exception handlings
