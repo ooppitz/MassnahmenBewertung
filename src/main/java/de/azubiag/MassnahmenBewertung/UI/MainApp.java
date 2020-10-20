@@ -338,7 +338,7 @@ public class MainApp extends Application {
 		rootLayout.getTabs().remove(thistab);
 		
 		
-		Thread freeThreadToRefreshGUI = new Thread(() -> {  //notwendig, damit der Tab sofort nachdem er aus der ObservableList<Tab> entfernt wurde, geschlossen wird
+		Thread deleteFragebogenAndSynchronize = new Thread(() -> {  //notwendig, damit der Tab sofort nachdem er aus der ObservableList<Tab> entfernt wurde, geschlossen wird
 			if (controller.getClass() == ControllerAntwortenErfassen.class) { 
 			vonListeEntfernen(controller);
 		}
@@ -369,7 +369,7 @@ public class MainApp extends Application {
 			exc.printStackTrace();
 		}}); 
 		
-		freeThreadToRefreshGUI.start();
+		deleteFragebogenAndSynchronize.start();
 	
 	}
 
