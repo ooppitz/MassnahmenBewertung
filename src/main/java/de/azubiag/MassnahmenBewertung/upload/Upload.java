@@ -51,7 +51,7 @@ public class Upload {
 	static String repositoryName = "gfigithubaccess.github.io";
 	static String gitHubBenutzernamen = "gfigithubaccess"; // Nutzername für den GitHub-Account
 	static String gitHubPasswort = "GfiGitHubAccess2020!"; // Passwort für den GitHub-Account
-	static String remoteRepoPath = "https://github.com/gfigithubaccess/gfigithubaccess.github.io.git";
+	public static String remoteRepoPath = "https://github.com/gfigithubaccess/gfigithubaccess.github.io.git";
 	final static String appName = "MaßnahmenBewertung";
 
 	static Upload instance = null;
@@ -73,11 +73,7 @@ public class Upload {
 		this.remotePfad = remotePfad;
 		this.repositoryName = repositoryName;
 
-		try {
-			repoKlonenFallsNichtVorhanden();
-		} catch (TransportException e) {
-			beiFehlenderInternetverbindungSchliessen();
-		}
+		repoKlonenFallsNichtVorhanden();
 
 		cp = new UsernamePasswordCredentialsProvider(gitHubBenutzername, gitHubPasswort);
 		lokalRepo = new FileRepository(getRepositoryPfad() + "/.git");
@@ -94,20 +90,12 @@ public class Upload {
 		
 		// Potentieller fix zur umgehung eines fehlenden pushes durch Programmabsturz
 		// wodurch es zu einem merge-conflict kommen kann
-		try {
+
 			gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
 			gitController.pull().setCredentialsProvider(cp).call();
-		} catch (TransportException e) {
-			beiFehlenderInternetverbindungSchliessen();
-		}
 		
 	}
 
-	private void beiFehlenderInternetverbindungSchliessen() {
-		AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Keine Internetverbindung!", "Es konnte keine Internetverbindung hergestellt "
-				+ "werden. Das Programm wird geschlossen");
-		Runtime.getRuntime().exit(0);
-	}
 
 	// TODO: Cleanup des Exception handlings
 	public static Upload getInstance() throws InvalidRemoteException, TransportException, GitAPIException, IOException {
