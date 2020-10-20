@@ -56,7 +56,7 @@ public class Logger {
 	}
 	
 	// Doesn't have a sinnvoll target yet, using stderr as placeholder
-	public Logger() {
+	private Logger() {
 		this.logstream = System.err;
 	}
 	
@@ -64,7 +64,7 @@ public class Logger {
 		this.logstream = ps;
 	}
 	
-	public Logger (File file) {
+	private Logger (File file) {
 		try {
 			this.logstream = new PrintStream(new FileOutputStream(file), true, "UTF-8");
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
