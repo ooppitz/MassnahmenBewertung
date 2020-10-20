@@ -159,6 +159,9 @@ public class ControllerFragebogenErstellen implements Controller {
 //			else
 //				tab.setText("Unbenannter Fragebogen");
 		});
+		
+		updateUI();
+		
 	}
 
 	public void updateUI() {
