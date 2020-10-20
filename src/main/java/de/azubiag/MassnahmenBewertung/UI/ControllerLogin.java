@@ -203,8 +203,10 @@ public class ControllerLogin {
 						"Neuer Account erstellt: Key-> " + theUsername + "\tValue-> " + clean_username);
 			}
 		}
-		MainApp.setUserName(theUsername);
-		mainapp.showTabPane();
+		else {
+			MainApp.setUserName(theUsername);
+			mainapp.showTabPane();
+		}
 	}
 
 	public File getPath(String clean_username) {
