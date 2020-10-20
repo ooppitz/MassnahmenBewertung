@@ -108,12 +108,12 @@ public class MainApp extends Application {
 			ControllerLogin controller = loader.getController();
 			controller.setMainapp(this);
 			controller.next.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent e) {
-						controller.handleGewaehltenUser();
-					}
-				});
-		
+				@Override
+				public void handle(ActionEvent e) {
+					controller.handleGewaehltenUser();
+				}
+			});
+
 			controller.init();
 			controller.addListener_TextFieldSuggestion();
 			controller.username.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -336,41 +336,39 @@ public class MainApp extends Application {
 
 	public void deleteActions(Tab thistab, Controller controller) {
 		rootLayout.getTabs().remove(thistab);
-		
-		
-		Thread deleteFragebogenAndSynchronize = new Thread(() -> {  //notwendig, damit der Tab sofort nachdem er aus der ObservableList<Tab> entfernt wurde, geschlossen wird
-			if (controller.getClass() == ControllerAntwortenErfassen.class) { 
-			vonListeEntfernen(controller);
-		}
-		String seminarleiter = MainApp.getUserName();
 
-		try {
-			
-			
-			File f = null;
-			
-			if (controller instanceof ControllerAntwortenErfassen) {
-				var controllerAE = (ControllerAntwortenErfassen) controller;
-				f = new File(Upload.getInstance().getFragebogenPfadWithID(seminarleiter, thistab.getText(), controllerAE.umfrageID));
+		Thread cleanup = new Thread(() -> { // notwendig, damit der Tab sofort nachdem er aus der
+											// ObservableList<Tab> entfernt wurde, geschlossen
+											// wird
+			if (controller.getClass() == ControllerAntwortenErfassen.class) {
+				vonListeEntfernen(controller);
 			}
-			
-			
-			
-			if (f!=null) {
-				if (f.delete()) // returns Boolean value
-				{
-					Upload.getInstance().synchronisieren(f.getName() + " wurde gelöscht", userName);
-					System.out.println(f.getName() + " deleted"); // getting and printing the file name
-				} else {
-					System.out.println("failed");
+
+			try {
+				// beim Löschen einer Umfrage wird der zugehörige Fragebogen lokal und von
+				// github entfernt
+				if (controller instanceof ControllerAntwortenErfassen) {
+					String seminarleiter = MainApp.getUserName();
+					String fragebogenfilePath = Upload.getInstance().getFragebogenPfadWithID(seminarleiter,
+							thistab.getText(), ((ControllerAntwortenErfassen) controller).umfrageID);
+					File fragebogenFile = new File(fragebogenfilePath);
+					if (fragebogenFile != null) {
+						if (fragebogenFile.delete()) // returns Boolean value
+						{
+							Upload.getInstance().synchronisieren(fragebogenfilePath + " wurde gelöscht", userName);
+							Logger.getLogger().logInfo("Fragebogen " + fragebogenfilePath + " gelöscht. ");
+						} else {
+							Logger.getLogger().logWarning("Löschen des Fragebogens " + fragebogenfilePath
+									+ " im lokalen Repository gescheitert. ");
+						}
+					}
 				}
+			} catch (GitAPIException | IOException exc) {
+				exc.printStackTrace();
 			}
-		} catch (GitAPIException | IOException exc) {
-			exc.printStackTrace();
-		}}); 
-		
-		deleteFragebogenAndSynchronize.start();
-	
+		});
+
+		cleanup.start();
 	}
 
 	public void showTabPlus() {
@@ -383,7 +381,7 @@ public class MainApp extends Application {
 			@Override
 			public void handle(Event t) {
 				if (tab_plus.isSelected()) {
-					 Logger.getLogger().logInfo("Neuer-Tab-Reiter geklickt");
+					Logger.getLogger().logInfo("Neuer-Tab-Reiter geklickt");
 					int size = rootLayout.getTabs().size(); // amount of tabs
 					if (size != 1) {
 						rootLayout.getTabs().remove(size - 1);
@@ -418,7 +416,7 @@ public class MainApp extends Application {
 
 		boolean anwendungSchließen = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Anwendung schließen",
 				"Ihre veröffentlichten Umfragen und die schon eingegebenen Antworten werden gespeichert. "
-						+ "Anwendung jetzt schließen ? ") ;
+						+ "Anwendung jetzt schließen ? ");
 
 		if (anwendungSchließen) {
 
@@ -434,33 +432,35 @@ public class MainApp extends Application {
 	 * Diese Methode wird (soll) immer aufgerufen werden, wenn das Program
 	 * ordnungsgemäß heruntergefahren wird.
 	 * 
-	 * TODO: Berücksichtigen: Auch wenn das Hauptfenster geschlossen ist, 
-	 *       können in anderen Threads noch Aktionen wie Synch durchgeführt
-	 *       werden, was zu einem besseren Usererlebnis führen kann.
+	 * TODO: Berücksichtigen: Auch wenn das Hauptfenster geschlossen ist, können in
+	 * anderen Threads noch Aktionen wie Synch durchgeführt werden, was zu einem
+	 * besseren Usererlebnis führen kann.
 	 */
 	private void programmShutdown() {
 
 		// TODO: Die Alertbox wird nur teilweise angezeigt
-		AlertMethoden.zeigeOKAlertWarten(AlertType.INFORMATION, "Programm wird beendet", 
+		AlertMethoden.zeigeOKAlertWarten(AlertType.INFORMATION, "Programm wird beendet",
 				"Das Programm wird beendet. Bitte warten.", false);
-		
+
 		primaryStage.hide();
-		
+
 		if (!listeControllerAntwortenErfassen.isEmpty()) {
 			ControllerAntwortenErfassen.serializeTabs();
 		}
 
 		// TODO: Möglicherweise den Polling-Thread für Fragebögen abschießen
 		// Polling-Thread als demon-thread markieren???
-		
+
 		try {
-			/* Synchronisieren von tabs.ser und nutzer.ser
-			   Fragebogen sollten schon längst synchronisiert sein. */
+			/*
+			 * Synchronisieren von tabs.ser und nutzer.ser Fragebogen sollten schon längst
+			 * synchronisiert sein.
+			 */
 			Upload.getInstance().synchronisieren("Synchronisieren beim Shutdown");
 		} catch (GitAPIException | IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Platform.exit();
 	}
 
