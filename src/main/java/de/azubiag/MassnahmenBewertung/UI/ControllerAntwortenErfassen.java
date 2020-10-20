@@ -290,7 +290,14 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					return;
 				} 
 
-				AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort.replace("Ergebnis des Fragebogens: ", ""));  
+				AzubiAntwort antwort = null;
+				try {
+					antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort.replace("Ergebnis des Fragebogens: ", ""));  
+				} catch (Exception e) {
+					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eingefügte Antwort ist fehlerhaft!", "Eingefügte Antwort ist fehlerhaft!\r\n" 
+																					+"Fordern Sie eine neue Antwort von Azubi an,\r\n"
+																					+"falls dieser Fehler weiterhin besteht.");
+				}
 
 				if (antwort.umfrageID != umfrageID) {
 					Logger.getLogger().logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");
