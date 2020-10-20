@@ -39,6 +39,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
@@ -221,6 +222,11 @@ public class ControllerFragebogenErstellen implements Controller {
 				temp2.setText(referentenliste.get(zeile-4));
 				temp2.setPromptText("Referent angeben");
 				temp2.setFont(referent_name.getFont());
+				temp2.setOnKeyPressed(keyEvent -> {
+					if(keyEvent.getCode() == KeyCode.ENTER) {
+						addNewReferentRow();
+					}
+				});
 				updateListeVonUI(temp2,zeile-4);
 
 				gridpane.add(x_button, 0, zeile, 1, 1);
@@ -285,17 +291,7 @@ public class ControllerFragebogenErstellen implements Controller {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
 				if (oldValue == false && newValue == true) {
-					if (referentenliste.size() > 4) {
-						gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
-						gridpane.addRow(referentenliste.size() + 6);
-						// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
-						// aussieht
-					}
-					
-					referentenliste.add("");
-					updateUI();
-					Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, referentenliste.size()+3, 3);
-					temp.requestFocus();
+					addNewReferentRow();
 				}
 			}
 		});
@@ -614,5 +610,19 @@ public void addVorschauButtonHandler() {
 			}
 		});
 	}
+
+private void addNewReferentRow() {
+	if (referentenliste.size() > 4) {
+		gridpane.setPrefHeight(gridpane.getPrefHeight() + 49);
+		gridpane.addRow(referentenliste.size() + 6);
+		// Eigenschaften der neuen Row ändern, sodass sie genau so wie die vorherigen
+		// aussieht
+	}
+	
+	referentenliste.add("");
+	updateUI();
+	Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, referentenliste.size()+3, 3);
+	temp.requestFocus();
+}
 
 }
