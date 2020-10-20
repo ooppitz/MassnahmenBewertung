@@ -290,7 +290,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					return;
 				} 
 
-				AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort);  
+				AzubiAntwort antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort.replace("Ergebnis des Fragebogens: ", ""));  
 
 				if (antwort.umfrageID != umfrageID) {
 					Logger.getLogger().logWarning("Eingefügte Antwort gehört nicht zu diesem Fragebogen");

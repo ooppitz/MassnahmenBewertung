@@ -31,6 +31,8 @@ public class Decrypt {
 		String decrypted_text = null;
 
 		if (cipherText != null) {
+			// Wegschneiden des Strings "Ergebnis des Fragebogens: " ganz am Anfang
+			cipherText = cipherText.replace("Ergebnis des Fragebogens: ", "");
 			// NOTE: Dieser Alg. kann dazu führen, dass bei Verschlüsselung mit Option B oder C die Payload verändert wird.
 			cipherText = cipherText.replace("-", "").replace("\n", "");
 			if (cipherText.charAt(0) != 'C') {
@@ -57,7 +59,7 @@ public class Decrypt {
 			Logger l = new Logger();
 			l.logError(e);
 		}
-
+		
 		return decrypted_text;
 	}
 
