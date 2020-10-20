@@ -170,7 +170,7 @@ public class Upload {
 		if (decision == 1) {
 			Logger.getLogger().logInfo("Ignorieren wurde ausgewählt, you have been warned");
 		} else {
-			// TODO merkwürdiges verhalten von Platform.exit(); klären
+			// TODO merkwürdiges verhalten von Platform.exit(); klären!
 			Platform.exit();
 		}
 		
