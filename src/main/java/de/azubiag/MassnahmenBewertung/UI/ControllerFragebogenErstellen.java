@@ -549,6 +549,7 @@ public void addVorschauButtonHandler() {
 				executor.execute(synchro);
 
 				Optional<ButtonType> result2 = dialog.showAndWait(); // Buttons abfragen!!!!
+				executor.shutdown();
 				
 				Logger.getLogger().logInfo("Nutzer hat nach Upload auf Weiter geklickt.");
 				
