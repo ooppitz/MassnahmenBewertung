@@ -154,6 +154,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		TimerTask timertask_verzoegerung = new TimerTask() {
 			@Override
 			public void run() {
+				Thread.currentThread().setName("istFragebogenOnline 60 Sekunden");
 				Upload.istFragebogenOnline(6000000, eigenschaften.link, eigenschaften.umfrageID);
 				eigenschaften.hochgeladen = true;
 				Platform.runLater(text_andern);
@@ -163,6 +164,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		TimerTask timertask_sofort = new TimerTask() {
 			@Override
 			public void run() {
+				Thread.currentThread().setName("istFragebogenOnline 15 Sekunden");
 				boolean ist_fertig = Upload.istFragebogenOnline(15000, eigenschaften.link+".html", eigenschaften.umfrageID);
 				if (ist_fertig) {
 					eigenschaften.hochgeladen = true;
