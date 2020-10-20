@@ -377,8 +377,7 @@ public class MainApp extends Application {
 			@Override
 			public void handle(Event t) {
 				if (tab_plus.isSelected()) {
-					Logger logger = Logger.getLogger();
-					logger.logInfo("Neuer-Tab-Reiter geklickt");
+					 Logger.getLogger().logInfo("Neuer-Tab-Reiter geklickt");
 					int size = rootLayout.getTabs().size(); // amount of tabs
 					if (size != 1) {
 						rootLayout.getTabs().remove(size - 1);

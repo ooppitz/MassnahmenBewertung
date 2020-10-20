@@ -271,8 +271,7 @@ public class ControllerFragebogenErstellen implements Controller {
 
 				if (oldValue == true && newValue == false) {
 					referentenliste.set(index, textfeld.getText());
-					Logger log = Logger.getLogger();
-					log.logInfo("Referentenliste aktualisiert: "+referentenliste);
+					Logger.getLogger().logInfo("Referentenliste aktualisiert: "+referentenliste);
 				}
 			}
 		});
@@ -306,8 +305,7 @@ public class ControllerFragebogenErstellen implements Controller {
 			@Override
 			public void handle(ActionEvent e) {
 
-				Logger logger = Logger.getLogger();
-				logger.logInfo("Aktion: Referent soll gelöscht werden");
+				 Logger.getLogger().logInfo("Aktion: Referent soll gelöscht werden");
 				
 				int index = GridPane.getRowIndex(button)-4;
 				System.out.println("index: "+index);
