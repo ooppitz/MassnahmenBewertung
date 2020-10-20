@@ -202,11 +202,20 @@ public class ControllerFragebogenErstellen implements Controller {
 		
 		for (int zeile=4; zeile<referentenliste.size()+4;zeile++)
 		{
+			final int dieseZeile = zeile;
+			
 			if(zeile==4)
 			{
 				gridpane.add(ref1_x, 0, zeile);
 				gridpane.add(referent_label_first, 1, zeile);
 				gridpane.add(referent_name_first, 3, zeile);
+				
+				referent_name_first.setOnKeyPressed(keyEvent -> {
+					if (keyEvent.getCode() == KeyCode.ENTER) {
+						doUpdateListevonUI(referent_name_first, 0);
+						addNewReferentRow();
+					}
+				});
 			}
 			else {
 				Button x_button = new Button();
@@ -224,6 +233,7 @@ public class ControllerFragebogenErstellen implements Controller {
 				temp2.setFont(referent_name.getFont());
 				temp2.setOnKeyPressed(keyEvent -> {
 					if(keyEvent.getCode() == KeyCode.ENTER) {
+						doUpdateListevonUI(temp2, dieseZeile-4);
 						addNewReferentRow();
 					}
 				});
@@ -276,9 +286,7 @@ public class ControllerFragebogenErstellen implements Controller {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 
 				if (oldValue == true && newValue == false) {
-					referentenliste.set(index, textfeld.getText());
-					Logger log = Logger.getLogger();
-					log.logInfo("Referentenliste aktualisiert: "+referentenliste);
+					doUpdateListevonUI(textfeld, index);
 				}
 			}
 		});
@@ -623,6 +631,12 @@ private void addNewReferentRow() {
 	updateUI();
 	Node temp = GridPaneCustom.getElemByRowAndColumn(gridpane, referentenliste.size()+3, 3);
 	temp.requestFocus();
+}
+
+private void doUpdateListevonUI(TextField textfeld, int index) {
+	referentenliste.set(index, textfeld.getText());
+	Logger log = Logger.getLogger();
+	log.logInfo("Referentenliste aktualisiert: "+referentenliste);
 }
 
 }
