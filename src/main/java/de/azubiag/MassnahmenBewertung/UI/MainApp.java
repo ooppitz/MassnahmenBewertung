@@ -87,6 +87,8 @@ public class MainApp extends Application {
 		try {
 			if(InetAddress.getByName(new URL(Upload.remoteRepoPath).getHost()).isReachable(5000)==true) {
 				showLogin();
+			} else {
+				throw new IOException();
 			}
 		} catch (IOException e) {
 			AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Keine Internetverbindung!", "Es konnte keine Verbindung mit dem Internet "
