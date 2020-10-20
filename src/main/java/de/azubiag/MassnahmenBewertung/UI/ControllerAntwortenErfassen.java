@@ -245,7 +245,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 				ClipboardContent content = new ClipboardContent();
 				content.putString(eigenschaften.link);
 				clippy.setContent(content);
-				link_kopieren.setStyle("-fx-graphic: url('http://files.softicons.com/download/toolbar-icons/funktional-icons-by-creative-freedom/png/24x24/Tick.png');");
+				link_kopieren.setStyle("-fx-graphic: url('https://raw.githubusercontent.com/gfigithubaccess/gfigithubaccess.github.io/master/template/Tick.png');");
 			}
 		});
 	}

@@ -104,7 +104,7 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Button fx:id="link_kopieren" mnemonicParsing="false" style="-fx-graphic: url('http://files.softicons.com/download/web-icons/blue-gradient-toolbar-icons-by-axialis-team/png/24/Clipboard%20Copy.png');" text="kopieren" GridPane.columnIndex="5" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+                  <Button fx:id="link_kopieren" mnemonicParsing="false" style="-fx-graphic: url('https://raw.githubusercontent.com/gfigithubaccess/gfigithubaccess.github.io/master/template/Clipboard%20Copy.png');" text="kopieren" GridPane.columnIndex="5" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
                      <font>
                         <Font size="20.0" />
                      </font>
