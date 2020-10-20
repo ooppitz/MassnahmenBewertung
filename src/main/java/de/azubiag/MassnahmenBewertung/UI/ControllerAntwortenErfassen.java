@@ -321,8 +321,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				Logger logger = Logger.getLogger();
-				logger.logInfo("Es soll eine Antwort entfernt werden.");
+				 Logger.getLogger().logInfo("Es soll eine Antwort entfernt werden.");
 
 				// entfernen der Antwort aus der Antwortliste
 				int index_dieser_antwort = GridPane.getRowIndex(button)-3;
@@ -438,8 +437,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 			fos.close();
 
 		} catch (IOException | GitAPIException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 		}
 	}
 
@@ -454,8 +452,7 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 			ois.close();
 			fis.close();
 		} catch (IOException | ClassNotFoundException | GitAPIException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 		}
 		return controllerListe;
 

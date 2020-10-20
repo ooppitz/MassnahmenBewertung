@@ -45,8 +45,7 @@ public class Serialize implements Serializable {
 			System.out.println("Serialized data was saved in \"data.ser\"");
 
 		} catch (IOException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 			e.printStackTrace();
 		}
 	}
@@ -64,13 +63,11 @@ public class Serialize implements Serializable {
 			ois.close();
 			fis.close();
 		} catch (IOException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 			e.printStackTrace();
 			return;
 		} catch (ClassNotFoundException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 			e.printStackTrace();
 			return;
 		}

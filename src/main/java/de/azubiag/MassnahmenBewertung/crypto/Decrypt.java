@@ -54,8 +54,7 @@ public class Decrypt {
 		} catch (StringIndexOutOfBoundsException | IllegalArgumentException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException 
 				| NullPointerException | InvocationTargetException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 		}
 
 		return decrypted_text;
