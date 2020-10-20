@@ -206,6 +206,7 @@ public class ControllerFragebogenErstellen implements Controller {
 				gridpane.add(ref1_x, 0, zeile);
 				gridpane.add(referent_label_first, 1, zeile);
 				gridpane.add(referent_name_first, 3, zeile);
+				referent_name_first.setText(referentenliste.get(zeile-4));
 			}
 			else {
 				Button x_button = new Button();
