@@ -336,7 +336,10 @@ public class MainApp extends Application {
 
 	public void deleteActions(Tab thistab, Controller controller) {
 		rootLayout.getTabs().remove(thistab);
-		if (controller.getClass() == ControllerAntwortenErfassen.class) {
+		
+		
+		Thread freeThreadToRefreshGUI = new Thread(() -> {  //notwendig, damit der Tab sofort nachdem er aus der ObservableList<Tab> entfernt wurde, geschlossen wird
+			if (controller.getClass() == ControllerAntwortenErfassen.class) { 
 			vonListeEntfernen(controller);
 		}
 		String seminarleiter = MainApp.getUserName();
@@ -364,7 +367,10 @@ public class MainApp extends Application {
 			}
 		} catch (GitAPIException | IOException exc) {
 			exc.printStackTrace();
-		}
+		}}); 
+		
+		freeThreadToRefreshGUI.start();
+	
 	}
 
 	public void showTabPlus() {
