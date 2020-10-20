@@ -76,6 +76,7 @@ public class Upload {
 		try {
 			repoKlonenFallsNichtVorhanden();
 		} catch (JGitInternalException e) {
+			e.printStackTrace();
 			beiFehlenderInternetverbindungSchliessen();
 		}
 
@@ -96,11 +97,12 @@ public class Upload {
 		// wodurch es zu einem merge-conflict kommen kann
 		try {
 			gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
+			gitController.pull().setCredentialsProvider(cp).call();
 		} catch (JGitInternalException e) {
+			e.printStackTrace();
 			beiFehlenderInternetverbindungSchliessen();
 		}
 		
-		gitController.pull().setCredentialsProvider(cp).call();
 	}
 
 	private void beiFehlenderInternetverbindungSchliessen() {
