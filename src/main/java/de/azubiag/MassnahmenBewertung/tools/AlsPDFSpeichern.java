@@ -34,9 +34,8 @@ public class AlsPDFSpeichern {
 		amTest = Testdaten.getAuswertungMassnahme();
 		arTest = Testdaten.getAuswertungReferenten();
 
-		File outputFile = null;
-
-		outputFile = new File(System.getProperty("user.home") + "\\output.pdf");
+		File outputFile = new File(Upload.getProgrammDatenOrdner() + "\\output.pdf");
+	
 		saveAsPDF(outputFile, feTest, amTest, arTest);
 		
 		System.out.println("Datei " + outputFile + " wurde erzeugt.");

@@ -107,16 +107,14 @@ public class ControllerLogin {
 			fos.close();
 
 		} catch (IOException | GitAPIException e) {
-			Logger l = new Logger();
-			l.logError(e);
+			Logger.getLogger().logError(e);
 		}
 	}
 
 	public Hashtable<String, String> laden() {
 
 		if (existiert_datei()) {
-			Logger log = Logger.getLogger();
-			log.logInfo("nutzer.ser wird geladen");
+		Logger.getLogger().logInfo("nutzer.ser wird geladen");
 			Hashtable<String, String> hashtable = null;
 			try {
 				String ordner = Upload.getInstance().getRepositoryPfad();
@@ -126,8 +124,7 @@ public class ControllerLogin {
 				ois.close();
 				fis.close();
 			} catch (IOException | ClassNotFoundException | GitAPIException e) {
-				Logger l = new Logger();
-				l.logError(e);
+				Logger.getLogger().logError(e);
 			}
 			return hashtable;
 		} else {
@@ -242,8 +239,7 @@ public class ControllerLogin {
 			if (test_file.exists()) {
 				AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eine Datei mit diesem Namen existiert leider schon!",
 						"Eine Datei mit diesem Namen existiert leider schon!");
-				Logger log = Logger.getLogger();
-				log.logError(new RuntimeException("Eine Datei mit diesem Namen existiert leider schon!" + "\tPath= "
+				Logger.getLogger().logError(new RuntimeException("Eine Datei mit diesem Namen existiert leider schon!" + "\tPath= "
 						+ path + "\tExists: " + test_file.exists() + "\tIs Directory: " + test_file.isDirectory()));
 			}
 			return false;
