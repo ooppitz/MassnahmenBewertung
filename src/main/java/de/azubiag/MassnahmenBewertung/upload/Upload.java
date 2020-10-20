@@ -76,7 +76,6 @@ public class Upload {
 		try {
 			repoKlonenFallsNichtVorhanden();
 		} catch (TransportException e) {
-			e.printStackTrace();
 			beiFehlenderInternetverbindungSchliessen();
 		}
 
@@ -99,7 +98,6 @@ public class Upload {
 			gitController.reset().setMode(ResetType.HARD).setRef("refs/heads/master").call();
 			gitController.pull().setCredentialsProvider(cp).call();
 		} catch (TransportException e) {
-			e.printStackTrace();
 			beiFehlenderInternetverbindungSchliessen();
 		}
 		
