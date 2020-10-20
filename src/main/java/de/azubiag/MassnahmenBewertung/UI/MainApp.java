@@ -2,6 +2,10 @@ package de.azubiag.MassnahmenBewertung.UI;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +52,7 @@ public class MainApp extends Application {
 
 	static ArrayList<ControllerAntwortenErfassen> listeControllerAntwortenErfassen = new ArrayList<ControllerAntwortenErfassen>();
 	static String userName = "";
-
+	
 	public static String getUserName() {
 		return userName;
 	}
@@ -78,11 +82,21 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("SeminarLeiterApp");
+		this.primaryStage.setTitle("Seminarleiter-App");
 
-		showLogin();
-
-		// showcreate();
+		boolean internetZugriffOk = false;
+		try {
+			internetZugriffOk = InetAddress.getByName(new URL(Upload.remoteRepoPath).getHost()).isReachable(5000);	
+		} catch (IOException e) {
+			internetZugriffOk = false;
+		}
+		if (internetZugriffOk) {
+			showLogin();
+		} else 	{
+			AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Keine Internetverbindung!",
+					"Es konnte keine Verbindung mit dem Internet "
+							+ "hergestellt werden. Das Programm wird geschlossen.");
+		}
 	}
 
 	/**
