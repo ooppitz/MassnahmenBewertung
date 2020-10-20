@@ -82,21 +82,21 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("SeminarLeiterApp");
-		
-		try {
-			if(InetAddress.getByName(new URL(Upload.remoteRepoPath).getHost()).isReachable(5000)==true) {
-				showLogin();
-			} else {
-				throw new IOException();
-			}
-		} catch (IOException e) {
-			AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Keine Internetverbindung!", "Es konnte keine Verbindung mit dem Internet "
-					+ "hergestellt werden. Das Programm wird geschlossen");
-			Platform.exit();
-		}		
+		this.primaryStage.setTitle("Seminarleiter-App");
 
-		// showcreate();
+		boolean internetZugriffOk = false;
+		try {
+			internetZugriffOk = InetAddress.getByName(new URL(Upload.remoteRepoPath).getHost()).isReachable(5000);	
+		} catch (IOException e) {
+			internetZugriffOk = false;
+		}
+		if (internetZugriffOk) {
+			showLogin();
+		} else 	{
+			AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Keine Internetverbindung!",
+					"Es konnte keine Verbindung mit dem Internet "
+							+ "hergestellt werden. Das Programm wird geschlossen.");
+		}
 	}
 
 	/**
