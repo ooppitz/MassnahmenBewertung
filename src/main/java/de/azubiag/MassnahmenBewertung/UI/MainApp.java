@@ -326,7 +326,7 @@ public class MainApp extends Application {
 
 	public void handleUmfrageSchliessen(Tab thistab, Controller controller, Event event) {
 		boolean umfrageLoeschen = AlertMethoden.zeigeAlertJaNein(AlertType.WARNING, "Umfrage schließen?",
-				"Wenn Sie fortfahren, werden alle Daten der Umfrage gelöscht. Trotzdem fortfahren ? ");
+				"Wenn Sie fortfahren, werden alle Daten der Umfrage sowie der Fragebogen gelöscht. Trotzdem fortfahren ? ");
 		if (umfrageLoeschen) {
 			deleteActions(thistab, controller);
 		} else {
