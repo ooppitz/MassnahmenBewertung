@@ -295,8 +295,10 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 					antwort = new AzubiAntwort(entschluesselteAntwort,verschluesselteAntwort.replace("Ergebnis des Fragebogens: ", ""));  
 				} catch (Exception e) {
 					AlertMethoden.zeigeOKAlert(AlertType.ERROR, "Eingefügte Antwort ist fehlerhaft!", "Eingefügte Antwort ist fehlerhaft!\r\n" 
-																					+"Fordern Sie eine neue Antwort von Azubi an,\r\n"
-																					+"falls dieser Fehler weiterhin besteht.");
+																					+"Es scheint ein Fehler bei der Übertragung passiert zu sein.\r\n"
+																					+"Dieser kann mit einem fehlerhaften\r\n"
+																					+"Kopieren/Einfügen-Vorgang zusammenhängen.");
+					return;
 				}
 
 				if (antwort.umfrageID != umfrageID) {
