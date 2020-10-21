@@ -347,9 +347,9 @@ public class ControllerAntwortenErfassen implements Serializable, Controller {
 						MainApp.vonListeEntfernen(controller);// speichern bzw löschen, nachdem die Auswertung erstellt wurde
 //						mainapp.showTabAuswertungAnzeigen(eigenschaften, tab.getTabPane().getTabs().indexOf(tab), antwortListe);
 						
-						String pdfOutputPfad = eigenschaften.fragebogen_name+ "_" + controller.umfrageID;
+						String pdfFileName = eigenschaften.fragebogen_name + "_" + controller.umfrageID + ".pdf";
 						
-						File ergebnisPDFFile = new File(AlsPDFSpeichern.getPDFSpeicherort(pdfOutputPfad));
+						File ergebnisPDFFile = new File(AlsPDFSpeichern.getPDFSpeicherort()+pdfFileName);
 						List<AuswertungReferent> auswertungenReferenten = AuswertungReferent.getAuswertungenAllerReferenten(antwortListe);
 						AuswertungMassnahme auswertungMassnahme = AuswertungMassnahme.getGefilterteUndGemischteAuswertungenMassnahme(antwortListe);
 						

@@ -34,7 +34,7 @@ public class AlsPDFSpeichern {
 		amTest = Testdaten.getAuswertungMassnahme();
 		arTest = Testdaten.getAuswertungReferenten();
 
-		File outputFile = new File(getPDFSpeicherort("output"));
+		File outputFile = new File(getPDFSpeicherort()+"output.pdf");
 	
 		saveAsPDF(outputFile, feTest, amTest, arTest);
 		
@@ -42,8 +42,8 @@ public class AlsPDFSpeichern {
 
 	}
 
-	public static String getPDFSpeicherort(String dateiname) {
-		return Upload.getProgrammDatenOrdner() + "\\" + dateiname + ".pdf";
+	public static String getPDFSpeicherort() {
+		return Upload.getProgrammDatenOrdner() + "\\";
 	}
 
 	/**
