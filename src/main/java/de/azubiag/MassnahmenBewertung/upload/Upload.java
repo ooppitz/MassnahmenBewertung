@@ -52,7 +52,7 @@ public class Upload {
 	static String gitHubBenutzernamen = "gfigithubaccess"; // Nutzername für den GitHub-Account
 	static String gitHubPasswort = "GfiGitHubAccess2020!"; // Passwort für den GitHub-Account
 	public static String remoteRepoPath = "https://github.com/gfigithubaccess/gfigithubaccess.github.io.git";
-	final static String appName = "MaßnahmenBewertung";
+	final static String appName = "MassnahmenBewertung";
 
 	static Upload instance = null;
 
